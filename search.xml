@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Welcome to FLYFISH567&#39;s World</title>
-    <url>/FLYFISH567/posts/8f373a49/</url>
-    <content><![CDATA[<p><strong>Welcome to My World</strong></p>
-<p><del>你好，感谢来自你的点击。</del></p>
-<p>你好，非常感谢你点击进入我的博客！这是我在网络世界中的一个小小角落，希望能成为我们交流的起点。</p>
-<p>自我介绍：</p>
-<p><del>不知道怎么写，以后再说吧</del></p>
-<p>联系方式：</p>
-<p>如果你想与我交流，或者有任何建议、意见，欢迎通过邮件：<a href="mailto:&#x32;&#51;&#x30;&#51;&#52;&#48;&#50;&#54;&#57;&#x34;&#x40;&#113;&#113;&#x2e;&#x63;&#x6f;&#109;">&#x32;&#51;&#x30;&#51;&#52;&#48;&#50;&#54;&#57;&#x34;&#x40;&#113;&#113;&#x2e;&#x63;&#x6f;&#109;</a>联系我。</p>
-<p>期待与你共同探讨，共同进步！</p>
-]]></content>
-  </entry>
-  <entry>
     <title>如何制作一个博客</title>
     <url>/FLYFISH567/posts/a3339c42/</url>
     <content><![CDATA[<h2 id="lc4ZI">工具准备</h2>
@@ -93,143 +80,16 @@
 ]]></content>
   </entry>
   <entry>
-    <title>CTF_WEB知识笔记</title>
-    <url>/FLYFISH567/posts/ea34d8b0/</url>
-    <content><![CDATA[<h1 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h1><h2 id="MD5绕过"><a href="#MD5绕过" class="headerlink" title="MD5绕过"></a>MD5绕过</h2><p>参考文档：<a href="https://blog.csdn.net/CSDNiamcoming/article/details/108837347">总结ctf中 MD5 绕过的一些思路_ctf md5-CSDN博客</a></p>
-<p>题目：</p>
-<p>basectf2024 week1 MD5绕过欸</p>
-<p>newstar2024 week1 遗失的拉链</p>
-<p><font style="color:rgb(77, 77, 77);">&#x3D;&#x3D; ：</font><strong><font style="color:rgb(77, 77, 77);">只比较值</font></strong><br><font style="color:rgb(77, 77, 77);">&#x3D;&#x3D;&#x3D; ：</font><strong><font style="color:rgb(77, 77, 77);">比较值和类型</font></strong></p>
-<h3 id="常规的0e绕过"><a href="#常规的0e绕过" class="headerlink" title="常规的0e绕过"></a>常规的0e绕过</h3><p>原理：</p>
-<p><font style="color:rgb(34, 34, 34);">PHP在处理哈希字符串时，它把每一个以“0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以“0E”开头的，PHP会当作科学计数法来处理，也就是0的n次方，得到的值比较的时候都相同。</font></p>
-<p><font style="color:rgb(34, 34, 34);">注：这种方式只有在如下弱比较的时候才能使用。</font></p>
-<p><code>if (md5($str1) == md5($str2))</code></p>
-<p><strong><font style="color:rgb(34, 34, 34);">以下值在md5加密后以0E开头：</font></strong></p>
-<ul>
-<li><font style="color:rgb(34, 34, 34);">QNKCDZO</font></li>
-<li><font style="color:rgb(34, 34, 34);">240610708</font></li>
-<li><font style="color:rgb(34, 34, 34);">s878926199a</font></li>
-<li><font style="color:rgb(34, 34, 34);">s155964671a</font></li>
-<li><font style="color:rgb(34, 34, 34);">s214587387a</font></li>
-<li><font style="color:rgb(34, 34, 34);">s214587387a</font></li>
-</ul>
-<h4 id="特殊情况："><a href="#特殊情况：" class="headerlink" title="特殊情况："></a>特殊情况：</h4><p><font style="color:rgb(79, 79, 79);">$a&#x3D;&#x3D;md5($a)</font></p>
-<p><code>0e215962017</code><font style="color:rgb(77, 77, 77);"> 的 MD5 值也是由 </font><strong><font style="color:rgb(77, 77, 77);">0e</font></strong><font style="color:rgb(77, 77, 77);"> 开头，在 PHP 弱类型比较中相等</font></p>
-<h3 id="数组绕过"><a href="#数组绕过" class="headerlink" title="数组绕过"></a>数组绕过</h3><p>原理：<font style="color:rgb(34, 34, 34);">对于php</font><u><font style="color:#000000;">强比较和弱比较</font></u><font style="color:rgb(34, 34, 34);">：</font>md5<font style="color:rgb(34, 34, 34);">()，sha1()函数无法处理数组，如果传入的为数组，会返回NULL，所以两个数组经过加密后得到的都是NULL，也就是相等的。</font></p>
-<p><code>if($a!==$b &amp;&amp; md5($a)===md5($b))</code></p>
-<p><font style="color:#585A5A;">因此只需要构建如下所示数组计科&#x3D;&#x3D;即可</font></p>
-<p><code>?a[]=1&amp;b[]=2</code></p>
-<h3 id="MD5碰撞"><a href="#MD5碰撞" class="headerlink" title="MD5碰撞"></a>MD5碰撞</h3><p><strong><font style="color:rgb(249, 38, 114);">if</font></strong><font style="color:rgb(0, 0, 0);">((</font><strong><font style="color:rgb(249, 38, 114);">string</font></strong><font style="color:rgb(0, 0, 0);">)$_POST[</font><font style="color:rgb(230, 219, 116);">‘a’</font><font style="color:rgb(0, 0, 0);">]!&#x3D;&#x3D;(</font><strong><font style="color:rgb(249, 38, 114);">string</font></strong><font style="color:rgb(0, 0, 0);">)$_POST[</font><font style="color:rgb(230, 219, 116);">‘b’</font><font style="color:rgb(0, 0, 0);">] )</font></p>
-<p><font style="color:rgb(0, 0, 0);">a&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2</font></p>
-<p><font style="color:rgb(0, 0, 0);">b&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</font></p>
-<p><font style="color:rgb(77, 77, 77);">进行url解码后的MD5值相等</font></p>
-<h3 id="双MD5绕过"><a href="#双MD5绕过" class="headerlink" title="双MD5绕过"></a>双MD5绕过</h3><p>参考文档：</p>
-<p><a href="https://www.cnblogs.com/-mo-/p/11582424.html">[CTF]CTF中if (md5(md5($_GET[‘a’])) &#x3D;&#x3D; md5($_GET[‘b’])) 的绕过 - 肖洋肖恩、 - 博客园</a></p>
-<h2 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h2><p>参考文档：</p>
-<p><a href="https://blog.csdn.net/cosmoslin/article/details/120695429">PHP伪协议详解-CSDN博客</a></p>
-<p><a href="https://segmentfault.com/a/1190000018991087">PHP伪协议总结</a></p>
-<p>题目：basectf week1 Aura 酱的礼物</p>
-<h4 id="类型："><a href="#类型：" class="headerlink" title="类型："></a>类型：</h4><p> file:&#x2F;&#x2F; — 访问本地文件系统</p>
-<p>http:&#x2F;&#x2F; — 访问 HTTP(s) 网址</p>
-<p>php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）</p>
-<p>data:&#x2F;&#x2F; — 数据（RFC 2397）</p>
-<h4 id="data"><a href="#data" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h4><p>用途：允许直接在 URL 中嵌入小型数据，适合小型文本或图像。  </p>
-<p>格式：<code>data:[&lt;media type&gt;][;base64],&lt;data&gt;</code></p>
-<p>media type（可选）：指定数据的 MIME 类型，如 text&#x2F;plain、image&#x2F;png 等。如果省略，</p>
-<p>默认使用 text&#x2F;plain。</p>
-<p>base64（可选）：如果数据经过 Base64 编码，必须在媒体类型后加上 ;base64，</p>
-<p>然后再跟随 Base64 编码的数据。</p>
-<p>data：实际要传输的数据，可以是普通文本或经过 Base64 编码的二进制数据。</p>
-<p>示例：</p>
-<p><code>data://text/plain,Aura</code></p>
-<p><code>data://text/plain;base64,QXVyYQ==</code></p>
-<p><code>$data = file_get_contents(&#39;data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==&#39;);  </code></p>
-<h4 id="file-—-访问本地文件系统"><a href="#file-—-访问本地文件系统" class="headerlink" title="file:&#x2F;&#x2F; — 访问本地文件系统"></a>file:&#x2F;&#x2F; — 访问本地文件系统</h4><h4 id="php-—-访问各个输入-输出流（I-O-streams）"><a href="#php-—-访问各个输入-输出流（I-O-streams）" class="headerlink" title="php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）"></a>php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）</h4><h4 id="http-—-访问-HTTP-s-网址"><a href="#http-—-访问-HTTP-s-网址" class="headerlink" title="http:&#x2F;&#x2F; — 访问 HTTP(s) 网址"></a>http:&#x2F;&#x2F; — 访问 HTTP(s) 网址</h4><p>用途： 通过 HTTP(S) 协议请求远程资源，适合访问外部网站或 API。  </p>
-<p>示例：</p>
-<p><code>$content = file_get_contents(&#39;http://example.com&#39;);  </code></p>
-<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><h3 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h3><p>exec() 和 shell_exec(): 需要通过 echo 手动输出，返回结果不会自动显示。  </p>
-<p>若只有exec() 和 shell_exec()，可以选择将输出重定向到文件然后再读取这个文件的内容显示在浏览器中。</p>
-<p><strong>exec()</strong></p>
-<p>功能：</p>
-<p>执行外部程序或命令，并返回最后一行输出。如果需要，可以通过第二个参数获取命令的所有输出行。</p>
-<p>返回内容: </p>
-<p>不直接输出到浏览器。它返回最后一行输出，可以将所有输出存储在一个数组中。  </p>
-<p>语法：</p>
-<p>string exec(string $command[, array &amp;$output[, int &amp;$return_var]])</p>
-<p>$command: 要执行的命令字符串。</p>
-<p>$output: 可选参数，用于存储命令的所有输出行，类型为数组。</p>
-<p>$return_var: 可选参数，用于存储命令执行后的返回状态码（0 表示成功，非0 表示错误）。</p>
-<p> <strong>shell_exec()</strong></p>
-<p>功能</p>
-<p>执行外部程序或命令，并返回命令的完整输出结果。</p>
-<p>返回内容:</p>
-<p> 返回命令的完整输出作为字符串，但不会直接输出到浏览器  </p>
-<p>语法</p>
-<p>string shell_exec (string $command)  </p>
-<p>$command: 要执行的命令字符串。 </p>
-<p><strong>system()</strong></p>
-<p>功能</p>
-<p>用于执行外部程序或命令，直接将命令的输出结果输出到浏览器，同时返回命令的最后一行输出。</p>
-<p>返回内容: </p>
-<p>直接将命令的输出结果发送到浏览器，同时返回最后一行输出。  </p>
-<p>语法</p>
-<p><code>string system(string$command[, int &amp;$return_var])  </code></p>
-<p>示例</p>
-<p><code>$last_line = system(&#39;ls -l&#39;); </code>  在这个例子中，ls -l 的结果会直接输出到浏览器  </p>
-<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><p>定义：</p>
-<p> 重定向是一种将命令的输入或输出流从默认位置（通常是终端或控制台）转移到其他位置（如文件或其他命令）的方法。这使得用户能够将命令的输出保存到文件中，或从文件中读取输入，而不是在终端中直接显示。</p>
-<p>语法：  </p>
-<p> 输出重定向  </p>
-<p><code>&gt;</code>: 将标准输出重定向到文件。示例：<code>command &gt; filename.txt  </code></p>
-<p>例子：</p>
-<p>echo”Hello, World!” &gt; hello.txt  </p>
-<p> 这将把 “Hello, World!” 写入 <code>hello.txt</code> 文件中。如果文件已存在，内容将被覆盖。 </p>
-<p><code>&gt;&gt;</code>：将标准输出追加到文件末尾。示例：<code>command &gt;&gt; filename.txt </code> </p>
-<p>例子：</p>
-<p><code>echo&quot;Another line.&quot; &gt;&gt; hello.txt  </code></p>
-<p> 这将把 “Another line.” 追加到 hello.txt 文件的末尾。  </p>
-<p><strong>查看重定向文件</strong></p>
-<p>URL直接访问 <a href="http://yourdomain.com/output.txt">http://yourdomain.com/output.txt</a></p>
-<h1 id="漏洞学习："><a href="#漏洞学习：" class="headerlink" title="漏洞学习："></a>漏洞学习：</h1><p>教学视频：</p>
-<p><a href="https://www.bilibili.com/video/BV1xW42197vM/?spm_id_from=333.788.videopod.episode&vd_source=3d9e793b3ade52daa18c644e09cfb1b5">Web安全必学知识点：文件包含、CSRF、XXE、SSRF漏洞渗透与防御零基础入门_哔哩哔哩_bilibili</a></p>
-<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><p>参考文档：</p>
-<p><a href="https://www.bilibili.com/video/BV1zk4y1b7u6/?spm_id_from=333.999.0.0&vd_source=3d9e793b3ade52daa18c644e09cfb1b5">【Web渗透入门】4.文件上传漏洞讲解_哔哩哔哩_bilibili</a></p>
-<p><a href="https://blog.csdn.net/weixin_44519789/article/details/116570426">太厉害了，终于有人能把文件上传漏洞讲的明明白白了-CSDN博客</a></p>
-<p><a href="https://blog.csdn.net/qq_43390703/article/details/104858705">文件上传漏洞 (上传知识点、题型总结大全-upload靶场全解)_upload靶场题型-CSDN博客</a></p>
-<p>题目：basectf2024  week1 Upload</p>
-<p>讲解视频 31:00<a href="https://www.bilibili.com/video/BV19wWEeoE1o/?spm_id_from=333.880.my_history.page.click&vd_source=3d9e793b3ade52daa18c644e09cfb1b5">BaseCTF Week1 部分题目讲解_哔哩哔哩_bilibili</a></p>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>文件上传漏洞是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷，而导致的用户可以越过其本身权限向服务器上上传可执行的动态脚本文件。这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等。“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。</p>
-<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p><font style="color:rgb(68, 68, 68);">在 WEB 中进行文件上传的原理是通过将表单设为 multipart&#x2F;form-data，同时加入文件域，而后通过 HTTP 协议将文件内容发送到服务器，服务器端读取这个分段 (multipart) 的数据信息，并将其中的文件内容提取出来并保存的。通常，在进行文件保存的时候，服务器端会读取文件的原始文件名，并从这个原始文件名中得出文件的扩展名，而后随机为文件起一个文件名 ( 为了防止重复 )，并且加上原始文件的扩展名来保存到服务器上</font></p>
-<p><font style="color:rgb(68, 68, 68);">程序员在开发任意文件上传功能时，并未考虑文件格式后缀的合法性校验或者是否只在前端通过js进行后缀检验。这时攻击者可以上传一个与网站脚本语言相对应的恶意代码动态脚本，例如(jsp、asp、php、aspx文件后缀)到服务器上，从而访问这些恶意脚本中包含的恶意代码，进行动态解析最终达到执行恶意代码的效果，进一步影响服务器安全。</font></p>
-<h3 id="产生原因："><a href="#产生原因：" class="headerlink" title="产生原因："></a><font style="color:rgb(68, 68, 68);">产生原因：</font></h3><p>对于上传文件的后缀名（扩展名）没有做较为严格的限制</p>
-<p>对于上传文件的MIMETYPE(用于描述文件的类型的一种表述方法) 没有做检查</p>
-<p>权限上没有对于上传的文件目录设置不可执行权限，（尤其是对于shebang类型的文件）</p>
-<p>对于web server对于上传文件或者指定目录的行为没有做限制</p>
-<h3 id="漏洞利用："><a href="#漏洞利用：" class="headerlink" title="漏洞利用："></a>漏洞利用：</h3><p><font style="color:rgb(68, 68, 68);">多见于图片文件上传处</font></p>
-<h4 id="一句话木马："><a href="#一句话木马：" class="headerlink" title="一句话木马："></a><font style="color:rgb(68, 68, 68);">一句话木马：</font></h4><p><code>&lt;?php eval ($_POST[0]);</code></p>
-<p>更多见参考文档：<a href="https://blog.csdn.net/qq_43390703/article/details/104858705">文件上传漏洞 (上传知识点、题型总结大全-upload靶场全解)_upload靶场题型-CSDN博客</a></p>
-<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>参考文档：</p>
-<p><a href="https://blog.csdn.net/m0_46467017/article/details/126380415">文件包含漏洞全面详解-CSDN博客</a></p>
-<h3 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h3><h3 id="原理：-1"><a href="#原理：-1" class="headerlink" title="原理："></a>原理：</h3><p><strong>包括文件机制</strong>：PHP 等语言提供的 include 和 require 函数用于动态加载和执行文件中的代码。如果应用程序未对用户输入进行严格验证，攻击者可以通过提供恶意输入，操控包含的文件路径。</p>
-<p><strong>路径解析</strong>：服务器在处理 include 时，会根据输入的路径解析文件。如果攻击者能够控制路径，就可以利用路径遍历等手段访问其他文件。</p>
-<h3 id="产生原因：-1"><a href="#产生原因：-1" class="headerlink" title="产生原因："></a>产生原因：</h3><h3 id="漏洞类型："><a href="#漏洞类型：" class="headerlink" title="漏洞类型："></a>漏洞类型：</h3><ol>
-<li><strong>本地文件包含（LFI - Local File Inclusion）</strong><br>定义：攻击者可以通过操控用户输入的文件路径，使服务器包含本地文件。<br>攻击方式：通常通过路径遍历（如 ..&#x2F;..&#x2F;）来访问服务器上的敏感文件。<br>例子：读取 &#x2F;etc&#x2F;passwd 或其他配置文件。</li>
-<li><strong>远程文件包含（RFI - Remote File Inclusion）</strong><br>定义：攻击者可以使服务器包含来自远程服务器的文件。<br>条件：需要 PHP 的 allow_url_include 设置为 On。<br>攻击方式：攻击者提供一个恶意的 URL，使服务器执行该 URL 指向的代码。<br>例子：包含一个攻击者控制的 PHP 文件，可能导致远程代码执行。</li>
-<li><strong>文件上传漏洞结合文件包含</strong><br>定义：攻击者利用文件上传功能，上传恶意文件，然后通过文件包含漏洞执行。<br>攻击方式：上传一个带有恶意代码的文件（如 PHP 文件），然后利用文件包含漏洞将其执行。<br>例子：上传 shell.php 文件并通过包含语句执行该文件。</li>
-<li><strong>路径遍历</strong><br>定义：攻击者通过操控文件路径，访问不应允许的文件或目录。<br>攻击方式：使用 .. 来回退到上级目录，获取敏感文件内容。<br>例子：尝试访问 ..&#x2F;..&#x2F;etc&#x2F;passwd 或其他不应暴露的文件。</li>
-<li><strong>PHP 伪协议</strong><br>定义：使用 PHP 的特定协议（如 php:&#x2F;&#x2F;filter）来读取或处理文件内容。<br>攻击方式：利用 PHP 的内置过滤器绕过常规检查。<br>例子：通过 php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php 获取文件的 Base64 编码</li>
-</ol>
-<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><p>参考文档：</p>
-<p><a href="https://cloud.tencent.com/developer/article/2288231">从一文中了解SSRF的各种绕过姿势及攻击思路-腾讯云开发者社区-腾讯云</a></p>
-<p>题目：basectf week1 Aura 酱的礼物</p>
-<h3 id="定义：-1"><a href="#定义：-1" class="headerlink" title="定义："></a>定义：</h3><p> SSRF（Server-Side Request Forgery）是一种安全漏洞，攻击者通过操控服务器发起请求，而不是直接与应用程序交互。攻击者通常利用这一漏洞诱使服务器向内部或外部资源发起请求，从而获取敏感信息或执行未授权操作。  </p>
-<h3 id="原理：-2"><a href="#原理：-2" class="headerlink" title="原理："></a>原理：</h3><p><strong>请求代理</strong>：SSRF 利用服务器的请求能力，通常服务器被视为可信来源，攻击者可以通过构造请求操控服务器。</p>
-<p><strong>内部服务访问</strong>：许多网络架构将内部服务与外部网络隔离。SSRF 攻击可以突破这种隔离，允许攻击者访问本不应对外公开的内部资源。</p>
-<h3 id="产生原因：-2"><a href="#产生原因：-2" class="headerlink" title="产生原因："></a>产生原因：</h3><p><strong>用户输入未验证</strong>：应用程序直接接受用户提供的 URL 或其他网络地址，且没有进行适当的验证和过滤。攻击者可以利用这一点，输入恶意的内部地址。</p>
-<h3 id="漏洞利用：-1"><a href="#漏洞利用：-1" class="headerlink" title="漏洞利用："></a>漏洞利用：</h3><p><strong>URL 构造</strong>：攻击者会在用户输入中注入一个恶意 URL，通常是服务器能够解析和访问的地址。例如，如果应用程序允许用户输入 URL 进行数据抓取，攻击者可以输入内部地址。</p>
-<p>示例： <a href="http://localhost/admin">http://localhost/admin</a>  </p>
-<p><strong>协议利用</strong>：利用特定的协议（如 <code>http://</code>、<code>ftp://</code> 或 <code>file://</code>）进行请求，可能会尝试访问敏感的内部资源。</p>
-<p><strong>HTTP 请求伪造</strong>：利用开发工具（如 Burp Suite）进行请求伪造，将请求的目标更改为内部服务或未授权的外部地址。</p>
+    <title>Welcome to FLYFISH567&#39;s World</title>
+    <url>/FLYFISH567/posts/8f373a49/</url>
+    <content><![CDATA[<p><strong>Welcome to My World</strong></p>
+<p><del>你好，感谢来自你的点击。</del></p>
+<p>你好，非常感谢你点击进入我的博客！这是我在网络世界中的一个小小角落，希望能成为我们交流的起点。</p>
+<p>自我介绍：</p>
+<p><del>不知道怎么写，以后再说吧</del></p>
+<p>联系方式：</p>
+<p>如果你想与我交流，或者有任何建议、意见，欢迎通过邮件：<a href="mailto:&#x32;&#x33;&#x30;&#51;&#52;&#x30;&#50;&#54;&#x39;&#x34;&#x40;&#x71;&#113;&#46;&#99;&#x6f;&#109;">&#x32;&#x33;&#x30;&#51;&#52;&#x30;&#50;&#54;&#x39;&#x34;&#x40;&#x71;&#113;&#46;&#99;&#x6f;&#109;</a>联系我。</p>
+<p>期待与你共同探讨，共同进步！</p>
 ]]></content>
   </entry>
   <entry>
@@ -507,6 +367,146 @@ from fake_useragent import UserAgent
 <p>password为预留密码<code>D:\\phpstudy_pro\\www</code>\为文件路径,<code>ben.php</code>为新插入的文件名</p>
 <p>上传成功之后可以使用蚁剑或中国菜刀进行查看</p>
 <p>&#x2F;&#x2F; 但这个方法似乎要本地路径才可以使用</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CTF_WEB知识笔记</title>
+    <url>/FLYFISH567/posts/ea34d8b0/</url>
+    <content><![CDATA[<h1 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h1><h2 id="MD5绕过"><a href="#MD5绕过" class="headerlink" title="MD5绕过"></a>MD5绕过</h2><p>参考文档：<a href="https://blog.csdn.net/CSDNiamcoming/article/details/108837347">总结ctf中 MD5 绕过的一些思路_ctf md5-CSDN博客</a></p>
+<p>题目：</p>
+<p>basectf2024 week1 MD5绕过欸</p>
+<p>newstar2024 week1 遗失的拉链</p>
+<p><font style="color:rgb(77, 77, 77);">&#x3D;&#x3D; ：</font><strong><font style="color:rgb(77, 77, 77);">只比较值</font></strong><br><font style="color:rgb(77, 77, 77);">&#x3D;&#x3D;&#x3D; ：</font><strong><font style="color:rgb(77, 77, 77);">比较值和类型</font></strong></p>
+<h3 id="常规的0e绕过"><a href="#常规的0e绕过" class="headerlink" title="常规的0e绕过"></a>常规的0e绕过</h3><p>原理：</p>
+<p><font style="color:rgb(34, 34, 34);">PHP在处理哈希字符串时，它把每一个以“0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以“0E”开头的，PHP会当作科学计数法来处理，也就是0的n次方，得到的值比较的时候都相同。</font></p>
+<p><font style="color:rgb(34, 34, 34);">注：这种方式只有在如下弱比较的时候才能使用。</font></p>
+<p><code>if (md5($str1) == md5($str2))</code></p>
+<p><strong><font style="color:rgb(34, 34, 34);">以下值在md5加密后以0E开头：</font></strong></p>
+<ul>
+<li><font style="color:rgb(34, 34, 34);">QNKCDZO</font></li>
+<li><font style="color:rgb(34, 34, 34);">240610708</font></li>
+<li><font style="color:rgb(34, 34, 34);">s878926199a</font></li>
+<li><font style="color:rgb(34, 34, 34);">s155964671a</font></li>
+<li><font style="color:rgb(34, 34, 34);">s214587387a</font></li>
+<li><font style="color:rgb(34, 34, 34);">s214587387a</font></li>
+</ul>
+<h4 id="特殊情况："><a href="#特殊情况：" class="headerlink" title="特殊情况："></a>特殊情况：</h4><p><font style="color:rgb(79, 79, 79);">$a&#x3D;&#x3D;md5($a)</font></p>
+<p><code>0e215962017</code><font style="color:rgb(77, 77, 77);"> 的 MD5 值也是由 </font><strong><font style="color:rgb(77, 77, 77);">0e</font></strong><font style="color:rgb(77, 77, 77);"> 开头，在 PHP 弱类型比较中相等</font></p>
+<h3 id="数组绕过"><a href="#数组绕过" class="headerlink" title="数组绕过"></a>数组绕过</h3><p>原理：<font style="color:rgb(34, 34, 34);">对于php</font><u><font style="color:#000000;">强比较和弱比较</font></u><font style="color:rgb(34, 34, 34);">：</font>md5<font style="color:rgb(34, 34, 34);">()，sha1()函数无法处理数组，如果传入的为数组，会返回NULL，所以两个数组经过加密后得到的都是NULL，也就是相等的。</font></p>
+<p><code>if($a!==$b &amp;&amp; md5($a)===md5($b))</code></p>
+<p><font style="color:#585A5A;">因此只需要构建如下所示数组计科&#x3D;&#x3D;即可</font></p>
+<p><code>?a[]=1&amp;b[]=2</code></p>
+<h3 id="MD5碰撞"><a href="#MD5碰撞" class="headerlink" title="MD5碰撞"></a>MD5碰撞</h3><p><strong><font style="color:rgb(249, 38, 114);">if</font></strong><font style="color:rgb(0, 0, 0);">((</font><strong><font style="color:rgb(249, 38, 114);">string</font></strong><font style="color:rgb(0, 0, 0);">)$_POST[</font><font style="color:rgb(230, 219, 116);">‘a’</font><font style="color:rgb(0, 0, 0);">]!&#x3D;&#x3D;(</font><strong><font style="color:rgb(249, 38, 114);">string</font></strong><font style="color:rgb(0, 0, 0);">)$_POST[</font><font style="color:rgb(230, 219, 116);">‘b’</font><font style="color:rgb(0, 0, 0);">] )</font></p>
+<p><font style="color:rgb(0, 0, 0);">a&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2</font></p>
+<p><font style="color:rgb(0, 0, 0);">b&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</font></p>
+<p><font style="color:rgb(77, 77, 77);">进行url解码后的MD5值相等</font></p>
+<h3 id="双MD5绕过"><a href="#双MD5绕过" class="headerlink" title="双MD5绕过"></a>双MD5绕过</h3><p>参考文档：</p>
+<p><a href="https://www.cnblogs.com/-mo-/p/11582424.html">[CTF]CTF中if (md5(md5($_GET[‘a’])) &#x3D;&#x3D; md5($_GET[‘b’])) 的绕过 - 肖洋肖恩、 - 博客园</a></p>
+<h2 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h2><p>参考文档：</p>
+<p><a href="https://blog.csdn.net/cosmoslin/article/details/120695429">PHP伪协议详解-CSDN博客</a></p>
+<p><a href="https://segmentfault.com/a/1190000018991087">PHP伪协议总结</a></p>
+<p>题目：basectf week1 Aura 酱的礼物</p>
+<h4 id="类型："><a href="#类型：" class="headerlink" title="类型："></a>类型：</h4><p> file:&#x2F;&#x2F; — 访问本地文件系统</p>
+<p>http:&#x2F;&#x2F; — 访问 HTTP(s) 网址</p>
+<p>php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）</p>
+<p>data:&#x2F;&#x2F; — 数据（RFC 2397）</p>
+<h4 id="data"><a href="#data" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h4><p>用途：允许直接在 URL 中嵌入小型数据，适合小型文本或图像。  </p>
+<p>格式：<code>data:[&lt;media type&gt;][;base64],&lt;data&gt;</code></p>
+<p>media type（可选）：指定数据的 MIME 类型，如 text&#x2F;plain、image&#x2F;png 等。如果省略，</p>
+<p>默认使用 text&#x2F;plain。</p>
+<p>base64（可选）：如果数据经过 Base64 编码，必须在媒体类型后加上 ;base64，</p>
+<p>然后再跟随 Base64 编码的数据。</p>
+<p>data：实际要传输的数据，可以是普通文本或经过 Base64 编码的二进制数据。</p>
+<p>示例：</p>
+<p><code>data://text/plain,Aura</code></p>
+<p><code>data://text/plain;base64,QXVyYQ==</code></p>
+<p><code>$data = file_get_contents(&#39;data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==&#39;);  </code></p>
+<h4 id="file-—-访问本地文件系统"><a href="#file-—-访问本地文件系统" class="headerlink" title="file:&#x2F;&#x2F; — 访问本地文件系统"></a>file:&#x2F;&#x2F; — 访问本地文件系统</h4><h4 id="php-—-访问各个输入-输出流（I-O-streams）"><a href="#php-—-访问各个输入-输出流（I-O-streams）" class="headerlink" title="php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）"></a>php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）</h4><h4 id="http-—-访问-HTTP-s-网址"><a href="#http-—-访问-HTTP-s-网址" class="headerlink" title="http:&#x2F;&#x2F; — 访问 HTTP(s) 网址"></a>http:&#x2F;&#x2F; — 访问 HTTP(s) 网址</h4><p>用途： 通过 HTTP(S) 协议请求远程资源，适合访问外部网站或 API。  </p>
+<p>示例：</p>
+<p><code>$content = file_get_contents(&#39;http://example.com&#39;);  </code></p>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><h3 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h3><p>exec() 和 shell_exec(): 需要通过 echo 手动输出，返回结果不会自动显示。  </p>
+<p>若只有exec() 和 shell_exec()，可以选择将输出重定向到文件然后再读取这个文件的内容显示在浏览器中。</p>
+<p><strong>exec()</strong></p>
+<p>功能：</p>
+<p>执行外部程序或命令，并返回最后一行输出。如果需要，可以通过第二个参数获取命令的所有输出行。</p>
+<p>返回内容: </p>
+<p>不直接输出到浏览器。它返回最后一行输出，可以将所有输出存储在一个数组中。  </p>
+<p>语法：</p>
+<p>string exec(string $command[, array &amp;$output[, int &amp;$return_var]])</p>
+<p>$command: 要执行的命令字符串。</p>
+<p>$output: 可选参数，用于存储命令的所有输出行，类型为数组。</p>
+<p>$return_var: 可选参数，用于存储命令执行后的返回状态码（0 表示成功，非0 表示错误）。</p>
+<p> <strong>shell_exec()</strong></p>
+<p>功能</p>
+<p>执行外部程序或命令，并返回命令的完整输出结果。</p>
+<p>返回内容:</p>
+<p> 返回命令的完整输出作为字符串，但不会直接输出到浏览器  </p>
+<p>语法</p>
+<p>string shell_exec (string $command)  </p>
+<p>$command: 要执行的命令字符串。 </p>
+<p><strong>system()</strong></p>
+<p>功能</p>
+<p>用于执行外部程序或命令，直接将命令的输出结果输出到浏览器，同时返回命令的最后一行输出。</p>
+<p>返回内容: </p>
+<p>直接将命令的输出结果发送到浏览器，同时返回最后一行输出。  </p>
+<p>语法</p>
+<p><code>string system(string$command[, int &amp;$return_var])  </code></p>
+<p>示例</p>
+<p><code>$last_line = system(&#39;ls -l&#39;); </code>  在这个例子中，ls -l 的结果会直接输出到浏览器  </p>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><p>定义：</p>
+<p> 重定向是一种将命令的输入或输出流从默认位置（通常是终端或控制台）转移到其他位置（如文件或其他命令）的方法。这使得用户能够将命令的输出保存到文件中，或从文件中读取输入，而不是在终端中直接显示。</p>
+<p>语法：  </p>
+<p> 输出重定向  </p>
+<p><code>&gt;</code>: 将标准输出重定向到文件。示例：<code>command &gt; filename.txt  </code></p>
+<p>例子：</p>
+<p>echo”Hello, World!” &gt; hello.txt  </p>
+<p> 这将把 “Hello, World!” 写入 <code>hello.txt</code> 文件中。如果文件已存在，内容将被覆盖。 </p>
+<p><code>&gt;&gt;</code>：将标准输出追加到文件末尾。示例：<code>command &gt;&gt; filename.txt </code> </p>
+<p>例子：</p>
+<p><code>echo&quot;Another line.&quot; &gt;&gt; hello.txt  </code></p>
+<p> 这将把 “Another line.” 追加到 hello.txt 文件的末尾。  </p>
+<p><strong>查看重定向文件</strong></p>
+<p>URL直接访问 <a href="http://yourdomain.com/output.txt">http://yourdomain.com/output.txt</a></p>
+<h1 id="漏洞学习："><a href="#漏洞学习：" class="headerlink" title="漏洞学习："></a>漏洞学习：</h1><p>教学视频：</p>
+<p><a href="https://www.bilibili.com/video/BV1xW42197vM/?spm_id_from=333.788.videopod.episode&vd_source=3d9e793b3ade52daa18c644e09cfb1b5">Web安全必学知识点：文件包含、CSRF、XXE、SSRF漏洞渗透与防御零基础入门_哔哩哔哩_bilibili</a></p>
+<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><p>参考文档：</p>
+<p><a href="https://www.bilibili.com/video/BV1zk4y1b7u6/?spm_id_from=333.999.0.0&vd_source=3d9e793b3ade52daa18c644e09cfb1b5">【Web渗透入门】4.文件上传漏洞讲解_哔哩哔哩_bilibili</a></p>
+<p><a href="https://blog.csdn.net/weixin_44519789/article/details/116570426">太厉害了，终于有人能把文件上传漏洞讲的明明白白了-CSDN博客</a></p>
+<p><a href="https://blog.csdn.net/qq_43390703/article/details/104858705">文件上传漏洞 (上传知识点、题型总结大全-upload靶场全解)_upload靶场题型-CSDN博客</a></p>
+<p>题目：basectf2024  week1 Upload</p>
+<p>讲解视频 31:00<a href="https://www.bilibili.com/video/BV19wWEeoE1o/?spm_id_from=333.880.my_history.page.click&vd_source=3d9e793b3ade52daa18c644e09cfb1b5">BaseCTF Week1 部分题目讲解_哔哩哔哩_bilibili</a></p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>文件上传漏洞是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷，而导致的用户可以越过其本身权限向服务器上上传可执行的动态脚本文件。这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等。“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。</p>
+<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p><font style="color:rgb(68, 68, 68);">在 WEB 中进行文件上传的原理是通过将表单设为 multipart&#x2F;form-data，同时加入文件域，而后通过 HTTP 协议将文件内容发送到服务器，服务器端读取这个分段 (multipart) 的数据信息，并将其中的文件内容提取出来并保存的。通常，在进行文件保存的时候，服务器端会读取文件的原始文件名，并从这个原始文件名中得出文件的扩展名，而后随机为文件起一个文件名 ( 为了防止重复 )，并且加上原始文件的扩展名来保存到服务器上</font></p>
+<p><font style="color:rgb(68, 68, 68);">程序员在开发任意文件上传功能时，并未考虑文件格式后缀的合法性校验或者是否只在前端通过js进行后缀检验。这时攻击者可以上传一个与网站脚本语言相对应的恶意代码动态脚本，例如(jsp、asp、php、aspx文件后缀)到服务器上，从而访问这些恶意脚本中包含的恶意代码，进行动态解析最终达到执行恶意代码的效果，进一步影响服务器安全。</font></p>
+<h3 id="产生原因："><a href="#产生原因：" class="headerlink" title="产生原因："></a><font style="color:rgb(68, 68, 68);">产生原因：</font></h3><p>对于上传文件的后缀名（扩展名）没有做较为严格的限制</p>
+<p>对于上传文件的MIMETYPE(用于描述文件的类型的一种表述方法) 没有做检查</p>
+<p>权限上没有对于上传的文件目录设置不可执行权限，（尤其是对于shebang类型的文件）</p>
+<p>对于web server对于上传文件或者指定目录的行为没有做限制</p>
+<h3 id="漏洞利用："><a href="#漏洞利用：" class="headerlink" title="漏洞利用："></a>漏洞利用：</h3><p><font style="color:rgb(68, 68, 68);">多见于图片文件上传处</font></p>
+<h4 id="一句话木马："><a href="#一句话木马：" class="headerlink" title="一句话木马："></a><font style="color:rgb(68, 68, 68);">一句话木马：</font></h4><p><code>&lt;?php eval ($_POST[0]);</code></p>
+<p>更多见参考文档：<a href="https://blog.csdn.net/qq_43390703/article/details/104858705">文件上传漏洞 (上传知识点、题型总结大全-upload靶场全解)_upload靶场题型-CSDN博客</a></p>
+<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>参考文档：</p>
+<p><a href="https://blog.csdn.net/m0_46467017/article/details/126380415">文件包含漏洞全面详解-CSDN博客</a></p>
+<h3 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h3><h3 id="原理：-1"><a href="#原理：-1" class="headerlink" title="原理："></a>原理：</h3><p><strong>包括文件机制</strong>：PHP 等语言提供的 include 和 require 函数用于动态加载和执行文件中的代码。如果应用程序未对用户输入进行严格验证，攻击者可以通过提供恶意输入，操控包含的文件路径。</p>
+<p><strong>路径解析</strong>：服务器在处理 include 时，会根据输入的路径解析文件。如果攻击者能够控制路径，就可以利用路径遍历等手段访问其他文件。</p>
+<h3 id="产生原因：-1"><a href="#产生原因：-1" class="headerlink" title="产生原因："></a>产生原因：</h3><h3 id="漏洞类型："><a href="#漏洞类型：" class="headerlink" title="漏洞类型："></a>漏洞类型：</h3><ol>
+<li><strong>本地文件包含（LFI - Local File Inclusion）</strong><br>定义：攻击者可以通过操控用户输入的文件路径，使服务器包含本地文件。<br>攻击方式：通常通过路径遍历（如 ..&#x2F;..&#x2F;）来访问服务器上的敏感文件。<br>例子：读取 &#x2F;etc&#x2F;passwd 或其他配置文件。</li>
+<li><strong>远程文件包含（RFI - Remote File Inclusion）</strong><br>定义：攻击者可以使服务器包含来自远程服务器的文件。<br>条件：需要 PHP 的 allow_url_include 设置为 On。<br>攻击方式：攻击者提供一个恶意的 URL，使服务器执行该 URL 指向的代码。<br>例子：包含一个攻击者控制的 PHP 文件，可能导致远程代码执行。</li>
+<li><strong>文件上传漏洞结合文件包含</strong><br>定义：攻击者利用文件上传功能，上传恶意文件，然后通过文件包含漏洞执行。<br>攻击方式：上传一个带有恶意代码的文件（如 PHP 文件），然后利用文件包含漏洞将其执行。<br>例子：上传 shell.php 文件并通过包含语句执行该文件。</li>
+<li><strong>路径遍历</strong><br>定义：攻击者通过操控文件路径，访问不应允许的文件或目录。<br>攻击方式：使用 .. 来回退到上级目录，获取敏感文件内容。<br>例子：尝试访问 ..&#x2F;..&#x2F;etc&#x2F;passwd 或其他不应暴露的文件。</li>
+<li><strong>PHP 伪协议</strong><br>定义：使用 PHP 的特定协议（如 php:&#x2F;&#x2F;filter）来读取或处理文件内容。<br>攻击方式：利用 PHP 的内置过滤器绕过常规检查。<br>例子：通过 php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php 获取文件的 Base64 编码</li>
+</ol>
+<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><p>参考文档：</p>
+<p><a href="https://cloud.tencent.com/developer/article/2288231">从一文中了解SSRF的各种绕过姿势及攻击思路-腾讯云开发者社区-腾讯云</a></p>
+<p>题目：basectf week1 Aura 酱的礼物</p>
+<h3 id="定义：-1"><a href="#定义：-1" class="headerlink" title="定义："></a>定义：</h3><p> SSRF（Server-Side Request Forgery）是一种安全漏洞，攻击者通过操控服务器发起请求，而不是直接与应用程序交互。攻击者通常利用这一漏洞诱使服务器向内部或外部资源发起请求，从而获取敏感信息或执行未授权操作。  </p>
+<h3 id="原理：-2"><a href="#原理：-2" class="headerlink" title="原理："></a>原理：</h3><p><strong>请求代理</strong>：SSRF 利用服务器的请求能力，通常服务器被视为可信来源，攻击者可以通过构造请求操控服务器。</p>
+<p><strong>内部服务访问</strong>：许多网络架构将内部服务与外部网络隔离。SSRF 攻击可以突破这种隔离，允许攻击者访问本不应对外公开的内部资源。</p>
+<h3 id="产生原因：-2"><a href="#产生原因：-2" class="headerlink" title="产生原因："></a>产生原因：</h3><p><strong>用户输入未验证</strong>：应用程序直接接受用户提供的 URL 或其他网络地址，且没有进行适当的验证和过滤。攻击者可以利用这一点，输入恶意的内部地址。</p>
+<h3 id="漏洞利用：-1"><a href="#漏洞利用：-1" class="headerlink" title="漏洞利用："></a>漏洞利用：</h3><p><strong>URL 构造</strong>：攻击者会在用户输入中注入一个恶意 URL，通常是服务器能够解析和访问的地址。例如，如果应用程序允许用户输入 URL 进行数据抓取，攻击者可以输入内部地址。</p>
+<p>示例： <a href="http://localhost/admin">http://localhost/admin</a>  </p>
+<p><strong>协议利用</strong>：利用特定的协议（如 <code>http://</code>、<code>ftp://</code> 或 <code>file://</code>）进行请求，可能会尝试访问敏感的内部资源。</p>
+<p><strong>HTTP 请求伪造</strong>：利用开发工具（如 Burp Suite）进行请求伪造，将请求的目标更改为内部服务或未授权的外部地址。</p>
 ]]></content>
   </entry>
 </search>
