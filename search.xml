@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Welcome to FLYFISH567&#39;s World</title>
+    <url>/FLYFISH567/posts/8f373a49/</url>
+    <content><![CDATA[<p><strong>Welcome to My World</strong></p>
+<p><del>你好，感谢来自你的点击。</del></p>
+<p>你好，非常感谢你点击进入我的博客！这是我在网络世界中的一个小小角落，希望能成为我们交流的起点。</p>
+<p>自我介绍：</p>
+<p><del>不知道怎么写，以后再说吧</del></p>
+<p>联系方式：</p>
+<p>如果你想与我交流，或者有任何建议、意见，欢迎通过邮件：<a href="mailto:&#x32;&#51;&#x30;&#51;&#52;&#48;&#50;&#54;&#57;&#x34;&#x40;&#113;&#113;&#x2e;&#x63;&#x6f;&#109;">&#x32;&#51;&#x30;&#51;&#52;&#48;&#50;&#54;&#57;&#x34;&#x40;&#113;&#113;&#x2e;&#x63;&#x6f;&#109;</a>联系我。</p>
+<p>期待与你共同探讨，共同进步！</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>如何制作一个博客</title>
+    <url>/FLYFISH567/posts/a3339c42/</url>
+    <content><![CDATA[<h2 id="lc4ZI">工具准备</h2>
+
+<p><font style="color:rgb(31, 31, 31);">1.Node.js</font></p>
+<p><font style="color:rgb(31, 31, 31);">2.git</font></p>
+<p><font style="color:rgb(31, 31, 31);">3.Hexo</font></p>
+<p><font style="color:rgb(31, 31, 31);">4.文本编辑器(推荐VSCODE)</font></p>
+<p><font style="color:rgb(31, 31, 31);">5.GitHub 帐号</font></p>
+<p>安装hexo</p>
+<p>在桌面右键选择git bash，输入npm install -g hexo-cli</p>
+<p><img src="https://s2.loli.net/2024/10/29/gJk2KxV8jelCowv.png" alt="image-20241029210320268"></p>
+<p><img src="https://s2.loli.net/2024/10/29/f6w7Hc2iz3FTrdQ.png" alt="image-20241029210402102"></p>
+<h2 id="KWvKs">注册仓库</h2>
+
+<ol>
+<li>点击new直接创建仓库</li>
+</ol>
+<p><img src="https://s2.loli.net/2024/10/29/o2q7CSk5MgFdVI6.png" alt="image-20241029210459592"></p>
+<ol start="2">
+<li>命名仓库：用户名+.github.io</li>
+<li><font style="color:rgb(31, 31, 31);">勾选 Initialize this repository with a README 初始化一个</font><font style="color:rgb(31, 31, 31);"> </font><a href="http://readme.md/"><font style="color:rgb(31, 31, 31);">README.md</font></a><font style="color:rgb(31, 31, 31);"> </font><font style="color:rgb(31, 31, 31);">文件</font></li>
+<li><font style="color:rgb(31, 31, 31);">点击 Creat repository 进行创建</font></li>
+</ol>
+<p><img src="https://s2.loli.net/2024/10/29/ivZneDKt28VOSEH.png" alt="image-20241029210518364"></p>
+<h2 id="WNBEJ">git初始化</h2>
+
+<p>打开git bash</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;你的用户名&quot;</span><br><span class="line">git config --global user.email &quot;你的邮箱&quot;</span><br></pre></td></tr></table></figure>
+
+<p><font style="color:rgb(31, 31, 31);">通过</font>git config -l‘检查是否配置成功。</font></p>
+<h2 id="zMo6F"><font style="color:rgb(31, 31, 31);">连接github</font></h2>
+
+<ol>
+<li>生成ssh公钥</li>
+</ol>
+<p>在git中执行<code>ssh-keygen -t rsa -C &quot;你的邮箱&quot;</code></p>
+<p><font style="color:rgb(31, 31, 31);">之后打开C盘下用户文件夹下的.ssh的文件夹，会看到 id_rsa.pub</font></p>
+<p><img src="https://s2.loli.net/2024/10/29/6C1uxO4HfUVZsaE.png"></p>
+<ol start="2">
+<li>打开<font style="color:rgb(31, 31, 31);"> id_rsa.pub，复制其中的内容</font></li>
+<li><font style="color:rgb(31, 31, 31);">将 SSH KEY 配置到 GitHub</font></li>
+</ol>
+<p> 进入github，点击右上角头像 选择settings，进入设置页后选择 SSH and GPG keys</p>
+<p><img src="https://s2.loli.net/2024/10/29/4YKDhJboGNWptRU.png" alt="image-20241029210556718"></p>
+<p><img src="https://s2.loli.net/2024/10/29/CIzHXWBY7upDsjS.png"></p>
+<p>title可以随便填，将密钥填入<font style="color:#df2a3f;">key</font>中，点击add ssh key即可</p>
+<p><img src="https://s2.loli.net/2024/10/29/1NynTP4JIs3gX8V.png" alt="image-20241029210637377"></p>
+<p>4.测试</p>
+<p>在git中输入<code>ssh -T git@github.com</code>，若有账户信息返回则连接完成</p>
+<h2 id="xIcfi">初始化Hexo项目</h2>
+
+<ol>
+<li>选择一个文件夹，右键打开git bash 输入hexo init</li>
+</ol>
+<p><img src="https://s2.loli.net/2024/10/29/PT6ivwytUDLNpal.png" alt="image-20241029210647230"></p>
+<ol start="2">
+<li>再输入hexo s 则运行可以在本地浏览器输入localhost:4000打开</li>
+</ol>
+<p><img src="https://s2.loli.net/2024/10/29/czUji1GedVhZYQo.png" alt="image-20241029210656410"></p>
+<h2 id="HPalj">将静态博客挂载到 GitHub Pages</h2>
+
+<ol>
+<li>安装<font style="color:rgb(31, 31, 31);">hexo-deployer-git</font></li>
+</ol>
+<p><code>npm install hexo-deployer-git --save</code></p>
+<ol start="2">
+<li><font style="color:rgb(31, 31, 31);">修改 _config.yml 文件，将deploy后的内容修改为如下图所示（注意缩进）</font></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line"> type: git</span><br><span class="line"> repository: #github项目地址</span><br><span class="line"> branch: main</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2024/10/29/I91EWBPrHG4JpMA.png" alt="image-20241029210734351"></p>
+<p><img src="https://s2.loli.net/2024/10/29/ziVLK1BZg3Ux58t.png" alt="image-20241029210745046"></p>
+<p>3.<font style="color:rgb(31, 31, 31);">修改好配置后，运行如下命令，将代码部署到 GitHub。</font></p>
+<p><font style="color:rgb(31, 31, 31);">如果出现Deploy done，则说明部署成功了。</font></p>
+<p><font style="color:rgb(31, 31, 31);">稍等两分钟，打开浏览器访问：</font><a href="https://fomalhaut-blog.github.io/">https:&#x2F;&#x2F;</a>仓库名<font style="color:rgb(31, 31, 31);"> ，这时候我们就可以看到博客内容了。</font></p>
+]]></content>
+  </entry>
+  <entry>
     <title>CTF_WEB知识笔记</title>
     <url>/FLYFISH567/posts/ea34d8b0/</url>
     <content><![CDATA[<h1 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h1><h2 id="MD5绕过"><a href="#MD5绕过" class="headerlink" title="MD5绕过"></a>MD5绕过</h2><p>参考文档：<a href="https://blog.csdn.net/CSDNiamcoming/article/details/108837347">总结ctf中 MD5 绕过的一些思路_ctf md5-CSDN博客</a></p>
@@ -138,98 +230,6 @@
 <p>示例： <a href="http://localhost/admin">http://localhost/admin</a>  </p>
 <p><strong>协议利用</strong>：利用特定的协议（如 <code>http://</code>、<code>ftp://</code> 或 <code>file://</code>）进行请求，可能会尝试访问敏感的内部资源。</p>
 <p><strong>HTTP 请求伪造</strong>：利用开发工具（如 Burp Suite）进行请求伪造，将请求的目标更改为内部服务或未授权的外部地址。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>如何制作一个博客</title>
-    <url>/FLYFISH567/posts/a3339c42/</url>
-    <content><![CDATA[<h2 id="lc4ZI">工具准备</h2>
-
-<p><font style="color:rgb(31, 31, 31);">1.Node.js</font></p>
-<p><font style="color:rgb(31, 31, 31);">2.git</font></p>
-<p><font style="color:rgb(31, 31, 31);">3.Hexo</font></p>
-<p><font style="color:rgb(31, 31, 31);">4.文本编辑器(推荐VSCODE)</font></p>
-<p><font style="color:rgb(31, 31, 31);">5.GitHub 帐号</font></p>
-<p>安装hexo</p>
-<p>在桌面右键选择git bash，输入npm install -g hexo-cli</p>
-<p><img src="https://s2.loli.net/2024/10/29/gJk2KxV8jelCowv.png" alt="image-20241029210320268"></p>
-<p><img src="https://s2.loli.net/2024/10/29/f6w7Hc2iz3FTrdQ.png" alt="image-20241029210402102"></p>
-<h2 id="KWvKs">注册仓库</h2>
-
-<ol>
-<li>点击new直接创建仓库</li>
-</ol>
-<p><img src="https://s2.loli.net/2024/10/29/o2q7CSk5MgFdVI6.png" alt="image-20241029210459592"></p>
-<ol start="2">
-<li>命名仓库：用户名+.github.io</li>
-<li><font style="color:rgb(31, 31, 31);">勾选 Initialize this repository with a README 初始化一个</font><font style="color:rgb(31, 31, 31);"> </font><a href="http://readme.md/"><font style="color:rgb(31, 31, 31);">README.md</font></a><font style="color:rgb(31, 31, 31);"> </font><font style="color:rgb(31, 31, 31);">文件</font></li>
-<li><font style="color:rgb(31, 31, 31);">点击 Creat repository 进行创建</font></li>
-</ol>
-<p><img src="https://s2.loli.net/2024/10/29/ivZneDKt28VOSEH.png" alt="image-20241029210518364"></p>
-<h2 id="WNBEJ">git初始化</h2>
-
-<p>打开git bash</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;你的用户名&quot;</span><br><span class="line">git config --global user.email &quot;你的邮箱&quot;</span><br></pre></td></tr></table></figure>
-
-<p><font style="color:rgb(31, 31, 31);">通过</font>git config -l‘检查是否配置成功。</font></p>
-<h2 id="zMo6F"><font style="color:rgb(31, 31, 31);">连接github</font></h2>
-
-<ol>
-<li>生成ssh公钥</li>
-</ol>
-<p>在git中执行<code>ssh-keygen -t rsa -C &quot;你的邮箱&quot;</code></p>
-<p><font style="color:rgb(31, 31, 31);">之后打开C盘下用户文件夹下的.ssh的文件夹，会看到 id_rsa.pub</font></p>
-<p><img src="https://s2.loli.net/2024/10/29/6C1uxO4HfUVZsaE.png"></p>
-<ol start="2">
-<li>打开<font style="color:rgb(31, 31, 31);"> id_rsa.pub，复制其中的内容</font></li>
-<li><font style="color:rgb(31, 31, 31);">将 SSH KEY 配置到 GitHub</font></li>
-</ol>
-<p> 进入github，点击右上角头像 选择settings，进入设置页后选择 SSH and GPG keys</p>
-<p><img src="https://s2.loli.net/2024/10/29/4YKDhJboGNWptRU.png" alt="image-20241029210556718"></p>
-<p><img src="https://s2.loli.net/2024/10/29/CIzHXWBY7upDsjS.png"></p>
-<p>title可以随便填，将密钥填入<font style="color:#df2a3f;">key</font>中，点击add ssh key即可</p>
-<p><img src="https://s2.loli.net/2024/10/29/1NynTP4JIs3gX8V.png" alt="image-20241029210637377"></p>
-<p>4.测试</p>
-<p>在git中输入<code>ssh -T git@github.com</code>，若有账户信息返回则连接完成</p>
-<h2 id="xIcfi">初始化Hexo项目</h2>
-
-<ol>
-<li>选择一个文件夹，右键打开git bash 输入hexo init</li>
-</ol>
-<p><img src="https://s2.loli.net/2024/10/29/PT6ivwytUDLNpal.png" alt="image-20241029210647230"></p>
-<ol start="2">
-<li>再输入hexo s 则运行可以在本地浏览器输入localhost:4000打开</li>
-</ol>
-<p><img src="https://s2.loli.net/2024/10/29/czUji1GedVhZYQo.png" alt="image-20241029210656410"></p>
-<h2 id="HPalj">将静态博客挂载到 GitHub Pages</h2>
-
-<ol>
-<li>安装<font style="color:rgb(31, 31, 31);">hexo-deployer-git</font></li>
-</ol>
-<p><code>npm install hexo-deployer-git --save</code></p>
-<ol start="2">
-<li><font style="color:rgb(31, 31, 31);">修改 _config.yml 文件，将deploy后的内容修改为如下图所示（注意缩进）</font></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line"> type: git</span><br><span class="line"> repository: #github项目地址</span><br><span class="line"> branch: main</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s2.loli.net/2024/10/29/I91EWBPrHG4JpMA.png" alt="image-20241029210734351"></p>
-<p><img src="https://s2.loli.net/2024/10/29/ziVLK1BZg3Ux58t.png" alt="image-20241029210745046"></p>
-<p>3.<font style="color:rgb(31, 31, 31);">修改好配置后，运行如下命令，将代码部署到 GitHub。</font></p>
-<p><font style="color:rgb(31, 31, 31);">如果出现Deploy done，则说明部署成功了。</font></p>
-<p><font style="color:rgb(31, 31, 31);">稍等两分钟，打开浏览器访问：</font><a href="https://fomalhaut-blog.github.io/">https:&#x2F;&#x2F;</a>仓库名<font style="color:rgb(31, 31, 31);"> ，这时候我们就可以看到博客内容了。</font></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Welcome to FLYFISH567&#39;s World</title>
-    <url>/FLYFISH567/posts/8f373a49/</url>
-    <content><![CDATA[<p><strong>Welcome to My World</strong></p>
-<p><del>你好，感谢来自你的点击。</del></p>
-<p>你好，非常感谢你点击进入我的博客！这是我在网络世界中的一个小小角落，希望能成为我们交流的起点。</p>
-<p>自我介绍：</p>
-<p><del>不知道怎么写，以后再说吧</del></p>
-<p>联系方式：</p>
-<p>如果你想与我交流，或者有任何建议、意见，欢迎通过邮件：<a href="mailto:&#50;&#51;&#48;&#x33;&#52;&#x30;&#x32;&#54;&#x39;&#x34;&#x40;&#113;&#113;&#46;&#99;&#111;&#109;">&#50;&#51;&#48;&#x33;&#52;&#x30;&#x32;&#54;&#x39;&#x34;&#x40;&#113;&#113;&#46;&#99;&#111;&#109;</a>联系我。</p>
-<p>期待与你共同探讨，共同进步！</p>
 ]]></content>
   </entry>
   <entry>
