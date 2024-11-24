@@ -6,7 +6,7 @@
   <link href="https://flyfish567.github.io/atom.xml" rel="self"/>
   
   <link href="https://flyfish567.github.io/"/>
-  <updated>2024-11-24T10:25:38.244Z</updated>
+  <updated>2024-11-24T19:10:04.119Z</updated>
   <id>https://flyfish567.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>更新日志</title>
+    <link href="https://flyfish567.github.io/posts/5a717bf0/"/>
+    <id>https://flyfish567.github.io/posts/5a717bf0/</id>
+    <published>2024-11-24T19:07:47.993Z</published>
+    <updated>2024-11-24T19:10:04.119Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>2024.10.31</strong></p><p>8:30</p><p>更新：修复了部分html显示错误问题</p><p><strong>2024.10.30</strong> </p><p>19：00</p><p>更新：将页面语言更换为中文</p><p><strong>2024 11月上旬</strong></p><p>更新：增加了页面音乐播放功能</p><p><strong>2024.11.24</strong></p><p>18:30 </p><p>更新：  sql注入学习（文章），sqli-labs题解wp（文章）</p><p><strong>2024.11.24</strong></p><p>8:30</p><p>毁，刚刚更新不知道搞了什么，奇奇怪怪的</p><p>所以重新做了一个 哭.jpg</p><p>更新：重新上传了所有内容</p><p>12点</p><p>更新：增加了看板娘和音乐播放功能</p><p><strong>2024.11.25</strong></p><p>凌晨3点</p><p>更新：更换音乐歌单为自己的歌单，更换了看板娘的位置（从左边移到了右边）</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;2024.10.31&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;8:30&lt;/p&gt;
+&lt;p&gt;更新：修复了部分html显示错误问题&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2024.10.30&lt;/strong&gt; &lt;/p&gt;
+&lt;p&gt;19：00&lt;/p&gt;
+&lt;p&gt;更新：将页面语言更换为中文&lt;/</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>sql注入学习</title>
