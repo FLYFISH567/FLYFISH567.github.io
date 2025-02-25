@@ -4,6 +4,15 @@
   <url>
     <loc>https://flyfish567.github.io/posts/5a717bf0.html</loc>
     
+    <lastmod>2025-02-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://flyfish567.github.io/movies/index.html</loc>
+    
     <lastmod>2025-02-24</lastmod>
     
     <changefreq>monthly</changefreq>
@@ -58,36 +67,36 @@
 
   <url>
     <loc>https://flyfish567.github.io/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://flyfish567.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2025-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://flyfish567.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2025-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://flyfish567.github.io/tags/Hello-World/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://flyfish567.github.io/tags/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <lastmod>2025-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://flyfish567.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2025-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://flyfish567.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -95,15 +104,15 @@
 
   
   <url>
-    <loc>https://flyfish567.github.io/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <loc>https://flyfish567.github.io/categories/Hello-World/</loc>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://flyfish567.github.io/categories/Hello-World/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <loc>https://flyfish567.github.io/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
