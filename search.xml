@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>hello</title>
+      <link href="/article/1/"/>
+      <url>/article/1/</url>
+      
+        <content type="html"><![CDATA[<p>this is  a test</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习Study </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/article/hello-world/"/>
       <url>/article/hello-world/</url>
