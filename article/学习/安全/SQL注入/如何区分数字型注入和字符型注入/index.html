@@ -1,0 +1,618 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>如何判断SQL注入闭合方式 | FLYFISHING</title><meta name="keywords" content="SQL注入"><meta name="author" content="FLYFISH"><meta name="copyright" content="FLYFISH"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="如何判断SQL注入闭合方式"><meta name="application-name" content="如何判断SQL注入闭合方式"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="如何判断SQL注入闭合方式"><meta property="og:url" content="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/index.html"><meta property="og:site_name" content="FLYFISHING"><meta property="og:description" content="许久没有看sql又忘记怎么判断数字型注入和字符型注入 了 直接使用?id&amp;#x3D;2-1如果正确显示说明是数字型若不正确则可能是字符型 首先，要区分不同类型注入数据库中语句的不同 1234567数字型注入select * from xxx where id&amp;#x3D; ID ;  &amp;#x2F;&amp;#x2F; ID是输入的内容，可"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164230.bmp?_r_=00105621-4bb4-6512-270b-c80a34d66599"><meta property="article:author" content="FLYFISH"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164230.bmp?_r_=00105621-4bb4-6512-270b-c80a34d66599"><meta name="description" content="许久没有看sql又忘记怎么判断数字型注入和字符型注入 了 直接使用?id&amp;#x3D;2-1如果正确显示说明是数字型若不正确则可能是字符型 首先，要区分不同类型注入数据库中语句的不同 1234567数字型注入select * from xxx where id&amp;#x3D; ID ;  &amp;#x2F;&amp;#x2F; ID是输入的内容，可"><link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=35cCJ0NU5XUV&format=png&color=000000"><link rel="canonical" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"笨蛋宝宝，还不睡，我要生气啦","startTime":0,"endTime":5},{"greeting":"宝宝早上好鸭👋, 今天也要开心哦！","startTime":6,"endTime":9},{"greeting":"宝宝上午好👋,mua～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下宝宝就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝宝","startTime":12,"endTime":14},{"greeting":"宝宝，🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励宝宝一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"宝宝晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":22},{"greeting":"要睡觉咯宝宝，不许玩游戏啦(•́へ•́╬)","startTime":22,"endTime":23},{"greeting":"不许熬夜坏宝宝，快去睡觉啦","startTime":22,"endTime":24}]},
+  twikooEnvId: 'cloud1-9g53mppfbcb1cd04',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 期待环球旅游者","🏠 梦想小屋幻想者","🔨 CTF爱好者"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: FLYFISH","link":"链接: ","source":"来源: FLYFISHING","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'FLYFISHING',
+  title: '如何判断SQL注入闭合方式',
+  postAI: '',
+  pageFillDescription: '如何判断数字型注入和字符型注入, 注入流程详解, )和’）闭合方式判断, 为什么正常-gt异常可以判断类型许久没有看又忘记怎么判断数字型注入和字符型注入了直接使用如果正确显示说明是数字型若不正确则可能是字符型首先要区分不同类型注入数据库中语句的不同数字型注入是输入的内容可以注意到前后没有和这种类型的符号因此可以直接注入字符型注入可以注意到前后有因此在输入时如果用屏蔽了后面的必须要在语句中加入才可以与前面的闭合与上面情况相同前后有所以如果屏蔽了后放的必须要在语句中加入与前面的闭合以下是突然想起来的一个问题注入方式正确性原理闭合原引号注释后续字符语法完整未闭合原引号被包裹在字符串中无法执行闭合原引号联合查询独立于原语句语法合法未闭合原引号被包裹在字符串中无法生效如何判断数字型注入和字符型注入了解完注入前的语句可以发现无论是数字型注入还是字符型注入如果输入数字都能得到执行因此不能直接通过输入数字来确定是数字型注入应该通过排除常规字符型注入再来判断是否为数字型注入注入流程详解输入页面正常可能情况数字型字符型但未破坏语法其他闭合方式如但输入未触发错误结论仅凭页面正常无法直接确定类型需进一步测试排除字符型闭合测试单引号和双引号测试单引号尝试闭合单引号预期结果报错字符型单引号闭合正常可能是数字型或存在转义如被过滤测试双引号尝试闭合双引号预期结果报错字符型双引号闭合正常可能是数字型或存在转义若单双引号均未报错测试布尔逻辑测试数字型逻辑预期页面正常预期页面异常无数据结果分析正常异常说明是数字型无需闭合符号均正常均异常可能是字符型或其他闭合方式测试字符型逻辑假设单引号未报错预期闭合预期闭合结果分析正常异常说明是字符型单引号闭合均正常均异常可能是数字型或存在其他闭合逻辑如转义最终确认若布尔逻辑符合数字型特征正常异常结论数字型注入无需闭合符号若布尔逻辑符合字符型特征正常异常结论字符型注入需闭合符号或若仍无法区分进一步测试混合闭合如括号等或使用时间盲注和闭合方式判断当出现异常正常异常但是异常则说明不是闭合而存在闭合方案测试步骤尝试闭合括号输入观察是否仍然报错如果页面正常则说明需要闭合测试布尔逻辑输入和观察页面是否分别正常和异常以确认闭合符号是否有效联合查询测试使用查看是否有回显进一步确认闭合方式测试现象解析输入结果说明报错单引号未闭合导致语法错误如正常手动闭合单引号添加恒真条件报错手动闭合单引号添加恒假条件报错注释符未生效原因为括号未闭合如语法错误核心矛盾点为什么仍然报错如果原始是输入后语句变为注释了后续的但未闭合前面的括号导致语法错误验证步骤测试闭合输入预期闭合括号并注释后续字符语法正确结果若页面正常确认闭合符号为布尔逻辑验证输入预期正常预期异常预期条件恒真正常条件恒假异常联合查询验证输入预期若页面显示或确认闭合符号为且回显位置可被利用优先使用闭合进行后续注入若失败再尝试闭合为什么正常异常可以判断类型数字型注入的布尔逻辑原理假设原始语句为数字型无引号输入语句变为条件恒真页面正常输入语句变为条件恒假页面异常无数据结论若布尔逻辑测试正常异常生效说明是数字型注入无需闭合符号字符型注入的布尔逻辑原理假设原始语句为字符型单引号闭合直接输入语句变为语法错误引号未闭合页面会报错因为被包裹在引号内成为字符串的一部分正确注入字符型需闭合引号闭合后闭合后此时布尔逻辑生效正常异常才能判断为字符型关键区分点测试条件数字型注入字符型注入未闭合引号字符型注入已闭合引号正常语法错误引号未闭合正常需闭合引号后测试异常语法错误引号未闭合异常需闭合引号后测试是否需要闭合符号否是是',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-03-24 15:07:40',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://flyfish567.github.io/" title="博客"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=35cCJ0NU5XUV&amp;format=png&amp;color=000000" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://t.bilibili.com" title="Bilibili"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=5E24fZ9ORelo&amp;format=png&amp;color=000000" alt="Bilibili"/><span class="back-menu-item-text">Bilibili</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.nssctf.cn/contest" title="NSSCTF"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="NSSCTF"/><span class="back-menu-item-text">NSSCTF</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.deepseek.com/" title="Deepseek"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=YWOidjGxCpFW&amp;format=png&amp;color=000000" alt="Deepseek"/><span class="back-menu-item-text">Deepseek</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">FLYFISHING</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 警示页</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/Warning/index.html"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 警告</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12908278323&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" style="font-size: 1.05rem;">PHP反序列化<sup>2</sup></a><a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 1.05rem;">SQL注入<sup>14</sup></a><a href="/tags/SSRF/" style="font-size: 1.05rem;">SSRF<sup>5</sup></a><a href="/tags/SSTI/" style="font-size: 1.05rem;">SSTI<sup>6</sup></a><a href="/tags/WP/" style="font-size: 1.05rem;">WP<sup>5</sup></a><a href="/tags/XSS/" style="font-size: 1.05rem;">XSS<sup>1</sup></a><a href="/tags/test/" style="font-size: 1.05rem;">test<sup>1</sup></a><a href="/tags/xss/" style="font-size: 1.05rem;">xss<sup>1</sup></a><a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 1.05rem;">信息收集<sup>1</sup></a><a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 1.05rem;">命令执行<sup>9</sup></a><a href="/tags/%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 1.05rem;">奇奇怪怪的问题<sup>1</sup></a><a href="/tags/%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" style="font-size: 1.05rem;">学生认证<sup>1</sup></a><a href="/tags/%E5%B0%8F%E8%AE%B0/" style="font-size: 1.05rem;">小记<sup>1</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 1.05rem;">文件上传<sup>3</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/" style="font-size: 1.05rem;">漏洞挖掘与开发<sup>2</sup></a><a href="/tags/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/" style="font-size: 1.05rem;">目录遍历<sup>1</sup></a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 1.05rem;">脚本<sup>1</sup></a><a href="/tags/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" style="font-size: 1.05rem;">靶场搭建<sup>2</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/04/"><span class="card-archive-list-date">四月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/03/"><span class="card-archive-list-date">三月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">44</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url">学习</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/SQL%E6%B3%A8%E5%85%A5/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>SQL注入</span></a></span></div></div><h1 class="post-title" itemprop="name headline">如何判断SQL注入闭合方式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-03-24T06:19:06.068Z" title="发表于 2026-03-24 14:19:06">2026-03-24</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-03-24T07:07:40.886Z" title="更新于 2026-03-24 15:07:40">2026-03-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="如何判断SQL注入闭合方式"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为海南"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>海南</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164230.bmp?_r_=00105621-4bb4-6512-270b-c80a34d66599"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/"><header><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url">学习</a><a href="/tags/SQL%E6%B3%A8%E5%85%A5/" tabindex="-1" itemprop="url">SQL注入</a><h1 id="CrawlerTitle" itemprop="name headline">如何判断SQL注入闭合方式</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">FLYFISH</span><time itemprop="dateCreated datePublished" datetime="2026-03-24T06:19:06.068Z" title="发表于 2026-03-24 14:19:06">2026-03-24</time><time itemprop="dateCreated datePublished" datetime="2026-03-24T07:07:40.886Z" title="更新于 2026-03-24 15:07:40">2026-03-24</time></header><p><del>许久没有看sql又忘记怎么判断数字型注入和字符型注入 了</del></p>
+<p><strong>直接使用?id&#x3D;2-1<em>如果正确显示说明是数字型若不正确则可能是字符型</em></strong></p>
+<p>首先，要区分<strong>不同类型注入数据库中语句的不同</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">数字型注入</span><br><span class="line">select * from xxx where id= ID ;  // ID是输入的内容，可以注意到ID前后没有 &#x27;&#x27;和&quot;&quot;这种类型的符号，因此可以直接注入</span><br><span class="line">字符型注入</span><br><span class="line">select * from xxx where id= &#x27;ID&#x27; ; </span><br><span class="line">//可以注意到ID前后有&#x27;，因此在输入时如果用-- +屏蔽了后面的&#x27;必须要在语句中加入&#x27;,才可以与前面的&#x27;闭合</span><br><span class="line">select * from xxx where id= &quot;ID&quot;;</span><br><span class="line">//与上面情况相同，ID前后有&quot;&quot;，所以如果屏蔽了后放的&quot;，必须要在语句中加入&quot;,与前面的&quot;闭合</span><br></pre></td></tr></table></figure>
+
+<p>以下是突然想起来的一个问题</p>
+<table>
+<thead>
+<tr>
+<th align="left">注入方式</th>
+<th align="left">正确性</th>
+<th align="left">原理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>1&#39; ORDER BY 3 --</code></td>
+<td align="left">✅</td>
+<td align="left">闭合原引号，注释后续字符，语法完整。</td>
+</tr>
+<tr>
+<td align="left"><code>1 ORDER BY 3&#39; -- +</code></td>
+<td align="left">❌</td>
+<td align="left">未闭合原引号，<code>ORDER BY</code> 被包裹在字符串中，无法执行。</td>
+</tr>
+<tr>
+<td align="left"><code>1&#39; UNION SELECT 1,2,3 --</code></td>
+<td align="left">✅</td>
+<td align="left">闭合原引号，联合查询独立于原语句，语法合法。</td>
+</tr>
+<tr>
+<td align="left"><code>1 UNION SELECT 1,2,3&#39; -- +</code></td>
+<td align="left">❌</td>
+<td align="left">未闭合原引号，<code>UNION</code> 被包裹在字符串中，无法生效。</td>
+</tr>
+</tbody></table>
+<h2 id="如何判断数字型注入和字符型注入"><a href="#如何判断数字型注入和字符型注入" class="headerlink" title="如何判断数字型注入和字符型注入"></a>如何判断数字型注入和字符型注入</h2><p>了解完注入前的语句可以发现，无论是数字型注入还是字符型注入，如果输入ID&#x3D;x（数字），都能得到执行，因此不能直接通过输入数字来确定是数字型注入。</p>
+<p>应该通过排除常规字符型注入再来判断是否为数字型注入</p>
+<h3 id="注入流程详解"><a href="#注入流程详解" class="headerlink" title="注入流程详解"></a>注入流程详解</h3><p><strong>1. 输入 <code>?id=1</code> 页面正常</strong></p>
+<ul>
+<li>可能情况<ul>
+<li>数字型（<code>WHERE id=1</code>）</li>
+<li>字符型（<code>WHERE id=&#39;1&#39;</code>，但未破坏语法）</li>
+<li>其他闭合方式（如 <code>WHERE id=(&quot;1&quot;)</code>，但输入未触发错误）</li>
+</ul>
+</li>
+</ul>
+<p><strong>结论</strong>：仅凭 <code>?id=1</code> 页面正常无法直接确定类型，需进一步测试。</p>
+<p><strong>2. 排除字符型闭合（测试单引号 <code>&#39;</code> 和双引号 <code>&quot;</code>）</strong></p>
+<ul>
+<li><p><strong>测试单引号</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;   // 尝试闭合单引号</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>预期结果<ul>
+<li><strong>报错</strong> → 字符型（单引号闭合）。</li>
+<li><strong>正常</strong> → 可能是数字型，或存在转义（如 <code>\&#39;</code> 被过滤）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>测试双引号</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span>&quot;   // 尝试闭合双引号</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>预期结果<ul>
+<li><strong>报错</strong> → 字符型（双引号闭合）。</li>
+<li><strong>正常</strong> → 可能是数字型，或存在转义。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 若单&#x2F;双引号均未报错，测试布尔逻辑</strong></p>
+<ul>
+<li><p><strong>测试数字型逻辑</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span>    <span class="operator">/</span><span class="operator">/</span> 预期页面正常</span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> <span class="number">1</span><span class="operator">=</span><span class="number">2</span>    <span class="operator">/</span><span class="operator">/</span> 预期页面异常（无数据）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果分析<ul>
+<li><strong>正常 → 异常</strong>：说明是数字型（无需闭合符号）。</li>
+<li><strong>均正常&#x2F;均异常</strong>：可能是字符型或其他闭合方式。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>测试字符型逻辑</strong>（假设单引号未报错）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; AND &#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span>    <span class="operator">/</span><span class="operator">/</span> 预期闭合：<span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; AND &#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">2</span>    <span class="operator">/</span><span class="operator">/</span> 预期闭合：<span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;2&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果分析<ul>
+<li><strong>正常 → 异常</strong>：说明是字符型（单引号闭合）。</li>
+<li><strong>均正常&#x2F;均异常</strong>：可能是数字型或存在其他闭合逻辑（如转义）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. 最终确认</strong></p>
+<ul>
+<li><strong>若布尔逻辑符合数字型特征</strong>（<code>AND 1=1</code> 正常，<code>AND 1=2</code> 异常）：<ul>
+<li><strong>结论</strong>：数字型注入（无需闭合符号）。</li>
+</ul>
+</li>
+<li><strong>若布尔逻辑符合字符型特征</strong>（<code>AND &#39;1&#39;=&#39;1</code> 正常，<code>AND &#39;1&#39;=&#39;2</code> 异常）：<ul>
+<li><strong>结论</strong>：字符型注入（需闭合符号 <code>&#39;</code> 或 <code>&quot;</code>）。</li>
+</ul>
+</li>
+<li><strong>若仍无法区分</strong>：<ul>
+<li>进一步测试混合闭合（如括号 <code>)</code>、<code>&#39;))</code> 等）或使用时间盲注。</li>
+</ul>
+</li>
+</ul>
+<h3 id="“-和’）闭合方式判断"><a href="#“-和’）闭合方式判断" class="headerlink" title="“)和’）闭合方式判断"></a>“)和’）闭合方式判断</h3><p>当出现<code>id=1&#39; 异常 </code> <code>id=1&#39; and &#39;1&#39;=&#39;1正常  id=1&#39; and &#39;1&#39;=&#39;2异常</code> </p>
+<p><strong>但是</strong><code>id=1&#39; -- + 异常</code>则说明不是<code>&#39;</code>闭合而存在<code>&#39;)</code>闭合方案</p>
+<p><strong>测试步骤：</strong></p>
+<ul>
+<li><strong>尝试闭合括号</strong>：输入<code>id=1&#39;) -- +</code>，观察是否仍然报错。如果页面正常，则说明需要闭合<code>&#39;)</code>。</li>
+<li><strong>测试布尔逻辑</strong>：输入<code>id=1&#39;) and 1=1 -- +</code>和<code>id=1&#39;) and 1=2 -- +</code>，观察页面是否分别正常和异常，以确认闭合符号是否有效。</li>
+<li><strong>联合查询测试</strong>：使用<code>id=1&#39;) union select 1,2,3 -- +</code>，查看是否有回显，进一步确认闭合方式。</li>
+</ul>
+<p><strong>1. 测试现象解析</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">输入</th>
+<th align="left">结果</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>id=1&#39;</code></td>
+<td align="left">报错</td>
+<td align="left">单引号未闭合，导致语法错误（如 <code>WHERE id=(&#39;1&#39;&#39;)</code>）。</td>
+</tr>
+<tr>
+<td align="left"><code>id=1&#39; AND &#39;1&#39;=&#39;1</code></td>
+<td align="left">正常</td>
+<td align="left">手动闭合单引号，添加恒真条件（<code>WHERE id=(&#39;1&#39; AND &#39;1&#39;=&#39;1&#39;)</code>）。</td>
+</tr>
+<tr>
+<td align="left"><code>id=1&#39; AND &#39;1&#39;=&#39;2</code></td>
+<td align="left">报错</td>
+<td align="left">手动闭合单引号，添加恒假条件（<code>WHERE id=(&#39;1&#39; AND &#39;1&#39;=&#39;2&#39;)</code>）。</td>
+</tr>
+<tr>
+<td align="left"><code>id=1&#39; -- +</code></td>
+<td align="left">报错</td>
+<td align="left">注释符未生效，原因为括号未闭合（如 <code>WHERE id=(&#39;1&#39; -- &#39;)</code> 语法错误）。</td>
+</tr>
+</tbody></table>
+<p><strong>2. 核心矛盾点</strong></p>
+<ul>
+<li><p>为什么 <code>id=1&#39; -- +</code> 仍然报错？</p>
+<p>如果原始 SQL 是<code>where id=(&#39;$id&#39;)</code>,输入<code>1&#39; -- +</code>后，语句变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">where</span> id<span class="operator">=</span>(<span class="number">1</span><span class="string">&#x27; -- &#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-- +</code> 注释了后续的 <code>&#39;</code>，但未闭合前面的括号 <code>(</code>，导致语法错误。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 验证步骤</strong></p>
+<p><strong>(1) 测试 <code>&#39;)</code> 闭合</strong></p>
+<p>输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27;) --%20</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>预期 SQL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> id<span class="operator">=</span>(<span class="string">&#x27;1&#x27;</span>) <span class="comment">-- &#x27;)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>闭合括号 <code>&#39;)</code> 并注释后续字符，语法正确。</li>
+</ul>
+</li>
+<li><p>结果</p>
+<ul>
+<li>若页面正常 → 确认闭合符号为 <code>&#39;)</code>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>(2) 布尔逻辑验证</strong></p>
+<p>输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27;) AND 1=1 --%20   // 预期正常</span><br><span class="line">id=1&#x27;) AND 1=2 --%20   // 预期异常</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>预期 SQL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> id<span class="operator">=</span>(<span class="string">&#x27;1&#x27;</span>) <span class="keyword">AND</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> <span class="comment">-- &#x27;)   // 条件恒真 → 正常</span></span><br><span class="line"><span class="keyword">WHERE</span> id<span class="operator">=</span>(<span class="string">&#x27;1&#x27;</span>) <span class="keyword">AND</span> <span class="number">1</span><span class="operator">=</span><span class="number">2</span> <span class="comment">-- &#x27;)   // 条件恒假 → 异常</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>(3) 联合查询验证</strong></p>
+<p>输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27;) UNION SELECT 1,2,3 --%20</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>预期 SQL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> id<span class="operator">=</span>(<span class="string">&#x27;1&#x27;</span>) <span class="keyword">UNION</span> <span class="keyword">SELECT</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> <span class="comment">-- &#x27;)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若页面显示 <code>2</code> 或 <code>3</code> → 确认闭合符号为 <code>&#39;)</code>，且回显位置可被利用。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">优先使用 &#x27;) 闭合进行后续注入：</span><br><span class="line">?id=2&#x27;) UNION SELECT 1,@@version,3 --%20</span><br><span class="line">若失败，再尝试 &quot;) 闭合：</span><br><span class="line">?id=2&quot;) UNION SELECT 1,@@version,3 --%20</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="为什么正常-异常可以判断类型"><a href="#为什么正常-异常可以判断类型" class="headerlink" title="为什么正常-&gt;异常可以判断类型"></a>为什么正常-&gt;异常可以判断类型</h3><p><strong>1. 数字型注入的布尔逻辑原理</strong></p>
+<p>假设原始 SQL 语句为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>   <span class="comment">-- 数字型（无引号）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>输入 <code>?id=1 AND 1=1</code></p>
+<p>语句变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span>   <span class="comment">-- 条件恒真 → 页面正常</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输入 <code>?id=1 AND 1=2</code></p>
+<p>语句变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> <span class="number">1</span><span class="operator">=</span><span class="number">2</span>   <span class="comment">-- 条件恒假 → 页面异常（无数据）</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>结论</strong>：<br>若布尔逻辑测试（<code>AND 1=1</code>正常，<code>AND 1=2</code>异常）生效，说明是数字型注入（无需闭合符号）。</p>
+<p><strong>2. 字符型注入的布尔逻辑原理</strong></p>
+<p>假设原始 SQL 语句为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span>   <span class="comment">-- 字符型（单引号闭合）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>直接输入 <code>?id=1 AND 1=1</code></strong>：<br>语句变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1 AND 1=1&#x27;</span>   <span class="comment">-- 语法错误（引号未闭合）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>页面会报错，因为 <code>1 AND 1=1</code> 被包裹在引号内，成为字符串的一部分。</li>
+</ul>
+</li>
+<li><p><strong>正确注入字符型</strong>需闭合引号：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; AND &#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span>    <span class="operator">/</span><span class="operator">/</span> 闭合后：<span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; AND &#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">2</span>    <span class="operator">/</span><span class="operator">/</span> 闭合后：<span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;2&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此时布尔逻辑生效（正常 → 异常），才能判断为字符型。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 关键区分点</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">测试条件</th>
+<th align="left">数字型注入</th>
+<th align="left">字符型注入（未闭合引号）</th>
+<th align="left">字符型注入（已闭合引号）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>?id=1 AND 1=1</code></td>
+<td align="left">✅ 正常</td>
+<td align="left">❌ 语法错误（引号未闭合）</td>
+<td align="left">✅ 正常（需闭合引号后测试）</td>
+</tr>
+<tr>
+<td align="left"><code>?id=1 AND 1=2</code></td>
+<td align="left">❌ 异常</td>
+<td align="left">❌ 语法错误（引号未闭合）</td>
+<td align="left">❌ 异常（需闭合引号后测试）</td>
+</tr>
+<tr>
+<td align="left"><strong>是否需要闭合符号</strong></td>
+<td align="left">否</td>
+<td align="left">是</td>
+<td align="left">是</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">FLYFISH</div><div class="post-copyright__author_desc">love and be loved</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/')">如何判断SQL注入闭合方式</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=如何判断SQL注入闭合方式&amp;url=https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/&amp;pic=https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164230.bmp?_r_=00105621-4bb4-6512-270b-c80a34d66599" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://flyfish567.github.io" target="_blank">FLYFISHING</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/SQL%E6%B3%A8%E5%85%A5/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>SQL注入<span class="tagsPageCount">14</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp?_r_=2e1606b1-e373-5150-4b10-d64411ae06b9" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp?_r_=e124ac88-80e8-2537-e5f2-3e84aea25543" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SQL联合查询</div></div></a></div><div class="next-post pull-right"><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SSTI%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5/flask%E5%8F%98%E9%87%8F%E5%8F%8A%E6%96%B9%E6%B3%95/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=cb00a941-fbaa-c2f7-e355-aee5fd817ee9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">flask基本架构、变量及方法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E4%B9%8BPOST%E6%B3%A8%E5%85%A5/" title="SQL注入之POST提交注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp?_r_=512d2027-7a72-72a2-5f51-8cf41f07f631" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">SQL注入之POST提交注入</div></div></a></div><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" title="SQL报错注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164205.bmp?_r_=74c80185-2ab0-d464-21f2-0376d4e037f2" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">SQL报错注入</div></div></a></div><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" title="SQL注入之一句话木马"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=0a223bd4-b39a-36ef-a46d-424648237ef6" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">SQL注入之一句话木马</div></div></a></div><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E5%88%B7%E9%A2%98--buuctf/" title="SQL注入刷题--buuctf"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164405.bmp?_r_=1a472713-d9cc-f9bb-abee-70097e304b1c" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">SQL注入刷题--buuctf</div></div></a></div><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98/" title="SQL注入其他问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164205.bmp?_r_=abbb723e-5f8c-15e9-c2de-9f9b8d46a7f3" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">SQL注入其他问题</div></div></a></div><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86/" title="SQL注入原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164340.bmp?_r_=7e3e6604-ed21-e9e9-834a-ea64c3bd25e8" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">SQL注入原理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description">欢迎喵！</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">FLYFISH</h1><div class="author-info__desc">love and be loved</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/FLYFISH567" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/351361938" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">如何判断数字型注入和字符型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.1.</span> <span class="toc-text">注入流程详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9C-%E5%92%8C%E2%80%99%EF%BC%89%E9%97%AD%E5%90%88%E6%96%B9%E5%BC%8F%E5%88%A4%E6%96%AD"><span class="toc-number">1.2.</span> <span class="toc-text">“)和’）闭合方式判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AD%A3%E5%B8%B8-%E5%BC%82%E5%B8%B8%E5%8F%AF%E4%BB%A5%E5%88%A4%E6%96%AD%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">为什么正常-&gt;异常可以判断类型</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" title="如何快速完成Github学生认证"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp?_r_=2e1606b1-e373-5150-4b10-d64411ae06b9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何快速完成Github学生认证"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" title="如何快速完成Github学生认证">如何快速完成Github学生认证</a><time datetime="2026-04-06T12:43:57.741Z" title="发表于 2026-04-06 20:43:57">2026-04-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/" title="3.24 周二晚"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=58ab47ad-d4d1-7e78-655b-b22a3f658e66" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3.24 周二晚"/></a><div class="content"><a class="title" href="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/" title="3.24 周二晚">3.24 周二晚</a><time datetime="2026-03-24T14:29:47.583Z" title="发表于 2026-03-24 22:29:47">2026-03-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" title="XSS-labs靶场搭建"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=7337fe76-5419-d38c-c344-489e99c2d26d" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="XSS-labs靶场搭建"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" title="XSS-labs靶场搭建">XSS-labs靶场搭建</a><time datetime="2026-03-24T06:19:13.794Z" title="发表于 2026-03-24 14:19:13">2026-03-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" title="魔术方法构造和析构"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164409.bmp?_r_=f925ea5d-3a55-731b-7ccb-c8c880710781" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="魔术方法构造和析构"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" title="魔术方法构造和析构">魔术方法构造和析构</a><time datetime="2026-03-24T06:19:13.783Z" title="发表于 2026-03-24 14:19:13">2026-03-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="PHP反序列化基础知识"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=55364abd-3fba-d459-8a8c-bab7cbf782a8" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP反序列化基础知识"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="PHP反序列化基础知识">PHP反序列化基础知识</a><time datetime="2026-03-24T06:19:13.778Z" title="发表于 2026-03-24 14:19:13">2026-03-24</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2025 - 2026 By <a class="footer-bar-link" href="/" title="FLYFISH" target="_blank">FLYFISH</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">47</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">5</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://flyfish567.github.io/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=35cCJ0NU5XUV&amp;format=png&amp;color=000000" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://t.bilibili.com" title="Bilibili"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=5E24fZ9ORelo&amp;format=png&amp;color=000000" alt="Bilibili"/><span class="back-menu-item-text">Bilibili</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.nssctf.cn/contest" title="NSSCTF"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="NSSCTF"/><span class="back-menu-item-text">NSSCTF</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.deepseek.com/" title="Deepseek"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=YWOidjGxCpFW&amp;format=png&amp;color=000000" alt="Deepseek"/><span class="back-menu-item-text">Deepseek</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 警示页</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/Warning/index.html"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 警告</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12908278323&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" style="font-size: 0.88rem;">PHP反序列化<sup>2</sup></a><a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 0.88rem;">SQL注入<sup>14</sup></a><a href="/tags/SSRF/" style="font-size: 0.88rem;">SSRF<sup>5</sup></a><a href="/tags/SSTI/" style="font-size: 0.88rem;">SSTI<sup>6</sup></a><a href="/tags/WP/" style="font-size: 0.88rem;">WP<sup>5</sup></a><a href="/tags/XSS/" style="font-size: 0.88rem;">XSS<sup>1</sup></a><a href="/tags/test/" style="font-size: 0.88rem;">test<sup>1</sup></a><a href="/tags/xss/" style="font-size: 0.88rem;">xss<sup>1</sup></a><a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 0.88rem;">信息收集<sup>1</sup></a><a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 0.88rem;">命令执行<sup>9</sup></a><a href="/tags/%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 0.88rem;">奇奇怪怪的问题<sup>1</sup></a><a href="/tags/%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" style="font-size: 0.88rem;">学生认证<sup>1</sup></a><a href="/tags/%E5%B0%8F%E8%AE%B0/" style="font-size: 0.88rem;">小记<sup>1</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 0.88rem;">文件上传<sup>3</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/" style="font-size: 0.88rem;">漏洞挖掘与开发<sup>2</sup></a><a href="/tags/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/" style="font-size: 0.88rem;">目录遍历<sup>1</sup></a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 0.88rem;">脚本<sup>1</sup></a><a href="/tags/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" style="font-size: 0.88rem;">靶场搭建<sup>2</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="12908278323" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://music.163.com/#/my/m/music/playlist?id=12908278323&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("23/05/2025 20:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2025 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 FLYFISH 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "flyfish567@qq.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script id="click-show-text" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU,可爱喵,害羞喵,开心喵,生气喵,抑郁喵,讨厌喵,愤怒喵,好看喵,温柔喵,喜欢喵" data-fontsize="15px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
