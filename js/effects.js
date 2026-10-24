@@ -10,7 +10,7 @@
     if(save)try{localStorage.setItem(key,tier);}catch{}
     for(const button of document.querySelectorAll('[data-effects-tier]'))button.setAttribute('aria-pressed',String(button.dataset.effectsTier===tier));
     const note=document.querySelector('[data-effects-note]');
-    if(note)note.textContent=reduced.matches?'系统已减少动态效果，装饰动画暂停；档位偏好会保留。':tier==='light'?'最多 2 条小鱼，关闭水波、漂浮和视差。':tier==='standard'?'最多 6 条小鱼，保留点击水波和轻微反馈。':'最多 12 条小鱼，开启水波尾迹与移动光点。';
+    if(note)note.textContent=reduced.matches?'系统已减少动态效果，装饰动画暂停；档位偏好会保留。':tier==='light'?'关闭水波、漂浮和视差；小鱼慢游，自动模式最多 2 条。手动数量独立设置。':tier==='standard'?'保留点击水波和轻微反馈；自动模式最多 6 条小鱼。手动数量独立设置。':'开启水波尾迹与移动光点，小鱼稍快；自动模式最多 9 条。手动数量独立设置。';
     const label=document.querySelector('[data-effects-label]');if(label)label.textContent=labels[tier];
     document.dispatchEvent(new CustomEvent('flyfish:effectschange',{detail:{tier,reduced:reduced.matches}}));
   }

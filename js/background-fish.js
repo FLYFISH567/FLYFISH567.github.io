@@ -6,7 +6,7 @@
   if(!template)return;
   ocean.dataset.ready='true';
   const root=document.documentElement,control=document.querySelector('[data-fish-control]');
-  const settings=document.querySelector('[data-fish-settings]'),summonButton=document.querySelector('[data-fish-summon]');
+  const settings=document.querySelector('[data-fish-settings]'),effectsSettings=document.querySelector('[data-effects-settings]'),summonButton=document.querySelector('[data-fish-summon]');
   const countLabel=document.querySelector('[data-fish-count]'),note=document.querySelector('[data-fish-note]');
   const summonStatus=document.querySelector('[data-fish-summon-status]');
   const choices=Array.from(document.querySelectorAll('[data-fish-mode]'));
@@ -16,13 +16,16 @@
   const key='flyfish-fish-mode',maxFish=12;
   const validMode=value=>value==='auto'||value==='off'||(typeof value==='string'&&/^[1-9]\d*$/.test(value)&&Number(value)<=maxFish);
   let mode='6';try{const saved=localStorage.getItem(key);if(validMode(saved))mode=saved;}catch{}
-  const tierLimit=()=>root.dataset.effects==='light'?2:root.dataset.effects==='lively'?12:6;
-  const tierName=()=>root.dataset.effects==='light'?'轻量':root.dataset.effects==='lively'?'活泼':'标准';
+  // 手动数量优先；动效档位只控制自动模式的密度，以及下面的游速。
+  const automaticCount=()=>{
+    const counts=width>=1400&&height>=680?[2,6,9]:width>=960&&height>=540?[2,4,6]:[1,1,2];
+    return counts[root.dataset.effects==='light'?0:root.dataset.effects==='lively'?2:1];
+  };
   if(customInput)customInput.max=String(maxFish);
   const avoid='.site-header,.post-card,.side-panel,.reading-panel,.illustrated-heading,.life-nav,.album-card,.photo-grid,.show-card,.now-playing,.player-shell,.about-profile,.about-section,.about-facts,.about-more,.about-intro,.about-favourites,.now-card,.about-footprints,.intro-copy>*,.sky-cover,.section-heading,.pagination,.hub-controls,.topic-filters,.album-filters,.watch-tabs,.filter-status,.watch-count,.site-footer,.fish-settings[open],.fish-settings[open] .fish-settings-panel,.effects-settings[open] .effects-panel,.music-dock,.music-controls,.navigation-notice';
   const pool=[],size=44,fishHeight=36,margin=8;
   const bearing=Math.random()*Math.PI*2,goldenAngle=Math.PI*(3-Math.sqrt(5));
-  let width=innerWidth,height=innerHeight,top=86,boxes=[],spaces=[],capacity=0,autoCap=1;
+  let width=innerWidth,height=innerHeight,top=86,boxes=[],spaces=[],capacity=0,autoCapacity=0,autoCap=1;
   let dirty=true,frame=0,last=0,pageHidden=false,suspended=false,scrollUntil=0,summonUntil=0,scrollTimer=0;
   let clock=performance.now(),dialogOpen=false,summonSerial=0,controlsAt=Infinity,feedbackUntil=0,feedback='';
   const clamp=(value,min,max)=>Math.max(min,Math.min(value,Math.max(min,max)));
@@ -96,11 +99,15 @@
       }
       for(const y of [...ys].sort((a,b)=>a-b))for(const x of [...xs].sort((a,b)=>a-b)){const point={x,y};if(!covered(point))spaces.push(point);}
     }
-    const roomy=[];
-    // 用静态留白采样估计视觉密度，不参与鱼之间的碰撞或移动判断。
-    for(const point of spaces){if(roomy.every(other=>distance(point,other)>=88))roomy.push(point);if(roomy.length===maxFish)break;}
-    autoCap=width>=1400&&height>=680?4:width>=960&&height>=540?3:1;
-    capacity=roomy.length;
+    const roomy=[],fitted=[];
+    // 自动模式保留疏朗间距；手动数量按实际 44×36 尺寸加留隙计算容量。
+    // 仅对静态留白采样，鱼游动时不执行任何鱼间碰撞检测。
+    for(const point of spaces){
+      if(roomy.length<maxFish&&roomy.every(other=>distance(point,other)>=88))roomy.push(point);
+      if(fitted.length<maxFish&&fitted.every(other=>Math.abs(point.x-other.x)>=size+8||Math.abs(point.y-other.y)>=fishHeight+8))fitted.push(point);
+      if(roomy.length===maxFish&&fitted.length===maxFish)break;
+    }
+    autoCap=automaticCount();autoCapacity=roomy.length;capacity=fitted.length;
     for(const fish of pool){
       Object.assign(fish,bounds(fish));
       // 布局重测不打断有效路线，避免滚动、字体加载时整群同时重新出发。
@@ -178,11 +185,11 @@
   function updateControls(){
     const count=active().length;
     if(control)control.hidden=false;
-    const label=reduced.matches?'已减少动态':mode==='off'?'已关闭':mode==='auto'?`自动 · ${count?count+' 条':'休息中'}`:count===Number(mode)?`${mode} 条`:`${mode} 条 · ${count?'在游 '+count:'暂歇'}`;
+    const label=reduced.matches?'已减少动态':mode==='off'?'已关闭':mode==='auto'?`自动 · ${count?count+' 条':'休息中'}`:count===Number(mode)?`${mode} 条`:`${mode} 条 · ${count?'留白限 '+count:'暂歇'}`;
     if(countLabel&&countLabel.textContent!==label)countLabel.textContent=label;
+    if(settings)settings.querySelector('summary').title=reduced.matches?'系统已减少动态，小鱼暂停':mode==='off'?'已关闭背景小鱼':mode==='auto'?`自动模式，当前在游 ${count} 条`:count<Number(mode)?`已设 ${mode} 条，当前留白可显示 ${count} 条；空间恢复后自动补齐`:`当前在游 ${count} 条，手动数量不受动效档位限制`;
     settings?.querySelector('summary')?.setAttribute('aria-label',`设置背景小鱼数量，当前${label}`);
-    if(note)note.textContent=reduced.matches?'已跟随系统设置暂停动画。':mode==='off'?'已关闭背景小鱼。':mode==='auto'?(capacity===0?'这里留白较少，小鱼暂时休息。':`自动模式随屏幕和留白调整，当前显示 ${count} 条。`):Number(mode)>count?`已设为 ${mode} 条，当前留白可容纳 ${count} 条；其余暂歇，滚动到宽敞处会回来。`:`已设为 ${mode} 条，按住小鱼可以拖动。`;
-    if(note&&!reduced.matches&&mode!=='auto'&&mode!=='off'&&Number(mode)>tierLimit())note.textContent=`已选 ${mode} 条，${tierName()}档最多显示 ${tierLimit()} 条，当前在游 ${count} 条。数量偏好保留，切换动效档位可恢复。`;
+    if(note)note.textContent=reduced.matches?'已跟随系统设置暂停动画。':mode==='off'?'已关闭背景小鱼。':mode==='auto'?(capacity===0?'这里留白较少，小鱼暂时休息。':`自动模式随屏幕和留白调整，当前显示 ${count} 条。`):Number(mode)>count?`已设为 ${mode} 条，当前留白可容纳 ${count} 条；其余暂歇，滚动到宽敞处会回来。`:`已设为 ${mode} 条，手动数量优先于动效档位；按住小鱼可以拖动。`;
     choices.forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.fishMode===mode));button.disabled=reduced.matches&&button.dataset.fishMode!=='off';});
     if(customInput){customInput.disabled=reduced.matches;if(document.activeElement!==customInput)customInput.value=/^\d+$/.test(mode)?mode:'';}
     if(customForm)customForm.querySelector('button').disabled=reduced.matches;
@@ -194,7 +201,7 @@
     controlsAt=Math.min(...[summonUntil,feedbackUntil,...active().map(fish=>fish.calledUntil)].filter(time=>time>clock),Infinity);
   }
   function reconcile(){
-    const wanted=reduced.matches||mode==='off'?0:Math.min(mode==='auto'?autoCap:Number(mode),capacity,tierLimit());
+    const wanted=reduced.matches||mode==='off'?0:Math.min(mode==='auto'?autoCap:Number(mode),mode==='auto'?autoCapacity:capacity,maxFish);
     for(let index=0;index<Math.max(wanted,pool.length);index++){
       const fish=pool[index]||createFish(index);
       if(index<wanted&&!fish.active){
@@ -203,7 +210,7 @@
         fish.trail=[];fish.restUntil=clock+150+index*65+Math.random()*650;
         fish.el.classList.remove('is-retiring');fish.el.classList.add('is-arriving');render(fish);fish.el.hidden=false;
       }else if(index>=wanted&&fish.active){
-        fish.active=false;fish.calledUntil=0;release(fish);fish.el.blur();fish.el.tabIndex=-1;fish.el.setAttribute('aria-hidden','true');fish.el.classList.add('is-retiring');
+        fish.active=false;fish.calledUntil=0;release(fish);fish.el.blur();fish.hovered=false;fish.focused=false;fish.paused=false;fish.el.tabIndex=-1;fish.el.setAttribute('aria-hidden','true');fish.el.classList.add('is-retiring');
         clearTimeout(fish.retireTimer);fish.retireTimer=setTimeout(()=>{fish.retireTimer=0;if(!fish.active)fish.el.hidden=true;},260);
       }
     }
@@ -249,7 +256,7 @@
     const guests=active().filter(fish=>fish.calledUntil>clock).length;
     if(clock>=feedbackUntil&&summonStatus.textContent!==(guests?`${guests}/${active().length}`:''))updateControls();
   }
-  function refresh(){clock=performance.now();measure();reconcile();sync();}
+  function refresh(){if(!ocean.isConnected)return;clock=performance.now();measure();reconcile();sync();}
   function changeMode(next){
     if(!validMode(next))return;mode=next;try{localStorage.setItem(key,mode);}catch{}
     if(customInput){customInput.value=/^\d+$/.test(mode)?mode:'';customInput.setCustomValidity('');}
@@ -279,7 +286,8 @@
     fish.trail=[];fish.el.classList.remove('is-arriving');
     render(fish);updateControls();sync();
   });
-  settings?.addEventListener('toggle',()=>{dirty=true;});
+  // 面板是绝对定位，不一定触发布局观察器；开合都重新核对留白，零条时也能恢复。
+  [settings,effectsSettings].forEach(panel=>panel?.addEventListener('toggle',refresh));
   document.addEventListener('pointerdown',event=>{if(settings?.open&&!settings.contains(event.target))settings.open=false;},{passive:true});
   settings?.addEventListener('keydown',event=>{if(event.key==='Escape'){settings.open=false;settings.querySelector('summary').focus();}});
   window.addEventListener('scroll',()=>{dirty=true;scrollUntil=performance.now()+140;ocean.classList.add('is-scrolling');for(const fish of pool)fish.hovered=false;clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{scrollUntil=0;ocean.classList.remove('is-scrolling');refresh();},160);},{passive:true});
@@ -289,7 +297,10 @@
   window.addEventListener('pageshow',()=>{pageHidden=false;scrollUntil=0;refresh();});
   document.addEventListener('visibilitychange',()=>{for(const fish of pool)fish.hovered=false;sync();});
   window.addEventListener('storage',event=>{if(event.key===key){mode=validMode(event.newValue)?event.newValue:'6';refresh();}});
-  document.addEventListener('flyfish:effectschange',refresh);document.addEventListener('flyfish:page',refresh);
+  document.addEventListener('flyfish:effectschange',refresh);document.addEventListener('flyfish:page',()=>{
+    for(const fish of pool){release(fish);fish.el.blur();fish.hovered=false;if(fish.calledUntil){fish.calledUntil=0;fish.restUntil=0;fish.retry=0;}}
+    feedbackUntil=0;refresh();
+  });
   reduced.addEventListener('change',refresh);mouse.addEventListener('change',refresh);
   new MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['data-opening']});
   const dialogs=Array.from(document.querySelectorAll('dialog'));
