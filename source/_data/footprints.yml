@@ -1,0 +1,60 @@
+# 独立旅行足迹与心愿目的地：没有相册、没有照片，也可以在这里加点。
+# 这里和相册中的“旅游 / 旅行”记录会合并到关于页地图。
+# 添加时参考下面示例，放在对应的 places（已到访）/ wishlist（心愿）下；缩进使用空格。
+# name 可写城市、县、景点；city/region 不用写进 name。
+# 城市名能自动匹配；县、乡镇、景点建议填写 coordinates: [经度, 纬度]。
+# url 和 note 都是可选的；没有 url 就只展示地点，不显示跳转箭头。
+# 相同 region + name 会合并为一个点。不要把示例当成实际到访记录。
+places:
+  - name: 义乌
+    region: 浙江
+    # 义乌为县级市，单独补充城市中心坐标（DataV GeoAtlas）。
+    coordinates: [120.074911, 29.306863]
+  - name: 海口
+    region: 海南
+  - name: 上饶
+    region: 江西
+  - name: 湛江
+    region: 广东
+  - name: 万宁
+    region: 海南
+  - name: 成都
+    region: 四川
+  - name: 九寨沟
+    region: 四川
+    # 使用九寨沟县中心坐标（DataV GeoAtlas），不代表某个具体景点。
+    coordinates: [104.236344, 33.262097]
+  - name: 理塘
+    region: 四川
+    # 使用理塘县中心坐标（DataV GeoAtlas）。
+    coordinates: [100.269862, 29.991807]
+# 想去但还没去过的地方放在 wishlist 下，地图会用金色空心点展示。
+# 两个列表的字段相同；wishlist 的 date 可省略，有值时代表计划日期。
+# 同一地点已有真实到访/相册记录时，优先显示为已到访。
+wishlist:
+  - name: 杭州
+    region: 浙江
+  - name: 北京
+    region: 北京
+  - name: 上海
+    region: 上海
+
+
+# places:
+#   - name: 海口
+#     region: 海南
+#     date: '2026-10-24'
+#     coordinates: [110.3312, 20.0320]
+#     note: 一段想留下来的旅行记忆。
+#     # url: /life/  # 可选：链接到自己的小记、文章或相册
+#   - name: 某个县或景点
+#     region: 江西
+#     date: '2026-10-24'
+#     coordinates: [115.89, 28.68]  # 换成该地点的真实经纬度
+
+# 心愿示例（只是写法示范，不会自动出现在网站上）：
+# wishlist:
+#   - name: 杭州
+#     region: 浙江
+#     note: 想找个好天气去走走。
+#     # coordinates: [120.1536, 30.2875]  # 已收录的城市可省略坐标

@@ -1,0 +1,8 @@
+<dialog id="site-explore" class="explore-dialog" aria-labelledby="explore-title" data-explore-index="<%= url_for('/explore-index.json') %>">
+  <header class="explore-header"><div><span class="eyebrow">WANDER</span><h2 id="explore-title">随便逛逛</h2></div><button type="button" class="explore-close" aria-label="关闭随便逛逛">×</button></header>
+  <p class="explore-intro">从已有笔记和相册里，挑一个看看。</p>
+  <div class="explore-modes" role="group" aria-label="随机内容类型"><button type="button" data-explore-kind="all" aria-pressed="true">随缘</button><button type="button" data-explore-kind="article" aria-pressed="false">读篇笔记</button><button type="button" data-explore-kind="photo" aria-pressed="false">看张照片</button></div>
+  <p class="explore-status" data-explore-status role="status" aria-live="polite">正在挑选…</p>
+  <div class="explore-preview" data-explore-preview hidden><div class="explore-photo" data-explore-photo hidden><img alt=""><p data-explore-image-error hidden>照片暂时没有加载出来，可以换一张，或去相册看看。</p></div><div class="explore-copy"><span class="eyebrow" data-explore-label></span><h3 data-explore-heading></h3><p data-explore-summary></p><time data-explore-date></time></div></div>
+  <footer class="explore-actions"><button type="button" class="button" data-explore-next><%- partial('_partials/wander-icon') %><span>换一个</span></button><a class="button primary" data-explore-go hidden>去看看</a></footer>
+</dialog>

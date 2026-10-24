@@ -1,0 +1,52 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const {JSDOM}=require('jsdom');
+const details=fs.readFileSync('themes/flyfish/source/js/details.js','utf8');
+function setup(reduced=false){
+  const dom=new JSDOM('<button class="button">按钮</button><button class="back-top">顶部</button>',{runScripts:'outside-only'});
+  const w=dom.window,doc=w.document,pref={matches:reduced,addEventListener:(_,fn)=>pref.change=fn};
+  const frames=new Map(),timers=new Map();let serial=0,hidden=false;
+  Object.defineProperty(doc,'hidden',{get:()=>hidden});
+  doc.querySelector('.button').getBoundingClientRect=()=>({left:10,top:20,width:150,height:44});
+  w.matchMedia=()=>pref;
+  w.requestAnimationFrame=fn=>{frames.set(++serial,fn);return serial;};
+  w.cancelAnimationFrame=id=>frames.delete(id);
+  w.setTimeout=(fn,delay)=>{timers.set(++serial,{fn,delay});return serial;};
+  w.clearTimeout=id=>timers.delete(id);
+  w.eval(details);
+  return {dom,w,doc,pref,frames,timers,flush(){for(const [id,fn] of [...frames]){frames.delete(id);fn();}},visibility(value){hidden=value;doc.dispatchEvent(new w.Event('visibilitychange'));}};
+}
+const state=setup(),{doc,w}=state,button=doc.querySelector('.button');
+const press=target=>target.dispatchEvent(new w.MouseEvent('pointerdown',{bubbles:true,button:0,clientX:40,clientY:35}));
+press(button);assert.equal(button.querySelectorAll('.click-ripple').length,1);
+press(button);assert.equal(button.querySelectorAll('.click-ripple').length,1,'Rapid clicks retain one wave per button');
+for(const timer of state.timers.values())timer.fn();assert.equal(button.querySelectorAll('.click-ripple').length,0,'Temporary ripple nodes are removed');
+button.click();assert.equal(button.querySelectorAll('.click-ripple').length,1,'Keyboard activation also receives feedback');
+press(doc.querySelector('.back-top'));assert.equal(doc.querySelector('.back-top').classList.contains('ripple-host'),false,'Fixed back-to-top control keeps its positioning');
+state.visibility(true);assert.ok(doc.documentElement.classList.contains('motion-paused'));
+state.visibility(false);state.pref.matches=true;state.pref.change();assert.equal(doc.querySelectorAll('.click-ripple').length,0);
+press(button);assert.equal(doc.querySelectorAll('.click-ripple').length,0,'Reduced motion disables click feedback');
+const quiet=setup(true);assert.equal(quiet.frames.size,0);quiet.dom.window.close();
+// 视差复用光晕的单个 RAF，并在离开卡片时清除偏移。
+const cover=doc.createElement('a');cover.className='sky-cover';cover.setAttribute('data-pointer-light','');doc.body.append(cover);
+cover.getBoundingClientRect=()=>({left:100,top:20,width:600,height:300});
+const source=fs.readFileSync('themes/flyfish/source/js/flyfish.js','utf8');
+const start=source.indexOf('  function initLights(){'),end=source.indexOf("  $('.theme-toggle')?.addEventListener",start);
+const pointer={matches:true,addEventListener(){}};
+vm.runInNewContext(source.slice(start,end)+'\ninitLights();',{document:doc,root:doc.documentElement,pageController:new w.AbortController(),pageDisposers:[],$$:selector=>Array.from(doc.querySelectorAll(selector)),matchMedia:()=>pointer,requestAnimationFrame:w.requestAnimationFrame,cancelAnimationFrame:w.cancelAnimationFrame});
+const move=new w.MouseEvent('pointermove',{bubbles:true,clientX:350,clientY:100});Object.defineProperty(move,'pointerType',{value:'mouse'});cover.dispatchEvent(move);state.flush();
+assert.ok(cover.classList.contains('has-pointer'));assert.ok(Math.abs(parseFloat(cover.style.getPropertyValue('--parallax-x')))<=4);assert.ok(Math.abs(parseFloat(cover.style.getPropertyValue('--parallax-y')))<=3);
+cover.dispatchEvent(new w.Event('pointerleave'));assert.equal(cover.style.getPropertyValue('--parallax-x'),'');assert.equal(cover.classList.contains('has-pointer'),false);
+pointer.matches=false;cover.dispatchEvent(move);assert.equal(state.frames.size,0);
+// 子内容的 animationend 不应提前清除整张说说卡片的入场动画。
+const entries=new JSDOM('<article class="essay-card"><header>日期</header><p>正文</p></article><article class="post-card"></article>',{runScripts:'outside-only'});
+const ew=entries.window;let observe;
+ew.matchMedia=()=>({matches:false,addEventListener(){}});
+ew.IntersectionObserver=class{constructor(fn){observe=fn;}observe(){}unobserve(){}disconnect(){}};
+ew.eval(fs.readFileSync('themes/flyfish/source/js/motion.js','utf8'));
+const card=ew.document.querySelector('.essay-card');assert.ok(card.classList.contains('motion-pending'));
+observe([{isIntersecting:true,target:card}]);assert.ok(card.classList.contains('motion-enter'));
+card.querySelector('p').dispatchEvent(new ew.Event('animationend',{bubbles:true}));assert.ok(card.classList.contains('motion-enter'));
+card.dispatchEvent(new ew.Event('animationend',{bubbles:true}));assert.equal(card.classList.contains('motion-enter'),false);
+entries.window.close();state.dom.window.close();
+console.log('PASS: bounded parallax/reset, ripple cleanup, keyboard clicks, background pause, reduced motion and nested entry animation completion.');

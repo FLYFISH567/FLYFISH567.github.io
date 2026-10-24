@@ -1,0 +1,11 @@
+<%# 身份标签与 GitHub/Bilibili 链接在根目录 _config.flyfish.yml 修改；专题来自文章 front matter 的 tags。 %>
+<aside class="sidebar" aria-label="<%= view==='post'?'文章目录与相关阅读':'关于作者与专题' %>">
+<% if(view==='post') { %>
+  <section class="side-panel toc-panel"><h2>文章目录</h2><nav class="toc-nav" aria-label="文章目录"><%- toc(page.content,{list_number:false,max_depth:4}) %></nav></section>
+  <section class="side-panel related-panel"><h2>接着读</h2><% for(const p of ff_related(page)) { %><a href="<%= ff_post_url(p.path) %>"><span><%= p.title %></span><small><%= ff_topic(p) %></small></a><% } %></section>
+<% } else { %>
+  <section class="side-panel profile-panel" data-pointer-light><div class="profile-sky" aria-hidden="true"><img src="<%= theme.hero_image %>" alt="" loading="lazy" decoding="async"></div><div class="profile-top"><span class="avatar-fallback">F</span><img class="avatar" src="<%= theme.avatar %>" alt="FLYFISH 的头像" loading="lazy" width="68" height="68"></div><h2><%= config.author %></h2><ul class="profile-roles" aria-label="个人身份"><% for(const role of theme.profile_roles || ['学生']) { %><li><%= role %></li><% } %></ul><div class="social-links"><a href="<%= theme.github %>" target="_blank" rel="noopener">GitHub</a><a href="<%= theme.bilibili %>" target="_blank" rel="noopener">Bilibili</a></div></section>
+  <% const latest=ff_essays()[0]; if(latest) { %><section class="side-panel note-panel" data-pointer-light><span class="eyebrow">一则说说 / <%= latest.date %></span><p><%= latest.content %></p></section><% } %>
+  <section class="side-panel topics-panel" data-pointer-light><h2>常用专题</h2><ul class="topic-list"><% for(const t of ff_topics().slice(0,6)) { %><li><a href="<%= url_for('/articles/?topic='+encodeURIComponent(t.name)) %>"><span><%= t.name %></span><small><%= t.count %><span class="topic-count-unit"> 篇</span></small></a></li><% } %></ul><a class="all-topics" href="<%= url_for('/articles/') %>">全部专题</a></section>
+<% } %>
+</aside>

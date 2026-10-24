@@ -1,0 +1,2 @@
+<% const section=ff_page_kind(page); %>
+<nav class="life-nav" aria-label="生活栏目"><% for(const item of [['相册','/album/','album'],['小记','/life/','life'],['说说','/essay/','essay'],['追番','/bangumis/','bangumi']]) { %><a href="<%= url_for(item[1]) %>" <%- (section===item[2] || section==='album_detail' && item[2]==='album')?'aria-current="page"':'' %>><%= item[0] %></a><% } %></nav>

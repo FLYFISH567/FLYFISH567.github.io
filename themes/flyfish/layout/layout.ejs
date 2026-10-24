@@ -1,0 +1,60 @@
+<% const view = is_post() ? 'post' : is_home() ? 'home' : ff_page_kind(page); const inLife=['life','essay','album','album_detail','bangumi'].includes(view); const hasAside=['home','post'].includes(view); %>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>try{if(localStorage.getItem('flyfish-theme')==='dark')document.documentElement.dataset.theme='dark';const tier=localStorage.getItem('flyfish-effects-tier');document.documentElement.dataset.effects=['light','standard','lively'].includes(tier)?tier:'standard';}catch{document.documentElement.dataset.effects='standard';}</script>
+  <title><%= view==='home' ? config.title + ' · ' + config.subtitle : (page.title || page.category || page.tag || '文章库') + ' · ' + config.title %></title>
+  <meta name="description" content="<%= is_post() ? ff_summary(page) : config.description + ' · 学习笔记与生活记录' %>">
+  <link rel="canonical" href="<%= full_url_for(page.path || '').replaceAll('#','%23').replaceAll('?','%3F') %>">
+  <link rel="icon" type="image/svg+xml" href="<%= url_for('/favicon.svg') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/flyfish.css') %>">
+  <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
+  <script defer src="<%= ff_asset('js/effects.js') %>"></script>
+  <script defer src="<%= ff_asset('js/flyfish.js') %>"></script>
+  <script defer src="<%= ff_asset('js/search.js') %>"></script>
+  <script defer src="<%= ff_asset('js/explore.js') %>"></script>
+  <script defer src="<%= ff_asset('js/motion.js') %>"></script>
+  <script defer src="<%= ff_asset('js/details.js') %>"></script>
+  <% if(theme.pointer_play!==false) { %><script defer src="<%= ff_asset('js/pointer-play.js') %>"></script><% } %>
+  <script defer src="<%= ff_asset('js/background-fish.js') %>"></script>
+  <script defer src="<%= ff_asset('js/travel-map.js') %>"></script>
+  <script defer src="<%= ff_asset('js/life-nav.js') %>"></script>
+  <script defer src="<%= ff_asset('js/navigation.js') %>"></script>
+  <script defer src="<%= ff_asset('js/global-music.js') %>"></script>
+</head>
+<body data-view="<%= view %>">
+<%- partial('_partials/opening') %>
+<%- partial('_partials/atmosphere') %>
+<a class="skip-link" href="#main">跳到内容</a>
+<header class="site-header"><div class="header-inner">
+  <a class="brand" href="<%= url_for('/') %>"><span class="brand-mark" aria-hidden="true"></span><span><%= config.title %></span></a>
+  <button class="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav">菜单</button>
+  <nav id="main-nav" aria-label="主导航">
+    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'}]) { %>
+      <a href="<%= url_for(item.url) %>" <%- item.active ? 'aria-current="page"' : '' %>><%= item.label %></a>
+    <% } %>
+    <button type="button" class="nav-search" data-open-search aria-label="搜索文章" aria-haspopup="dialog" aria-controls="site-search">搜索 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></button>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换显示模式"><span class="theme-symbol" aria-hidden="true">◐</span></button>
+  </nav>
+</div><div class="reading-progress" role="progressbar" aria-label="正文阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" <%- view==='post'?'':'hidden' %>><span></span></div></header>
+<div class="site-shell">
+  <div class="page-content" data-page-content>
+  <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/hero') %><% } %>
+  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最近更新</h2></div><% } %>
+  <div class="site-layout <%= hasAside ? '' : 'full-width' %>">
+    <main id="main"><%- body %></main>
+    <% if(hasAside) { %><%- partial('_partials/sidebar',{view}) %><% } %>
+  </div>
+  </div>
+  <footer class="site-footer"><span>© 2025–<%= new Date().getFullYear() %> <%= config.author %> · <%= theme.footer_motto || 'Love and be loved' %></span><span class="footer-actions"><button type="button" class="wander-button" data-open-explore hidden><%- partial('_partials/wander-icon') %><span>随便逛逛</span></button><button type="button" data-replay-opening hidden>重播开屏</button><a href="<%= url_for('/articles/') %>"><%= site.posts.length %> 篇文章</a></span><%- partial('_partials/footer-fish') %></footer>
+</div>
+<%- partial('_partials/search') %>
+<%- partial('_partials/explore') %>
+<%- partial('_partials/background-fish') %>
+<%- partial('_partials/global-music') %>
+<dialog id="photo-viewer" aria-label="照片大图"><button class="viewer-close" aria-label="关闭大图">×</button><div class="viewer-stage" aria-busy="false"><img alt=""><p class="viewer-status" role="status" hidden></p></div><div class="viewer-controls"><button data-photo-step="-1" aria-label="上一张">←</button><p></p><button data-photo-step="1" aria-label="下一张">→</button></div></dialog>
+<div class="toast" role="status" aria-live="polite"></div>
+<button class="back-top" aria-label="回到顶部" data-tooltip="回到顶部" hidden><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path class="back-top-cap" d="M6 5h12"/><path class="back-top-arrow" d="m7.5 13 4.5-4.5 4.5 4.5M12 9v10"/></svg></button>
+</body></html>

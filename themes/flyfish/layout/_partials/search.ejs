@@ -1,0 +1,7 @@
+<dialog id="site-search" class="search-dialog" aria-labelledby="site-search-title" data-search-index="<%= url_for('/search-index.json') %>">
+  <header class="search-dialog-header"><h2 id="site-search-title">搜索文章</h2><button type="button" class="search-close" aria-label="关闭搜索">×</button></header>
+  <div class="search-dialog-input"><label class="search-field"><span aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></span><input type="search" name="site-search" aria-label="搜索标题、标签或正文" placeholder="搜索标题、标签或正文" maxlength="160" autocomplete="off" spellcheck="false" autofocus></label></div>
+  <div class="search-dialog-status"><p role="status" aria-live="polite" data-search-status>正在加载搜索…</p><button type="button" class="text-button" data-search-retry hidden>重试</button></div>
+  <ol class="search-results" aria-label="搜索结果" data-search-results></ol>
+  <footer class="search-dialog-footer"><span><kbd>Esc</kbd> 关闭</span><span><kbd>Enter</kbd> 打开首条结果</span></footer>
+</dialog>

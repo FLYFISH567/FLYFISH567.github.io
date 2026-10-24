@@ -1,0 +1,13 @@
+<svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<% if(pattern==='life') { %>
+  <circle cx="44" cy="18" r="9"/><path d="M16 48h31a9 9 0 0 0 0-18 14 14 0 0 0-27-5 12 12 0 0 0-4 23Z"/>
+<% } else if(pattern==='database') { %>
+  <ellipse cx="32" cy="15" rx="20" ry="8"/><path d="M12 15v33c0 11 40 11 40 0V15M12 31c0 11 40 11 40 0"/>
+<% } else if(pattern==='tools') { %>
+  <rect x="7" y="12" width="50" height="35" rx="5"/><path d="M22 56h20M32 47v9M23 24l-7 6 7 6M41 24l7 6-7 6"/>
+<% } else if(pattern==='folder') { %>
+  <path d="M8 49V17a5 5 0 0 1 5-5h14l6 7h18a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5ZM8 27h48"/>
+<% } else { %>
+  <path d="M23 16 7 32l16 16M41 16l16 16-16 16M37 10 27 54"/>
+<% } %>
+</svg>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ 警告！前方高能！</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Marker Felt', '华文圆体', cursive, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffeb3b, #ff9800, #ff5722);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .warning-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 8px dashed #ff5722;
+        }
+        
+        /* 顶部装饰 */
+        .top-decoration {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            font-size: 40px;
+            letter-spacing: 15px;
+            color: #ff5722;
+            animation: blink 2s infinite;
+        }
+        
+        /* 底部装饰 */
+        .bottom-decoration {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            font-size: 40px;
+            letter-spacing: 15px;
+            color: #ff9800;
+            animation: blink 2s infinite reverse;
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            color: #ff5722;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .warning-icon {
+            font-size: 8rem;
+            margin: 20px 0;
+            animation: shake 0.8s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        .warning-content {
+            background: #fff9c4;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 4px dotted #ffc107;
+            position: relative;
+        }
+        
+        .warning-content p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        
+        .emoji-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .emoji-item {
+            font-size: 3rem;
+            animation: float 4s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .emoji-item:hover {
+            transform: scale(1.3) rotate(20deg);
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 18px 40px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #f44336, #ff9800);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(2px);
+        }
+        
+        .footer-note {
+            margin-top: 40px;
+            font-size: 1.2rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* 动画效果 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-15px) rotate(-10deg); }
+            75% { transform: translateX(15px) rotate(10deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .warning-content p {
+                font-size: 1.2rem;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .warning-container {
+                padding: 25px 15px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .warning-icon {
+                font-size: 6rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        /* 浮动气泡 */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: floatBubble 15s infinite linear;
+            z-index: -1;
+        }
+        
+        @keyframes floatBubble {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="warning-container">
+        <div class="top-decoration">⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️</div>
+        
+        <h1 class="title">⚠️ 警告！V我50 ⚠️</h1>
+        
+        <div class="warning-icon">🚨</div>
+        
+        <div class="warning-content">
+            <p>不是周四也<span class="highlight">V</span>我50</p>
+            <p>天才在左疯子在右我在中间所以我是天子</p>
+            <p>☕️ 上帝在天因为我在人间</p>
+            <p>😎 牛顿高斯比我提前出生是笨鸟先飞还是避我锋芒 </p>
+            <p>🧠 秦王嬴政比我早生千年是惧我三分还是王不见王</p>
+            <p>🎢  我闭眼就天黑睁眼就天亮我不是主角谁是主角</p>
+            
+        </div>
+        
+        <div class="emoji-list">
+            <div class="emoji-item">🤯</div>
+            <div class="emoji-item">💡</div>
+            <div class="emoji-item">🎉</div>
+            <div class="emoji-item">📚</div>
+            <div class="emoji-item">🤖</div>
+            <div class="emoji-item">🌈</div>
+            <div class="emoji-item">🚀</div>
+        </div>
+        
+        <!-- <div class="buttons">
+            <button class="btn btn-primary" onclick="enterBlog()">
+                <i class="fas fa-rocket"></i> 勇敢进入博客 🚪
+            </button>
+            <button class="btn btn-secondary" onclick="runAway()">
+                <i class="fas fa-running"></i> 容我再想想 🏃‍♂️
+            </button>
+        </div>
+        
+        <div class="footer-note">
+            <p>注意：本博客可能包含大量幽默、知识和脑洞，阅读后可能导致停不下来！📖⏱️</p>
+        </div>
+         -->
+        <div class="bottom-decoration">⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️</div>
+    </div>
+
+    <script>
+        // 创建浮动气泡效果
+        function createBubbles() {
+            const container = document.querySelector('.warning-container');
+            const bubbleCount = 15;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // 随机大小
+                const size = Math.random() * 100 + 20;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // 随机位置
+                bubble.style.left = `${Math.random() * 100}%`;
+                
+                // 随机动画延迟
+                bubble.style.animationDelay = `${Math.random() * 10}s`;
+                
+                // 随机背景颜色
+                const colors = ['#ffeb3b', '#ff9800', '#ff5722', '#4CAF50', '#2196F3'];
+                bubble.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                container.appendChild(bubble);
+            }
+        }
+        
+        // // 进入博客
+        // function enterBlog() {
+        //     alert('🎉 欢迎来到我的博客！准备好开始奇妙之旅了吗？');
+        //     // 这里可以添加实际跳转到博客的代码
+        //     // window.location.href = "https://your-blog.com";
+        // }
+        
+        // // 逃跑按钮
+        // function runAway() {
+        //     const container = document.querySelector('.warning-container');
+        //     container.style.animation = 'shake 0.5s ease-in-out';
+            
+        //     setTimeout(() => {
+        //         container.style.animation = '';
+        //         alert('😢 别走嘛~ 博客里有好多有趣的内容等着你呢！');
+        //     }, 500);
+        // }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            createBubbles();
+            
+            // 随机切换警告图标
+            setInterval(() => {
+                const icons = ['🚨', '⚠️', '🔥', '💥', '❗', '🔔', '🔴'];
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                document.querySelector('.warning-icon').textContent = randomIcon;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

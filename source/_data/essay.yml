@@ -1,0 +1,131 @@
+- title: 说说
+  subTitle: FLYFISH的日常生活。
+  tips: 随时随地，分享生活
+  buttonText: 关于我
+  buttonLink: /about/
+  limit: 30
+  home_essay: true
+  top_background: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg
+  essay_list:
+    # - content: 支持了Accesskey快捷键，可以直接按下shift + ?组合键以查看快捷键选项。
+    #   date: 2023/07/01
+    #   video: 视频
+    #     - https://cdn.jsdelivr.net/npm/anzhiyu-blog-static@1.0.0/video/%E9%A3%8E%E8%BD%A6%E6%A0%B7%E5%BC%8F%E6%95%88%E6%9E%9C%E9%A2%84%E8%A7%88.mp4
+    #   image: 图片
+    #     - https://img02.anheyu.com/adminuploads/1/2023/07/01/64a033cb2c21e.webp!blogimg
+    #   aplayer:  音乐
+    #     server: tencent
+    #     id: 001FGQba3i10mw
+    #   address: 长沙
+    #   from: 安知鱼 来源
+    #   link: /posts/e140.html  链接
+    # - content: 歌曲推荐
+    #   date: 2022/09/25
+    #   aplayer:
+    #     server: tencent
+    #     id: 001FGQba3i10mw
+    # - content: 做了一个噩梦, 梦到从楼顶坠下去了。😷
+    #   date: 2022/09/24
+    # - content: JOJO是真的好看！
+    #   date: 2022/09/21
+    #   link: https://www.bilibili.com/bangumi/play/ss39431?spm_id_from=333.337.0.0
+        # - content: 做了一个噩梦, 梦到从楼顶坠下去了。😷
+    #   date: 2022/09/24
+    # - content: 支持了Accesskey快捷键，可以直接按下shift + ?组合键以查看快捷键选项。
+    #   date: 2023/07/01
+    #   video: 视频
+    #     - https://cdn.jsdelivr.net/npm/anzhiyu-blog-static@1.0.0/video/%E9%A3%8E%E8%BD%A6%E6%A0%B7%E5%BC%8F%E6%95%88%E6%9E%9C%E9%A2%84%E8%A7%88.mp4
+    #   image: 图片
+    #     - https://img02.anheyu.com/adminuploads/1/2023/07/01/64a033cb2c21e.webp!blogimg
+    #   aplayer:  音乐
+    #在hexo generate或hexo deploy之前使用hexo bangumi -u命令更新追番数据，使用hexo cinema -u命令更新追剧数据！
+    - content: 暑假暑假居然已过22天，还是如此颓唐
+      date: 2025/07/27
+      address: 江西
+    - content: 回家第一天
+      date: 2025/07/05
+    - content: 7月！又过了半年啦！（距离马原还是6h）
+      date: 2025/07/01
+    - content: 昨天，是段历史，明天是个谜团，而今天是天赐的礼物，要像珍惜礼物那样珍惜今天
+      date: 2025/06/29
+    - content: 考完了，会赢吗
+      date: 2025/06/28
+    - content: 似了，看不完了....(距离期末还剩7天)
+      date: 2025/06/15
+      address: 海南-自习室
+    - content: ....到实验室凑数(距离期末还剩14天)
+      date: 2025/06/09
+      address: 海南
+    - content: 正方华老爸茶(with dragon and qx)
+      date: 2025/06/08
+      address: 海南
+    - content: 今天不紫砂，今天出生
+      date: 2025/06/07
+      address: 海南
+    - content: 开封菜不赖(with dragon)
+      date: 2025/06/02
+      address: 海南
+    - content: 儿童节快乐！
+      date: 2025/06/01
+      address: 海南
+    - content: 端午安康！
+      date: 2025/05/31
+      address: 海南
+    - content: 忙，忙点好啊
+      date: 2025/05/29
+      address: 海南
+    - content: 蜡笔小新好好！青春,fire!
+      date: 2025/05/28
+      address: 海南
+      image: 
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img914d3167c81d76ea4c0c0ec60092c783373ab978.png@338w_450h.webp
+    - content: 晚安，思考完就不会胡思乱想了
+      date: 2025/05/28
+      address: 海南
+    - content: 失眠了，幻想终究是幻想
+      date: 2025/05/28
+      address: 海南
+    - content: 早一点喜欢上我会比较好哦？
+      date: 2025/05/27
+      address: 海南
+      link: https://mzh.moegirl.org.cn/%E9%A9%AC%E5%89%83%E5%A4%A9%E7%88%B1%E6%98%9F
+    - content: 老马，哎，老马
+      date: 2025/05/27
+      address: 海南
+      link: https://www.linovelib.com/novel/3095/274673_5.html
+      image:  # 添加图片字段
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img286613.jpg
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img286614.jpg
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgcf2bbd24844e25629223bc51796c45c.jpg
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img286623.jpg
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img286616.jpg
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img286630.jpg  # 图片 URL（可替换为你的图片地址）
+        - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgf8614a22da4d9b8482b72cd47d44d84.jpg
+      # image: 图片
+      #   - https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img286630.jpg
+    - content: 要期末考试了o(╥﹏╥)o完蛋了喵
+      date: 2025/05/26
+      address: 海南
+    - content: 手环到了，不赖，希望可以一直用下去
+      date: 2025/05/25
+      address: 海南  
+    - content: 放弃，搞一个小时评论还是失败了o(╥﹏╥)o
+      date: 2025/05/24
+      address: 海南
+    - content: 完成音乐馆功能
+      date: 2025/05/24
+      address: 海南
+      link: https://flyfish567.github.io/music/?id=12908278323&server=netease
+    - content: 终于搞好相册和本人页面啦！
+      date: 2025/05/24
+      address: 海南
+      from: FLYFISH
+      link: https://flyfish567.github.io/album/
+    - content: 终于搞好说说啦！
+      date: 2025/05/24
+      address: 海南
+      from: FLYFISH
+      link: https://flyfish567.github.io/essay/
+
+    
+      

@@ -1,0 +1,4 @@
+<section class="life-records"><header class="page-heading illustrated-heading pointer-surface" data-pointer-light><span class="eyebrow">JOURNAL</span><h1>小记</h1><p>把日子写成文字。</p><%- partial('_partials/heading-art',{kind:'life'}) %></header>
+<%- partial('life-nav') %>
+<%- partial('_partials/cards',{records:ff_posts().filter(ff_life),dailyEntries:true}) %>
+</section>

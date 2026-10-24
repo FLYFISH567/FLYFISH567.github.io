@@ -1,0 +1,117 @@
+- class_name: 关于页
+  subtitle: 生活明朗，万物可爱✨
+  avatarImg: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg
+  effect: true
+  avatarSkills:
+    left:
+    - 🤖️ 数码科技爱好者
+    - 🔍 期待环球旅游者
+    - 🏠 梦想小屋幻想者
+    - 🔨 CTF爱好者
+    right:
+      - 专修交互与设计 🤝
+      - 脚踏实地行动派 🏃
+      - 团队小组发动机 🧱
+      - 壮汉人狠话不多 💢
+  name: FLYFISH
+  description: 是一名 学生、CTF爱好者、博主
+  aboutsiteTips:
+    tips: 追求
+    title1: 源于
+    title2: 热爱而去 感受
+    word:
+      - 学习
+      - 生活
+      - 体验
+  helloAbout: Hello World!
+  skillsTips:
+    tips: 技能
+    title: 开启创造力
+  careers:
+    tips: 生涯
+    title: 无限进步
+    list:
+      - desc: HNU,信息安全专业
+        color: "#357ef5"
+      # - desc: EDU,软件工程专业
+      #   color: "#357ef5"
+      # - desc: EDU,软件工程专业
+      #   color: "#357ef5"
+    img: https://tse2-mm.cn.bing.net/th/id/OIP-C.B-mljkrXmBhgwD1tcJ4rtQHaE8?w=248&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7
+  statistic:
+    link: /archives
+    text: 文章隧道
+    cover: https://pic4.zhimg.com/v2-4096f2a40c43df88e1850911bf05e67f_b.jpg
+    # cover: https://bu.dusays.com/2023/05/01/644f4b037b930.jpg
+  map:
+    title: 我现在住在
+    StrengthenTitle: 中国，海南市
+    background: https://ts1.tc.mm.bing.net/th/id/R-C.b878d44c0d8f4126e224505c734f8182?rik=NVmUFUQQQKEMog&riu=http%3a%2f%2fimg.pconline.com.cn%2fimages%2fupload%2fupc%2ftx%2fphotoblog%2f1105%2f09%2fc1%2f7597022_7597022_1304905209872.jpg&ehk=w8j3taf057zDtKJAJOttmCXZmvAfw1%2buq7up6x1ZB%2f0%3d&risl=&pid=ImgRaw&r=0
+    backgroundDark: https://ts1.tc.mm.bing.net/th/id/R-C.b878d44c0d8f4126e224505c734f8182?rik=NVmUFUQQQKEMog&riu=http%3a%2f%2fimg.pconline.com.cn%2fimages%2fupload%2fupc%2ftx%2fphotoblog%2f1105%2f09%2fc1%2f7597022_7597022_1304905209872.jpg&ehk=w8j3taf057zDtKJAJOttmCXZmvAfw1%2buq7up6x1ZB%2f0%3d&risl=&pid=ImgRaw&r=0
+  selfInfo:
+    selfInfoTips1: 生于
+    selfInfoContentYear: 2005
+    selfInfoTips2: 海南大学
+    selfInfoContent2: 信息安全
+    selfInfoTips3: 现在职业
+    selfInfoContent3: 大二学生👨‍🎓
+  personalities:
+    author_name: 执政官
+    personality_type: ESFJ-A
+    photo_url: https://bu.dusays.com/2023/07/05/64a4c63495ac5.jpg
+    personality_img: https://npm.elemecdn.com/anzhiyu-blog@2.0.8/img/svg/ESFJ-A.svg
+    name_url: https://www.16personalities.com/ch/esfj-%E4%BA%BA%E6%A0%BC
+  maxim:
+    maxim_tips: 座右铭
+    maxim_top: 种一颗最好的时间的是十年前
+    maxim_bottom: 其次是现在
+  buff:
+    buff_tips: 特长
+    buff_top: 偷懒时间特长
+    buff_bottom: 二次元指数 MAX
+  game:
+    game_tips: 爱好游戏
+    herf: https://supercell.com/en/games/clashroyale/
+    game_title: 皇室战争
+    game_uid: "自闭的自闭桶玩家"
+    game_bg: https://pic.kts.g.mi.com/1962cf844ed46d112c90e6bddfaaddfa286371655443573569.jpg
+  comic:
+    comic_tips: 爱好番剧
+    comic_title: 追番
+    comic_list:
+      # - name: 约定的梦幻岛
+      #   href: https://www.bilibili.com/bangumi/media/md5267750/?spm_id_from=666.25.b_6d656469615f6d6f64756c65.1
+      #   cover: https://bu.dusays.com/2023/05/27/647166c44b414.webp
+      - name: 间谍过家家
+        href: https://www.bilibili.com/bangumi/media/md21086686
+        cover: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imga524567f86ec21368731f6dc283f66bd1bd0af92.png@338w_450h.webp
+      - name: 孤独摇滚
+        href: https://www.bilibili.com/bangumi/media/md28339735
+        cover: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img20221126191702_38dcd.jpg
+      - name: 葬送的芙莉莲
+        href: https://www.bilibili.com/bangumi/media/md21087073
+        cover: https://tse3-mm.cn.bing.net/th/id/OIP-C.ODe9iSJfofzGqtVeYxV-7AHaEK?rs=1&pid=ImgDetMain
+      - name: 败犬女主太多了！
+        href: https://mzh.moegirl.org.cn/%E8%B4%A5%E7%8A%AC%E5%A5%B3%E4%B8%BB%E5%A4%AA%E5%A4%9A%E4%BA%86%EF%BC%81
+        cover: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp
+  like:
+    like_tips: 关注偏好
+    like_title: 时政历史
+    like_bg: https://tse3-mm.cn.bing.net/th/id/OIP-C.F-ox2dGm8HjRSDdM9C08GQHaEo?rs=1&pid=ImgDetMain
+    like_bottom: 近现代历史、硬核狠人
+  music:
+    music_tips: 音乐偏好
+    music_title: 日语流行
+    music_bg: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imge61190ef76c6a7efce1bb926b2a3b851f3deb48fc820.webp
+    music_link: /music/?id=12908278323&server=netease
+  reward_list:
+    # - name: 海阔蓝
+    #   amount: 8.8
+    #   datatime: 2023-03-28
+      - name: mother
+        amount: 10000+
+        datatime: 2025-01-01
+      - name: 晓林
+        amount: CRAZY50
+        datatime: 2025-06-26  
+  

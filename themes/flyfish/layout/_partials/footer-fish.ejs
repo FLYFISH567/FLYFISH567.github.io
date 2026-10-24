@@ -1,0 +1,17 @@
+<div class="footer-pond" data-fish-control hidden>
+  <button type="button" class="footer-fish-button" data-fish-summon aria-label="召唤一条飞飞鱼到附近"><svg width="17" height="14" viewBox="0 0 32 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 11C14 2 24 2 29 11C24 20 14 20 9 11ZM9 11 2 5v12Z"/><circle cx="23" cy="9" r="1" fill="currentColor" stroke="none"/></svg><span>召唤飞飞鱼</span></button>
+  <details class="fish-settings" data-fish-settings>
+    <summary aria-label="设置背景小鱼数量"><span data-fish-count>6 条</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m3 7 3-3 3 3"/></svg></summary>
+    <div class="fish-settings-panel">
+      <span class="fish-settings-title">背景小鱼</span>
+      <div class="fish-mode-options" role="group" aria-label="小鱼数量"><% for(const item of [['auto','自动'],['1','1 条'],['3','3 条'],['6','6 条'],['9','9 条'],['off','关闭']]) { %><button type="button" data-fish-mode="<%= item[0] %>" aria-pressed="<%= item[0]==='6' %>"><%= item[1] %></button><% } %></div>
+      <%# 自定义数量上限与 background-fish.js 的 maxFish 保持一致。 %>
+      <form class="fish-custom-form" data-fish-custom-form>
+        <label for="fish-custom-count">自定义 <span>最多 12 条</span></label>
+        <div class="fish-custom-row"><input id="fish-custom-count" data-fish-custom type="number" min="1" max="12" step="1" required inputmode="numeric" placeholder="1–12" aria-describedby="fish-count-note"><button type="submit">设置</button></div>
+      </form>
+      <p id="fish-count-note" data-fish-note>自动模式按屏幕调整；留白不足时，部分小鱼会暂歇。</p>
+    </div>
+  </details>
+  <details class="effects-settings" data-effects-settings><summary aria-label="设置页面动效">动效 · <span data-effects-label>标准</span></summary><div class="effects-panel"><span class="fish-settings-title">页面动效</span><div class="effects-options" role="group" aria-label="动效档位"><button type="button" data-effects-tier="light" aria-pressed="false">轻量</button><button type="button" data-effects-tier="standard" aria-pressed="true">标准</button><button type="button" data-effects-tier="lively" aria-pressed="false">活泼</button></div><p data-effects-note>最多 6 条小鱼，保留点击水波和轻微反馈。</p></div></details>
+</div>

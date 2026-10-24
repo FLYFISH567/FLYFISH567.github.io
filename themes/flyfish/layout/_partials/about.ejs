@@ -1,0 +1,24 @@
+<%# 学校/专业/性格/番剧：source/_data/about.yml；近期状态：source/_data/now.yml；联系方式：_config.flyfish.yml。 %>
+<% const about=ff_about(); %>
+<header class="about-intro pointer-surface" data-pointer-light aria-labelledby="about-title">
+  <div class="about-identity">
+    <img class="about-portrait" src="<%= theme.avatar %>" alt="<%= about.name || config.author %> 的头像" width="112" height="112" decoding="async">
+    <div><span class="eyebrow">ABOUT ME</span><h1 id="about-title">你好，我是 <%= about.name || config.author %></h1><p class="about-motto"><%= about.subtitle %></p></div>
+  </div>
+  <p class="about-introduction">我是一名学生。在这里整理学习笔记，也收藏照片、音乐和生活中的片刻。写下来，是为了以后还能回头看看。</p>
+  <dl class="about-facts">
+    <% if(about.selfInfo?.selfInfoTips2) { %><div><dt>学校</dt><dd><%= about.selfInfo.selfInfoTips2 %></dd></div><% } %>
+    <% if(about.selfInfo?.selfInfoContent2) { %><div><dt>专业</dt><dd><%= about.selfInfo.selfInfoContent2 %></dd></div><% } %>
+    <% if(about.personalities?.personality_type) { %><div><dt>性格</dt><dd><%= about.personalities.personality_type %></dd></div><% } %>
+  </dl>
+  <div class="about-intro-bottom"><p>种一棵树最好的时间是十年前，其次是现在。</p><nav class="social-links" aria-label="联系我"><a href="<%= theme.github %>" target="_blank" rel="noopener">GitHub ↗</a><a href="<%= theme.bilibili %>" target="_blank" rel="noopener">Bilibili ↗</a><a href="mailto:flyfish567@qq.com">邮件 ↗</a></nav></div>
+</header>
+<%- partial('_partials/now') %>
+<% if(about.comic?.comic_list?.length) { %>
+<section class="about-favourites" aria-labelledby="favourites-title">
+  <div class="section-heading"><div><span class="eyebrow">FAVOURITES</span><h2 id="favourites-title">喜欢的故事</h2></div><a href="<%= url_for('/bangumis/') %>">全部追番 ↗</a></div>
+  <div class="about-stories"><% for(const item of about.comic.comic_list) { %><a class="about-story" href="<%= ff_safe_url(item.href) %>" target="_blank" rel="noopener"><div><img src="<%= ff_safe_url(item.cover) %>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div><h3><%= item.name %><span aria-hidden="true">↗</span></h3></a><% } %></div>
+  <p class="about-interests">闲下来也玩<%= about.game?.game_title || '皇室战争' %>，关注近现代历史，还想去更多地方走走。</p>
+</section>
+<% } %>
+<%- partial('_partials/footprints') %>

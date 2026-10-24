@@ -1,0 +1,20 @@
+<svg class="heading-art" viewBox="0 0 240 140" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<% if(['life','essay'].includes(kind)) { %>
+  <circle cx="168" cy="39" r="24"/><path d="M37 103h109a18 18 0 0 0 0-36 29 29 0 0 0-55-10 24 24 0 0 0-54 46Z"/>
+  <path d="M158 103h38M176 114h29M167 4v8M201 19l-6 6M211 43h-9"/>
+<% } else if(['album','album_detail'].includes(kind)) { %>
+  <rect x="39" y="33" width="115" height="83" rx="9" transform="rotate(-9 39 33)"/><rect x="83" y="29" width="121" height="87" rx="9"/>
+  <circle cx="167" cy="53" r="10"/><path d="m93 103 32-35 26 25 15-15 27 25M49 49l16-2"/>
+<% } else if(kind==='bangumi') { %>
+  <path d="M119 35c-23-15-49-18-76-12v87c28-6 54-3 76 12 23-15 49-18 77-12V23c-28-6-54-3-77 12ZM119 35v87M58 47c15-1 30 2 45 9M58 64c15-1 30 2 45 9M136 56c14-7 29-10 44-9M136 73c14-7 29-10 44-9"/>
+  <path d="m208 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3ZM28 75l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z"/>
+<% } else if(kind==='music') { %>
+  <circle cx="95" cy="71" r="48"/><circle cx="95" cy="71" r="37"/><circle cx="95" cy="71" r="12"/>
+  <path d="M158 63v16M170 49v44M182 34v74M194 51v40M206 63v16"/>
+<% } else if(kind==='about') { %>
+  <circle cx="119" cy="49" r="24"/><path d="M72 117v-8a47 47 0 0 1 94 0v8M57 34l3 8 8 3-8 3-3 8-3-8-8-3 8-3ZM184 68l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z"/>
+  <circle cx="119" cy="71" r="64" stroke-dasharray="3 8"/>
+<% } else { %>
+  <rect x="37" y="24" width="165" height="96" rx="10"/><path d="M37 44h165M51 34h1M60 34h1M69 34h1M87 63 70 80l17 17M151 63l17 17-17 17M126 57l-14 47"/>
+<% } %>
+</svg>

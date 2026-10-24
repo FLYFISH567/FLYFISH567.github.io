@@ -1,0 +1,25 @@
+'use strict';
+const fs=require('fs'),assert=require('assert/strict'),{JSDOM}=require('jsdom');
+const source=fs.readFileSync('themes/flyfish/source/js/navigation.js','utf8');
+const html=(name)=>`<!doctype html><title>${name}</title><meta name="description" content="${name}"><link rel="canonical" href="http://localhost/${name}/"><body data-view="${name}"><header><nav id="main-nav"><a href="/${name}/" aria-current="page">${name}</a></nav></header><main id="main" data-page-content><h1>${name}</h1></main></body>`;
+const flush=()=>new Promise(resolve=>setImmediate(resolve));
+(async()=>{
+ const dom=new JSDOM(html('music'),{url:'http://localhost/music/',runScripts:'outside-only'}),w=dom.window,doc=w.document;
+ const audio=doc.createElement('audio');doc.body.append(audio);let before=0,after=0,scrolls=[],calls=[];
+ w.scrollTo=position=>scrolls.push(position);w.requestAnimationFrame=fn=>fn();w.fetch=async url=>{calls.push(url);return {ok:true,headers:{get:()=> 'text/html; charset=utf-8'},text:async()=>html(new URL(url).pathname.split('/')[1])};};
+ doc.addEventListener('flyfish:before-page',()=>before++);doc.addEventListener('flyfish:page',()=>after++);w.eval(source);
+ const click=(href,extra={})=>{const a=doc.createElement('a');a.href=href;doc.body.append(a);const ev=new w.MouseEvent('click',{bubbles:true,cancelable:true,button:0,...extra});let prevented;doc.addEventListener('click',event=>{prevented=event.defaultPrevented;event.preventDefault();},{once:true});a.dispatchEvent(ev);a.remove();return {defaultPrevented:prevented,preventDefault(){}};};
+ assert.equal(w.FlyfishNavigator.enabled,false);w.FlyfishNavigator.enable();assert.equal(w.history.state.flyfish,true);
+ assert.ok(click('/about/').defaultPrevented);await flush();assert.equal(w.location.pathname,'/about/');assert.equal(doc.querySelector('h1').textContent,'about');assert.equal(doc.title,'about');assert.equal(doc.querySelector('audio'),audio);assert.equal(before,1);assert.equal(after,1);assert.equal(doc.querySelector('main'),doc.activeElement);assert.equal(doc.querySelector('meta[name=description]').content,'about');
+ for(const [href,extra] of [['https://elsewhere.test/',{}],['/album/',{ctrlKey:true}],['/about/#anchor',{}],['/photo.png',{}]]){const ev=click(href,extra);assert.equal(ev.defaultPrevented,false);ev.preventDefault();}
+ // Filters replace the URL in place; leaving the page must retain its current URL for history recovery.
+ w.history.replaceState(null,'','/about/?tab=wish');await w.FlyfishNavigator.navigate('/album/');assert.equal(doc.querySelector('audio'),audio);
+ w.fetch=async()=>{throw Error('offline');};assert.equal(await w.FlyfishNavigator.navigate('/bad/'),false);assert.equal(doc.querySelector('h1').textContent,'album');assert.equal(w.location.pathname,'/album/');assert.equal(doc.querySelector('.navigation-notice').hidden,false);assert.ok(doc.querySelector('.navigation-notice a').hasAttribute('data-no-navigation'));assert.equal(doc.documentElement.classList.contains('is-navigating'),false);
+ // Resolve an older fetch last, even when a server ignores AbortSignal.
+ const waiting=new Map();w.fetch=url=>new Promise(resolve=>waiting.set(new URL(url).pathname,resolve));
+ const first=w.FlyfishNavigator.navigate('/life/'),second=w.FlyfishNavigator.navigate('/essay/');
+ const response=name=>({ok:true,headers:{get:()=> 'text/html'},text:async()=>html(name)});
+ waiting.get('/essay/')(response('essay'));await second;waiting.get('/life/')(response('life'));await first;assert.equal(doc.querySelector('h1').textContent,'essay');assert.equal(w.location.pathname,'/essay/');assert.equal(doc.querySelector('audio'),audio);assert.equal(doc.querySelector('.navigation-notice').hidden,true);assert.equal(before,3);assert.equal(after,3);
+ w.fetch=async()=>response('album');w.history.back();await new Promise(resolve=>w.addEventListener('popstate',resolve,{once:true}));await flush();assert.equal(doc.querySelector('h1').textContent,'album');assert.equal(doc.querySelector('audio'),audio);assert.equal(scrolls.at(-1).top,0);
+ dom.window.close();console.log('PASS: opt-in same-document navigation, persistent audio identity, metadata/focus/lifecycle updates, native link exclusions, URL filters, fetch error recovery, latest-request wins and history restoration.');
+})().catch(error=>{console.error(error);process.exitCode=1;});

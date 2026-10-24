@@ -1,0 +1,21 @@
+<%# 歌单 ID、公开 API 在根目录 _config.flyfish.yml 的 music 段修改。 %>
+<section class="music-page" data-music-page data-id="<%= theme.music.id %>" data-server="<%= theme.music.server %>" data-api="<%= theme.music.api || '' %>">
+  <header class="page-heading illustrated-heading pointer-surface" data-pointer-light><span class="eyebrow">MUSIC</span><h1>音乐馆</h1><%- partial('_partials/heading-art',{kind:'music'}) %></header>
+  <%# 左侧集中放当前歌曲和控制；右侧歌单可滚动，手机会自动上下排列。 %>
+  <div class="music-main music-studio">
+    <section class="now-playing pointer-surface" data-pointer-light aria-label="当前歌曲与播放控制">
+      <div class="record" aria-hidden="true"><div class="record-label">FLY<br>FISH</div></div>
+      <div class="track-heading">
+        <div class="music-heading-label"><span class="eyebrow">网易云歌单</span><span class="music-meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
+        <h2 data-track-title>我的歌单</h2><p data-track-artist>日语流行</p>
+        <div class="track-actions"><button class="button primary" type="button" data-load-music>加载歌单</button></div>
+      </div>
+      <div class="music-inline-controls" data-music-page-controls></div>
+      <p class="player-status" role="status" data-player-status>选一首歌，慢慢听。</p>
+    </section>
+    <section class="player-shell pointer-surface" data-pointer-light aria-label="播放列表">
+      <header class="music-library-heading"><div><h2>播放列表</h2><span data-music-count>我的收藏</span></div><a data-open-music data-compact-music-source href="https://music.163.com/#/playlist?id=<%= theme.music.id %>" target="_blank" rel="noopener">网易云 ↗</a></header>
+      <div data-player-host><div class="music-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg><p>把喜欢的旋律放在这里</p><span>加载歌单后，选择一首开始收听</span></div></div>
+    </section>
+  </div>
+</section>

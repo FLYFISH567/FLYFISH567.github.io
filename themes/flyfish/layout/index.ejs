@@ -1,0 +1,4 @@
+<section aria-labelledby="latest-title">
+<%- partial('_partials/cards',{records:page.posts.toArray()}) %>
+<% if(page.total>1) { %><nav class="pagination" aria-label="文章分页"><%- paginator({prev_text:'← 上一页',next_text:'下一页 →',mid_size:1,end_size:1}) %></nav><% } %>
+</section>

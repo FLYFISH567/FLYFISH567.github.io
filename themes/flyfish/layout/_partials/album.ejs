@@ -1,0 +1,24 @@
+<%# 相册与照片：source/_data/album.yml；固定封面可在 _config.flyfish.yml 的 album_covers 配置。 %>
+<section data-album-library>
+  <header class="page-heading illustrated-heading pointer-surface" data-pointer-light><span class="eyebrow">ALBUMS</span><h1>相册集</h1><p>照片、截图与画作。</p><%- partial('_partials/heading-art',{kind:'album'}) %></header>
+  <%- partial('life-nav') %>
+  <div class="album-filters" role="group" aria-label="相册分类"><button type="button" data-album-category="" aria-pressed="true">全部</button><% for(const name of [...new Set(ff_albums().map(ff_album_category))]) { %><button type="button" data-album-category="<%= name %>" aria-pressed="false"><%= name %></button><% } %></div>
+  <p class="album-count" data-album-count aria-live="polite">共 <%= ff_albums().length %> 本相册</p>
+  <div class="album-grid">
+    <% for(const album of ff_album_display()) {
+      const photos=(album.album_list||[]).flatMap(group=>group.image||[]);
+      const cover=ff_album_cover(album);
+      const previews=[...new Set(photos)].filter(src=>src!==cover).slice(0,2);
+    %>
+      <a class="album-card" data-album-group="<%= ff_album_category(album) %>" href="<%= url_for(album.path_name+'/') %>">
+        <div class="album-stack">
+          <% for(let layer=0;layer<2;layer++) { %>
+            <span class="album-print album-print-<%= layer+1 %>" aria-hidden="true"><% if(previews[layer]) { %><img src="<%= ff_safe_url(previews[layer]) %>" alt="" loading="lazy" decoding="async"><% } %></span>
+          <% } %>
+          <div class="album-cover"><img src="<%= ff_safe_url(cover) %>" alt="<%= album.class_name %>相册封面" loading="lazy" decoding="async"><span class="cover-fallback" aria-hidden="true"><span>生活收藏</span><strong><%= album.class_name %></strong><small><%= (album.album_list||[])[0]?.content || '照片与回忆' %></small></span><span class="album-cover-count"><%= photos.length %> 张</span></div>
+        </div>
+        <div><h2><%= album.class_name %></h2><p class="album-caption"><%= (album.album_list||[]).map(entry=>entry.content).filter(Boolean).join(' / ') %></p><p class="album-group-count"><%= album.album_list.length %> 组记录</p></div>
+      </a>
+    <% } %>
+  </div>
+</section>
