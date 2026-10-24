@@ -8,6 +8,7 @@
   const root=document.documentElement,control=document.querySelector('[data-fish-control]');
   const settings=document.querySelector('[data-fish-settings]'),summonButton=document.querySelector('[data-fish-summon]');
   const countLabel=document.querySelector('[data-fish-count]'),note=document.querySelector('[data-fish-note]');
+  const summonStatus=document.querySelector('[data-fish-summon-status]');
   const choices=Array.from(document.querySelectorAll('[data-fish-mode]'));
   const customForm=document.querySelector('[data-fish-custom-form]'),customInput=document.querySelector('[data-fish-custom]');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),mouse=matchMedia('(hover:hover) and (pointer:fine)');
@@ -23,7 +24,7 @@
   const bearing=Math.random()*Math.PI*2,goldenAngle=Math.PI*(3-Math.sqrt(5));
   let width=innerWidth,height=innerHeight,top=86,boxes=[],spaces=[],capacity=0,autoCap=1;
   let dirty=true,frame=0,last=0,pageHidden=false,suspended=false,scrollUntil=0,summonUntil=0,scrollTimer=0;
-  let clock=performance.now(),dialogOpen=false;
+  let clock=performance.now(),dialogOpen=false,summonSerial=0,controlsAt=Infinity,feedbackUntil=0,feedback='';
   const clamp=(value,min,max)=>Math.max(min,Math.min(value,Math.max(min,max)));
   const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
   const active=()=>pool.filter(fish=>fish.active);
@@ -54,6 +55,13 @@
       if(value>score){score=value;best=point;}
     }
     return best;
+  }
+  function summonPlace(near,fish){
+    // 仅在召唤落点分散摆放，不增加鱼之间的碰撞或追逐逻辑。
+    const peers=active().filter(other=>other!==fish&&!covered(other));
+    const candidates=spaces.filter(point=>distance(point,near)<420&&peers.every(other=>distance(point,other)>=(other.calledUntil>clock?84:60)))
+      .sort((a,b)=>distance(a,near)-distance(b,near)).slice(0,8);
+    return candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:null;
   }
   function waypoint(fish){
     // 每条鱼有自己的航程、方向和随机选择，不再都奔向同一个最远端点。
@@ -139,13 +147,13 @@
     el.style.setProperty('--tail-duration',`${.36+variant*.07}s`);if(variant===1)el.classList.add('fish-teal');
     const angle=bearing+index*goldenAngle+(Math.random()-.5)*.35;
     const heading={x:Math.cos(angle),y:Math.sin(angle)};
-    const fish={el,caption:el.querySelector('.fish-caption'),active:false,x:8,y:top,facing:heading.x<0?-1:1,heading,cruise:140+Math.random()*260,pace:.78+Math.random()*.44,trail:[],turnAfter:0,restUntil:0,dropPoint:null,target:null,retry:0,held:null,hovered:false,focused:false,paused:false,relocating:0,calledUntil:0,retireTimer:0};
+    const fish={el,caption:el.querySelector('.fish-caption'),active:false,x:8,y:top,facing:heading.x<0?-1:1,heading,cruise:140+Math.random()*260,pace:.78+Math.random()*.44,trail:[],turnAfter:0,restUntil:0,dropPoint:null,target:null,retry:0,held:null,hovered:false,focused:false,paused:false,relocating:0,calledUntil:0,lastSummoned:0,retireTimer:0};
     el.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&mouse.matches&&!suspended){fish.hovered=true;render(fish);}});
     el.addEventListener('pointerleave',()=>{fish.hovered=false;render(fish);});
     el.addEventListener('pointerdown',event=>{
       if(!mouse.matches||event.pointerType!=='mouse'||event.button!==0||suspended||!fish.active)return;
       event.preventDefault();event.stopPropagation();for(const other of pool)release(other);
-      fish.paused=false;fish.restUntil=0;fish.dropPoint=null;fish.relocating=0;fish.held={id:event.pointerId,dx:event.clientX-fish.x,dy:event.clientY-fish.y};
+      fish.calledUntil=0;fish.retry=0;fish.paused=false;fish.restUntil=0;fish.dropPoint=null;fish.relocating=0;fish.held={id:event.pointerId,dx:event.clientX-fish.x,dy:event.clientY-fish.y};
       try{el.setPointerCapture(event.pointerId);}catch{fish.held=null;}render(fish);
     });
     el.addEventListener('pointermove',event=>{
@@ -161,8 +169,8 @@
     el.addEventListener('blur',()=>{fish.focused=false;fish.paused=false;release(fish);render(fish);});
     el.addEventListener('keydown',event=>{
       const moves={ArrowLeft:[-22,0],ArrowRight:[22,0],ArrowUp:[0,-22],ArrowDown:[0,22]};
-      if(moves[event.key]){event.preventDefault();const [dx,dy]=moves[event.key];Object.assign(fish,bounds({x:fish.x+dx,y:fish.y+dy}));if(dx)fish.facing=dx<0?-1:1;fish.paused=true;render(fish);}
-      else if(event.key===' '||event.key==='Enter'){event.preventDefault();fish.hovered=false;fish.restUntil=0;fish.paused=!fish.paused;render(fish);}
+      if(moves[event.key]){fish.calledUntil=0;fish.retry=0;event.preventDefault();const [dx,dy]=moves[event.key];Object.assign(fish,bounds({x:fish.x+dx,y:fish.y+dy}));if(dx)fish.facing=dx<0?-1:1;fish.paused=true;render(fish);}
+      else if(event.key===' '||event.key==='Enter'){fish.calledUntil=0;fish.retry=0;event.preventDefault();fish.hovered=false;fish.restUntil=0;fish.paused=!fish.paused;render(fish);}
       else if(event.key==='Escape'){fish.paused=false;el.blur();}
     });
     ocean.append(el);pool.push(fish);return fish;
@@ -178,7 +186,12 @@
     choices.forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.fishMode===mode));button.disabled=reduced.matches&&button.dataset.fishMode!=='off';});
     if(customInput){customInput.disabled=reduced.matches;if(document.activeElement!==customInput)customInput.value=/^\d+$/.test(mode)?mode:'';}
     if(customForm)customForm.querySelector('button').disabled=reduced.matches;
-    if(summonButton){summonButton.disabled=!count||suspended||clock<summonUntil;summonButton.title=mode==='off'?'先在旁边开启小鱼':!count?'这里暂时没有足够留白':'召唤一条飞飞鱼到附近';}
+    const guests=active().filter(fish=>fish.calledUntil>clock).length;
+    const status=count&&!suspended?(clock<feedbackUntil?feedback:guests?`${guests}/${count}`:''):'';
+    if(summonStatus&&summonStatus.textContent!==status)summonStatus.textContent=status;
+    if(summonStatus)summonStatus.setAttribute('aria-label',clock<feedbackUntil?feedback:`已召来 ${guests} 条，当前在游 ${count} 条`);
+    if(summonButton){summonButton.disabled=!count||suspended||clock<summonUntil;summonButton.title=mode==='off'?'先在旁边开启小鱼':!count?'这里暂时没有足够留白':`从当前在游的 ${count} 条里叫来一位，歇一会儿再继续游`;}
+    controlsAt=Math.min(...[summonUntil,feedbackUntil,...active().map(fish=>fish.calledUntil)].filter(time=>time>clock),Infinity);
   }
   function reconcile(){
     const wanted=reduced.matches||mode==='off'?0:Math.min(mode==='auto'?autoCap:Number(mode),capacity,tierLimit());
@@ -186,11 +199,11 @@
       const fish=pool[index]||createFish(index);
       if(index<wanted&&!fish.active){
         const place=birthplace(fish);if(!place)continue;
-        clearTimeout(fish.retireTimer);fish.retireTimer=0;Object.assign(fish,place,{active:true,relocating:0,target:null,retry:0,paused:false,restUntil:0,dropPoint:null});
+        clearTimeout(fish.retireTimer);fish.retireTimer=0;Object.assign(fish,place,{active:true,relocating:0,target:null,retry:0,paused:false,restUntil:0,dropPoint:null,calledUntil:0});
         fish.trail=[];fish.restUntil=clock+150+index*65+Math.random()*650;
         fish.el.classList.remove('is-retiring');fish.el.classList.add('is-arriving');render(fish);fish.el.hidden=false;
       }else if(index>=wanted&&fish.active){
-        fish.active=false;release(fish);fish.el.blur();fish.el.tabIndex=-1;fish.el.setAttribute('aria-hidden','true');fish.el.classList.add('is-retiring');
+        fish.active=false;fish.calledUntil=0;release(fish);fish.el.blur();fish.el.tabIndex=-1;fish.el.setAttribute('aria-hidden','true');fish.el.classList.add('is-retiring');
         clearTimeout(fish.retireTimer);fish.retireTimer=setTimeout(()=>{fish.retireTimer=0;if(!fish.active)fish.el.hidden=true;},260);
       }
     }
@@ -199,7 +212,7 @@
   function blocked(){return pageHidden||document.hidden||reduced.matches||mode==='off'||root.dataset.opening==='pending'||dialogOpen;}
   function stop(){cancelAnimationFrame(frame);frame=0;last=0;}
   function sync(){
-    suspended=blocked();ocean.hidden=suspended||!active().length;
+    clock=performance.now();suspended=blocked();ocean.hidden=suspended||!active().length;
     for(const fish of pool){if(suspended||!mouse.matches){fish.el.blur();release(fish);fish.hovered=false;}render(fish);}
     updateControls();if(suspended||!active().length){stop();return;}if(!frame)frame=requestAnimationFrame(tick);
   }
@@ -209,12 +222,12 @@
     const delta=last?Math.min((time-last)/1000,.07):0;last=time;if(time<scrollUntil)return;
     ocean.classList.remove('is-scrolling');
     if(dirty){measure();reconcile();if(!active().length){sync();return;}}
-    if(summonButton?.disabled&&time>=summonUntil)updateControls();
+    if(time>=controlsAt)updateControls();
     for(const fish of active()){
       if(!fish.held&&!fish.hovered&&!fish.paused){
         if(covered(fish)){
           if(!fish.relocating)fish.relocating=time+240;
-          if(time>=fish.relocating){const place=fish.dropPoint?available(fish.dropPoint):birthplace(fish);if(place){Object.assign(fish,place);fish.relocating=0;fish.target=null;fish.dropPoint=null;}else fish.relocating=time+400;}
+          if(time>=fish.relocating){const place=fish.dropPoint?available(fish.dropPoint):birthplace(fish);if(place){Object.assign(fish,place);fish.relocating=0;fish.target=null;fish.dropPoint=null;fish.calledUntil=0;fish.restUntil=0;}else fish.relocating=time+400;}
         }else{
           fish.relocating=0;if(fish.target&&covered(fish.target))fish.target=null;
           if(fish.target&&distance(fish,fish.target)<6){fish.trail.push({...fish.target});fish.trail=fish.trail.slice(-6);fish.target=null;fish.restUntil=time+250+Math.random()*1100;fish.retry=fish.restUntil;}
@@ -229,6 +242,12 @@
       }
       render(fish);
     }
+    // 拖动或键盘接管后，进度在同一个动画循环里同步。
+    if(summonStatus?.textContent)updateSummonProgress();
+  }
+  function updateSummonProgress(){
+    const guests=active().filter(fish=>fish.calledUntil>clock).length;
+    if(clock>=feedbackUntil&&summonStatus.textContent!==(guests?`${guests}/${active().length}`:''))updateControls();
   }
   function refresh(){clock=performance.now();measure();reconcile();sync();}
   function changeMode(next){
@@ -248,10 +267,17 @@
     clock=performance.now();if(blocked()||clock<summonUntil)return;
     if(settings)settings.open=false;measure();reconcile();
     const rect=summonButton.getBoundingClientRect(),near={x:rect.left,y:Math.max(top,rect.top-90)};
-    const fish=active().filter(fish=>!engaged(fish)).sort((a,b)=>distance(a,near)-distance(b,near))[0];
-    if(!fish)return;const place=available(near);if(!place)return;
-    Object.assign(fish,place,{target:null,retry:0,relocating:0,calledUntil:clock+1700});
-    summonUntil=clock+650;render(fish);updateControls();sync();
+    // 优先叫还没来过的鱼；同轮随机挑选，已在身边或正在互动的鱼不重置。
+    const candidates=active().filter(fish=>!engaged(fish)&&fish.calledUntil<=clock);
+    const earliest=Math.min(...candidates.map(fish=>fish.lastSummoned));
+    const next=candidates.filter(fish=>fish.lastSummoned===earliest);
+    const fish=next[Math.floor(Math.random()*next.length)],place=fish&&summonPlace(near,fish);
+    summonUntil=clock+450;feedbackUntil=0;
+    if(!fish||!place){feedback=!fish?(active().every(fish=>fish.calledUntil>clock)?'都来啦':'稍等一下'):'附近有点挤';feedbackUntil=clock+1600;updateControls();sync();return;}
+    const stay=clock+5000;
+    Object.assign(fish,place,{target:null,retry:stay,restUntil:stay,relocating:0,dropPoint:null,calledUntil:stay,lastSummoned:++summonSerial});
+    fish.trail=[];fish.el.classList.remove('is-arriving');
+    render(fish);updateControls();sync();
   });
   settings?.addEventListener('toggle',()=>{dirty=true;});
   document.addEventListener('pointerdown',event=>{if(settings?.open&&!settings.contains(event.target))settings.open=false;},{passive:true});

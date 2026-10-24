@@ -101,6 +101,24 @@ function setup(options={}){
   const defaults=setup();assert.equal(defaults.fish().length,6);defaults.custom('9');assert.equal(defaults.fish().length,6);assert.equal(defaults.w.localStorage.getItem('flyfish-fish-mode'),'9');
   for(const [tier,count] of [['light',2],['lively',9],['standard',6]]){defaults.doc.documentElement.dataset.effects=tier;defaults.doc.dispatchEvent(new defaults.w.Event('flyfish:effectschange'));assert.equal(defaults.fish().length,count);}
   defaults.dom.window.close();
+  const gathering=setup({saved:'3'}),call=gathering.doc.querySelector('[data-fish-summon]'),progress=gathering.doc.querySelector('[data-fish-summon-status]');
+  const calledIds=[],landings=[];
+  for(let index=0;index<3;index++){
+    call.click();const guests=gathering.fish().filter(fish=>fish.classList.contains('is-called'));
+    assert.equal(guests.length,index+1,'Successive summons bring different members of the existing pool');
+    const newcomer=guests.find(fish=>!calledIds.includes(fish.dataset.fishId));calledIds.push(newcomer.dataset.fishId);landings.push(gathering.point(newcomer));
+    assert.equal(progress.textContent,`${index+1}/3`);call.click();gathering.tick(12);
+    for(const [i,id] of calledIds.entries())assert.deepEqual(gathering.point(gathering.fish().find(fish=>fish.dataset.fishId===id)),landings[i],'Earlier guests stay put while another is called');
+  }
+  call.click();assert.equal(progress.textContent,'都来啦');assert.equal(gathering.fish().length,3);assert.equal(gathering.doc.querySelectorAll('.background-fish').length,3);assert.equal(gathering.w.localStorage.getItem('flyfish-fish-mode'),'3');
+  assert.equal(gathering.frames.size,1,'Summons reuse the single animation loop');
+  const firstGuest=gathering.fish().find(fish=>fish.dataset.fishId===calledIds[0]),guestPoint=gathering.point(firstGuest);
+  gathering.pointer(firstGuest,'pointerdown',guestPoint.x+20,guestPoint.y+16);gathering.pointer(firstGuest,'pointermove',70,516);gathering.pointer(firstGuest,'pointerup',70,516);
+  gathering.tick(20);assert.ok(!firstGuest.classList.contains('is-called'));assert.deepEqual(gathering.point(firstGuest),{x:50,y:500},'Dragging takes over from the summon without jumping back');
+  gathering.tick(130);assert.equal(progress.textContent,'');assert.ok(gathering.fish().every(fish=>!fish.classList.contains('is-called')),'Guests resume roaming and progress clears after their rest');
+  call.click();assert.equal(progress.textContent,'1/3');gathering.mode('off');assert.equal(progress.textContent,'');gathering.mode('3');assert.equal(progress.textContent,'');assert.ok(gathering.fish().every(fish=>!fish.classList.contains('is-called')),'Reactivation does not restore stale summon state');gathering.dom.window.close();
+  const cappedSummon=setup({saved:'12'});cappedSummon.doc.querySelector('[data-fish-summon]').click();assert.equal(cappedSummon.doc.querySelector('[data-fish-summon-status]').textContent,'1/6','Progress uses the actual displayed pool, not an inactive saved count');assert.equal(cappedSummon.w.localStorage.getItem('flyfish-fish-mode'),'12');cappedSummon.dom.window.close();
+  const oneGuest=setup({saved:'1'}),oneCall=oneGuest.doc.querySelector('[data-fish-summon]');oneCall.click();const onePoint=oneGuest.point(oneGuest.fish()[0]);oneGuest.tick(12);oneCall.click();oneGuest.tick(100);assert.deepEqual(oneGuest.point(oneGuest.fish()[0]),onePoint,'An exhausted summon does not extend or reset the current guest');oneGuest.tick(30);assert.notDeepEqual(oneGuest.point(oneGuest.fish()[0]),onePoint);oneGuest.dom.window.close();
   const separation=points=>Math.min(...points.flatMap((point,index)=>points.slice(index+1).map(other=>Math.hypot(point.x-other.x,point.y-other.y))));
   for(const gutter of [0,80])for(let seed=1;seed<=12;seed++){
     const scattered=setup({saved:'6',seed:seed*7919,gutter}),births=scattered.fish().map(scattered.point);
