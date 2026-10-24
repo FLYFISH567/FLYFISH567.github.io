@@ -6,7 +6,7 @@ function setup(options={}){
   const controls=ejs.render(fs.readFileSync('themes/flyfish/layout/_partials/footer-fish.ejs','utf8'));
   const dom=new JSDOM('<header class="site-header"></header><div class="site-shell"><article class="post-card"></article></div><dialog></dialog>'+controls+html,{runScripts:'outside-only',url:'http://localhost/'});
   const w=dom.window,doc=w.document,ocean=doc.querySelector('[data-background-fish]');
-  const frames=new Map(),timers=new Map();let now=100,serial=0,seed=31,hidden=false,crowded=!!options.crowded;
+  const frames=new Map(),timers=new Map();let now=100,serial=0,seed=options.seed??31,hidden=false,crowded=!!options.crowded;
   const capture=new Map(),reduced={matches:!!options.reduced,addEventListener:(_,fn)=>reduced.change=fn},mouse={matches:!options.touch,addEventListener:(_,fn)=>mouse.change=fn};
   w.innerWidth=options.width||1440;w.innerHeight=options.height||900;
   Object.defineProperty(doc.documentElement,'clientWidth',{get:()=>w.innerWidth});Object.defineProperty(doc,'hidden',{get:()=>hidden});Object.defineProperty(w.performance,'now',{value:()=>now});
@@ -101,5 +101,20 @@ function setup(options={}){
   const defaults=setup();assert.equal(defaults.fish().length,6);defaults.custom('9');assert.equal(defaults.fish().length,6);assert.equal(defaults.w.localStorage.getItem('flyfish-fish-mode'),'9');
   for(const [tier,count] of [['light',2],['lively',9],['standard',6]]){defaults.doc.documentElement.dataset.effects=tier;defaults.doc.dispatchEvent(new defaults.w.Event('flyfish:effectschange'));assert.equal(defaults.fish().length,count);}
   defaults.dom.window.close();
+  const separation=points=>Math.min(...points.flatMap((point,index)=>points.slice(index+1).map(other=>Math.hypot(point.x-other.x,point.y-other.y))));
+  for(const gutter of [0,80])for(let seed=1;seed<=12;seed++){
+    const scattered=setup({saved:'6',seed:seed*7919,gutter}),births=scattered.fish().map(scattered.point);
+    assert.equal(births.length,6);assert.ok(separation(births)>90,'Births use separate parts of the available space, including narrow gutters');
+    scattered.tick(80);const movements=scattered.fish().map((fish,index)=>{const point=scattered.point(fish);return {x:point.x-births[index].x,y:point.y-births[index].y};});
+    const opposed=axis=>movements.some(delta=>delta[axis]>3)&&movements.some(delta=>delta[axis]<-3);
+    assert.ok(gutter?opposed('y'):opposed('x')||opposed('y'),'Independent fish do not all depart in the same direction');
+    scattered.mode('off');scattered.mode('6');assert.ok(separation(scattered.fish().map(scattered.point))>90,'Reactivation also spreads births');
+    scattered.dom.window.close();
+  }
+  const steady=setup({seed:491}),remeasured=setup({seed:491});steady.tick(45);remeasured.tick(45);
+  remeasured.w.dispatchEvent(new remeasured.w.Event('resize'));steady.tick(20);remeasured.tick(20);
+  assert.deepEqual(remeasured.fish().map(remeasured.point),steady.fish().map(steady.point),'An unchanged layout does not reset all routes');
+  steady.dom.window.close();remeasured.dom.window.close();
+  console.log('PASS: dispersed births across 24 seeded wide/gutter layouts, mixed travel directions and stable routes during measurement.');
   console.log('PASS: custom 1–12 counts/validation/persistence, bounded pool and one loop, overlapping fish without collisions, safe content routes, drag/keyboard/touch, scroll recovery and motion/dialog/history suspension.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

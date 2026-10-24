@@ -20,6 +20,7 @@
   if(customInput)customInput.max=String(maxFish);
   const avoid='.site-header,.post-card,.side-panel,.reading-panel,.illustrated-heading,.life-nav,.album-card,.photo-grid,.show-card,.now-playing,.player-shell,.about-profile,.about-section,.about-facts,.about-more,.about-intro,.about-favourites,.now-card,.about-footprints,.intro-copy>*,.sky-cover,.section-heading,.pagination,.hub-controls,.topic-filters,.album-filters,.watch-tabs,.filter-status,.watch-count,.site-footer,.fish-settings[open],.fish-settings[open] .fish-settings-panel,.effects-settings[open] .effects-panel,.music-dock,.music-controls,.navigation-notice';
   const pool=[],size=44,fishHeight=36,margin=8;
+  const bearing=Math.random()*Math.PI*2,goldenAngle=Math.PI*(3-Math.sqrt(5));
   let width=innerWidth,height=innerHeight,top=86,boxes=[],spaces=[],capacity=0,autoCap=1;
   let dirty=true,frame=0,last=0,pageHidden=false,suspended=false,scrollUntil=0,summonUntil=0,scrollTimer=0;
   let clock=performance.now(),dialogOpen=false;
@@ -42,17 +43,32 @@
     if(near)candidates.sort((a,b)=>distance(a,near)-distance(b,near));
     return candidates.length?candidates[near?0:Math.floor(Math.random()*candidates.length)]:null;
   }
+  function birthplace(fish){
+    // 只在出生或自动迁回留白时分散摆放；游动中不检查鱼与鱼的碰撞。
+    const peers=active().filter(other=>other!==fish&&!covered(other));
+    if(!peers.length)return available();
+    let best=null,score=-Infinity;
+    for(const point of spaces){
+      const separation=Math.min(...peers.map(other=>distance(point,other)));
+      const value=separation+Math.random()*12;
+      if(value>score){score=value;best=point;}
+    }
+    return best;
+  }
   function waypoint(fish){
-    // 延续方向、偏向较远的留白，并记住最近去过的位置，减少在同一小块区域反复折返。
+    // 每条鱼有自己的航程、方向和随机选择，不再都奔向同一个最远端点。
     const candidates=spaces.filter(point=>distance(point,fish)>60&&distance(point,fish)<900).map(point=>{
       const length=distance(point,fish),alignment=((point.x-fish.x)*fish.heading.x+(point.y-fish.y)*fish.heading.y)/length;
-      const novelty=fish.trail.length?Math.min(200,...fish.trail.map(previous=>distance(point,previous))):120;
-      return {point,score:Math.min(length,650)*.55+alignment*140+novelty*.65+Math.random()*45};
+      const novelty=fish.trail.length?Math.min(180,...fish.trail.map(previous=>distance(point,previous))):120;
+      return {point,score:alignment*90+novelty*.6-Math.abs(length-fish.cruise)*.4+Math.random()*90};
     }).sort((a,b)=>b.score-a.score);
     for(const candidate of candidates)if(clearPath(fish,candidate.point))return {...candidate.point};
-    // 狭窄通道里允许短距离转弯，但仍然检查整段路线。
-    const nearby=spaces.filter(point=>distance(point,fish)>28).sort((a,b)=>distance(b,fish)-distance(a,fish));
-    for(const point of nearby)if(clearPath(fish,point))return {...point};
+    // 狭窄通道里也按各自方向选择短途路线，不统一排到最远的一头。
+    const nearby=spaces.filter(point=>distance(point,fish)>28).map(point=>{
+      const length=distance(point,fish),alignment=((point.x-fish.x)*fish.heading.x+(point.y-fish.y)*fish.heading.y)/length;
+      return {point,score:alignment*65-Math.abs(length-fish.cruise)*.25+Math.random()*60};
+    }).sort((a,b)=>b.score-a.score);
+    for(const candidate of nearby)if(clearPath(fish,candidate.point))return {...candidate.point};
     return null; // 狭小留白中可以歇一会儿，不强行穿过正文。
   }
   function measure(){
@@ -77,7 +93,11 @@
     for(const point of spaces){if(roomy.every(other=>distance(point,other)>=88))roomy.push(point);if(roomy.length===maxFish)break;}
     autoCap=width>=1400&&height>=680?4:width>=960&&height>=540?3:1;
     capacity=roomy.length;
-    for(const fish of pool){Object.assign(fish,bounds(fish));fish.target=null;fish.retry=0;}
+    for(const fish of pool){
+      Object.assign(fish,bounds(fish));
+      // 布局重测不打断有效路线，避免滚动、字体加载时整群同时重新出发。
+      if(fish.target){const next=bounds(fish.target);if(distance(next,fish.target)>1||covered(fish.target)||!clearPath(fish,fish.target))fish.target=null;}
+    }
     dirty=false;
   }
   function render(fish){
@@ -117,7 +137,9 @@
     const variant=index%3;
     el.style.setProperty('--fish-scale',[1,.86,.76][variant]);el.style.setProperty('--fish-opacity',[.42,.36,.31][variant]);
     el.style.setProperty('--tail-duration',`${.36+variant*.07}s`);if(variant===1)el.classList.add('fish-teal');
-    const fish={el,caption:el.querySelector('.fish-caption'),active:false,x:8,y:top,facing:index===1?-1:1,heading:{x:index===1?-1:1,y:index===2?-.6:.6},trail:[],turnAfter:0,restUntil:0,dropPoint:null,target:null,retry:0,held:null,hovered:false,focused:false,paused:false,relocating:0,calledUntil:0,retireTimer:0};
+    const angle=bearing+index*goldenAngle+(Math.random()-.5)*.35;
+    const heading={x:Math.cos(angle),y:Math.sin(angle)};
+    const fish={el,caption:el.querySelector('.fish-caption'),active:false,x:8,y:top,facing:heading.x<0?-1:1,heading,cruise:140+Math.random()*260,pace:.78+Math.random()*.44,trail:[],turnAfter:0,restUntil:0,dropPoint:null,target:null,retry:0,held:null,hovered:false,focused:false,paused:false,relocating:0,calledUntil:0,retireTimer:0};
     el.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&mouse.matches&&!suspended){fish.hovered=true;render(fish);}});
     el.addEventListener('pointerleave',()=>{fish.hovered=false;render(fish);});
     el.addEventListener('pointerdown',event=>{
@@ -163,8 +185,9 @@
     for(let index=0;index<Math.max(wanted,pool.length);index++){
       const fish=pool[index]||createFish(index);
       if(index<wanted&&!fish.active){
-        const place=available();if(!place)continue;
+        const place=birthplace(fish);if(!place)continue;
         clearTimeout(fish.retireTimer);fish.retireTimer=0;Object.assign(fish,place,{active:true,relocating:0,target:null,retry:0,paused:false,restUntil:0,dropPoint:null});
+        fish.trail=[];fish.restUntil=clock+150+index*65+Math.random()*650;
         fish.el.classList.remove('is-retiring');fish.el.classList.add('is-arriving');render(fish);fish.el.hidden=false;
       }else if(index>=wanted&&fish.active){
         fish.active=false;release(fish);fish.el.blur();fish.el.tabIndex=-1;fish.el.setAttribute('aria-hidden','true');fish.el.classList.add('is-retiring');
@@ -191,14 +214,14 @@
       if(!fish.held&&!fish.hovered&&!fish.paused){
         if(covered(fish)){
           if(!fish.relocating)fish.relocating=time+240;
-          if(time>=fish.relocating){const place=available(fish.dropPoint||fish);if(place){Object.assign(fish,place);fish.relocating=0;fish.target=null;fish.dropPoint=null;}else fish.relocating=time+400;}
+          if(time>=fish.relocating){const place=fish.dropPoint?available(fish.dropPoint):birthplace(fish);if(place){Object.assign(fish,place);fish.relocating=0;fish.target=null;fish.dropPoint=null;}else fish.relocating=time+400;}
         }else{
           fish.relocating=0;if(fish.target&&covered(fish.target))fish.target=null;
-          if(fish.target&&distance(fish,fish.target)<6){fish.trail.push({...fish.target});fish.trail=fish.trail.slice(-6);fish.target=null;fish.restUntil=time+200+Math.random()*350;fish.retry=fish.restUntil;}
+          if(fish.target&&distance(fish,fish.target)<6){fish.trail.push({...fish.target});fish.trail=fish.trail.slice(-6);fish.target=null;fish.restUntil=time+250+Math.random()*1100;fish.retry=fish.restUntil;}
           if(time<fish.restUntil){render(fish);continue;}
           if(!fish.target&&time>=fish.retry){fish.target=waypoint(fish);fish.retry=time+1200;}
           if(fish.target){
-            const dx=fish.target.x-fish.x,dy=fish.target.y-fish.y,length=Math.hypot(dx,dy),speed=root.dataset.effects==='light'?15:root.dataset.effects==='lively'?26:22,step=Math.min(length,(mouse.matches?speed:15)*delta);
+            const dx=fish.target.x-fish.x,dy=fish.target.y-fish.y,length=Math.hypot(dx,dy),speed=root.dataset.effects==='light'?15:root.dataset.effects==='lively'?26:22,step=Math.min(length,(mouse.matches?speed:15)*fish.pace*delta);
             const next=bounds({x:fish.x+dx/length*step,y:fish.y+dy/length*step});
             if(!covered(next)){Object.assign(fish,next);fish.heading={x:dx/length,y:dy/length};if(Math.abs(dx)>14&&time>=fish.turnAfter){fish.facing=dx<0?-1:1;fish.turnAfter=time+1200;}}else fish.target=null;
           }
