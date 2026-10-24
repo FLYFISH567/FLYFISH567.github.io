@@ -1,13 +1,9 @@
-# 所有文本文件默认使用 LF
+# 界面代码统一 LF；已有文章和数据保留原始字节，以保持日期与内容校验稳定。
 * text=auto eol=lf
-
-# 例外：Windows 脚本使用 CRLF
+source/** -text
 *.bat text eol=crlf
 *.cmd text eol=crlf
-
-# 特殊文件处理
-*.sh text eol=lf       # Shell 脚本强制 LF
-*.ps1 text eol=lf      # PowerShell 脚本 LF
-*.md text diff=markdown # Markdown 差异化处理
-*.svg binary           # SVG 作为二进制文件（关键！避免换行符转换）
-*.svg -text            # 禁止 Git 将 SVG 识别为文本文件（增强兼容性）
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.svg text eol=lf
+*.md diff=markdown
