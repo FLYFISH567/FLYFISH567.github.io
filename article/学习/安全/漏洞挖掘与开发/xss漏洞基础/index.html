@@ -1,350 +1,159 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>xss漏洞基础 | FLYFISHING</title><meta name="keywords" content="xss,漏洞挖掘与开发"><meta name="author" content="FLYFISH"><meta name="copyright" content="FLYFISH"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="xss漏洞基础"><meta name="application-name" content="xss漏洞基础"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="xss漏洞基础"><meta property="og:url" content="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/index.html"><meta property="og:site_name" content="FLYFISHING"><meta property="og:description" content="xss漏洞基础"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=f3eab073-6ed5-7af0-4a6d-be5defe2abdd"><meta property="article:author" content="FLYFISH"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=f3eab073-6ed5-7af0-4a6d-be5defe2abdd"><meta name="description" content="xss漏洞基础"><link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=35cCJ0NU5XUV&format=png&color=000000"><link rel="canonical" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  linkPageTop: undefined,
-  peoplecanvas: undefined,
-  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
-  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
-  LA51: undefined,
-  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"笨蛋宝宝，还不睡，我要生气啦","startTime":0,"endTime":5},{"greeting":"宝宝早上好鸭👋, 今天也要开心哦！","startTime":6,"endTime":9},{"greeting":"宝宝上午好👋,mua～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下宝宝就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝宝","startTime":12,"endTime":14},{"greeting":"宝宝，🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励宝宝一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"宝宝晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":22},{"greeting":"要睡觉咯宝宝，不许玩游戏啦(•́へ•́╬)","startTime":22,"endTime":23},{"greeting":"不许熬夜坏宝宝，快去睡觉啦","startTime":22,"endTime":24}]},
-  twikooEnvId: 'cloud1-9g53mppfbcb1cd04',
-  commentBarrageConfig:undefined,
-  music_page_default: "nav_music",
-  root: '/',
-  preloader: {"source":3},
-  friends_vue_info: undefined,
-  navMusic: true,
-  mainTone: undefined,
-  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 期待环球旅游者","🏠 梦想小屋幻想者","🔨 CTF爱好者"]},
-  algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
-  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    simplehomepage: false,
-    post: false
-  },
-  runtime: '天',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: FLYFISH","link":"链接: ","source":"来源: FLYFISHING","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
-  lightbox: 'fancybox',
-  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
-      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: true,
-  isAnchor: false,
-  shortcutKey: undefined,
-  autoDarkmode: true
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  configTitle: 'FLYFISHING',
-  title: 'xss漏洞基础',
-  postAI: '',
-  pageFillDescription: '漏洞基础',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2026-03-24 15:05:27',
-  postMainColor: '',
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-      win.saveToLocal = {
-        set: (key, value, ttl) => {
-          if (ttl === 0) return
-          const now = Date.now()
-          const expiry = now + ttl * 86400000
-          const item = {
-            value,
-            expiry
-          }
-          localStorage.setItem(key, JSON.stringify(item))
-        },
-      
-        get: key => {
-          const itemStr = localStorage.getItem(key)
-      
-          if (!itemStr) {
-            return undefined
-          }
-          const item = JSON.parse(itemStr)
-          const now = Date.now()
-      
-          if (now > item.expiry) {
-            localStorage.removeItem(key)
-            return undefined
-          }
-          return item.value
-        }
-      }
-    
-      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        script.onerror = reject
-        script.onload = script.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          script.onload = script.onreadystatechange = null
-          resolve()
-        }
-
-        Object.keys(attr).forEach(key => {
-          script.setAttribute(key, attr[key])
-        })
-
-        document.head.appendChild(script)
-      })
-    
-      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onerror = reject
-        link.onload = link.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          link.onload = link.onreadystatechange = null
-          resolve()
-        }
-        document.head.appendChild(link)
-      })
-    
-      win.activateDarkMode = () => {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
-        }
-      }
-      win.activateLightMode = () => {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
-        }
-      }
-      const t = saveToLocal.get('theme')
-    
-          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
-          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
-          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
-
-          if (t === undefined) {
-            if (isLightMode) activateLightMode()
-            else if (isDarkMode) activateDarkMode()
-            else if (isNotSpecified || hasNoSupport) {
-              const now = new Date()
-              const hour = now.getHours()
-              const isNight = hour <= 6 || hour >= 18
-              isNight ? activateDarkMode() : activateLightMode()
-            }
-            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
-              if (saveToLocal.get('theme') === undefined) {
-                e.matches ? activateDarkMode() : activateLightMode()
-              }
-            })
-          } else if (t === 'light') activateLightMode()
-          else activateDarkMode()
-        
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-      const detectApple = () => {
-        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-          document.documentElement.classList.add('apple')
-        }
-      }
-      detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
-  endLoading: () => {
-    document.getElementById('loading-box').classList.add("loaded");
-  },
-  initLoading: () => {
-    document.getElementById('loading-box').classList.remove("loaded")
-  }
-}
-window.addEventListener('load',()=> { preloader.endLoading() })
-setTimeout(function(){preloader.endLoading();},10000)
-
-if (true) {
-  document.addEventListener('pjax:send', () => { preloader.initLoading() })
-  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
-}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://flyfish567.github.io/" title="博客"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=35cCJ0NU5XUV&amp;format=png&amp;color=000000" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://t.bilibili.com" title="Bilibili"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=5E24fZ9ORelo&amp;format=png&amp;color=000000" alt="Bilibili"/><span class="back-menu-item-text">Bilibili</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.nssctf.cn/contest" title="NSSCTF"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="NSSCTF"/><span class="back-menu-item-text">NSSCTF</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.deepseek.com/" title="Deepseek"><img class="back-menu-item-icon" src="https://img.icons8.com/?size=100&amp;id=YWOidjGxCpFW&amp;format=png&amp;color=000000" alt="Deepseek"/><span class="back-menu-item-text">Deepseek</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">FLYFISHING</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 警示页</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/Warning/index.html"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 警告</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12908278323&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" style="font-size: 1.05rem;">PHP反序列化<sup>2</sup></a><a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 1.05rem;">SQL注入<sup>14</sup></a><a href="/tags/SSRF/" style="font-size: 1.05rem;">SSRF<sup>5</sup></a><a href="/tags/SSTI/" style="font-size: 1.05rem;">SSTI<sup>6</sup></a><a href="/tags/WP/" style="font-size: 1.05rem;">WP<sup>6</sup></a><a href="/tags/XSS/" style="font-size: 1.05rem;">XSS<sup>1</sup></a><a href="/tags/test/" style="font-size: 1.05rem;">test<sup>1</sup></a><a href="/tags/xss/" style="font-size: 1.05rem;">xss<sup>1</sup></a><a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 1.05rem;">信息收集<sup>1</sup></a><a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 1.05rem;">命令执行<sup>9</sup></a><a href="/tags/%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 1.05rem;">奇奇怪怪的问题<sup>1</sup></a><a href="/tags/%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" style="font-size: 1.05rem;">学生认证<sup>1</sup></a><a href="/tags/%E5%B0%8F%E8%AE%B0/" style="font-size: 1.05rem;">小记<sup>1</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 1.05rem;">文件上传<sup>3</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/" style="font-size: 1.05rem;">漏洞挖掘与开发<sup>2</sup></a><a href="/tags/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/" style="font-size: 1.05rem;">目录遍历<sup>1</sup></a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 1.05rem;">脚本<sup>1</sup></a><a href="/tags/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" style="font-size: 1.05rem;">靶场搭建<sup>2</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/04/"><span class="card-archive-list-date">四月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/03/"><span class="card-archive-list-date">三月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">44</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url">学习</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/xss/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>xss</span></a><a class="article-meta__tags" href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>漏洞挖掘与开发</span></a></span></div></div><h1 class="post-title" itemprop="name headline">xss漏洞基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-03-24T06:19:09.584Z" title="发表于 2026-03-24 14:19:09">2026-03-24</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-03-24T07:05:27.500Z" title="更新于 2026-03-24 15:05:27">2026-03-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="xss漏洞基础"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为海南"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>海南</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=f3eab073-6ed5-7af0-4a6d-be5defe2abdd"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/"><header><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url">学习</a><a href="/tags/xss/" tabindex="-1" itemprop="url">xss</a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/" tabindex="-1" itemprop="url">漏洞挖掘与开发</a><h1 id="CrawlerTitle" itemprop="name headline">xss漏洞基础</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">FLYFISH</span><time itemprop="dateCreated datePublished" datetime="2026-03-24T06:19:09.584Z" title="发表于 2026-03-24 14:19:09">2026-03-24</time><time itemprop="dateCreated datePublished" datetime="2026-03-24T07:05:27.500Z" title="更新于 2026-03-24 15:05:27">2026-03-24</time></header></article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">FLYFISH</div><div class="post-copyright__author_desc">love and be loved</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/')">xss漏洞基础</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1c786423c6fa1d079ed90fd1b63b592.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img39a034a7638e67c31e4ac65e322d028.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=xss漏洞基础&amp;url=https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/&amp;pic=https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=f3eab073-6ed5-7af0-4a6d-be5defe2abdd" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
-  var currentPageUrl = window.location.href;
-  var input = document.createElement("input");
-  input.setAttribute("value", currentPageUrl);
-  document.body.appendChild(input);
-  input.select();
-  input.setSelectionRange(0, 99999);
-  document.execCommand("copy");
-  document.body.removeChild(input);
-}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://flyfish567.github.io" target="_blank">FLYFISHING</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/xss/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>xss<span class="tagsPageCount">1</span></a><a class="post-meta__box__tags" href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>漏洞挖掘与开发<span class="tagsPageCount">2</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=5bdac391-bb59-b18b-c8e9-7e4412db6e9b" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SSTI%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5/%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E4%B8%8E%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164214.bmp?_r_=963f8cc5-b1b2-4c31-155b-c032182ff845" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">继承关系和魔术方法</div></div></a></div><div class="next-post pull-right"><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%96%B9%E6%B3%95/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp?_r_=df274f09-951e-d92a-55d0-c0d500a67650" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">实战中的信息收集方法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%96%B9%E6%B3%95/" title="实战中的信息收集方法"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img00eb9d9de849c996d4cdb440fb732bdb395143382.jpg@1192w.webp?_r_=df274f09-951e-d92a-55d0-c0d500a67650" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-03-24</div><div class="title">实战中的信息收集方法</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description">欢迎喵！</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">FLYFISH</h1><div class="author-info__desc">love and be loved</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/FLYFISH567" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/351361938" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" title="如何快速完成Github学生认证"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img683ddc3754e6a5fcd482d89047dcf37c395143382.jpg?_r_=5bdac391-bb59-b18b-c8e9-7e4412db6e9b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何快速完成Github学生认证"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" title="如何快速完成Github学生认证">如何快速完成Github学生认证</a><time datetime="2026-04-06T12:43:57.741Z" title="发表于 2026-04-06 20:43:57">2026-04-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/" title="3.24 周二晚"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img373f68957c1a6b90f5f394cf59c2dfed395143382.jpg?_r_=56e0a1b6-5aa5-a046-0eed-922fd1594b9b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3.24 周二晚"/></a><div class="content"><a class="title" href="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/" title="3.24 周二晚">3.24 周二晚</a><time datetime="2026-03-24T14:29:47.583Z" title="发表于 2026-03-24 22:29:47">2026-03-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" title="XSS-labs靶场搭建"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164222.bmp?_r_=6373e95a-5145-930e-f580-8a225b14a349" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="XSS-labs靶场搭建"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" title="XSS-labs靶场搭建">XSS-labs靶场搭建</a><time datetime="2026-03-24T06:19:13.794Z" title="发表于 2026-03-24 14:19:13">2026-03-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" title="魔术方法构造和析构"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164230.bmp?_r_=61b4d055-48e8-7b04-cbf7-bbaa014b0dba" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="魔术方法构造和析构"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" title="魔术方法构造和析构">魔术方法构造和析构</a><time datetime="2026-03-24T06:19:13.783Z" title="发表于 2026-03-24 14:19:13">2026-03-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="PHP反序列化基础知识"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250225164205.bmp?_r_=cea1593b-4a57-34ee-6ee5-dc914b074ca8" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP反序列化基础知识"/></a><div class="content"><a class="title" href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="PHP反序列化基础知识">PHP反序列化基础知识</a><time datetime="2026-03-24T06:19:13.778Z" title="发表于 2026-03-24 14:19:13">2026-03-24</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2025 - 2026 By <a class="footer-bar-link" href="/" title="FLYFISH" target="_blank">FLYFISH</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">48</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">5</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://flyfish567.github.io/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=35cCJ0NU5XUV&amp;format=png&amp;color=000000" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://t.bilibili.com" title="Bilibili"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=5E24fZ9ORelo&amp;format=png&amp;color=000000" alt="Bilibili"/><span class="back-menu-item-text">Bilibili</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.nssctf.cn/contest" title="NSSCTF"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="NSSCTF"/><span class="back-menu-item-text">NSSCTF</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.deepseek.com/" title="Deepseek"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.icons8.com/?size=100&amp;id=YWOidjGxCpFW&amp;format=png&amp;color=000000" alt="Deepseek"/><span class="back-menu-item-text">Deepseek</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 警示页</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/Warning/index.html"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 警告</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12908278323&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" style="font-size: 0.88rem;">PHP反序列化<sup>2</sup></a><a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 0.88rem;">SQL注入<sup>14</sup></a><a href="/tags/SSRF/" style="font-size: 0.88rem;">SSRF<sup>5</sup></a><a href="/tags/SSTI/" style="font-size: 0.88rem;">SSTI<sup>6</sup></a><a href="/tags/WP/" style="font-size: 0.88rem;">WP<sup>6</sup></a><a href="/tags/XSS/" style="font-size: 0.88rem;">XSS<sup>1</sup></a><a href="/tags/test/" style="font-size: 0.88rem;">test<sup>1</sup></a><a href="/tags/xss/" style="font-size: 0.88rem;">xss<sup>1</sup></a><a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 0.88rem;">信息收集<sup>1</sup></a><a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 0.88rem;">命令执行<sup>9</sup></a><a href="/tags/%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 0.88rem;">奇奇怪怪的问题<sup>1</sup></a><a href="/tags/%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" style="font-size: 0.88rem;">学生认证<sup>1</sup></a><a href="/tags/%E5%B0%8F%E8%AE%B0/" style="font-size: 0.88rem;">小记<sup>1</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 0.88rem;">文件上传<sup>3</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/" style="font-size: 0.88rem;">漏洞挖掘与开发<sup>2</sup></a><a href="/tags/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/" style="font-size: 0.88rem;">目录遍历<sup>1</sup></a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 0.88rem;">脚本<sup>1</sup></a><a href="/tags/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" style="font-size: 0.88rem;">靶场搭建<sup>2</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="12908278323" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://music.163.com/#/my/m/music/playlist?id=12908278323&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
-var HoldLog = console.log;
-console.log = function () {};
-let now1 = new Date();
-queueMicrotask(() => {
-  const Log = function () {
-    HoldLog.apply(console, arguments);
-  }; //在恢复前输出日志
-  const grt = new Date("23/05/2025 20:00:00"); //此处修改你的建站时间或者网站上线时间
-  now1.setTime(now1.getTime() + 250);
-  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
-  const dnum = Math.floor(days);
-  const ascll = [
-    `欢迎使用安知鱼!`,
-    `生活明朗, 万物可爱`,
-    `
-        
-       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
-      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
-      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
-      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
-      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
-      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
-        
-        `,
-    "已上线",
-    dnum,
-    "天",
-    "©2025 By 安知鱼 V1.6.14",
-  ];
-  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
-
-  setTimeout(
-    Log.bind(
-      console,
-      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
-      "color:#425AEF",
-      "",
-      "color:#425AEF",
-      "color:#425AEF",
-      "",
-      "color:#425AEF",
-      ""
-    )
-  );
-  setTimeout(
-    Log.bind(
-      console,
-      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
-      "color:white; background-color:#4fd953",
-      "",
-      "",
-      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
-    )
-  );
-
-  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
-
-  setTimeout(
-    console.warn.bind(
-      console,
-      "%c ⚡ Powered by 安知鱼 %c 你正在访问 FLYFISH 的博客.",
-      "color:white; background-color:#f0ad4e",
-      ""
-    )
-  );
-
-  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
-
-  setTimeout(
-    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
-  );
-});</script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "flyfish567@qq.com";
-</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script id="click-show-text" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU,可爱喵,害羞喵,开心喵,生气喵,抑郁喵,讨厌喵,愤怒喵,好看喵,温柔喵,喜欢喵" data-fontsize="15px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
-var pjax = new Pjax({
-  elements: 'a:not([target="_blank"])',
-  selectors: pjaxSelectors,
-  cacheBust: false,
-  analytics: false,
-  scrollRestoration: false
-})
-
-document.addEventListener('pjax:send', function () {
-  // removeEventListener scroll 
-  anzhiyu.removeGlobalFnEvent('pjax')
-  anzhiyu.removeGlobalFnEvent('themeChange')
-
-  document.getElementById('rightside').classList.remove('rightside-show')
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>try{if(localStorage.getItem('flyfish-theme')==='dark')document.documentElement.dataset.theme='dark';const tier=localStorage.getItem('flyfish-effects-tier');document.documentElement.dataset.effects=['light','standard','lively'].includes(tier)?tier:'standard';}catch{document.documentElement.dataset.effects='standard';}</script>
+  <title>xss漏洞基础 · FLYFISHING</title>
+  <meta name="description" content="xss漏洞基础，保存学习过程中的代码与笔记。">
+  <link rel="canonical" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/xss%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/flyfish.css?v=8600e32652">
   
-  if (window.aplayers) {
-    for (let i = 0; i < window.aplayers.length; i++) {
-      if (!window.aplayers[i].options.fixed) {
-        window.aplayers[i].destroy()
-      }
-    }
-  }
+  <script defer src="/js/effects.js?v=0f025da19e"></script>
+  <script defer src="/js/flyfish.js?v=2c7cc1186a"></script>
+  <script defer src="/js/search.js?v=02f4581cdc"></script>
+  <script defer src="/js/explore.js?v=3e4f8a5d20"></script>
+  <script defer src="/js/motion.js?v=d716fa0a3d"></script>
+  <script defer src="/js/details.js?v=94a9622d25"></script>
+  <script defer src="/js/pointer-play.js?v=b2c1772f08"></script>
+  <script defer src="/js/background-fish.js?v=565caf623d"></script>
+  <script defer src="/js/travel-map.js?v=7c7680f4be"></script>
+  <script defer src="/js/life-nav.js?v=8868aa20b4"></script>
+  <script defer src="/js/navigation.js?v=93ee5cb51d"></script>
+  <script defer src="/js/global-music.js?v=74ab1c71fd"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body data-view="post">
+<section class="opening-screen" aria-label="欢迎来到 FLYFISHING" hidden>
+  <div class="opening-content">
+    <div class="opening-avatar"><span class="brand-mark" aria-hidden="true"></span><img src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" alt="" width="80" height="80" decoding="async"><i aria-hidden="true"></i></div>
+    <p class="opening-name">FLYFISHING</p>
+    <p class="opening-motto">love and be loved</p>
+  </div>
+  <button class="opening-skip" type="button" data-skip-opening>进入博客 <span aria-hidden="true">↵</span></button>
+</section>
 
-  typeof typed === 'object' && typed.destroy()
+<div class="home-atmosphere" aria-hidden="true">
+  <svg viewBox="0 0 1600 860" preserveAspectRatio="xMidYMin slice" fill="none" focusable="false">
+    <defs><linearGradient id="cloud-wash" x1="0" y1="180" x2="0" y2="660" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity=".76"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient></defs>
+    <path class="cloud-drift cloud-drift-left" d="M-100 322C-60 264 1 264 43 287C47 225 122 199 168 241C196 179 287 191 303 257C350 230 407 258 413 304C458 293 500 324 504 363V630H-100Z" fill="url(#cloud-wash)"/>
+    <path class="cloud-drift cloud-drift-right" d="M1146 520C1160 470 1213 450 1255 476C1257 405 1349 373 1393 435C1433 398 1502 423 1503 477C1564 451 1621 491 1646 533V800H1146Z" fill="url(#cloud-wash)"/>
+    <path d="M-35 126C26 79 87 94 119 126C164 87 231 105 259 151M1337 708C1382 670 1430 675 1457 700C1502 643 1571 659 1608 704" stroke="#87b3dc" stroke-opacity=".22" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="414" cy="100" r="48" stroke="#a9c7e7" stroke-opacity=".18"/>
+    <circle cx="414" cy="100" r="67" stroke="#a9c7e7" stroke-opacity=".09"/>
+  </svg>
+</div>
+<div class="ambient-specks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
-  //reset readmode
-  const $bodyClassList = document.body.classList
-  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
-})
+<a class="skip-link" href="#main">跳到内容</a>
+<header class="site-header"><div class="header-inner">
+  <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span>FLYFISHING</span></a>
+  <button class="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav">菜单</button>
+  <nav id="main-nav" aria-label="主导航">
+    
+      <a href="/" >首页</a>
+    
+      <a href="/articles/" aria-current="page">文章</a>
+    
+      <a href="/album/" >日常</a>
+    
+      <a href="/music/" >音乐</a>
+    
+      <a href="/about/" >关于</a>
+    
+    <button type="button" class="nav-search" data-open-search aria-label="搜索文章" aria-haspopup="dialog" aria-controls="site-search">搜索 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></button>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换显示模式"><span class="theme-symbol" aria-hidden="true">◐</span></button>
+  </nav>
+</div><div class="reading-progress" role="progressbar" aria-label="正文阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" ><span></span></div></header>
+<div class="site-shell">
+  <div class="page-content" data-page-content>
+  
+  
+  <div class="site-layout ">
+    <main id="main"><article class="reading-panel">
+  <header class="article-heading"><a class="back-link" href="/articles/">← 文章库</a><div class="eyebrow">XSS</div><h1>xss漏洞基础</h1><div class="post-meta"><span>FLYFISH</span><time datetime="2026-03-24T06:19:09.584Z">发布于 2026.03.24</time></div></header>
+  <details class="mobile-toc"><summary>这篇文章的目录</summary></details>
+  <div class="article-body"></div>
+  <footer class="article-footer"><div class="article-tags"><a href="/articles/?topic=%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91"># 漏洞挖掘与开发</a><a href="/articles/?topic=XSS"># XSS</a></div><p>作者 FLYFISH · 本文遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 协议，转载请注明出处。</p><nav class="post-neighbours" aria-label="相邻文章"><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%96%B9%E6%B3%95/"><small>上一篇</small><span>实战中的信息收集方法</span></a><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SSTI%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5/%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E4%B8%8E%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/"><small>下一篇</small><span>继承关系和魔术方法</span></a></nav></footer>
+</article>
+</main>
+    
+<aside class="sidebar" aria-label="文章目录与相关阅读">
 
-document.addEventListener('pjax:complete', function () {
-  window.refreshFn()
+  <section class="side-panel toc-panel"><h2>文章目录</h2><nav class="toc-nav" aria-label="文章目录"></nav></section>
+  <section class="side-panel related-panel"><h2>接着读</h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/"><span>XSS-labs靶场搭建</span><small>XSS</small></a><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B8%8E%E5%BC%80%E5%8F%91/%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%96%B9%E6%B3%95/"><span>实战中的信息收集方法</span><small>信息收集</small></a><a href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/"><span>如何快速完成Github学生认证</span><small>工具与经验</small></a></section>
 
-  document.querySelectorAll('script[data-pjax]').forEach(item => {
-    const newScript = document.createElement('script')
-    const content = item.text || item.textContent || item.innerHTML || ""
-    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
-    newScript.appendChild(document.createTextNode(content))
-    item.parentNode.replaceChild(newScript, item)
-  })
+</aside>
 
-  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+  </div>
+  </div>
+  <footer class="site-footer"><span>© 2025–2026 FLYFISH · Love and be loved</span><span class="footer-actions"><button type="button" class="wander-button" data-open-explore hidden><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 8h.01M16 8h.01M12 12h.01M8 16h.01M16 16h.01" stroke-width="3"/></svg>
+<span>随便逛逛</span></button><button type="button" data-replay-opening hidden>重播开屏</button><a href="/articles/">47 篇文章</a></span><div class="footer-pond" data-fish-control hidden>
+  <button type="button" class="footer-fish-button" data-fish-summon aria-label="召唤一条飞飞鱼到附近"><svg width="17" height="14" viewBox="0 0 32 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 11C14 2 24 2 29 11C24 20 14 20 9 11ZM9 11 2 5v12Z"/><circle cx="23" cy="9" r="1" fill="currentColor" stroke="none"/></svg><span>召唤飞飞鱼</span></button>
+  <details class="fish-settings" data-fish-settings>
+    <summary aria-label="设置背景小鱼数量"><span data-fish-count>6 条</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m3 7 3-3 3 3"/></svg></summary>
+    <div class="fish-settings-panel">
+      <span class="fish-settings-title">背景小鱼</span>
+      <div class="fish-mode-options" role="group" aria-label="小鱼数量"><button type="button" data-fish-mode="auto" aria-pressed="false">自动</button><button type="button" data-fish-mode="1" aria-pressed="false">1 条</button><button type="button" data-fish-mode="3" aria-pressed="false">3 条</button><button type="button" data-fish-mode="6" aria-pressed="true">6 条</button><button type="button" data-fish-mode="9" aria-pressed="false">9 条</button><button type="button" data-fish-mode="off" aria-pressed="false">关闭</button></div>
+      
+      <form class="fish-custom-form" data-fish-custom-form>
+        <label for="fish-custom-count">自定义 <span>最多 12 条</span></label>
+        <div class="fish-custom-row"><input id="fish-custom-count" data-fish-custom type="number" min="1" max="12" step="1" required inputmode="numeric" placeholder="1–12" aria-describedby="fish-count-note"><button type="submit">设置</button></div>
+      </form>
+      <p id="fish-count-note" data-fish-note>自动模式按屏幕调整；留白不足时，部分小鱼会暂歇。</p>
+    </div>
+  </details>
+  <details class="effects-settings" data-effects-settings><summary aria-label="设置页面动效">动效 · <span data-effects-label>标准</span></summary><div class="effects-panel"><span class="fish-settings-title">页面动效</span><div class="effects-options" role="group" aria-label="动效档位"><button type="button" data-effects-tier="light" aria-pressed="false">轻量</button><button type="button" data-effects-tier="standard" aria-pressed="true">标准</button><button type="button" data-effects-tier="lively" aria-pressed="false">活泼</button></div><p data-effects-note>最多 6 条小鱼，保留点击水波和轻微反馈。</p></div></details>
+</div>
+</footer>
+</div>
+<dialog id="site-search" class="search-dialog" aria-labelledby="site-search-title" data-search-index="/search-index.json">
+  <header class="search-dialog-header"><h2 id="site-search-title">搜索文章</h2><button type="button" class="search-close" aria-label="关闭搜索">×</button></header>
+  <div class="search-dialog-input"><label class="search-field"><span aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></span><input type="search" name="site-search" aria-label="搜索标题、标签或正文" placeholder="搜索标题、标签或正文" maxlength="160" autocomplete="off" spellcheck="false" autofocus></label></div>
+  <div class="search-dialog-status"><p role="status" aria-live="polite" data-search-status>正在加载搜索…</p><button type="button" class="text-button" data-search-retry hidden>重试</button></div>
+  <ol class="search-results" aria-label="搜索结果" data-search-results></ol>
+  <footer class="search-dialog-footer"><span><kbd>Esc</kbd> 关闭</span><span><kbd>Enter</kbd> 打开首条结果</span></footer>
+</dialog>
 
-  typeof panguInit === 'function' && panguInit()
+<dialog id="site-explore" class="explore-dialog" aria-labelledby="explore-title" data-explore-index="/explore-index.json">
+  <header class="explore-header"><div><span class="eyebrow">WANDER</span><h2 id="explore-title">随便逛逛</h2></div><button type="button" class="explore-close" aria-label="关闭随便逛逛">×</button></header>
+  <p class="explore-intro">从已有笔记和相册里，挑一个看看。</p>
+  <div class="explore-modes" role="group" aria-label="随机内容类型"><button type="button" data-explore-kind="all" aria-pressed="true">随缘</button><button type="button" data-explore-kind="article" aria-pressed="false">读篇笔记</button><button type="button" data-explore-kind="photo" aria-pressed="false">看张照片</button></div>
+  <p class="explore-status" data-explore-status role="status" aria-live="polite">正在挑选…</p>
+  <div class="explore-preview" data-explore-preview hidden><div class="explore-photo" data-explore-photo hidden><img alt=""><p data-explore-image-error hidden>照片暂时没有加载出来，可以换一张，或去相册看看。</p></div><div class="explore-copy"><span class="eyebrow" data-explore-label></span><h3 data-explore-heading></h3><p data-explore-summary></p><time data-explore-date></time></div></div>
+  <footer class="explore-actions"><button type="button" class="button" data-explore-next><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 8h.01M16 8h.01M12 12h.01M8 16h.01M16 16h.01" stroke-width="3"/></svg>
+<span>换一个</span></button><a class="button primary" data-explore-go hidden>去看看</a></footer>
+</dialog>
 
-  // google analytics
-  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+<div class="fish-ocean" data-background-fish hidden>
+  <template data-fish-template><button type="button" class="background-fish" aria-label="背景小鱼：按住拖动，方向键移动，空格暂停或继续" aria-pressed="false">
+    <span class="fish-art" aria-hidden="true"><svg width="44" height="32" viewBox="0 0 44 32" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path class="fish-tail" d="m13 16-9-7v14Z" fill="currentColor" fill-opacity=".1"/><path d="M13 16C19 5 31 5 38 16C31 27 19 27 13 16Z" fill="currentColor" fill-opacity=".12"/><path d="m23 16 4 4-5 1M23 8l4-3 3 4"/><circle cx="31" cy="13" r="1.2" fill="currentColor" stroke="none"/><path d="M35 18h2"/></svg></span>
+    <span class="fish-caption" aria-hidden="true">按住拖动</span>
+  </button></template>
+</div>
 
-  // baidu analytics
-  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
 
-  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+<aside class="music-dock" data-global-music data-id="12908278323" data-server="netease" data-api="https://api.injahow.cn/meting/?server=:server&amp;type=:type&amp;id=:id" aria-label="随身音乐" hidden>
+  <audio data-music-audio preload="none"></audio>
+  <button class="music-dock-toggle" data-music-action="panel" aria-label="展开音乐控制台" aria-controls="music-controls" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg><span class="music-dock-levels" aria-hidden="true"><i></i><i></i><i></i></span></button>
+  <section class="music-controls" id="music-controls" aria-label="音乐控制台" hidden>
+    <header class="music-controls-header"><span>随身音乐</span><button type="button" data-music-action="close" aria-label="收起音乐控制台"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
+    <div class="music-current"><div class="music-cover"><img data-music-cover alt="" hidden><span aria-hidden="true">♪</span></div><div><strong data-music-title>继续上次收听</strong><p data-music-artist></p></div></div>
+    <p class="music-live-status" data-music-status role="status" hidden></p>
+    <label class="music-seek"><span class="sr-only">播放进度</span><input type="range" min="0" max="100" step="0.1" value="0" data-music-seek aria-label="播放进度" disabled></label><div class="music-time"><span data-music-elapsed>0:00</span><span data-music-duration>0:00</span></div>
+    <div class="music-transport">
+      <button type="button" data-music-action="loop" aria-label="列表循环，点击切换为单曲循环" title="列表循环"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg><span class="sr-only" data-music-loop>列表循环</span></button>
+      <button type="button" data-music-action="prev" aria-label="上一首" title="上一首"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14"/><path d="m18 5-10 7 10 7Z" fill="currentColor" stroke="none"/></svg></button>
+      <button type="button" class="music-play-toggle" data-music-action="play" aria-label="播放歌曲" title="播放或暂停"><span data-music-play-icon aria-hidden="true">▶</span></button>
+      <button type="button" data-music-action="next" aria-label="下一首" title="下一首"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14"/><path d="m6 5 10 7-10 7Z" fill="currentColor" stroke="none"/></svg></button>
+      <button type="button" data-music-action="stop" aria-label="停止播放" title="停止并回到歌曲开头"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg></button>
+    </div>
+    <div class="music-volume-row"><label><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg><span class="sr-only">音量</span><input type="range" min="0" max="1" step="0.05" value="0.5" data-music-volume aria-label="音量"></label></div>
+  </section>
+</aside>
 
-  // prismjs
-  typeof Prism === 'object' && Prism.highlightAll()
-})
-
-document.addEventListener('pjax:error', e => {
-  if (e.request.status === 404) {
-    pjax.loadUrl('/404.html')
-  }
-})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
+<dialog id="photo-viewer" aria-label="照片大图"><button class="viewer-close" aria-label="关闭大图">×</button><div class="viewer-stage" aria-busy="false"><img alt=""><p class="viewer-status" role="status" hidden></p></div><div class="viewer-controls"><button data-photo-step="-1" aria-label="上一张">←</button><p></p><button data-photo-step="1" aria-label="下一张">→</button></div></dialog>
+<div class="toast" role="status" aria-live="polite"></div>
+<button class="back-top" aria-label="回到顶部" data-tooltip="回到顶部" hidden><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path class="back-top-cap" d="M6 5h12"/><path class="back-top-arrow" d="m7.5 13 4.5-4.5 4.5 4.5M12 9v10"/></svg></button>
+</body></html>

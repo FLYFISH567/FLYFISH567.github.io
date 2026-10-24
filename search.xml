@@ -249,9 +249,9 @@
       
         <tags>
             
-            <tag> 靶场搭建 </tag>
-            
             <tag> 命令执行 </tag>
+            
+            <tag> 靶场搭建 </tag>
             
         </tags>
       
@@ -478,9 +478,9 @@
       
         <tags>
             
-            <tag> 漏洞挖掘与开发 </tag>
-            
             <tag> 信息收集 </tag>
+            
+            <tag> 漏洞挖掘与开发 </tag>
             
         </tags>
       
@@ -505,9 +505,9 @@
       
         <tags>
             
-            <tag> xss </tag>
-            
             <tag> 漏洞挖掘与开发 </tag>
+            
+            <tag> xss </tag>
             
         </tags>
       
@@ -1141,35 +1141,6 @@
         <tags>
             
             <tag> SSRF </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>help</title>
-      <link href="/article/help/"/>
-      <url>/article/help/</url>
-      
-        <content type="html"><![CDATA[<p>this is  a test</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-          <category> 生活 </category>
-          
-          <category> 大学 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> test </tag>
             
         </tags>
       

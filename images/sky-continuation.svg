@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1440" viewBox="0 0 1600 1440" preserveAspectRatio="none" fill="none">
+  <defs>
+    <linearGradient id="right-cloud" x1="0" y1="190" x2="0" y2="620" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity=".7"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+    <linearGradient id="left-cloud" x1="0" y1="850" x2="0" y2="1300" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity=".68"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+  </defs>
+  <path d="M1100 371C1116 319 1167 303 1207 325C1215 260 1297 230 1348 278C1375 202 1470 208 1492 277C1552 252 1614 293 1638 339V660H1100Z" fill="url(#right-cloud)"/>
+  <path d="M-80 1061C-42 998 29 991 69 1026C76 953 160 922 208 968C233 900 320 904 349 970C399 947 455 979 465 1022C513 1010 552 1046 560 1093V1340H-80Z" fill="url(#left-cloud)"/>
+  <g stroke="#87b3dc" stroke-opacity=".2" stroke-width="1.5" stroke-linecap="round">
+    <path d="M1269 548C1315 499 1379 503 1415 540C1460 478 1542 485 1589 532"/>
+    <path d="M-43 843C9 799 69 806 104 842C143 799 213 808 248 847"/>
+    <path d="M1374 1131q13-12 26 0q13-12 26 0M1422 1163q9-9 18 0q9-9 18 0"/>
+  </g>
+  <circle cx="146" cy="590" r="66" stroke="#a9c7e7" stroke-opacity=".14"/>
+  <circle cx="146" cy="590" r="86" stroke="#a9c7e7" stroke-opacity=".07"/>
+</svg>
