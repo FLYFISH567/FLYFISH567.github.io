@@ -7,12 +7,13 @@
   const icons={play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/></svg>',pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="4"/></svg>'};
   let tracks=[],index=0,pending=null,loading=false,playing=false,phase='idle',message='',loop='list',saved=null,seekAfterMetadata=0,selection=0,lastSaved=0;
   const rendered=new WeakMap();
+  const sourceCooldowns=new Map();
   let mediaTrack=null,playIntent=0,bufferTimer=0;
   const previewNote=()=>tracks[index]?.shortAudio?'当前音源约 30 秒，可能是试听片段；可在网易云收听完整版。':'';
   const $=selector=>document.querySelector(selector),$$=selector=>Array.from(document.querySelectorAll(selector));
   const time=value=>{value=Math.max(0,Math.floor(Number(value)||0));return Math.floor(value/60)+':'+String(value%60).padStart(2,'0');};
   const safeURL=value=>{try{const url=new URL(value,location.href);return ['http:','https:'].includes(url.protocol)?url.href:'';}catch{return '';}};
-  const trackIdentity=value=>{try{const url=new URL(value,location.href),id=url.searchParams.get('id'),server=url.searchParams.get('server');return id&&server==='netease'?'netease:'+id:id?url.origin+url.pathname+'?server='+(server||dock.dataset.server)+'&id='+id:url.href;}catch{return value;}};
+  const trackIdentity=value=>{try{const url=new URL(value,location.href),id=url.searchParams.get('id'),server=url.searchParams.get('server'),netease=server==='netease'||url.hostname==='music.163.com'&&url.pathname==='/song/media/outer/url';return id&&netease?'netease:'+id.replace(/\.mp3$/,''):id?url.origin+url.pathname+'?server='+(server||dock.dataset.server)+'&id='+id:url.href;}catch{return value;}};
   const parseList=value=>{try{const parsed=JSON.parse(value||'[]');return Array.isArray(parsed)?parsed:[];}catch{return [];}};
   const defaults={id:dock.dataset.id,server:dock.dataset.server||'netease',api:dock.dataset.api||'',playlist_url:dock.dataset.playlistUrl||'',fallback_apis:parseList(dock.dataset.fallbackApis),name:'我的收藏'};
   const playlists=[];
@@ -119,37 +120,47 @@
     requested=target;loading=true;if(!tracks.length)phase='loading';message=tracks.length?(target===active?'正在刷新歌单…':'正在加载「'+target.name+'」…'):'';render();
     pending=(async()=>{
       try{
-        let list=[];
-        const sources=[target.playlist_url,target.api,...(Array.isArray(target.fallback_apis)?target.fallback_apis:[])].filter(value=>typeof value==='string'&&value.trim());
+        let list=[],fromBackup=false;
+        const sources=[target.playlist_url,target.api,...(Array.isArray(target.fallback_apis)?target.fallback_apis:[]),target.backup_playlist_url].filter(value=>typeof value==='string'&&value.trim());
         for(const source of [...new Set(sources)]){
           let url=safeURL(source.replaceAll(':server',encodeURIComponent(target.server)).replaceAll(':type','playlist').replaceAll(':id',encodeURIComponent(target.id)));
           if(!url)continue;
+          const endpoint=new URL(url),cooldownKey=endpoint.origin+endpoint.pathname;
+          if((sourceCooldowns.get(cooldownKey)||0)>Date.now())continue;
           if(refresh){const fresh=new URL(url);fresh.searchParams.set('_t',String(Date.now()));url=fresh.href;}
           const request=new AbortController(),timer=setTimeout(()=>request.abort(),10000);
           try{
-            const response=await fetch(url,{signal:request.signal,credentials:'omit',cache:'no-store'});if(!response.ok)throw Error('playlist');
+            const response=await fetch(url,{signal:request.signal,credentials:'omit',cache:'no-store'});
+            if(response.status===429){const value=response.headers?.get('Retry-After')||'',seconds=Number(value),until=value&&Number.isFinite(seconds)?Date.now()+Math.max(1,seconds)*1000:Date.parse(value);sourceCooldowns.set(cooldownKey,Number.isFinite(until)?until:Date.now()+60000);}
+            if(!response.ok)throw Error('playlist');
             const data=await response.json();if(!Array.isArray(data))throw Error('playlist');
             const normalized=data.map(track=>track&&({...track,name:track.name||track.title,artist:track.artist||track.author}));
-            list=normalized.filter(track=>track&&typeof track.name==='string'&&typeof track.url==='string'&&track.url.trim()&&safeURL(track.url)).slice(0,500).map(track=>({name:track.name,artist:String(track.artist||''),url:safeURL(track.url),pic:track.pic?safeURL(track.pic):'',source:track.source?safeURL(track.source):'',duration:Number(track.duration)||0}));
+            list=normalized.filter(track=>track&&typeof track.name==='string'&&typeof track.url==='string'&&track.url.trim()&&safeURL(track.url)).slice(0,500).map(track=>{
+              let audioURL=safeURL(track.url);
+              if(target.server==='netease'&&typeof target.audio_api==='string'&&target.audio_api){const id=new URL(audioURL).searchParams.get('id')||'';if(!/^\d+$/.test(id))return null;audioURL=safeURL(target.audio_api.replaceAll(':id',encodeURIComponent(id)));if(!audioURL)return null;}
+              return {name:track.name,artist:String(track.artist||''),url:audioURL,pic:track.pic?safeURL(track.pic):'',source:track.source?safeURL(track.source):'',duration:Number(track.duration)||0};
+            }).filter(Boolean);
             if(!list.length)throw Error('empty');
+            fromBackup=source===target.backup_playlist_url;
             break;
           }catch{}finally{clearTimeout(timer);}
         }
         if(!list.length)throw Error('playlist');
+        const backupNote=fromBackup?'接口暂不可用，已加载'+(target.backup_checked_at||'此前')+'核验的歌单备份。':'';
         if(target!==active){
-          save();++playIntent;audio.pause();active=target;saved=null;tracks=list;select(0);message='已切换到「'+active.name+'」，选择歌曲开始收听。';window.FlyfishNavigator?.enable();return true;
+          save();++playIntent;audio.pause();active=target;saved=null;tracks=list;select(0);message=backupNote||'已切换到「'+active.name+'」，选择歌曲开始收听。';window.FlyfishNavigator?.enable();return true;
         }
         if(tracks.length){
           const current=tracks[index],position=list.findIndex(track=>trackIdentity(track.url)===trackIdentity(current.url));
           tracks=list;
-          if(position>=0){index=position;tracks[index].shortAudio=current.shortAudio;message='已重新获取歌单，共 '+tracks.length+' 首。';save();}
-          else{++playIntent;audio.pause();select(0);message='歌单已更新，原曲目已移出歌单，请选择歌曲播放。';}
+          if(position>=0){index=position;tracks[index].shortAudio=current.shortAudio;message=backupNote||'已重新获取歌单，共 '+tracks.length+' 首。';save();}
+          else{++playIntent;audio.pause();select(0);message=backupNote||'歌单已更新，原曲目已移出歌单，请选择歌曲播放。';}
           return true;
         }
         tracks=list;
         const restored=saved?.url?tracks.findIndex(track=>trackIdentity(track.url)===trackIdentity(saved.url)):-1;
         index=restored>=0?restored:!saved?.url&&Number.isInteger(saved?.index)&&saved.index>=0&&saved.index<tracks.length?saved.index:0;
-        select(index,saved?.url&&restored<0?0:saved?.time||0);window.FlyfishNavigator?.enable();return true;
+        select(index,saved?.url&&restored<0?0:saved?.time||0);if(backupNote)message=backupNote;window.FlyfishNavigator?.enable();return true;
       }catch{if(tracks.length)message=target===active?'刷新失败，已保留当前歌单和播放状态，请稍后重试。':'「'+target.name+'」加载失败，已保留当前歌单和播放状态。';else{phase='error';message='歌单暂时没有加载成功，请重试；也可打开原歌单。';}return false;}
     })().finally(()=>{loading=false;pending=null;requested=null;render();});return pending;
   }
