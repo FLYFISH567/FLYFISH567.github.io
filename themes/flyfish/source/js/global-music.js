@@ -75,7 +75,6 @@
   function render(){
     const track=tracks[index],name=track?.name||saved?.name||active.name,artist=track?.artist||saved?.artist||active.description;
     dock.dataset.id=active.id;dock.dataset.server=active.server;
-    for(const node of $$('[data-music-playlist-description]')){node.textContent=active.description;node.hidden=!active.description;}
     for(const wrapper of $$('[data-music-playlist-picker]'))wrapper.hidden=playlists.length<2;
     for(const picker of $$('[data-music-playlist-select]')){
       if(!pickers.has(picker)){picker.replaceChildren();for(const item of playlists){const option=document.createElement('option');option.value=item.key;option.textContent=item.name;picker.append(option);}pickers.add(picker);}
