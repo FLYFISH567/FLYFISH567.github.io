@@ -12,7 +12,7 @@
   const $=selector=>document.querySelector(selector),$$=selector=>Array.from(document.querySelectorAll(selector));
   const time=value=>{value=Math.max(0,Math.floor(Number(value)||0));return Math.floor(value/60)+':'+String(value%60).padStart(2,'0');};
   const safeURL=value=>{try{const url=new URL(value,location.href);return ['http:','https:'].includes(url.protocol)?url.href:'';}catch{return '';}};
-  const trackIdentity=value=>{try{const url=new URL(value,location.href),id=url.searchParams.get('id');return id?url.origin+url.pathname+'?server='+(url.searchParams.get('server')||dock.dataset.server)+'&id='+id:url.href;}catch{return value;}};
+  const trackIdentity=value=>{try{const url=new URL(value,location.href),id=url.searchParams.get('id'),server=url.searchParams.get('server');return id&&server==='netease'?'netease:'+id:id?url.origin+url.pathname+'?server='+(server||dock.dataset.server)+'&id='+id:url.href;}catch{return value;}};
   try{saved=JSON.parse(sessionStorage.getItem(key)||'null');if(saved?.playlist!==dock.dataset.id)saved=null;}catch{}
   audio.volume=typeof saved?.volume==='number'?Math.max(0,Math.min(1,saved.volume)):.5;
   if(saved?.loop==='single')loop='single';
@@ -120,7 +120,7 @@
         if(tracks.length){
           const current=tracks[index],position=list.findIndex(track=>trackIdentity(track.url)===trackIdentity(current.url));
           tracks=list;
-          if(position>=0){index=position;tracks[index].shortAudio=current.shortAudio;message='歌单已更新，共 '+tracks.length+' 首。';save();}
+          if(position>=0){index=position;tracks[index].shortAudio=current.shortAudio;message='已重新获取歌单，共 '+tracks.length+' 首。';save();}
           else{++playIntent;audio.pause();select(0);message='歌单已更新，原曲目已移出歌单，请选择歌曲播放。';}
           return true;
         }
