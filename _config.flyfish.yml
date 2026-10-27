@@ -23,9 +23,10 @@ music:
   # 你的网易云歌单 ID。播放权取决于网易云的公开外链权限，不自动播放。
   id: '12908278323'
   server: netease
-  # 原默认 api.i-meto.com 的音频端点超时；这里显式指定已验证的公开 Meting 服务。
+  # 2026-10-27 实测：旧 api.injahow.cn 仍返回 35 首，新接口与网易云的 29 首及顺序一致。
+  # 旧服务即使附加时间戳也会返回过期歌单，不将它作为回退，避免恢复已删除的歌曲。
   # 更换服务时保留 :server / :type / :id 占位符；不要填写账号 Cookie。
-  api: 'https://api.injahow.cn/meting/?server=:server&type=:type&id=:id'
+  api: 'https://meting.mikus.ink/api?server=:server&type=:type&id=:id'
   # 可填写自有公开 Meting 服务，主接口失败后依次尝试。
   fallback_apis: []
   # 可选：自托管 JSON 歌单（优先加载），使用自己有权发布的完整音频。
