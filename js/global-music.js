@@ -80,6 +80,11 @@
       if(!pickers.has(picker)){picker.replaceChildren();for(const item of playlists){const option=document.createElement('option');option.value=item.key;option.textContent=item.name;picker.append(option);}pickers.add(picker);}
       picker.value=(requested||active).key;picker.disabled=false;picker.setAttribute('aria-busy',String(loading));
     }
+    const loadingText=loading?'正在加载「'+(requested||active).name+'」…':'';
+    for(const node of $$('[data-music-playlist-loading-text]'))if(node.textContent!==loadingText)node.textContent=loadingText;
+    for(const node of $$('[data-music-playlist-loading]'))node.hidden=!loading;
+    for(const shell of $$('.player-shell'))shell.classList.toggle('is-playlist-loading',loading);
+    for(const host of $$('[data-player-host]'))host.setAttribute('aria-busy',String(loading));
     const platform={netease:'网易云',kugou:'酷狗',tencent:'QQ音乐'}[active.server]||'音乐';
     for(const node of $$('[data-music-platform]'))node.textContent=platform+'歌单';
     const duration=Number.isFinite(audio.duration)&&audio.duration>0?audio.duration:0,current=Math.min(duration||Infinity,Math.max(0,audio.currentTime||0));

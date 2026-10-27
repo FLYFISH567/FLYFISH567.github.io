@@ -9,7 +9,7 @@
   <meta name="description" content="SQL注入原理 SQL注入思路 如何判断SQL注入闭合 SQL注入方式： 联合查询 报错注入 布尔盲注 其他问题： SQL注入语句闭合方式">
   <link rel="canonical" href="https://flyfish567.github.io/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/css/flyfish.css?v=2ac5e46285">
+  <link rel="stylesheet" href="/css/flyfish.css?v=179fc4417a">
   
   <script defer src="/js/effects.js?v=7ecb1ae91a"></script>
   <script defer src="/js/flyfish.js?v=2c7cc1186a"></script>
@@ -22,7 +22,7 @@
   <script defer src="/js/travel-map.js?v=7c7680f4be"></script>
   <script defer src="/js/life-nav.js?v=8868aa20b4"></script>
   <script defer src="/js/navigation.js?v=93ee5cb51d"></script>
-  <script defer src="/js/global-music.js?v=d85ea3e478"></script>
+  <script defer src="/js/global-music.js?v=ef8950d9e4"></script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body data-view="post">
 <section class="opening-screen" aria-label="欢迎来到 FLYFISHING" hidden>
@@ -151,6 +151,7 @@
   <section class="music-controls" id="music-controls" aria-label="音乐控制台" hidden>
     <header class="music-controls-header"><span>随身音乐</span><button type="button" data-music-action="close" aria-label="收起音乐控制台"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
     <label class="music-playlist-picker" data-music-playlist-picker hidden><span>选择歌单</span><select data-music-playlist-select aria-label="随身音乐歌单"></select></label>
+    <div class="music-playlist-loading" data-music-playlist-loading role="status" aria-live="polite" aria-atomic="true" hidden><span class="music-loading-spinner" aria-hidden="true"></span><span data-music-playlist-loading-text></span></div>
     <div class="music-current"><div class="music-cover"><img data-music-cover alt="" hidden><span aria-hidden="true">♪</span></div><div><strong data-music-title>随身音乐</strong><p data-music-artist></p></div></div>
     <div class="music-dock-links"><a class="music-library-link" href="/music/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v14M8 5v14M13 5v14M17 5l4 14"/></svg><span>打开音乐馆</span></a><a class="music-source-link" data-music-source href="https://music.163.com/#/playlist?id=12908278323" target="_blank" rel="noopener"><span data-music-source-label>网易云收听</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7m0-7L10 14M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></svg></a><button type="button" data-retry-music hidden>重试加载</button></div>
     <p class="music-live-status" data-music-status role="status" hidden></p>
