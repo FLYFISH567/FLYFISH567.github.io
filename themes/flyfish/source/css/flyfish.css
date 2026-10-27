@@ -822,5 +822,16 @@ body.dialog-open .music-dock{visibility:hidden}
 .music-collection-caption{margin:-7px 0 20px;font-size:12px;line-height:1.8;color:var(--muted)}
 .music-playlist-picker{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--muted)}.music-playlist-picker select{min-width:0;flex:1;max-width:100%;padding:9px 32px 9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);font:inherit}.music-playlist-picker select:focus-visible{outline:2px solid var(--blue);outline-offset:3px}.music-library-picker{max-width:410px;margin:0 0 20px}.music-dock .music-playlist-picker{margin:14px 0}.music-playlist-picker>span{white-space:nowrap}
 .music-dock-links button{padding:4px 8px;border-radius:6px;background:var(--soft);font:inherit;color:inherit}.music-dock-links a:hover{text-decoration:underline}
+.music-source-link,.music-library-link{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:32px;border-radius:8px;font-size:11px;color:var(--muted);transition:color .18s,background .18s}
+.music-source-link svg,.music-library-link svg{flex-shrink:0;width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.music-library-heading .music-source-link{padding:0 9px;border:1px solid var(--line)}
+.music-source-link:hover,.music-library-link:hover{color:var(--blue);background:var(--soft)}
+.music-dock-links{justify-content:space-between;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.music-dock-links .music-library-link{color:var(--blue)}
+.music-transport [hidden]{display:none!important}
+.music-transport [data-music-action=loop]>svg{width:20px;height:20px}
+.music-transport [data-music-action=mute].is-muted{color:var(--blue);background:var(--soft)}
+.music-scene-heading{position:sticky;top:0;z-index:1;padding:12px!important;background:var(--surface);color:var(--muted);font-size:10px;letter-spacing:.08em;border-bottom:1px solid var(--line)}
+.music-empty [data-retry-music]{padding:8px 14px;border-radius:8px;background:var(--soft);color:var(--blue);font:inherit}
 .music-dock{left:max(22px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}
 @media(max-width:610px){.music-dock{left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom))}}

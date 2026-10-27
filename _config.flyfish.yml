@@ -33,12 +33,14 @@ music:
   # 格式及示例见 CONTENT_GUIDE.md 的“音乐”段落。
   playlist_url: ''
   # 原歌单 + 从两份酷狗收藏中筛选、创建的网易云分类歌单。
-  # 新分类的音频走网易云官方免费外链；在线歌单接口失败时才加载核验过的本站备份。
+  # 新分类的音频走网易云官方免费外链；先加载核验过的本站列表，再后台更新分类歌单。
   # audio_api 中的 :id 指歌曲 ID；api 中的 :id 指歌单 ID。
   playlists:
     - name: FLYFISH_World
       id: '12908278323'
-      description: '01–15 安静入座 · 16–30 提速专注 · 31–57 课间放松'
+      description: '轻柔留白 → 舒缓人声 → 轻快日常 → 电子节拍 → 律动说唱 → 高能收尾'
+      # 主歌单的场景顺序以已与网易云逐首核对的编排为准，避免第三方缓存打乱顺序。
+      playlist_url: '/music/playlists/original.json'
       audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
       backup_playlist_url: '/music/playlists/original.json'
       backup_checked_at: '2026-10-27'

@@ -73,7 +73,7 @@ const text=[
  '## 已通过核验的曲目',
  '',...approved.map(row=>'- ['+row.rights.name+'](https://music.163.com/song?id='+row.rights.id+') — '+row.rights.artists.join(' / ')+'；'+categoryFor(row.rights.id)),
  '',
- ...(study?['## 主歌单后续场景编排','','原歌单 ID 保持 12908278323，更名为 '+study.name+'，现为 '+study.count+' 首，作为音乐馆第一项。新增 '+study.added_ids.length+' 首学习纯音乐；保留其余原收藏，移除以下 VIP：','',...study.removed.map(t=>'- ['+t.name+'](https://music.163.com/song?id='+t.id+')'),'','场景顺序：'+study.sections.map(s=>s.start+'–'+s.end+' '+s.name).join('；')+'。','']:original?['## 原有收藏的补充检查','','原有网易云歌单仍为 '+original.count+' 首，未删除或改写。其中以下 '+original.vip.length+' 首当前标记为需要 VIP，未加入本次新分类：','',...original.vip.map(row=>'- ['+row.name+']('+row.source+') — '+row.artist),'']:[]),
+ ...(study?['## 主歌单后续场景编排','','原歌单 ID 保持 12908278323，更名为 '+study.name+'，现为 '+study.count+' 首，作为音乐馆第一项。新增 '+study.added_ids.length+' 首其他分类中的曲目；保留其余原收藏并按风格重新排序，此前移除的以下 VIP 未重新加入：','',...study.removed.map(t=>'- ['+t.name+'](https://music.163.com/song?id='+t.id+')'),'','场景顺序：'+study.sections.map(s=>s.start+'–'+s.end+' '+s.name).join('；')+'。','']:original?['## 原有收藏的补充检查','','原有网易云歌单仍为 '+original.count+' 首，未删除或改写。其中以下 '+original.vip.length+' 首当前标记为需要 VIP，未加入本次新分类：','',...original.vip.map(row=>'- ['+row.name+']('+row.source+') — '+row.artist),'']:[]),
  '',
  '## 来源',
  '',

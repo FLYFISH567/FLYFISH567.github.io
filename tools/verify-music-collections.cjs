@@ -23,10 +23,11 @@ assert.equal(all.size,manifest.approved_unique_songs);assert.equal(classified.si
 assert.ok(music.playlists.some(item=>String(item.id)==='12908278323'),'The original playlist remains selectable');
 const study=JSON.parse(fs.readFileSync(base+'study-structure.json','utf8')),main=JSON.parse(fs.readFileSync(base+'original.json','utf8'));
 assert.equal(String(music.id),study.id);assert.equal(String(music.playlists[0].id),study.id);assert.equal(music.playlists[0].name,study.name);
-assert.equal(study.name,'FLYFISH_World');assert.equal(main.length,57);assert.equal(new Set(main.map(t=>t.netease_id)).size,57);
-assert.deepEqual(study.sections.map(s=>[s.start,s.end]),[[1,15],[16,30],[31,57]]);
+assert.equal(study.name,'FLYFISH_World');assert.equal(main.length,study.count);assert.equal(new Set(main.map(t=>t.netease_id)).size,main.length);
+assert.ok([...all].every(id=>main.some(t=>t.netease_id===id)),'The main playlist includes every approved classification recording');
+let end=0;for(const scene of study.sections){assert.equal(scene.start,end+1);assert.equal(scene.end-scene.start+1,scene.ids.length);end=scene.end;assert.ok(scene.ids.every(id=>main.find(t=>t.netease_id===id)?.scene===scene.name));}assert.equal(end,main.length);
 assert.deepEqual(main.map(t=>t.netease_id),study.sections.flatMap(s=>s.ids),'The stored playlist must keep scene order');
-assert.equal(study.added_ids.length,30);assert.deepEqual(study.removed.map(t=>t.id).sort(),[2036445129,1387098935].sort());
+assert.deepEqual(study.removed.map(t=>t.id).sort(),[2036445129,1387098935].sort());
 for(const track of main){assert.ok([0,8].includes(track.fee));assert.ok(!study.removed.some(t=>t.id===track.netease_id));assert.ok(Math.abs(track.verified_audio_seconds-track.duration)<=4);}
 console.log('PASS: five actual collections, '+all.size+' distinct verified full-length free songs, no VIP/paywalled entries, disjoint main categories, official audio links and dated fallback snapshots.');
-console.log('PASS: FLYFISH_World first/default, 57 free full tracks in 15/15/27 scene order, 30 study additions and two VIP removals.');
+console.log('PASS: FLYFISH_World first/default, all '+main.length+' free full recordings in variable-length style scenes, without duplicates or VIP reintroductions.');
