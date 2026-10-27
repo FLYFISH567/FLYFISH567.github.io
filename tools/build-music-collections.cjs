@@ -1,5 +1,6 @@
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert/strict');
+async function main(){
 const root=path.resolve(__dirname,'..'),out=path.join(root,'output/music-import'),destination=path.join(root,'source/music/playlists');
 const rows=JSON.parse(fs.readFileSync(path.join(out,'audited.json'),'utf8'));
 const audio=new Map(fs.readdirSync(out).filter(f=>/^official-audio-\d+\.json$/.test(f)).flatMap(f=>JSON.parse(fs.readFileSync(path.join(out,f),'utf8'))).map(row=>[row.id,row]));
@@ -15,16 +16,26 @@ const definitions=[
  {slug:'world',name:'世界漫游｜外语',description:'英语、韩语等不同语种的旋律，一路换换风景。',test:row=>!['纯音乐','伴奏','日语','国语','粤语','闽南语'].includes(row.language)},
  {slug:'favorites',name:'偏爱循环｜精选',description:'第二份收藏里通过核验的曲目。',test:row=>row.source_playlists.includes(2)}
 ];
-const second=JSON.parse(fs.readFileSync(path.join(root,'output/kugou-playlist-2.json'),'utf8')).tracks;
-const sourceOrder=new Map(second.map((row,index)=>[row.hash,index]));
 fs.mkdirSync(destination,{recursive:true});
-const collections=definitions.map(def=>{
- const chosen=approved.filter(def.test);if(def.slug==='favorites')chosen.sort((a,b)=>(sourceOrder.get(a.hash)??999)-(sourceOrder.get(b.hash)??999));
+const collections=[],snapshots=new Map();
+for(const def of definitions){
+ const candidates=approved.filter(def.test),byId=new Map(candidates.map(row=>[row.rights.id,row]));
  const native=created.find(row=>row.name===def.name);assert.ok(native?.id,'Missing created playlist: '+def.name);
+ // NetEase inserts imported batches in a different order. Read the actual saved
+ // order rather than assuming source-file order or blindly reversing a list.
+ const response=await fetch('https://music.163.com/api/v6/playlist/detail?id='+native.id+'&n=1000&s=0',{headers:{Referer:'https://music.163.com/'},signal:AbortSignal.timeout(20000)});
+ assert.ok(response.ok,'Official playlist request failed: '+native.id);
+ const detail=await response.json();assert.equal(detail.code,200);assert.equal(String(detail.playlist?.id),String(native.id));
+ const ids=detail.playlist.trackIds.map(track=>track.id);
+ assert.equal(new Set(ids).size,ids.length,'Duplicate native recordings: '+def.name);
+ assert.deepEqual(new Set(ids),new Set(byId.keys()),'Native membership changed; audit songs before publishing: '+def.name);
+ const chosen=ids.map(id=>byId.get(id)),orderCheckedAt=new Date().toISOString();
  const tracks=chosen.map(row=>({name:row.rights.name,artist:row.rights.artists.join(' / '),url:'https://music.163.com/song/media/outer/url?id='+row.rights.id,pic:row.rights.pic,duration:row.rights.duration,source:'https://music.163.com/song?id='+row.rights.id,netease_id:row.rights.id,fee:row.rights.fee,verified_audio_seconds:audio.get(row.rights.id).seconds,verified_at:row.rights.checked_at}));
- const file=path.join(destination,def.slug+'.json');fs.writeFileSync(file,JSON.stringify(tracks,null,2)+'\n');
- return {slug:def.slug,name:def.name,description:def.description,id:String(native.id),count:tracks.length,source_url:'https://music.163.com/playlist?id='+native.id,backup_playlist_url:'/music/playlists/'+def.slug+'.json',ids:tracks.map(track=>track.netease_id)};
-});
+ snapshots.set(def.slug,tracks);
+ collections.push({slug:def.slug,name:def.name,description:def.description,id:String(native.id),count:tracks.length,source_url:'https://music.163.com/playlist?id='+native.id,backup_playlist_url:'/music/playlists/'+def.slug+'.json',order_source:'netease-playlist-trackIds',order_checked_at:orderCheckedAt,native_track_update_time:detail.playlist.trackUpdateTime,ids:tracks.map(track=>track.netease_id)});
+}
+// Do not write partial snapshots if any official-order check failed above.
+for(const [slug,tracks] of snapshots)fs.writeFileSync(path.join(destination,slug+'.json'),JSON.stringify(tracks,null,2)+'\n');
 const manifest={checked_date:'2026-10-27',source_entries:693,unique_source_recordings:rows.length,approved_unique_songs:approved.length,collections};
 fs.writeFileSync(path.join(destination,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 fs.writeFileSync(path.join(out,'collection-plan.json'),JSON.stringify(manifest,null,2)+'\n');
@@ -84,3 +95,5 @@ const text=[
  ].join('\n');
 fs.writeFileSync(path.join(out,'歌单整理与未加入清单.md'),text);
 console.log(JSON.stringify({approved:approved.length,collections:collections.map(c=>({name:c.name,id:c.id,count:c.count})),vip:vip.length,otherExcluded:other.length},null,2));
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});

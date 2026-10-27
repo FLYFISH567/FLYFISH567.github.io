@@ -7,6 +7,8 @@ for(const collection of manifest.collections){
  const data=JSON.parse(fs.readFileSync(base+collection.slug+'.json','utf8')),config=music.playlists.find(item=>String(item.id)===collection.id);
  assert.ok(config,'Published collection is selectable: '+collection.name);
  assert.equal(data.length,collection.count);assert.equal(new Set(data.map(t=>t.netease_id)).size,data.length);
+ assert.equal(collection.order_source,'netease-playlist-trackIds');assert.ok(collection.order_checked_at);
+ assert.deepEqual(data.map(t=>t.netease_id),collection.ids,'The snapshot must preserve the verified native order, including the first and last tracks');
  assert.equal(config.backup_playlist_url,collection.backup_playlist_url);
  assert.equal(config.audio_api,'https://music.163.com/song/media/outer/url?id=:id');
  for(const track of data){

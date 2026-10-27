@@ -53,5 +53,19 @@ function setup(options={}){
  const blocked=setup({blocked:true});await flush();blocked.click('[data-music-track="0"]');await flush();assert.equal(blocked.paused,false);blocked.dom.window.close();
  const timed=setup({fakeTimers:true});await flush();timed.click('[data-music-action=play]');await flush();timed.event('waiting');timed.timers.get(20000)();assert.equal(timed.paused,true);assert.match(timed.doc.querySelector('[data-music-status]').textContent,/连接超时/);timed.dom.window.close();
  const preview=setup({duration:30,tracks:[{name:'Preview',url:'https://music.test/?server=netease&id=1',duration:200}]});await flush();preview.event('loadedmetadata');preview.click('[data-music-action=loop]');const count=preview.plays;preview.event('ended');await flush();assert.equal(preview.plays,count);assert.match(preview.doc.querySelector('[data-music-status]').textContent,/试听/);preview.dom.window.close();
- console.log('PASS: automatic metadata loading, first collection on fresh entry, no autoplay, instant verified snapshots, cancellable latest-choice-wins switching, play/pause continuity, late-response protection, shared rate-limit cooldown, same-song progress, failure recovery, source targets, distinct loop/mute icons, volume, navigation, session resume, media keys and previews.');
+ const manifest=JSON.parse(fs.readFileSync('source/music/playlists/manifest.json','utf8'));
+ for(const collection of manifest.collections){
+   const snapshot=JSON.parse(fs.readFileSync('source/music/playlists/'+collection.slug+'.json','utf8')),byId=new Map(snapshot.map(track=>[track.netease_id,track]));
+   const nativeOrder=collection.ids.map(id=>byId.get(id));let finishLive;
+   const ordered=setup({playlists:[{id:'123',name:collection.name,backup_playlist_url:'/ordered.json',api:'https://api.test/ordered'}],fetch:url=>url.startsWith('http://localhost/')?Promise.resolve(response(snapshot)):new Promise(resolve=>finishLive=resolve)});
+   await flush();
+   assert.equal(ordered.doc.querySelector('[data-track-title]').textContent,nativeOrder[0].name,'The initial snapshot selects the actual native first song: '+collection.name);
+   const beforeSource=ordered.audio.src;
+   finishLive(response(nativeOrder.map(track=>({title:track.name,author:track.artist,url:track.url}))));await flush();
+   assert.equal(ordered.doc.querySelector('[data-music-track="0"]').getAttribute('aria-pressed'),'true','Background live metadata must keep the initial first song at 01: '+collection.name);
+   assert.equal(ordered.doc.querySelector('[data-track-title]').textContent,nativeOrder[0].name);assert.equal(ordered.audio.src,beforeSource);assert.equal(ordered.plays,0);
+   assert.deepEqual(Array.from(ordered.doc.querySelectorAll('[data-music-track] strong'),node=>node.textContent),nativeOrder.map(track=>track.name));
+   ordered.dom.window.close();
+ }
+ console.log('PASS: verified native order for all five snapshots and background updates, first song remains at 01; automatic metadata loading, latest-choice-wins switching, play/pause continuity, loading feedback, rate limits, progress, recovery, controls, navigation and resume.');
 })().catch(error=>{console.error(error);process.exitCode=1;});
