@@ -1,13 +1,14 @@
 <%# 歌单 ID、公开 API 在根目录 _config.flyfish.yml 的 music 段修改。 %>
 <section class="music-page" data-music-page data-id="<%= theme.music.id %>" data-server="<%= theme.music.server %>" data-api="<%= theme.music.api || '' %>">
   <header class="page-heading illustrated-heading pointer-surface" data-pointer-light><span class="eyebrow">MUSIC</span><h1>音乐馆</h1><%- partial('_partials/heading-art',{kind:'music'}) %></header>
+  <label class="music-playlist-picker music-library-picker" data-music-playlist-picker hidden><span>选择歌单</span><select data-music-playlist-select aria-label="音乐馆歌单"></select></label>
   <%# 左侧集中放当前歌曲和控制；右侧歌单可滚动，手机会自动上下排列。 %>
   <div class="music-main music-studio">
     <section class="now-playing pointer-surface" data-pointer-light aria-label="当前歌曲与播放控制">
       <div class="record" aria-hidden="true"><div class="record-label">FLY<br>FISH</div></div>
       <div class="track-heading">
-        <div class="music-heading-label"><span class="eyebrow">网易云歌单</span><span class="music-meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
-        <h2 data-track-title>我的歌单</h2><p data-track-artist>日语流行</p>
+        <div class="music-heading-label"><span class="eyebrow" data-music-platform>网易云歌单</span><span class="music-meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
+        <h2 data-track-title>我的歌单</h2><p data-track-artist>选择一首，慢慢听</p>
         <div class="track-actions"><button class="button primary" type="button" data-load-music>加载歌单</button><button class="button" type="button" data-refresh-music hidden>刷新歌单</button></div>
       </div>
       <div class="music-inline-controls" data-music-page-controls></div>
