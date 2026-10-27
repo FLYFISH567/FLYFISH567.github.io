@@ -36,9 +36,10 @@ music:
   # 新分类的音频走网易云官方免费外链；在线歌单接口失败时才加载核验过的本站备份。
   # audio_api 中的 :id 指歌曲 ID；api 中的 :id 指歌单 ID。
   playlists:
-    - name: 原有收藏
+    - name: FLYFISH_World
       id: '12908278323'
-      description: 你原来的网易云歌单，保持同步。
+      description: '01–15 安静入座 · 16–30 提速专注 · 31–57 课间放松'
+      audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
       backup_playlist_url: '/music/playlists/original.json'
       backup_checked_at: '2026-10-27'
     - name: 留白时刻｜纯音乐

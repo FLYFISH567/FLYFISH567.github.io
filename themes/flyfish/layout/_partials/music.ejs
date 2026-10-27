@@ -2,6 +2,7 @@
 <section class="music-page" data-music-page data-id="<%= theme.music.id %>" data-server="<%= theme.music.server %>" data-api="<%= theme.music.api || '' %>">
   <header class="page-heading illustrated-heading pointer-surface" data-pointer-light><span class="eyebrow">MUSIC</span><h1>音乐馆</h1><%- partial('_partials/heading-art',{kind:'music'}) %></header>
   <label class="music-playlist-picker music-library-picker" data-music-playlist-picker hidden><span>选择歌单</span><select data-music-playlist-select aria-label="音乐馆歌单"></select></label>
+  <p class="music-collection-caption" data-music-playlist-description hidden></p>
   <%# 左侧集中放当前歌曲和控制；右侧歌单可滚动，手机会自动上下排列。 %>
   <div class="music-main music-studio">
     <section class="now-playing pointer-surface" data-pointer-light aria-label="当前歌曲与播放控制">

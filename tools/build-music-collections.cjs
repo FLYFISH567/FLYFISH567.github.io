@@ -41,6 +41,7 @@ fs.writeFileSync(path.join(out,'完整筛选清单.csv'),'\ufeff'+[Object.values
 const line=row=>`- ${row.title} — ${row.artist}${row.netease_id?'（[网易云](https://music.163.com/song?id='+row.netease_id+')）':''}：${row.reason}`;
 const vip=reportRows.filter(row=>row.status==='vip'),other=reportRows.filter(row=>row.decision==='未加入'&&row.status!=='vip');
 const originalFile=path.join(out,'original-existing-audit.json'),original=fs.existsSync(originalFile)?JSON.parse(fs.readFileSync(originalFile,'utf8')):null;
+const studyFile=path.join(destination,'study-structure.json'),study=fs.existsSync(studyFile)?JSON.parse(fs.readFileSync(studyFile,'utf8')):null;
 const text=[
  '# 酷狗歌单迁移与筛选结果',
  '',
@@ -61,7 +62,7 @@ const text=[
  '- fee=8 不等于整首必须 VIP；只有未登录标准音质可以完整收听，且官方外链实际时长也通过检查时才加入。',
  '- 未获取完整匿名音源、未找到同版本或时长不能确认的条目单独列出，未误标为 VIP。',
  '- 实际读取了音频元数据，没有下载并重新托管歌曲，也没有把试听文件当作完整版。',
- '- 仅将核验通过的曲目加入新建分类歌单；原有网易云歌单保留。版权和播放权限以核验当天为准。',
+ '- 仅将核验通过的曲目加入新建分类歌单。'+(study?'原主歌单后续另整理为 '+study.name+'，见下方补充说明。':'原有网易云歌单保留。')+'版权和播放权限以核验当天为准。',
  '',
  '## VIP / 付费，未加入（'+vip.length+' 条源记录）',
  '',...vip.map(line),
@@ -72,7 +73,7 @@ const text=[
  '## 已通过核验的曲目',
  '',...approved.map(row=>'- ['+row.rights.name+'](https://music.163.com/song?id='+row.rights.id+') — '+row.rights.artists.join(' / ')+'；'+categoryFor(row.rights.id)),
  '',
- ...(original?['## 原有收藏的补充检查','','原有网易云歌单仍为 '+original.count+' 首，未删除或改写。其中以下 '+original.vip.length+' 首当前标记为需要 VIP，未加入本次新分类：','',...original.vip.map(row=>'- ['+row.name+']('+row.source+') — '+row.artist),'']:[]),
+ ...(study?['## 主歌单后续场景编排','','原歌单 ID 保持 12908278323，更名为 '+study.name+'，现为 '+study.count+' 首，作为音乐馆第一项。新增 '+study.added_ids.length+' 首学习纯音乐；保留其余原收藏，移除以下 VIP：','',...study.removed.map(t=>'- ['+t.name+'](https://music.163.com/song?id='+t.id+')'),'','场景顺序：'+study.sections.map(s=>s.start+'–'+s.end+' '+s.name).join('；')+'。','']:original?['## 原有收藏的补充检查','','原有网易云歌单仍为 '+original.count+' 首，未删除或改写。其中以下 '+original.vip.length+' 首当前标记为需要 VIP，未加入本次新分类：','',...original.vip.map(row=>'- ['+row.name+']('+row.source+') — '+row.artist),'']:[]),
  '',
  '## 来源',
  '',
