@@ -32,13 +32,45 @@ music:
   # 可选：自托管 JSON 歌单（优先加载），使用自己有权发布的完整音频。
   # 格式及示例见 CONTENT_GUIDE.md 的“音乐”段落。
   playlist_url: ''
-  # 多歌单预留：目前只显示原歌单；配置两份及以上时，音乐馆和随身音乐自动显示选择框。
-  # 等酷狗歌单分类后在此追加，每份可单独填写 server / api / playlist_url / source_url。
-  # 不填的接口字段沿用上面的默认值；酷狗歌单需要适配的接口或整理后的 JSON，不能直接套用网易云接口。
+  # 原歌单 + 从两份酷狗收藏中筛选、创建的网易云分类歌单。
+  # 新分类的音频走网易云官方免费外链；在线歌单接口失败时才加载核验过的本站备份。
+  # audio_api 中的 :id 指歌曲 ID；api 中的 :id 指歌单 ID。
   playlists:
-    - name: 我的收藏
+    - name: 原有收藏
       id: '12908278323'
-      description: 选一首歌，慢慢听。
+      description: 你原来的网易云歌单，保持同步。
+      backup_playlist_url: '/music/playlists/original.json'
+      backup_checked_at: '2026-10-27'
+    - name: 留白时刻｜纯音乐
+      id: '18530770239'
+      description: 钢琴、器乐、游戏配乐与电子纯音乐。
+      audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
+      backup_playlist_url: '/music/playlists/instrumental.json'
+      backup_checked_at: '2026-10-27'
+    - name: 晴空电台｜日语
+      id: '18530890597'
+      description: 日语流行、动漫与电子旋律，按原版本整理。
+      audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
+      backup_playlist_url: '/music/playlists/japanese.json'
+      backup_checked_at: '2026-10-27'
+    - name: 日常心事｜华语
+      id: '18530881693'
+      description: 华语流行与说唱，熟悉的词句，随手循环。
+      audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
+      backup_playlist_url: '/music/playlists/chinese.json'
+      backup_checked_at: '2026-10-27'
+    - name: 世界漫游｜外语
+      id: '18530938406'
+      description: 英语、韩语等不同语种的旋律，一路换换风景。
+      audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
+      backup_playlist_url: '/music/playlists/world.json'
+      backup_checked_at: '2026-10-27'
+    - name: 偏爱循环｜精选
+      id: '18530838929'
+      description: 第二份收藏里通过核验的曲目。
+      audio_api: 'https://music.163.com/song/media/outer/url?id=:id'
+      backup_playlist_url: '/music/playlists/favorites.json'
+      backup_checked_at: '2026-10-27'
 summaries:
   如何快速完成Github学生认证: 从个人资料、学校邮箱到双重身份验证，记录一次 GitHub 学生认证的申请过程。
   魔术方法构造和析构: 梳理构造、析构和序列化相关魔术方法的触发时机，结合 PHP 示例回看。
