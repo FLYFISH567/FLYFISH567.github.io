@@ -832,10 +832,11 @@ body.dialog-open .music-dock{visibility:hidden}
 .music-transport [data-music-action=mute].is-muted{color:var(--blue);background:var(--soft)}
 .music-scene-heading{position:sticky;top:0;z-index:1;padding:12px!important;background:var(--surface);color:var(--muted);font-size:10px;letter-spacing:.08em;border-bottom:1px solid var(--line)}
 .music-empty [data-retry-music]{padding:8px 14px;border-radius:8px;background:var(--soft);color:var(--blue);font:inherit}
-.music-playlist-loading{display:flex;align-items:center;gap:9px;margin:12px 0;padding:11px 12px;border-radius:9px;background:var(--soft);color:var(--blue);font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.music-list-region,.music-current-region{position:relative;min-width:0}
+.music-playlist-loading{position:absolute;z-index:2;top:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;width:max-content;max-width:calc(100% - 24px);margin:0;padding:11px 15px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--surface) 96%,var(--soft));box-shadow:0 5px 20px #162f501f;color:var(--blue);font-size:12px;line-height:1.7;overflow-wrap:anywhere;pointer-events:none}
 .music-loading-spinner{flex-shrink:0;width:15px;height:15px;border:2px solid color-mix(in srgb,var(--blue) 20%,transparent);border-top-color:var(--blue);border-radius:50%}
 .player-shell.is-playlist-loading [data-player-host]{opacity:.45}
-.music-controls .music-playlist-loading{font-size:11px;padding:9px 10px}
+.music-controls .music-playlist-loading{top:50%;transform:translate(-50%,-50%);max-width:100%;font-size:11px;padding:9px 10px}
 @media(prefers-reduced-motion:no-preference){.music-loading-spinner{animation:spin .8s linear infinite}}
 .music-dock{left:max(22px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}
 @media(max-width:610px){.music-dock{left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom))}}
