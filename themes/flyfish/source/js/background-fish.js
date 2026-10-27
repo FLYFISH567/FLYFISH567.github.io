@@ -43,7 +43,8 @@
     return true;
   }
   function available(near=null){
-    const candidates=spaces.slice();
+    const inset=spaces.filter(point=>point.x>=20&&point.x<=width-size-20);
+    const candidates=(near||!inset.length?spaces:inset).slice();
     if(near)candidates.sort((a,b)=>distance(a,near)-distance(b,near));
     return candidates.length?candidates[near?0:Math.floor(Math.random()*candidates.length)]:null;
   }
@@ -54,7 +55,8 @@
     let best=null,score=-Infinity;
     for(const point of spaces){
       const separation=Math.min(...peers.map(other=>distance(point,other)));
-      const value=separation+Math.random()*12;
+      const edgePenalty=point.x<20||point.x>width-size-20?55:0;
+      const value=separation+Math.random()*12-edgePenalty;
       if(value>score){score=value;best=point;}
     }
     return best;
@@ -66,6 +68,29 @@
       .sort((a,b)=>distance(a,near)-distance(b,near)).slice(0,8);
     return candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:null;
   }
+  function course(fish,anchor){
+    const origin={x:fish.x,y:fish.y};
+    for(let attempt=0;attempt<5;attempt++){
+      const point=bounds({x:anchor.x+(Math.random()-.5)*48,y:anchor.y+(Math.random()-.5)*36});
+      if(covered(point)||distance(origin,point)<28||!clearPath(origin,point))continue;
+      const length=distance(origin,point),normal={x:-(point.y-origin.y)/length,y:(point.x-origin.x)/length};
+      const bend=(Math.random()<.5?-1:1)*(12+Math.random()*22);
+      for(const scale of [1,.5,0]){
+        const route={...point,origin,normal,bend:bend*scale,length,progress:0};let safe=true,previous=origin;
+        const steps=Math.max(8,Math.ceil(length/12));
+        for(let index=1;index<=steps;index++){
+          const next=routePoint(route,index/steps),bounded=bounds(next);
+          if(distance(next,bounded)>.1||covered(next)||!clearPath(previous,next)){safe=false;break;}previous=next;
+        }
+        if(safe)return route;
+      }
+    }
+    return clearPath(fish,anchor)?{...anchor,origin,normal:{x:0,y:0},bend:0,length:distance(origin,anchor),progress:0}:null;
+  }
+  function routePoint(route,progress){
+    const sway=Math.sin(progress*Math.PI)*route.bend;
+    return {x:route.origin.x+(route.x-route.origin.x)*progress+route.normal.x*sway,y:route.origin.y+(route.y-route.origin.y)*progress+route.normal.y*sway};
+  }
   function waypoint(fish){
     // 每条鱼有自己的航程、方向和随机选择，不再都奔向同一个最远端点。
     const candidates=spaces.filter(point=>distance(point,fish)>60&&distance(point,fish)<900).map(point=>{
@@ -73,13 +98,13 @@
       const novelty=fish.trail.length?Math.min(180,...fish.trail.map(previous=>distance(point,previous))):120;
       return {point,score:alignment*90+novelty*.6-Math.abs(length-fish.cruise)*.4+Math.random()*90};
     }).sort((a,b)=>b.score-a.score);
-    for(const candidate of candidates)if(clearPath(fish,candidate.point))return {...candidate.point};
+    for(const candidate of candidates)if(clearPath(fish,candidate.point)){const route=course(fish,candidate.point);if(route)return route;}
     // 狭窄通道里也按各自方向选择短途路线，不统一排到最远的一头。
     const nearby=spaces.filter(point=>distance(point,fish)>28).map(point=>{
       const length=distance(point,fish),alignment=((point.x-fish.x)*fish.heading.x+(point.y-fish.y)*fish.heading.y)/length;
       return {point,score:alignment*65-Math.abs(length-fish.cruise)*.25+Math.random()*60};
     }).sort((a,b)=>b.score-a.score);
-    for(const candidate of nearby)if(clearPath(fish,candidate.point))return {...candidate.point};
+    for(const candidate of nearby)if(clearPath(fish,candidate.point)){const route=course(fish,candidate.point);if(route)return route;}
     return null; // 狭小留白中可以歇一会儿，不强行穿过正文。
   }
   function measure(){
@@ -89,7 +114,7 @@
     boxes=Array.from(document.querySelectorAll(avoid),el=>el.getBoundingClientRect()).filter(rect=>rect.width&&rect.height&&rect.bottom>0&&rect.top<height);
     spaces=[];
     if(height>220){
-      const xs=new Set([margin,Math.max(margin,width-size-margin)]),ys=new Set([top,Math.max(top,height-fishHeight-margin)]);
+      const xs=new Set([margin,24,Math.max(margin,width-size-24),Math.max(margin,width-size-margin)]),ys=new Set([top,Math.max(top,height-fishHeight-margin)]);
       for(let x=margin;x<width-size-margin;x+=56)xs.add(x);
       for(let y=top;y<height-fishHeight-margin;y+=48)ys.add(y);
       // Include the actual edges of cards: a coarse grid can miss a usable gutter.
@@ -97,7 +122,7 @@
         for(const x of [rect.left-size-margin,rect.right+margin])if(x>=margin&&x<=width-size-margin)xs.add(Math.round(x));
         for(const y of [rect.top-fishHeight-margin,rect.bottom+margin])if(y>=top&&y<=height-fishHeight-margin)ys.add(Math.round(y));
       }
-      for(const y of [...ys].sort((a,b)=>a-b))for(const x of [...xs].sort((a,b)=>a-b)){const point={x,y};if(!covered(point))spaces.push(point);}
+      for(const y of [...ys].sort((a,b)=>a-b))for(const x of [...xs].sort((a,b)=>a-b)){const point={x,y};if(x>=margin&&x<=width-size-margin&&!covered(point))spaces.push(point);}
     }
     const roomy=[],fitted=[];
     // 自动模式保留疏朗间距；手动数量按实际 44×36 尺寸加留隙计算容量。
@@ -242,8 +267,9 @@
           if(!fish.target&&time>=fish.retry){fish.target=waypoint(fish);fish.retry=time+1200;}
           if(fish.target){
             const dx=fish.target.x-fish.x,dy=fish.target.y-fish.y,length=Math.hypot(dx,dy),speed=root.dataset.effects==='light'?15:root.dataset.effects==='lively'?26:22,step=Math.min(length,(mouse.matches?speed:15)*fish.pace*delta);
-            const next=bounds({x:fish.x+dx/length*step,y:fish.y+dy/length*step});
-            if(!covered(next)){Object.assign(fish,next);fish.heading={x:dx/length,y:dy/length};if(Math.abs(dx)>14&&time>=fish.turnAfter){fish.facing=dx<0?-1:1;fish.turnAfter=time+1200;}}else fish.target=null;
+            fish.target.progress=Math.min(1,fish.target.progress+step/fish.target.length);
+            const next=routePoint(fish.target,fish.target.progress);
+            if(distance(next,bounds(next))<.1&&!covered(next)&&clearPath(fish,next)){Object.assign(fish,next);fish.heading={x:dx/length,y:dy/length};if(Math.abs(dx)>14&&time>=fish.turnAfter){fish.facing=dx<0?-1:1;fish.turnAfter=time+1200;}}else fish.target=null;
           }
         }
       }
@@ -297,6 +323,7 @@
   window.addEventListener('pageshow',()=>{pageHidden=false;scrollUntil=0;refresh();});
   document.addEventListener('visibilitychange',()=>{for(const fish of pool)fish.hovered=false;sync();});
   window.addEventListener('storage',event=>{if(event.key===key){mode=validMode(event.newValue)?event.newValue:'6';refresh();}});
+  document.addEventListener('flyfish:music-layout',refresh);
   document.addEventListener('flyfish:effectschange',refresh);document.addEventListener('flyfish:page',()=>{
     for(const fish of pool){release(fish);fish.el.blur();fish.hovered=false;if(fish.calledUntil){fish.calledUntil=0;fish.restUntil=0;fish.retry=0;}}
     feedbackUntil=0;refresh();

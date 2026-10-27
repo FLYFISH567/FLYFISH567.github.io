@@ -9,6 +9,7 @@ _multiconfig.yml
 .vercel
 .refactor-backup/
 output/
+tmp/
 
 .idea/
 _config.preview.yml

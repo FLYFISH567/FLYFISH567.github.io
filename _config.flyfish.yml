@@ -26,6 +26,11 @@ music:
   # 原默认 api.i-meto.com 的音频端点超时；这里显式指定已验证的公开 Meting 服务。
   # 更换服务时保留 :server / :type / :id 占位符；不要填写账号 Cookie。
   api: 'https://api.injahow.cn/meting/?server=:server&type=:type&id=:id'
+  # 可填写自有公开 Meting 服务，主接口失败后依次尝试。
+  fallback_apis: []
+  # 可选：自托管 JSON 歌单（优先加载），使用自己有权发布的完整音频。
+  # 格式及示例见 CONTENT_GUIDE.md 的“音乐”段落。
+  playlist_url: ''
 summaries:
   如何快速完成Github学生认证: 从个人资料、学校邮箱到双重身份验证，记录一次 GitHub 学生认证的申请过程。
   魔术方法构造和析构: 梳理构造、析构和序列化相关魔术方法的触发时机，结合 PHP 示例回看。

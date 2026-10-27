@@ -161,6 +161,15 @@ function setup(options={}){
     scattered.mode('off');scattered.mode('6');assert.ok(separation(scattered.fish().map(scattered.point))>90,'Reactivation also spreads births');
     scattered.dom.window.close();
   }
+  // 窄边带里的鱼也要有横向变化；开放留白里的航段应呈弧线。
+  for(const options of [{saved:'1',gutter:80,seed:31},{saved:'1',seed:491}]){
+    const curved=setup(options),positions=[];
+    for(let step=0;step<550;step++){curved.tick();positions.push(curved.point(curved.fish()[0]));}
+    assert.ok(Math.max(...positions.map(p=>p.x))-Math.min(...positions.map(p=>p.x))>12,'A narrow gutter does not pin fish to a single vertical line');
+    let turning=false;
+    for(let step=2;step<positions.length;step++){const a=positions[step-2],b=positions[step-1],c=positions[step];if(Math.abs((b.x-a.x)*(c.y-b.y)-(b.y-a.y)*(c.x-b.x))>.0001)turning=true;}
+    assert.ok(turning,'Swimming includes smooth changes of direction');curved.dom.window.close();
+  }
   const steady=setup({seed:491}),remeasured=setup({seed:491});steady.tick(45);remeasured.tick(45);
   remeasured.w.dispatchEvent(new remeasured.w.Event('resize'));steady.tick(20);remeasured.tick(20);
   assert.deepEqual(remeasured.fish().map(remeasured.point),steady.fish().map(steady.point),'An unchanged layout does not reset all routes');
