@@ -20,7 +20,7 @@ for(const post of expectedPosts){
   const $=load(post.path+'index.html');
   assert.equal($('.article-heading h1').text().trim(),post.title,`Missing article: ${post.path}`);
   const published=$('.article-heading time').first().attr('datetime');
-  assert.ok(Math.abs(Date.parse(published)-Date.parse(post.date))<1000,`Date changed: ${post.title}`);
+  assert.ok(Math.abs(Date.parse(published)-Date.parse(post.date))<1000,`Date changed: ${post.title}; actual ${published}, expected ${post.date}`);
   assert.ok($('.article-body').length,`Missing body: ${post.title}`);
 }
 const hub=load('articles/index.html');assert.equal(hub('[data-post-card]').length,expectedPosts.length,'Article hub must include all retained posts');

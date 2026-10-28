@@ -63,7 +63,7 @@ hexo.extend.helper.register('ff_about', () => data().about?.[0] || {});
 // 旧文章没有日期 front matter；固定现有日期，原始 Markdown 保持不变。
 // 日后作者显式填写 date/updated 时，以作者的值为准。
 hexo.extend.filter.register('before_generate', async () => {
-  await Promise.all(allPosts().map(async post => {
+  await Promise.all(hexo.model('Post').toArray().map(async post => {
     const saved=dates[post.source];if(!saved)return;
     const raw=fs.readFileSync(path.join(hexo.source_dir,post.source),'utf8');
     const front=raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] || '';
@@ -74,7 +74,8 @@ hexo.extend.filter.register('before_generate', async () => {
     // 生成器会挂载 prev/next 循环引用；增量构建时只更新日期字段。
     if(Object.keys(changes).length)await post.update(changes);
   }));
-}, 4);
+// 首次正文渲染（默认优先级 10）会保存模型，须在它之后恢复历史日期。
+}, 20);
 hexo.extend.helper.register('ff_safe_url', function (value) {
   const url = String(value || '').trim();
   return /^(https?:\/\/|\/(?!\/)|#)/i.test(url) ? url : '#';
