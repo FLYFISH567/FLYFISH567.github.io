@@ -34,5 +34,14 @@ const assert = require('node:assert/strict');
   await assert.rejects(scenario({dispatchStatus: 429}), /dispatch failed \(429\)/);
   await assert.rejects(checkAndDispatch({}, () => {throw new Error('must not fetch');}, now), /secret is missing/);
   assert.equal(worker.fetch().status, 404);
+  const originalFetch = global.fetch, originalError = console.error, errors = [];
+  try {
+    global.fetch = async () => {throw new Error(env.GITHUB_NEWS_TOKEN);};
+    console.error = line => errors.push(line);
+    let pending;
+    worker.scheduled({}, env, {waitUntil(promise) {pending = promise;}});
+    await assert.rejects(pending, /Network request failed/);
+    assert.ok(!errors.join('').includes(env.GITHUB_NEWS_TOKEN), 'External errors cannot expose credentials in logs');
+  } finally {global.fetch = originalFetch; console.error = originalError;}
   console.log('PASS: news watchdog freshness, recovery, duplicate suppression and secret boundaries.');
 })().catch(error => {console.error(error); process.exit(1);});

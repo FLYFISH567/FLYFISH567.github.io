@@ -39,9 +39,11 @@ export default {
     ctx.waitUntil(checkAndDispatch(env).then(result => {
       console.log(JSON.stringify({event: 'news-watchdog', ...result}));
     }).catch(error => {
-      // Do not log response bodies, request headers, or credentials.
-      console.error(JSON.stringify({event: 'news-watchdog', status: 'failed', error: error.message}));
-      throw error;
+      // Only our fixed diagnostic messages may reach logs or runtime exceptions.
+      const message = /^(GitHub secret is missing|Invalid GitHub run response|GitHub (run check|dispatch) failed \(\d{3}\))$/.test(error?.message)
+        ? error.message : 'Network request failed';
+      console.error(JSON.stringify({event: 'news-watchdog', status: 'failed', error: message}));
+      throw new Error(message);
     }));
   },
   fetch() { return new Response('Not found', {status: 404}); }

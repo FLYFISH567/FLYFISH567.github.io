@@ -15,13 +15,15 @@
 使用官方 Wrangler 4.154.0。在仓库根目录执行：
 
 ```powershell
-npx --yes wrangler@4.154.0 login --device --browser=false --use-keyring --scopes account:read user:read workers:write workers_tail:read
+npx --yes wrangler@4.154.0 login --browser=false --use-keyring --scopes account:read user:read workers_scripts:write workers_tail:read
 npx --yes wrangler@4.154.0 deploy --config infra/news-watchdog/wrangler.jsonc
 npx --yes wrangler@4.154.0 secret put GITHUB_NEWS_TOKEN --config infra/news-watchdog/wrangler.jsonc
 npx --yes wrangler@4.154.0 tail --config infra/news-watchdog/wrangler.jsonc --format json
 ```
 
 `GITHUB_NEWS_TOKEN` 必须使用专用 GitHub fine-grained token，仅选择 `FLYFISH567.github.io` 仓库，仓库权限仅 Actions: Read and write（Metadata 默认只读）。令牌仅输入 Cloudflare 的加密 Secret 或官方命令提示，禁止写入文件、提交、日志或聊天。到期前需轮换令牌。
+
+首次使用 Cloudflare 的账号还需初始化 Workers 子域名。Wrangler 授权使用 `workers_scripts:write`，该范围包含脚本版本、子域名和定时器；仅 `workers:write` 不能替代它。子域名初始化不需要购买域名或套餐，本站也不会迁移到该子域名。
 
 `workers_dev` 和预览 URL 关闭，无公开执行接口。首次 Cron 配置传播可能需要 15 分钟。部署成功不等于定时成功，验收必须查看一次真实 `Scheduled` 日志；若触发了 GitHub，还要核对该次任务及线上 `release.json` 的任务编号和采集时间。
 
