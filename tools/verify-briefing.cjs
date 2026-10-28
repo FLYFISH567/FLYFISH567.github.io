@@ -5,7 +5,8 @@ const source=fs.readFileSync('themes/flyfish/source/js/briefing.js','utf8');
 const html=fs.readFileSync('public/briefing/index.html','utf8');
 const snapshot=api.cleanSnapshot(JSON.parse(fs.readFileSync('public/briefing/feed.json','utf8')));
 const Parser=new JSDOM('').window.DOMParser;
-assert.equal(Object.keys(snapshot.sources).length,5,'Every source has a dated fallback');
+assert.ok(Object.keys(snapshot.sources).length>=Math.ceil(api.SOURCES.length*.35),'Sources have dated fallbacks even during partial outages');
+assert.ok(snapshot.checkedAt,'Background collection has its own timestamp');
 assert.equal(api.day('2026-10-27T16:01:00Z'),'2026-10-28','Date boundary is Shanghai, not host timezone');
 assert.equal(api.safeURL('javascript:alert(1)'),'');assert.equal(api.safeURL('https://user:pass@example.org/'),'');
 const ai=api.parse(api.SOURCES.find(s=>s.id==='ai'),JSON.stringify({code:200,data:{date:'2026-10-27',news:[]}}),Parser);assert.equal(ai.items.length,0,'A day with no AI news is valid');assert.equal(ai.edition,'2026-10-27');
@@ -16,6 +17,7 @@ function setup(options={}){
   const dom=new JSDOM(html,{url:'https://blog.example/briefing/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,doc=w.document;
   if(options.hidden)Object.defineProperty(doc,'hidden',{value:true});
   const seed=structuredClone(snapshot);for(const group of Object.values(seed.sources))group.fetchedAt=new Date(Date.now()-(options.stale?86400000:0)).toISOString();
+  seed.checkedAt=new Date(Date.now()-(options.stale?86400000:0)).toISOString();
   doc.querySelector('[data-briefing-seed]').textContent=JSON.stringify(seed);
   if(options.prefs)w.localStorage.setItem('flyfish-briefing-prefs-v1',JSON.stringify(options.prefs));
   if(options.cache)w.localStorage.setItem('flyfish-briefing-cache-v1',JSON.stringify(options.cache));
@@ -29,23 +31,25 @@ function setup(options={}){
 }
 (async()=>{
   const state=setup();await flush();assert.equal(state.calls,0,'Fresh snapshot does not hit public services');assert.equal(state.permissionCalls,0,'No automatic notification permission prompt');
-  state.click('[data-briefing-category=ai]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,snapshot.sources.ai.items.length);
+  const aiCount=api.SOURCES.filter(s=>s.category==='ai').reduce((n,s)=>n+(snapshot.sources[s.id]?.items.length||0),0);
+  state.click('[data-briefing-category=ai]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,Math.min(12,aiCount));
   state.input('腾讯');assert.ok([...state.doc.querySelectorAll('.briefing-item h2')].every(e=>e.textContent.includes('腾讯')));state.input('');
   state.click('[data-briefing-action=save]');assert.equal(state.doc.querySelector('[data-briefing-action=save]').getAttribute('aria-pressed'),'true');
   state.click('[data-briefing-mode=saved]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,1);
-  state.click('[data-briefing-action=read]');state.click('[data-briefing-mode=unread]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,snapshot.sources.ai.items.length-1);
+  state.click('[data-briefing-action=read]');state.click('[data-briefing-mode=unread]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,Math.min(12,aiCount-1));
   state.click('[data-briefing-read-all]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,0);
   state.click('[data-briefing-mode=all]');state.click('[data-briefing-category=general]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,12);state.click('[data-briefing-more]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,15);
   const stored=JSON.parse(state.w.localStorage.getItem('flyfish-briefing-prefs-v1'));assert.equal(Object.keys(stored.saved).length,1);
   const rerolled=structuredClone(snapshot);rerolled.sources.ai.items=[];for(const group of Object.values(rerolled.sources))group.fetchedAt=new Date(Date.now()+1000).toISOString();
   const restored=setup({prefs:stored,cache:rerolled});restored.click('[data-briefing-category=ai]');restored.click('[data-briefing-mode=saved]');assert.equal(restored.doc.querySelectorAll('.briefing-item').length,1,'Saved items survive feed rollover');restored.dom.window.close();
-  state.doc.dispatchEvent(new state.w.CustomEvent('flyfish:before-page'));state.doc.dispatchEvent(new state.w.CustomEvent('flyfish:page'));state.click('[data-briefing-category=ai]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,snapshot.sources.ai.items.length);
+  state.doc.dispatchEvent(new state.w.CustomEvent('flyfish:before-page'));state.doc.dispatchEvent(new state.w.CustomEvent('flyfish:page'));state.click('[data-briefing-category=ai]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,Math.min(12,aiCount));
   state.click('[data-briefing-notify]');await flush();assert.equal(state.permissionCalls,1);assert.equal(state.notices,0);
   state.dom.window.close();
-  const offline=setup({stale:true});await flush();assert.equal(offline.calls,6,'Daily source also tries the previous edition once');assert.ok(offline.doc.querySelectorAll('.briefing-item').length>0);assert.equal(offline.doc.querySelectorAll('.source-is-stale').length,5);for(const [id,group] of Object.entries(offline.seed.sources))assert.equal(JSON.parse(offline.w.localStorage.getItem('flyfish-briefing-cache-v1')).sources[id].fetchedAt,group.fetchedAt,'Failure never stamps old content as new');offline.dom.window.close();
+  const offline=setup({stale:true});await flush();assert.equal(offline.calls,7,'One same-origin request and bounded direct fallback; new media never require browser CORS');assert.ok(offline.doc.querySelectorAll('.briefing-item').length>0);assert.equal(offline.doc.querySelectorAll('.source-is-stale').length,5);for(const [id,group] of Object.entries(offline.seed.sources))assert.equal(JSON.parse(offline.w.localStorage.getItem('flyfish-briefing-cache-v1')).sources[id].fetchedAt,group.fetchedAt,'Failure never stamps old content as new');offline.dom.window.close();
   const blocked=setup({storageBlocked:true});blocked.click('[data-briefing-category=ai]');blocked.click('[data-briefing-action=save]');assert.match(blocked.doc.querySelector('[data-briefing-storage]').textContent,/存储不可用/);blocked.dom.window.close();
   const freshXML=`<feed xmlns="http://www.w3.org/2005/Atom"><entry><id>new-record</id><title>Codex 重置 · 已预告</title><published>${new Date().toISOString()}</published><link rel="alternate" href="https://radarultra.com/zh-hans/codex"/><content>New source record</content></entry></feed>`;
-  const notices=setup({stale:true,granted:true,hidden:true,prefs:{sources:['radar'],notify:true,notifySince:Date.now()-1000},fetch:async()=>({ok:true,text:async()=>freshXML})});await flush();assert.equal(notices.calls,1);assert.equal(notices.permissionCalls,0);assert.equal(notices.notices,1,'An opted-in visitor receives a new source record once');notices.dom.window.close();
+  const remote=structuredClone(snapshot);remote.checkedAt=new Date().toISOString();remote.sources.radar=api.parse(api.SOURCES.find(s=>s.id==='radar'),freshXML,Parser);
+  const notices=setup({stale:true,granted:true,hidden:true,prefs:{catalog:api.SOURCES.map(s=>s.id),sources:['radar'],notify:true,notifySince:Date.now()-1000},fetch:async()=>({ok:true,text:async()=>JSON.stringify(remote)})});await flush();assert.equal(notices.calls,1);assert.equal(notices.permissionCalls,0);assert.equal(notices.notices,1,'An opted-in visitor receives a new server-collected source record once');notices.dom.window.close();
   assert.ok(fs.readFileSync('themes/flyfish/source/js/background-fish.js','utf8').includes('.briefing-main,.briefing-panel'),'Decorative fish avoid news and controls');
   const quiet=setup({stale:true,hidden:true});await flush();assert.equal(quiet.calls,0,'Hidden tabs do not poll without explicit notification opt-in');quiet.dom.window.close();
   const warning=cheerio.load(fs.readFileSync('public/Warning/index.html','utf8'));assert.match(warning('title').text(),/小彩蛋/);assert.equal(warning('h1').length,1);assert.equal(warning('style,script:not([src])').filter((_,el)=>/createBubbles|warning-container/.test(warning(el).text())).length,0,'Legacy global CSS and script are not embedded');

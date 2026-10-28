@@ -201,7 +201,7 @@ wishlist:
 
 | 文件 | 用途 |
 | --- | --- |
-| `themes/flyfish/source/js/briefing-sources.js` | 来源 URL、解析、缓存周期、分类与行情自选项；同时供浏览器与更新工具使用 |
+| `themes/flyfish/source/js/briefing-sources.js` | 来源目录、解析、缓存周期与资讯分类；同时供浏览器与更新工具使用 |
 | `source/_data/briefing.json` | 随站点发布的备用资讯快照，包含每个来源的真实获取时间与条目日期 |
 | `themes/flyfish/source/js/briefing.js` | 分类、关键词、未读、收藏、更新、桌面提醒与行情组件的生命周期 |
 | `themes/flyfish/layout/_partials/briefing.ejs` | 初始页面、来源说明与设置 |
@@ -215,7 +215,11 @@ wishlist:
 - Codex 雷达读取 [Radar Ultra 公开 Atom](https://data.radarultra.com/open/codex-resets/feed/zh-hans.atom)，保留“已预告 / 已执行 / 人工确认”等来源状态。这是第三方记录，不读取用户的 OpenAI 账户、不计算个人剩余额度，也不接入对方的登录、浏览器推送或 Firebase 服务。
 - 开发与安全分别读取 [GitHub Changelog RSS](https://github.blog/changelog/feed/) 和 [GitHub Security RSS](https://github.blog/security/feed/)，保留英文原题及短摘要。
 
-浏览器先显示备用快照，数据过期时再直接读取公开来源；全站每分钟只检查是否需要更新，实际网络请求遵守来源周期：雷达 15 分钟，综合日报、开发、安全各 1 小时，AI 日报 6 小时。离开看板且没有开启提醒时，不在其他页面拉取资讯；没有启用桌面提醒时，网页不可见就暂停检查；主动启用提醒后，后台标签可继续按来源周期检查（受浏览器节流影响）。手动“检查更新”也有至少 60 秒的间隔。HTTP 429 的 `Retry-After` 会限制后续请求，失败时不修改旧快照时间。所有接口响应按纯文本构造节点，外链仅接受不含凭据的 HTTPS URL，不引入通用跨域代理。
+新增媒体：中新网官方国内新闻 RSS；新华网、央视新闻、CNN、美联社、路透社与法新社事实核查通过 Google News 的站点标题索引收录，明确标注“聚合索引”，不冒充媒体官方 API。法新社此处仅为事实核查，并非其完整通讯社电讯。BBC、卫报、纽约时报、世界报英文版、半岛电视台、金融时报读取媒体公开 RSS。AI 增加 OpenAI、Hugging Face、TechCrunch；安全增加 Krebs on Security。共 22 个独立来源，分类为综合日报、国内、国际、AI、财经、Codex、开发与安全；各来源可单独订阅。英文标题不自动翻译、不生成新闻正文，部分原文需要订阅。
+
+后台每小时第 17 分钟采集，网页关闭也会更新。采集器 `tools/lib/briefing-collector.cjs` 限制 4 路并发、15 秒超时、最多两轮尝试、4 MB 响应和每源条目数；验证索引媒体域名、拒绝无日期/不安全链接、去重并按发布时间排序。综合新闻超过 3 天未更新、AI 超过 7 天、低频技术源超过 21 天会记录异常；来源日期倒退也保留旧快照。下一轮优先恢复已发布的 `/briefing/feed.json`，无需依赖某台电脑或 Actions 缓存。每源记录最后成功获取时间、最新报道时间与失败状态；成功不足 35% 时停止发布，保留线上上一版。
+
+浏览器先显示嵌入快照，每 5 分钟检查同站 `/briefing/feed.json`，避免国外媒体跨域或访问限制影响阅读。原有 5 个允许跨域的来源继续按自己的周期补充直连：雷达 15 分钟，综合日报、开发与安全 1 小时，AI 汇总 6 小时；新增媒体只由后台采集。离开看板且未开提醒时暂停资讯请求；隐藏网页未开提醒时也暂停。手动检查间隔至少 60 秒。失败不修改最后成功时间；距后台检查超过 3 小时显示更新延迟。仅用纯文本构造内容，外链接受不含凭据的 HTTPS URL，不引入通用跨域代理。
 
 要更新随站点发布的备用内容，在发布前运行：
 
@@ -224,7 +228,7 @@ npm run news:update
 npm run verify
 ```
 
-这个命令只读取公开来源，并更新 `source/_data/briefing.json`；某个来源失败时保留已有快照。`/briefing/feed.json` 是同一份静态备用快照，不是实时后端接口。无需每天重新发布，浏览器仍会按上述周期检查新消息。
+这个命令手动更新仓库里的初始备用种子。后台流水线使用 `node tools/update-briefing.cjs --live --strict`，从线上恢复并采集数据，直接生成新站点，无需每小时向源码提交数据。`/briefing/feed.json` 是每次后台发布生成的静态快照；`checkedAt` 表示采集任务时间，每条 `publishedAt` 仍是实际发布日期。来源缺失/冻结保留旧内容并写入任务摘要。GitHub Actions 定时可能延迟，公共仓库长期无活动可能自动停用，恢复方式见 README。
 
 未读状态、收藏、订阅和行情自选只保存在当前浏览器；最多保留 100 条完整收藏及 1000 条已读记录，收藏不会因来源滚动移除条目而立刻消失。存储被禁用时仍能阅读和筛选，界面提示设置只能保留在当前会话。
 
@@ -238,7 +242,7 @@ npm run verify
 
 相关文件：`themes/flyfish/source/js/market-data.js`（统一品种目录、解析与时区）、`markets.js`（自选与刷新）、`layout/_partials/markets.ejs`、`source/css/markets.css`、`source/_data/markets.json`（随站点发布的备用报价）。发布前可运行 `npm run markets:update` 更新备用报价。数据源说明收在“数据来源”折叠项中，卡片不再重复长段提示。行情自选使用独立浏览器存储，并迁移旧版本的已选品种。
 
-验证：`node tools/verify-briefing.cjs`、`node tools/verify-search.cjs` 和 `node tools/verify-markets.cjs`，也已纳入 `npm test`。
+验证：`node tools/verify-briefing.cjs`、`node tools/verify-search.cjs`、`node tools/verify-markets.cjs` 和 `node tools/verify-news-pipeline.cjs`，均已纳入 `npm test`。部署后的 `node tools/check-live.cjs` 核对发布提交、3 小时内的采集时间与关键路由。
 
 ## 首页、搜索与彩蛋
 
@@ -256,6 +260,6 @@ npm run verify
 npm run build
 ```
 
-重新生成后刷新 `http://localhost:4000/`。若还看到旧版页面，可用 `Ctrl + Shift + R` 强制刷新。源码保存在 GitHub 的 `source` 分支，生成的网页发布到 `main` 分支。更新与部署命令见 `README.md`。
+重新生成后刷新 `http://localhost:4000/`。若还看到旧版页面，可用 `Ctrl + Shift + R` 强制刷新。源码保存在默认 `source` 分支，生成的网页由 GitHub Actions 发布。更新与部署命令见 `README.md`。
 
 验证新增功能：`node tools/verify-global-music.cjs`、`node tools/verify-navigation.cjs`、`node tools/verify-effects.cjs`。内容完整性检查使用 `node tools/verify-redesign.cjs public`。

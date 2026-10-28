@@ -1,13 +1,32 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.FlyfishBriefingSources=api;})(typeof window==='undefined'?globalThis:window,function(){
   'use strict';
+  const indexed=(id,name,domain,category,home,language='en-US')=>({id,name,category,label:category==='china'?'国内新闻':'国际新闻',format:'indexed',url:'https://news.google.com/rss/search?q='+encodeURIComponent('site:'+domain+' when:2d')+'&hl='+language+'&gl='+(language==='zh-CN'?'CN':'US')+'&ceid='+(language==='zh-CN'?'CN:zh-Hans':'US:en'),home,domain,serverOnly:true,ttl:3600000,note:'Google News 收录的本站标题索引；非媒体官方接口，点击经聚合页前往原文。'});
+  const rss=(id,name,category,label,url,home,note='媒体官方公开 RSS，保留原文标题；全文请前往来源阅读。')=>({id,name,category,label,format:'rss',url,home,serverOnly:true,ttl:3600000,note});
   const SOURCES=[
     {id:'daily',name:'每日 60 秒',category:'general',label:'综合要闻',format:'daily',url:'https://60s-static.viki.moe/60s/:date.json',home:'https://github.com/vikiboss/60s-static-host',ttl:3600000,note:'国内与国际要闻，由每日 60 秒整理。'},
     {id:'ai',name:'AI 工具集 / 60s',category:'ai',label:'AI 动态',format:'ai',url:'https://60s.crystelf.top/v2/ai-news',home:'https://ai-bot.cn/daily-ai-news/',ttl:21600000,note:'国内外模型、产品与行业报道，通常汇总前一日；并非每天都有新条目。'},
     {id:'radar',name:'Radar Ultra',category:'radar',label:'Codex 雷达',format:'atom',url:'https://data.radarultra.com/open/codex-resets/feed/zh-hans.atom',home:'https://radarultra.com/zh-hans/codex',ttl:900000,note:'第三方重置观察；预告、执行、人工确认均保留来源状态，不代表个人剩余额度。'},
     {id:'dev',name:'GitHub Changelog',category:'dev',label:'开发工具',format:'rss',url:'https://github.blog/changelog/feed/',home:'https://github.blog/changelog/',ttl:3600000,note:'GitHub 官方产品与开发工具更新，保留原文语言。'},
-    {id:'security',name:'GitHub Security',category:'security',label:'安全阅读',format:'rss',url:'https://github.blog/security/feed/',home:'https://github.blog/security/',ttl:3600000,note:'GitHub 官方安全研究与公告，不以条数补齐每日内容。'}
+    {id:'security',name:'GitHub Security',category:'security',label:'安全阅读',format:'rss',url:'https://github.blog/security/feed/',home:'https://github.blog/security/',ttl:3600000,note:'GitHub 官方安全研究与公告，不以条数补齐每日内容。'},
+    rss('chinanews','中国新闻网','china','国内新闻','https://www.chinanews.com.cn/rss/china.xml','https://www.chinanews.com.cn/'),
+    indexed('xinhua','新华网','news.cn','china','https://www.news.cn/','zh-CN'),
+    indexed('cctv','央视新闻','news.cctv.com','china','https://news.cctv.com/','zh-CN'),
+    rss('bbc','BBC News','world','国际新闻','https://feeds.bbci.co.uk/news/world/rss.xml','https://www.bbc.com/news'),
+    indexed('cnn','CNN','cnn.com','world','https://www.cnn.com/'),
+    indexed('ap','美联社 AP','apnews.com','world','https://apnews.com/'),
+    indexed('reuters','路透社 Reuters','reuters.com','world','https://www.reuters.com/'),
+    indexed('afp','法新社 · 事实核查','factcheck.afp.com','world','https://factcheck.afp.com/'),
+    rss('guardian','卫报 The Guardian','world','国际新闻','https://www.theguardian.com/world/rss','https://www.theguardian.com/world'),
+    rss('nyt','纽约时报','world','国际新闻','https://rss.nytimes.com/services/xml/rss/nyt/World.xml','https://www.nytimes.com/section/world'),
+    rss('lemonde','世界报 · 英文版','world','国际新闻','https://www.lemonde.fr/en/international/rss_full.xml','https://www.lemonde.fr/en/'),
+    rss('aljazeera','半岛电视台','world','国际新闻','https://www.aljazeera.com/xml/rss/all.xml','https://www.aljazeera.com/'),
+    rss('ft','金融时报 FT','finance','财经新闻','https://www.ft.com/world?format=rss','https://www.ft.com/'),
+    rss('openai','OpenAI News','ai','AI 动态','https://openai.com/news/rss.xml','https://openai.com/news/','OpenAI 官方动态；保留原文，不以采集时间代替发布日期。'),
+    rss('huggingface','Hugging Face','ai','AI 动态','https://huggingface.co/blog/feed.xml','https://huggingface.co/blog','Hugging Face 官方博客，模型、开源工具与研究动态。'),
+    rss('techcrunch','TechCrunch · AI','ai','AI 动态','https://techcrunch.com/category/artificial-intelligence/feed/','https://techcrunch.com/category/artificial-intelligence/'),
+    rss('krebs','Krebs on Security','security','安全阅读','https://krebsonsecurity.com/feed/','https://krebsonsecurity.com/')
   ];
-  const CATEGORIES=[['all','全部'],['general','综合要闻'],['ai','AI 动态'],['radar','Codex 雷达'],['dev','开发工具'],['security','安全阅读']];
+  const CATEGORIES=[['all','全部'],['general','综合日报'],['china','国内'],['world','国际'],['ai','AI 动态'],['finance','财经'],['radar','Codex 雷达'],['dev','开发工具'],['security','安全阅读']];
 
   function safeURL(value){try{const u=new URL(String(value));return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch{return '';}}
   function day(value=Date.now()){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));}
@@ -28,23 +47,27 @@
       const doc=new Parser().parseFromString(text,'application/xml');if(doc.querySelector('parsererror'))throw Error('订阅格式变化');
       const nodes=Array.from(doc.querySelectorAll(spec.format==='atom'?'entry':'item'));
       if(!nodes.length)throw Error('订阅暂无条目');
-      items=nodes.slice(0,10).map(node=>{
+      const nodeDate=node=>iso(['published','pubDate','updated','dc:date'].map(tag=>node.getElementsByTagName(tag)[0]?.textContent).find(Boolean))||'';
+      items=nodes.sort((a,b)=>nodeDate(b).localeCompare(nodeDate(a))).slice(0,48).map(node=>{
         const get=tag=>node.getElementsByTagName(tag)[0]?.textContent||'';
         const url=safeURL(spec.format==='atom'?Array.from(node.getElementsByTagName('link')).find(e=>e.getAttribute('rel')==='alternate')?.getAttribute('href'):get('link'));
-        const publishedAt=iso(get('published')||get('pubDate')||get('updated'));
+        const publishedAt=iso(get('published')||get('pubDate')||get('updated')||get('dc:date'));
         const title=plain(get('title'),Parser).slice(0,220);
-        return {id:spec.id+':'+(get('id')||get('guid')||url),title,url,summary:plain(get('description')||get('content')||get('summary'),Parser).slice(0,spec.id==='radar'?160:130),publishedAt,updatedAt:iso(get('updated'))||publishedAt,byline:'',topic:spec.id==='radar'?(title.includes('人工确认')?'人工确认':title.includes('已执行')?'已执行':title.includes('已预告')?'已预告':'来源记录'):spec.label};
-      });
+        const sourceURL=safeURL(node.getElementsByTagName('source')[0]?.getAttribute('url'));
+        if(spec.format==='indexed'&&(!sourceURL||!(new URL(sourceURL).hostname===spec.domain||new URL(sourceURL).hostname.endsWith('.'+spec.domain))))return null;
+        return {id:spec.id+':'+(get('id')||get('guid')||url),title,url,summary:spec.format==='indexed'?'':plain(get('description')||get('content')||get('summary'),Parser).slice(0,spec.id==='radar'?160:130),publishedAt,updatedAt:iso(get('updated'))||publishedAt,byline:spec.format==='indexed'?spec.name+' · 聚合索引':'',topic:spec.id==='radar'?(title.includes('人工确认')?'人工确认':title.includes('已执行')?'已执行':title.includes('已预告')?'已预告':'来源记录'):spec.label};
+      }).filter(Boolean);
     }
-    items=items.filter(x=>x.title&&x.url&&x.publishedAt);if(!items.length&&spec.format!=='ai')throw Error('没有可用条目');
+    const seen=new Set();items=items.filter(x=>{if(!x.title||!x.url||!x.publishedAt||Date.parse(x.publishedAt)>Date.now()+172800000||seen.has(x.url))return false;if(spec.format!=='daily')seen.add(x.url);return true;}).sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)).slice(0,['daily','ai'].includes(spec.format)?16:12);if(!items.length&&spec.format!=='ai')throw Error('没有可用条目');
     return {fetchedAt:new Date().toISOString(),edition,tip,items};
   }
   function cleanSnapshot(data){
-    const sources={};if(data?.version!==1||!data.sources)return {version:1,sources};
+    const sources={};if(data?.version!==1||!data.sources)return {version:1,sources,checkedAt:'',health:{}};
     for(const spec of SOURCES){const group=data.sources[spec.id];if(!group||!Array.isArray(group.items)||!iso(group.fetchedAt))continue;
       sources[spec.id]={fetchedAt:iso(group.fetchedAt),edition:/^\d{4}-\d{2}-\d{2}$/.test(group.edition)?group.edition:'',tip:typeof group.tip==='string'?group.tip.slice(0,160):'',items:group.items.slice(0,30).filter(x=>typeof x.id==='string'&&typeof x.title==='string'&&safeURL(x.url)&&iso(x.publishedAt)).map(x=>({id:x.id.slice(0,600),title:x.title.slice(0,300),url:safeURL(x.url),summary:String(x.summary||'').slice(0,160),publishedAt:iso(x.publishedAt),updatedAt:iso(x.updatedAt)||iso(x.publishedAt),byline:String(x.byline||'').slice(0,60),topic:String(x.topic||spec.label).slice(0,40)}))};
     }
-    return {version:1,sources};
+    const health={};for(const spec of SOURCES){const h=data.health?.[spec.id];if(h&&iso(h.checkedAt))health[spec.id]={status:['ok','error','stale'].includes(h.status)?h.status:'error',checkedAt:iso(h.checkedAt),failures:Math.max(0,Math.min(10000,Number(h.failures)||0)),error:String(h.error||'').slice(0,160),latestAt:iso(h.latestAt)};}
+    return {version:1,sources,checkedAt:iso(data.checkedAt),health};
   }
   function urlFor(spec,date=Date.now()){return spec.url.replace(':date',day(date));}
   return {SOURCES,CATEGORIES,safeURL,day,parse,cleanSnapshot,urlFor};

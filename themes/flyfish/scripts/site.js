@@ -112,6 +112,7 @@ hexo.extend.helper.register('ff_markets',()=>markets);
 hexo.extend.helper.register('ff_market_snapshot',()=>markets.cleanSnapshot(data().markets));
 hexo.extend.helper.register('ff_briefing',()=>briefing.cleanSnapshot(data().briefing));
 hexo.extend.helper.register('ff_briefing_sources',()=>briefing.SOURCES);
+hexo.extend.helper.register('ff_briefing_categories',()=>briefing.CATEGORIES);
 hexo.extend.generator.register('flyfish-briefing',()=>({path:'briefing/feed.json',data:JSON.stringify(data().briefing||{version:1,sources:{}})}));
 hexo.extend.helper.register('ff_related', function (post) {
   const own = tags(post);

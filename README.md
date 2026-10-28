@@ -6,7 +6,7 @@
 
 - 访问网站：https://flyfish567.github.io/
 - 源码分支：`source`（本分支）
-- 发布分支：`main`（生成的网页）
+- 默认与源码分支：`source`；GitHub Actions 构建并发布 Pages，`main` 保留旧静态版本历史。
 - 内容维护说明：[CONTENT_GUIDE.md](CONTENT_GUIDE.md)
 
 ## 本地开发
@@ -39,15 +39,18 @@ npm run verify
 
 ## 更新与发布
 
-先在 `source` 分支保存源码，再生成并发布静态网页：
+在 `source` 分支维护源码，检查通过后推送即可自动发布：
 
 ```powershell
 git add .
 git commit -m "Update blog content"
-git push origin source
 npm run clean
 npm run verify
-npm run deploy
+git push origin source
 ```
 
-`npm run deploy` 会拉取当前远程历史，在独立工作树中把 `public/` 发布到 `_config.yml` 指定的 `main` 分支，需要本机 GitHub SSH 权限。使用普通追加提交，不强制推送；源码未提交或尚未同步到 GitHub 时会停止。源码始终留在 `source` 分支。不要把本地缓存、`node_modules`、备份、编辑器配置或凭据上传到仓库。
+`.github/workflows/pages.yml` 在源码推送、每小时第 17 分钟（UTC），或手动触发时执行：安装锁定依赖 → 恢复线上最近成功快照 → 多源采集 → 刷新行情备用值 → 构建和完整检查 → Pages 发布 → 核对线上版本、资讯新鲜度与关键页面。任何构建/校验失败均不替换线上站点；某个新闻源失败时保留该源原日期的数据。默认分支必须为 `source`，Pages 发布方式必须为 GitHub Actions，`github-pages` 环境须允许 `source` 分支部署。
+
+手动重跑可以在 [Actions 页面](https://github.com/FLYFISH567/FLYFISH567.github.io/actions/workflows/pages.yml) 点击 Run workflow，或在已登录 GitHub CLI 的本机运行 `npm run deploy`。此命令检查源码已提交并推送，然后触发相同流水线；不再向 `main` 复制网页。线上 `release.json` 记录源码提交、任务编号与本次采集时间。
+
+GitHub 定时任务可能排队延迟，公共仓库连续 60 天无活动时定时任务可能自动停用；这不是分钟级实时服务。看板超过 3 小时未收到后台采集会提示更新延迟，失败记录在任务摘要与来源说明中。定期查看 Actions 状态，保持 GitHub 的失败工作流通知开启；若自动停用，在 Actions 页面重新启用。不要把缓存、依赖、备份或凭据上传到仓库。

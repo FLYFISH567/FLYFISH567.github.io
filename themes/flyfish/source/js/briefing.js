@@ -3,13 +3,15 @@
   const api=window.FlyfishBriefingSources;if(!api)return;
   const {SOURCES,CATEGORIES}=api;
   const CACHE='flyfish-briefing-cache-v1',PREFS='flyfish-briefing-prefs-v1';
-  let persistent=true,page=null,timer=0,busy=false,refreshController=null,status='';
+  let persistent=true,page=null,timer=0,busy=false,refreshController=null,status='',siteAttempt=0,siteFailed=false;
   const errors=new Map(),attempts=new Map();
   function read(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch{persistent=false;return null;}}
   function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{persistent=false;}}
   let cache=api.cleanSnapshot(read(CACHE));
   const raw=read(PREFS)||{};
-  const pref={sources:Array.isArray(raw.sources)?raw.sources.filter(id=>SOURCES.some(s=>s.id===id)):SOURCES.map(s=>s.id),read:raw.read&&typeof raw.read==='object'&&!Array.isArray(raw.read)?raw.read:{},saved:{},notify:raw.notify===true,notifySince:Number(raw.notifySince)||0};
+  const catalog=SOURCES.map(s=>s.id),known=Array.isArray(raw.catalog)?raw.catalog:['daily','ai','radar','dev','security'];
+  const subscriptions=Array.isArray(raw.sources)?raw.sources.filter(id=>catalog.includes(id)).concat(raw.sources.length?catalog.filter(id=>!known.includes(id)):[]):catalog;
+  const pref={sources:[...new Set(subscriptions)],catalog,read:raw.read&&typeof raw.read==='object'&&!Array.isArray(raw.read)?raw.read:{},saved:{},notify:raw.notify===true,notifySince:Number(raw.notifySince)||0};
   if(raw.saved&&typeof raw.saved==='object')for(const [id,item] of Object.entries(raw.saved).slice(-100)){
     if(SOURCES.some(s=>s.id===item?.sourceId)&&api.safeURL(item.url)&&typeof item.title==='string'&&Number.isFinite(Date.parse(item.publishedAt)))pref.saved[id]={...item,id,url:api.safeURL(item.url)};
   }
@@ -18,7 +20,7 @@
   const dateTime=value=>{try{return new Intl.DateTimeFormat('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date(value));}catch{return '时间未知';}};
   const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value;if(cls)e.className=cls;return e;};
   function save(){const entries=Object.entries(pref.read).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,1000);pref.read=Object.fromEntries(entries);write(PREFS,pref);}
-  function mergeSnapshot(incoming){for(const spec of SOURCES){const next=incoming.sources[spec.id],old=cache.sources[spec.id];if(next&&(!old||Date.parse(next.fetchedAt)>Date.parse(old.fetchedAt)))cache.sources[spec.id]=next;}}
+  function mergeSnapshot(incoming){const newest=group=>(group?.items||[]).reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');for(const spec of SOURCES){const next=incoming.sources[spec.id],old=cache.sources[spec.id];if(next&&(!old||Date.parse(next.fetchedAt)>Date.parse(old.fetchedAt))&&(!old||!newest(old)||!newest(next)||newest(next)>=newest(old)))cache.sources[spec.id]=next;}if(incoming.checkedAt&&(!cache.checkedAt||incoming.checkedAt>=cache.checkedAt)){cache.checkedAt=incoming.checkedAt;cache.health=incoming.health;}}
   function entries(){const seen=new Set(),items=[];for(const spec of SOURCES){if(!pref.sources.includes(spec.id))continue;for(const item of cache.sources[spec.id]?.items||[]){if(seen.has(item.id))continue;seen.add(item.id);items.push({...item,sourceId:spec.id});}}
     if(mode==='saved')for(const item of Object.values(pref.saved))if(pref.sources.includes(item.sourceId)&&!seen.has(item.id))items.push(item);
     return items.sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt));
@@ -35,8 +37,9 @@
   }
   function renderSources(){if(!page)return;const host=$('[data-briefing-sources]');host.replaceChildren();
     for(const spec of SOURCES){const group=cache.sources[spec.id],node=text('div','','briefing-source'),a=text('a',spec.name+' ↗');a.href=spec.home;a.target='_blank';a.rel='noopener noreferrer';node.append(a,text('p',spec.note));
-      const stamp=group?'获取于 '+dateTime(group.fetchedAt)+(group.edition?' · 简报日期 '+group.edition:''):'暂无可用快照';
-      const freshness=text('small',(errors.has(spec.id)?'暂时无法更新 · ':'')+stamp);if(errors.has(spec.id))freshness.className='source-is-stale';node.append(freshness);host.append(node);
+      const health=cache.health?.[spec.id],failed=errors.has(spec.id)||(health&&health.status!=='ok'),latest=group?.items.reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');
+      const stamp=group?'获取于 '+dateTime(group.fetchedAt)+(group.edition?' · 简报日期 '+group.edition:latest?' · 最新报道 '+dateTime(latest):''):'暂无可用快照';
+      const freshness=text('small',(failed?'暂时无法更新 · ':'')+stamp);if(failed)freshness.className='source-is-stale';node.append(freshness);host.append(node);
     }
   }
   function render(){badge();if(!page?.isConnected)return;const items=selected(),feed=$('[data-briefing-feed]'),fragment=document.createDocumentFragment();
@@ -56,24 +59,35 @@
     $('[data-briefing-more]').hidden=items.length<=limit;
     const unread=entries().filter(item=>!pref.read[item.id]).length;
     $('[data-briefing-results]').textContent=(CATEGORIES.find(c=>c[0]===category)?.[1]||'全部')+' · '+items.length+' 条'+(mode==='all'?' · '+unread+' 条未读':'');
-    $('[data-briefing-status]').textContent=status||'各来源按各自周期更新，时间统一显示为北京时间。';
+    const delayed=cache.checkedAt&&Date.now()-Date.parse(cache.checkedAt)>10800000;
+    $('[data-briefing-status]').textContent=status||(cache.checkedAt?'后台采集于 '+dateTime(cache.checkedAt)+(delayed?' · 更新延迟，显示上次内容':''):'正在检查站内更新…');
     $('[data-briefing-refresh]').disabled=busy;$('[data-briefing-refresh]').textContent=busy?'正在检查…':'检查更新';
     page.querySelectorAll('[data-briefing-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingCategory===category)));
     page.querySelectorAll('[data-briefing-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingMode===mode)));
     page.querySelectorAll('[data-briefing-source]').forEach(input=>input.checked=pref.sources.includes(input.dataset.briefingSource));
+    $('[data-briefing-subscription-count]').textContent='已订阅 '+pref.sources.length+' / '+SOURCES.length+' 个来源';
     $('[data-briefing-storage]').textContent=persistent?'未读、收藏、自选与订阅偏好保存在当前浏览器。':'浏览器存储不可用，本次设置仅在当前页面会话中保留。';
     renderSources();syncNotification();
   }
   function announce(items){if(!items.length||!pref.notify||!('Notification' in window)||Notification.permission!=='granted')return;
-    const fresh=items.filter(item=>Date.parse(item.publishedAt)>pref.notifySince-120000);if(!fresh.length)return;
+    const fresh=[...new Map(items.filter(item=>Date.parse(item.publishedAt)>pref.notifySince-120000).map(item=>[item.id,item])).values()];if(!fresh.length)return;
     const signature=fresh.map(i=>i.id).sort().join('|');try{if(localStorage.getItem('flyfish-briefing-last-notice')===signature)return;localStorage.setItem('flyfish-briefing-last-notice',signature);}catch{}
     try{const n=new Notification('每日看板 · '+fresh.length+' 条新消息',{body:fresh[0].title.slice(0,110),tag:'flyfish-briefing',icon:'/favicon.svg',silent:true});n.onclick=()=>{window.focus();if(window.FlyfishNavigator?.enabled)window.FlyfishNavigator.navigate('/briefing/');else location.href='/briefing/';n.close();};}catch{}
   }
-  async function responseText(url,signal){const controller=new AbortController(),abort=()=>controller.abort();signal?.addEventListener('abort',abort,{once:true});const timeout=setTimeout(abort,10000);try{const r=await fetch(url,{signal:controller.signal,credentials:'omit'});if(!r.ok){const e=Error('HTTP '+r.status);e.status=r.status;if(r.status===429)e.retryAfter=r.headers.get('Retry-After');throw e;}const value=await r.text();if(value.length>4000000)throw Error('来源响应过大');return value;}finally{clearTimeout(timeout);signal?.removeEventListener('abort',abort);}}
+  async function responseText(url,signal){const controller=new AbortController(),abort=()=>controller.abort();signal?.addEventListener('abort',abort,{once:true});const timeout=setTimeout(abort,10000);try{const r=await fetch(url,{signal:controller.signal,credentials:'omit',cache:'no-cache'});if(!r.ok){const e=Error('HTTP '+r.status);e.status=r.status;if(r.status===429)e.retryAfter=r.headers.get('Retry-After');throw e;}const value=await r.text();if(value.length>4000000)throw Error('来源响应过大');return value;}finally{clearTimeout(timeout);signal?.removeEventListener('abort',abort);}}
   async function refresh(force=false){const watching=pref.notify&&('Notification' in window)&&Notification.permission==='granted';if(busy||(document.hidden&&!watching)||(!page&&!watching))return;
-    const now=Date.now(),due=SOURCES.filter(s=>pref.sources.includes(s.id)&&now-(attempts.get(s.id)||0)>60000&&(force||!cache.sources[s.id]||now-Date.parse(cache.sources[s.id].fetchedAt)>=s.ttl));
-    if(!due.length){if(force){status='刚刚已检查过，稍后再试。';render();}return;}
-    busy=true;status='正在检查 '+due.length+' 个来源…';refreshController=new AbortController();render();const fresh=[];
+    const now=Date.now(),siteDue=now-siteAttempt>(force?60000:300000)&&(force||!cache.checkedAt||now-Date.parse(cache.checkedAt)>=300000);
+    const directDue=()=>SOURCES.filter(s=>!s.serverOnly&&pref.sources.includes(s.id)&&now-(attempts.get(s.id)||0)>60000&&(force||!cache.sources[s.id]||now-Date.parse(cache.sources[s.id].fetchedAt)>=s.ttl));
+    if(!directDue().length&&!siteDue){if(force){status='刚刚已检查过，稍后再试。';render();}return;}
+    busy=true;status='正在检查更新…';refreshController=new AbortController();render();const fresh=[];
+    if(siteDue){siteAttempt=now;try{
+      const incoming=api.cleanSnapshot(JSON.parse(await responseText(page?.dataset.feedUrl||'/briefing/feed.json',refreshController.signal)));
+      if(!incoming.checkedAt||!Object.keys(incoming.sources).length)throw Error('站内快照格式变化');
+      if(refreshController.signal.aborted){busy=false;return;}
+      for(const spec of SOURCES){const old=cache.sources[spec.id],next=incoming.sources[spec.id];if(old&&next&&pref.sources.includes(spec.id)){const known=new Set(old.items.map(i=>i.id+'|'+i.title));fresh.push(...next.items.filter(i=>!known.has(i.id+'|'+i.title)));}}
+      mergeSnapshot(incoming);siteFailed=false;
+    }catch(error){if(!refreshController.signal.aborted)siteFailed=true;}}
+    if(refreshController.signal.aborted){busy=false;render();return;}const due=directDue();
     await Promise.all(due.map(async spec=>{
       attempts.set(spec.id,now);const old=cache.sources[spec.id];
       try{
@@ -84,7 +98,9 @@
       }catch(error){if(!refreshController.signal.aborted){errors.set(spec.id,error.message);const seconds=Number(error.retryAfter),delay=Number.isFinite(seconds)?seconds*1000:Date.parse(error.retryAfter)-Date.now();if(Number.isFinite(delay)&&delay>0)attempts.set(spec.id,Date.now()+Math.min(delay,3600000));}}
     }));
     const aborted=refreshController.signal.aborted;busy=false;if(aborted){render();if(page)refresh();return;}
-    write(CACHE,cache);status='检查于 '+dateTime(Date.now())+(errors.size?' · 部分来源暂不可用，保留有日期的旧内容。':' · 已保留各来源的实际发布日期。');announce(fresh);render();
+    write(CACHE,cache);status=cache.checkedAt?'后台采集于 '+dateTime(cache.checkedAt):'已检查可直连来源';
+    if(siteFailed)status+=' · 站内更新暂不可用，显示上次内容';else if(cache.checkedAt&&Date.now()-Date.parse(cache.checkedAt)>10800000)status+=' · 更新延迟，显示上次内容';
+    if(errors.size||Object.values(cache.health||{}).some(h=>h.status!=='ok'))status+=' · 部分来源保留旧内容';announce(fresh);render();
   }
   let pageController=null;
   function init(){page=document.querySelector('[data-briefing]');if(!page){badge();return;}
