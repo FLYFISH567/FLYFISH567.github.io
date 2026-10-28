@@ -246,7 +246,7 @@ npm run verify
 
 新闻、分类、订阅和行情复用首页 `data-pointer-light` / `pointer-surface` 的蓝色鼠标光晕，通过 `--pointer-x / --pointer-y` 更新渐变中心。事件委托支持动态刷新、筛选和换页后的新节点；同一时间只跟踪最近的光晕表面与一个待处理帧，离开、滚动、切页或启用减少动效/轻量模式时清理。手机触摸不运行跟随效果。标题与链接不追加装饰圆点或外链箭头，鼠标点击不显示粗焦点框，键盘操作保留中性色定位提示。
 
-验证：`node tools/verify-briefing.cjs`、`node tools/verify-search.cjs`、`node tools/verify-markets.cjs` 和 `node tools/verify-news-pipeline.cjs`，均已纳入 `npm test`。部署后的 `node tools/check-live.cjs` 核对发布提交、3 小时内的采集时间与关键路由。
+验证：`node tools/verify-briefing.cjs`、`node tools/verify-search.cjs`、`node tools/verify-markets.cjs`、`node tools/verify-news-pipeline.cjs` 和 `node tools/verify-news-watchdog.cjs`，均已纳入 `npm test`。部署后的 `node tools/check-live.cjs` 核对发布提交、本次任务编号、与快照一致且在 3 小时内的采集时间及关键路由。独立定时兜底的配置与真实定时验收见 `infra/news-watchdog/README.md`；部署或手动触发成功不能证明定时器已实际运行。
 
 ## 首页、搜索与彩蛋
 

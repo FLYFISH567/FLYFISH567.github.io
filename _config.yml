@@ -100,7 +100,7 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: flyfish
 
-# 由 .github/workflows/pages.yml 自动发布；npm run deploy 可手动重跑同一任务。
+# 由 .github/workflows/news-pages.yml 自动发布；npm run deploy 可手动重跑同一任务。
 
 
 # 追番插件

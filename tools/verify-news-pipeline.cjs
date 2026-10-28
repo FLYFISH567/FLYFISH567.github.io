@@ -27,7 +27,7 @@ async function main(){
   assert.throws(()=>api.parse(guancha,guanchaFeed('user.guancha.cn'),Parser),'Fengwen user posts are a separate publication stream');
   const older=structuredClone(result.snapshot);older.sources.dev.fetchedAt=new Date(now+10000).toISOString();older.sources.dev.items[0].publishedAt=stamp;const chosen=merge(structuredClone(result.snapshot),older);assert.equal(chosen.sources.dev.items[0].title,'Current news','A newer fetch cannot roll content back');
   await assert.rejects(()=>responseText('https://example.org',async()=>({ok:true,headers:new Map([['content-length','5000000']])})),/too large/);
-  const workflow=yaml.load(fs.readFileSync('.github/workflows/news-pages.yml','utf8'));assert.equal(workflow.on.schedule[0].cron,'*/5 * * * *');assert.equal(workflow.jobs.deploy.needs,'build');assert.equal(workflow.jobs.check.needs,'deploy');assert.equal(workflow.concurrency['cancel-in-progress'],false);
+  const workflow=yaml.load(fs.readFileSync('.github/workflows/news-pages.yml','utf8'));assert.equal(workflow.on.schedule[0].cron,'13,43 * * * *');assert.equal(workflow.jobs.deploy.needs,'build');assert.equal(workflow.jobs.check.needs,'deploy');assert.equal(workflow.concurrency['cancel-in-progress'],false);
   // 定时运行通常不改变提交号，必须核验本次任务号与采集时间。
   const vm=require('vm'),liveSource=fs.readFileSync('tools/check-live.cjs','utf8'),snapshot=structuredClone(result.snapshot);snapshot.checkedAt=new Date().toISOString();
   async function liveCheck(run,stamp,lagOnce=false){const fakeProcess={env:{GITHUB_SHA:'source-head',GITHUB_RUN_ID:'current-run'},exitCode:0};let feedCalls=0;

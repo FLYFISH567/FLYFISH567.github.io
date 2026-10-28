@@ -4,8 +4,8 @@ on:
   push:
     branches: [source]
   schedule:
-    # Temporary short interval to verify scheduler recovery; restore after a real schedule run.
-    - cron: '*/5 * * * *'
+    # Primary schedule; Cloudflare independently checks freshness at :23 and :53.
+    - cron: '13,43 * * * *'
   workflow_dispatch:
 
 permissions:
