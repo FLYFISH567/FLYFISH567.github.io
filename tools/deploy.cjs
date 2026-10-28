@@ -7,6 +7,6 @@ try{
   if(git(['status','--porcelain']))throw Error('请先提交源码并推送 source 分支。');
   git(['fetch','origin','source']);
   if(git(['rev-parse','HEAD'])!==git(['rev-parse','origin/source']))throw Error('远程 source 与本地不同，请先同步源码。');
-  execFileSync('gh',['workflow','run','pages.yml','--ref','source'],{stdio:'inherit'});
-  console.log('已触发后台采集与发布：https://github.com/FLYFISH567/FLYFISH567.github.io/actions/workflows/pages.yml');
+  execFileSync('gh',['workflow','run','news-pages.yml','--ref','source'],{stdio:'inherit'});
+  console.log('已触发后台采集与发布：https://github.com/FLYFISH567/FLYFISH567.github.io/actions/workflows/news-pages.yml');
 }catch(error){console.error(error.message);process.exitCode=1;}
