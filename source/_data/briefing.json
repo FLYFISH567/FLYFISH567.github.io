@@ -2,7 +2,7 @@
   "version": 1,
   "sources": {
     "daily": {
-      "fetchedAt": "2026-10-28T06:51:06.951Z",
+      "fetchedAt": "2026-10-28T07:22:56.600Z",
       "edition": "2026-10-28",
       "tip": "珍惜当下细碎的美好，常怀感恩之心前行，平凡日子也有暖意",
       "items": [
@@ -159,7 +159,7 @@
       ]
     },
     "ai": {
-      "fetchedAt": "2026-10-28T06:51:10.129Z",
+      "fetchedAt": "2026-10-28T07:22:59.871Z",
       "edition": "2026-10-27",
       "tip": "",
       "items": [
@@ -216,7 +216,7 @@
       ]
     },
     "radar": {
-      "fetchedAt": "2026-10-28T06:51:07.338Z",
+      "fetchedAt": "2026-10-28T07:22:58.029Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -343,7 +343,7 @@
       ]
     },
     "dev": {
-      "fetchedAt": "2026-10-28T06:51:06.939Z",
+      "fetchedAt": "2026-10-28T07:22:57.208Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -450,7 +450,7 @@
       ]
     },
     "security": {
-      "fetchedAt": "2026-10-28T06:51:07.785Z",
+      "fetchedAt": "2026-10-28T07:22:58.091Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -557,10 +557,50 @@
       ]
     },
     "chinanews": {
-      "fetchedAt": "2026-10-28T06:51:07.187Z",
+      "fetchedAt": "2026-10-28T07:22:58.047Z",
       "edition": "",
       "tip": "",
       "items": [
+        {
+          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722194.shtml",
+          "title": "中方回应法国球星姆巴佩就涉华不当言论道歉",
+          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722194.shtml",
+          "summary": "中新网北京10月28日电(记者 曾玥)中国外交部发言人郭嘉昆28日主持例行记者会。有记者就法国球星姆巴佩就涉华不当言论道歉一事提问。",
+          "publishedAt": "2026-10-28T07:16:46.000Z",
+          "updatedAt": "2026-10-28T07:16:46.000Z",
+          "byline": "",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722187.shtml",
+          "title": "瑞士联邦主席帕姆兰将访华",
+          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722187.shtml",
+          "summary": "外交部发言人宣布：",
+          "publishedAt": "2026-10-28T07:06:11.000Z",
+          "updatedAt": "2026-10-28T07:06:11.000Z",
+          "byline": "",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722182.shtml",
+          "title": "不断实现党的自我净化、自我完善、自我革新、自我提高——习近平党建思想引领新时代全面从严治党系列述评之三",
+          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722182.shtml",
+          "summary": "一个走过105年光辉历程、拥有1亿多党员的大党，靠什么永葆先进性和纯洁性？靠什么跳出治乱兴衰的历史周期率？靠什么持续巩固作为具有重大全球影响力的世界第一大执政党的地位？",
+          "publishedAt": "2026-10-28T07:04:29.000Z",
+          "updatedAt": "2026-10-28T07:04:29.000Z",
+          "byline": "",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722181.shtml",
+          "title": "72岁台胞回安徽寻亲：海峡隔不断两岸血脉",
+          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722181.shtml",
+          "summary": "中新社安徽阜阳10月28日电 题：72岁台胞回安徽寻亲：海峡隔不断两岸血脉",
+          "publishedAt": "2026-10-28T06:59:17.000Z",
+          "updatedAt": "2026-10-28T06:59:17.000Z",
+          "byline": "",
+          "topic": "国内新闻"
+        },
         {
           "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722173.shtml",
           "title": "蔡康永称“没有支持过‘台独’” 国台办回应",
@@ -640,51 +680,11 @@
           "updatedAt": "2026-10-28T05:57:12.000Z",
           "byline": "",
           "topic": "国内新闻"
-        },
-        {
-          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722124.shtml",
-          "title": "今年前三季度大陆自台湾进口渔产品同比增35.5%",
-          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722124.shtml",
-          "summary": "中新社北京10月28日电 (记者 黄欣欣 徐雪莹)国务院台办发言人陈斌华28日介绍，今年前三季度，大陆自台湾进口农产品同比增长18.5%，其中进口渔产品同比增长35.5%。",
-          "publishedAt": "2026-10-28T05:44:37.000Z",
-          "updatedAt": "2026-10-28T05:44:37.000Z",
-          "byline": "",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722118.shtml",
-          "title": "从校园到军营 成为军官要接受哪些考验？",
-          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722118.shtml",
-          "summary": "近年来，一批批地方优秀人才通过“直招军官”渠道奔赴军营。日前，在天山脚下，陆军某综合训练基地组织“直招军官”开展新训结业考核。地方青年想要成为一名军官，需要接受哪些考验，记者深入考核现场进行了探访。",
-          "publishedAt": "2026-10-28T05:09:59.000Z",
-          "updatedAt": "2026-10-28T05:09:59.000Z",
-          "byline": "",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722111.shtml",
-          "title": "韩国瑜再提“我是中国人”，批台湾民主“肾虚”要吃六味地黄丸",
-          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722111.shtml",
-          "summary": "中新网10月28日电(燕新台)综合台媒报道，日前，台立法机构负责人韩国瑜在岛内辅选时再度开呛民进党发动“大罢免”“不副署”等事件，已经让台湾民主“肾虚”。他还开出吃六味地黄丸的药方，呼吁让更多正派政治人物当选。",
-          "publishedAt": "2026-10-28T04:44:44.000Z",
-          "updatedAt": "2026-10-28T04:44:44.000Z",
-          "byline": "",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "chinanews:https://www.chinanews.com.cn/gn/2026/10-28/10722110.shtml",
-          "title": "国台办回应大陆稀土出口管制",
-          "url": "https://www.chinanews.com.cn/gn/2026/10-28/10722110.shtml",
-          "summary": "中新网10月28日电 10月28日，国务院台办举行例行新闻发布会。有记者问：路透社报道称，大陆去年起将部分稀土材料、磁铁及相关加工技术纳入出口管制。有舆论称，台积电要求设备供应商评估不使用大陆稀土的替代方案，以降低供应链风险。请予以证实。请问这会否影响到未来两",
-          "publishedAt": "2026-10-28T04:17:48.000Z",
-          "updatedAt": "2026-10-28T04:17:48.000Z",
-          "byline": "",
-          "topic": "国内新闻"
         }
       ]
     },
     "xinhua": {
-      "fetchedAt": "2026-10-28T06:51:08.189Z",
+      "fetchedAt": "2026-10-28T07:22:59.050Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -725,16 +725,6 @@
           "summary": "",
           "publishedAt": "2026-10-28T06:04:04.000Z",
           "updatedAt": "2026-10-28T06:04:04.000Z",
-          "byline": "新华网 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "xinhua:CBMif0FVX3lxTE0zQjVWdVVmSGpOcXhBWUIwSkhtUnROZV9OR1RnODdRdnREem1oazR2WEthb0xVQzQybmFGYUlERVpDbHhmYk9IVkhrZ3ZrNFR6TE95VzAzWklnX2tfSzZjRXhhWGNJbWc2LU1ZYmVrUktEMmpzam5vX1B2NGlIb0U",
-          "title": "何以中国·新时代的长江之歌｜一舟载过去，一桨向未来 - 新华网",
-          "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE0zQjVWdVVmSGpOcXhBWUIwSkhtUnROZV9OR1RnODdRdnREem1oazR2WEthb0xVQzQybmFGYUlERVpDbHhmYk9IVkhrZ3ZrNFR6TE95VzAzWklnX2tfSzZjRXhhWGNJbWc2LU1ZYmVrUktEMmpzam5vX1B2NGlIb0U?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T05:35:37.000Z",
-          "updatedAt": "2026-10-28T05:35:37.000Z",
           "byline": "新华网 · 聚合索引",
           "topic": "国内新闻"
         },
@@ -807,11 +797,148 @@
           "updatedAt": "2026-10-28T03:11:15.000Z",
           "byline": "新华网 · 聚合索引",
           "topic": "国内新闻"
+        },
+        {
+          "id": "xinhua:CBMif0FVX3lxTFBIUU5IZk1SbkRtVi1QeHBqZWhWanhVVXB1d0V2TlMwVE9sNlRycmw4ZW9ZMGdQaDk1WkpCZmdkX0RTc2p5RE5nOGRtUmFYOWpEa2VheE41T0dlSXZZcXdHYzdMbXZ6TEw2TEVzTG1VbzJyRVh0VHZLUVhXeWhoTXc",
+          "title": "瓦努阿图附近海域发生6.0级地震 - 新华网",
+          "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBIUU5IZk1SbkRtVi1QeHBqZWhWanhVVXB1d0V2TlMwVE9sNlRycmw4ZW9ZMGdQaDk1WkpCZmdkX0RTc2p5RE5nOGRtUmFYOWpEa2VheE41T0dlSXZZcXdHYzdMbXZ6TEw2TEVzTG1VbzJyRVh0VHZLUVhXeWhoTXc?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T03:04:05.000Z",
+          "updatedAt": "2026-10-28T03:04:05.000Z",
+          "byline": "新华网 · 聚合索引",
+          "topic": "国内新闻"
+        }
+      ]
+    },
+    "cctv": {
+      "fetchedAt": "2026-10-28T07:17:11.910Z",
+      "edition": "",
+      "tip": "",
+      "items": [
+        {
+          "id": "cctv:CBMieEFVX3lxTE5OdUtPc2FxUE52bFBXTnBYYUNuRXA3cllzamoxRkYzMnNtZ0hCYmp5MUFPRjQtY2RodUhxX3F1SXdBNE8zTjNBZnFKX09TNUZlQkM4YlpoWlNIZEFVN1Jzb2thcTFaMmRzOGhLMnU3Mm9yMmwtVEVTNg",
+          "title": "秋日风光拓展“生态富民”新空间 解锁打卡绚丽秋色的N种玩法 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5OdUtPc2FxUE52bFBXTnBYYUNuRXA3cllzamoxRkYzMnNtZ0hCYmp5MUFPRjQtY2RodUhxX3F1SXdBNE8zTjNBZnFKX09TNUZlQkM4YlpoWlNIZEFVN1Jzb2thcTFaMmRzOGhLMnU3Mm9yMmwtVEVTNg?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:24:02.000Z",
+          "updatedAt": "2026-10-28T06:24:02.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE9kVXdqbktVbzBIdTFIWFVwYU15MFozcDRQdjNneEpBWWk1eVdkaEpoWGxZNDg3bkVzWW9aMGt0TEIxZXNsUTAzRDNCVzZLUmxjZXBXckd5QzJWb01LYVh4QjFQTkhnSWtGTGYzY0o0OUVHdHU1SGQtNQ",
+          "title": "长征路上的少年力量——纪念长征胜利90周年特别剧集《青春剧场・红飘带》探索“影视思政化”新路径 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9kVXdqbktVbzBIdTFIWFVwYU15MFozcDRQdjNneEpBWWk1eVdkaEpoWGxZNDg3bkVzWW9aMGt0TEIxZXNsUTAzRDNCVzZLUmxjZXBXckd5QzJWb01LYVh4QjFQTkhnSWtGTGYzY0o0OUVHdHU1SGQtNQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:08:54.000Z",
+          "updatedAt": "2026-10-28T06:08:54.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE13VFE0a1NmTGIzOGxReWVnc0xYX3UwZkhac0ViU3VwcHhnTFdjbEx6dmxkUFdMZGN4OHRmbldZdlUzUzZ2RHRPM3hJZkQ3TlpZbERfMlRITXd6b1gtdWNNeTdqT29VNmNVVUhOWkRVc3d5ejdhZWFRUw",
+          "title": "党旗在基层一线高高飘扬｜早市党支部守护市井烟火 党建闭环办好民生实事 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE13VFE0a1NmTGIzOGxReWVnc0xYX3UwZkhac0ViU3VwcHhnTFdjbEx6dmxkUFdMZGN4OHRmbldZdlUzUzZ2RHRPM3hJZkQ3TlpZbERfMlRITXd6b1gtdWNNeTdqT29VNmNVVUhOWkRVc3d5ejdhZWFRUw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:03:02.000Z",
+          "updatedAt": "2026-10-28T06:03:02.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE03WUN6SVlKRW9ZM2VzZ1JSRWVFam9xNDVFMmtxRGZQUzFic0ZzaTQzSkJQY0ttbHVQWnY3VE5YM3NhOUNza19JRHQtdkZpcXZaS1FYcnFPQWFjbmxUZXp6RGZ3akI0THp1TG5qT1NCOFMtWVhjTlIzbw",
+          "title": "西藏那曲市巴青县安置板房正陆续搭建 配套设施逐步完善“暖心+便民 ” - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE03WUN6SVlKRW9ZM2VzZ1JSRWVFam9xNDVFMmtxRGZQUzFic0ZzaTQzSkJQY0ttbHVQWnY3VE5YM3NhOUNza19JRHQtdkZpcXZaS1FYcnFPQWFjbmxUZXp6RGZ3akI0THp1TG5qT1NCOFMtWVhjTlIzbw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:49:16.000Z",
+          "updatedAt": "2026-10-28T05:49:16.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE56a2ZScEM0SEt1YktnNlplY0JJdnJpM19xUlN4Q0x4Tnc5S002T0s3LXIyY20zdk13VlNwNlFKdDUyQVhTZDVNR3dQbGhzZjlVeWNPS05VTURHYkkyeWZMamlEektfOWN5M2NtV0ZMQ0htWFdYY2RlaA",
+          "title": "全国秋粮收获已过八成、进展顺利 秋冬种有序推进筑牢粮食安全“压舱石” - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE56a2ZScEM0SEt1YktnNlplY0JJdnJpM19xUlN4Q0x4Tnc5S002T0s3LXIyY20zdk13VlNwNlFKdDUyQVhTZDVNR3dQbGhzZjlVeWNPS05VTURHYkkyeWZMamlEektfOWN5M2NtV0ZMQ0htWFdYY2RlaA?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T04:25:14.000Z",
+          "updatedAt": "2026-10-28T04:25:14.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE1FZGxMbDR1UXRjVFMtdUw5bTluTUtic0Ruck9TMW1vRXZYcXpETUlsYnNwMUJaT3pJVUR3VldmbG9rZEo4VjZOLWNhZl9VMElEaldBdTJNTjkyaWk2T2NES3NVWW5LVVNpeldRYXVoSFZ2SXo2VG5naA",
+          "title": "内塔尼亚胡：利库德集团是以色列最大政党 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1FZGxMbDR1UXRjVFMtdUw5bTluTUtic0Ruck9TMW1vRXZYcXpETUlsYnNwMUJaT3pJVUR3VldmbG9rZEo4VjZOLWNhZl9VMElEaldBdTJNTjkyaWk2T2NES3NVWW5LVVNpeldRYXVoSFZ2SXo2VG5naA?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T04:12:38.000Z",
+          "updatedAt": "2026-10-28T04:12:38.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTFBMN1o2TC0xelo0aVA0YnljVy1mLXNUYm11MUQyeU5yYUctTTM4ZFp5V3BPWmRrTVhJWmQ5anFScElpNHotSnNIVFhBS2NRT1dIWC16allaNlpUdzk4TG1LQXVhcERwVnZ6R3Y2OUNXNE1LTkdHYUFhdA",
+          "title": "民生一件事｜综合服务平台让新型农业经营主体办事从“多头跑”变为“一站办” - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBMN1o2TC0xelo0aVA0YnljVy1mLXNUYm11MUQyeU5yYUctTTM4ZFp5V3BPWmRrTVhJWmQ5anFScElpNHotSnNIVFhBS2NRT1dIWC16allaNlpUdzk4TG1LQXVhcERwVnZ6R3Y2OUNXNE1LTkdHYUFhdA?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T03:51:06.000Z",
+          "updatedAt": "2026-10-28T03:51:06.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE5tWVN4c1VZaWtjdFpsaFRwd2JXVTVkU01pUTZlTjZ1ZUpzRElXN0JELXQ5Q2U0SngxX0dweDIxQ1c2WDlpMEdrSkRVSTdqZVljVGsxQU5COGF6YkF1MUVNa3J5V0lHWFFnc3ltZ1NGcTREZUNIZVJKQQ",
+          "title": "民生一件事｜用服务“力度”提升社区治理“温度” 让民生诉求件件有回音 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5tWVN4c1VZaWtjdFpsaFRwd2JXVTVkU01pUTZlTjZ1ZUpzRElXN0JELXQ5Q2U0SngxX0dweDIxQ1c2WDlpMEdrSkRVSTdqZVljVGsxQU5COGF6YkF1MUVNa3J5V0lHWFFnc3ltZ1NGcTREZUNIZVJKQQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T03:44:16.000Z",
+          "updatedAt": "2026-10-28T03:44:16.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTFAyTEdLT2ZKYmVSd0lPc25uNy14cGlNVkFfTHZ1YXE4VE1sTnZ3WWM2YzVQVDBpLTBIRWxlNGtJNmxqOEdFY1htcG5xejVFUXB3V2s5NFh2TFZPdmU5TktIQlBSSFhwV1BpY21fbnJuSU1LdTBvX2U0Uw",
+          "title": "特朗普：只有中期选举“诚实公正”才接受其结果 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFAyTEdLT2ZKYmVSd0lPc25uNy14cGlNVkFfTHZ1YXE4VE1sTnZ3WWM2YzVQVDBpLTBIRWxlNGtJNmxqOEdFY1htcG5xejVFUXB3V2s5NFh2TFZPdmU5TktIQlBSSFhwV1BpY21fbnJuSU1LdTBvX2U0Uw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T03:03:43.000Z",
+          "updatedAt": "2026-10-28T03:03:43.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE5DV0hKcHktQk9SQ1lydVNIUHMtRGVxN3BpVVNuRFQyeW9kWFF1c1BpV3B0WV9hczFzUnVPcWZJRmNkOW04OHc2YVNSTWN2WFpyN0JTaFN2LV9TWkluMWw4Vnp1b0ozTXVBZGNJRThTNlZ2bE41d3VTYw",
+          "title": "国台办：祖国终将统一也必将统一的历史大势不可阻挡 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5DV0hKcHktQk9SQ1lydVNIUHMtRGVxN3BpVVNuRFQyeW9kWFF1c1BpV3B0WV9hczFzUnVPcWZJRmNkOW04OHc2YVNSTWN2WFpyN0JTaFN2LV9TWkluMWw4Vnp1b0ozTXVBZGNJRThTNlZ2bE41d3VTYw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T02:33:29.000Z",
+          "updatedAt": "2026-10-28T02:33:29.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTFBIN1RxV3RaQTZUNkUzOUhtZmR6N2kwTXhIN2U3M0NURk53bk92c0NQN3FYQ1ZYVTJXSXU5UE1tNjZSTlU0U1Y0Zkg2N3EycnI1NnZzMFFZUzlRMjYxek1HMnhVVG5VRU8tQ1B5Y3lHTnNwR3ZzSnBoaw",
+          "title": "透过亮眼数据看第140届广交会第二期展会成绩单 “广交天下客”绘开放长卷 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBIN1RxV3RaQTZUNkUzOUhtZmR6N2kwTXhIN2U3M0NURk53bk92c0NQN3FYQ1ZYVTJXSXU5UE1tNjZSTlU0U1Y0Zkg2N3EycnI1NnZzMFFZUzlRMjYxek1HMnhVVG5VRU8tQ1B5Y3lHTnNwR3ZzSnBoaw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T01:34:55.000Z",
+          "updatedAt": "2026-10-28T01:34:55.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "cctv:CBMieEFVX3lxTE1aSFViN0RQbVR6bTUxM1JJYnVEY1lsZVJSQWNrdEg2bVJTWXBWZ2RkN2RHdnRDRkFlOVN4WmE3bjV2bWxXT3RUamJzY1NQNjI5MzRpMTd3SUVmbmRITFNGX05DNkpTU0RBMUMydDZ5Q0RfNkVudXg4Wg",
+          "title": "台风“烟花”强度逐渐增强 未来对我国近海无影响 - 央视网",
+          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1aSFViN0RQbVR6bTUxM1JJYnVEY1lsZVJSQWNrdEg2bVJTWXBWZ2RkN2RHdnRDRkFlOVN4WmE3bjV2bWxXT3RUamJzY1NQNjI5MzRpMTd3SUVmbmRITFNGX05DNkpTU0RBMUMydDZ5Q0RfNkVudXg4Wg?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-27T23:47:16.000Z",
+          "updatedAt": "2026-10-27T23:47:16.000Z",
+          "byline": "央视新闻 · 聚合索引",
+          "topic": "国内新闻"
         }
       ]
     },
     "bbc": {
-      "fetchedAt": "2026-10-28T06:51:08.353Z",
+      "fetchedAt": "2026-10-28T07:22:59.573Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -937,135 +1064,8 @@
         }
       ]
     },
-    "cctv": {
-      "fetchedAt": "2026-10-28T06:51:08.452Z",
-      "edition": "",
-      "tip": "",
-      "items": [
-        {
-          "id": "cctv:CBMieEFVX3lxTE9kVXdqbktVbzBIdTFIWFVwYU15MFozcDRQdjNneEpBWWk1eVdkaEpoWGxZNDg3bkVzWW9aMGt0TEIxZXNsUTAzRDNCVzZLUmxjZXBXckd5QzJWb01LYVh4QjFQTkhnSWtGTGYzY0o0OUVHdHU1SGQtNQ",
-          "title": "长征路上的少年力量——纪念长征胜利90周年特别剧集《青春剧场・红飘带》探索“影视思政化”新路径 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9kVXdqbktVbzBIdTFIWFVwYU15MFozcDRQdjNneEpBWWk1eVdkaEpoWGxZNDg3bkVzWW9aMGt0TEIxZXNsUTAzRDNCVzZLUmxjZXBXckd5QzJWb01LYVh4QjFQTkhnSWtGTGYzY0o0OUVHdHU1SGQtNQ?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T06:08:54.000Z",
-          "updatedAt": "2026-10-28T06:08:54.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE13VFE0a1NmTGIzOGxReWVnc0xYX3UwZkhac0ViU3VwcHhnTFdjbEx6dmxkUFdMZGN4OHRmbldZdlUzUzZ2RHRPM3hJZkQ3TlpZbERfMlRITXd6b1gtdWNNeTdqT29VNmNVVUhOWkRVc3d5ejdhZWFRUw",
-          "title": "党旗在基层一线高高飘扬｜早市党支部守护市井烟火 党建闭环办好民生实事 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE13VFE0a1NmTGIzOGxReWVnc0xYX3UwZkhac0ViU3VwcHhnTFdjbEx6dmxkUFdMZGN4OHRmbldZdlUzUzZ2RHRPM3hJZkQ3TlpZbERfMlRITXd6b1gtdWNNeTdqT29VNmNVVUhOWkRVc3d5ejdhZWFRUw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T06:03:02.000Z",
-          "updatedAt": "2026-10-28T06:03:02.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE03WUN6SVlKRW9ZM2VzZ1JSRWVFam9xNDVFMmtxRGZQUzFic0ZzaTQzSkJQY0ttbHVQWnY3VE5YM3NhOUNza19JRHQtdkZpcXZaS1FYcnFPQWFjbmxUZXp6RGZ3akI0THp1TG5qT1NCOFMtWVhjTlIzbw",
-          "title": "西藏那曲市巴青县安置板房正陆续搭建 配套设施逐步完善“暖心+便民 ” - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE03WUN6SVlKRW9ZM2VzZ1JSRWVFam9xNDVFMmtxRGZQUzFic0ZzaTQzSkJQY0ttbHVQWnY3VE5YM3NhOUNza19JRHQtdkZpcXZaS1FYcnFPQWFjbmxUZXp6RGZ3akI0THp1TG5qT1NCOFMtWVhjTlIzbw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T05:49:16.000Z",
-          "updatedAt": "2026-10-28T05:49:16.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE56a2ZScEM0SEt1YktnNlplY0JJdnJpM19xUlN4Q0x4Tnc5S002T0s3LXIyY20zdk13VlNwNlFKdDUyQVhTZDVNR3dQbGhzZjlVeWNPS05VTURHYkkyeWZMamlEektfOWN5M2NtV0ZMQ0htWFdYY2RlaA",
-          "title": "全国秋粮收获已过八成、进展顺利 秋冬种有序推进筑牢粮食安全“压舱石” - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE56a2ZScEM0SEt1YktnNlplY0JJdnJpM19xUlN4Q0x4Tnc5S002T0s3LXIyY20zdk13VlNwNlFKdDUyQVhTZDVNR3dQbGhzZjlVeWNPS05VTURHYkkyeWZMamlEektfOWN5M2NtV0ZMQ0htWFdYY2RlaA?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T04:25:14.000Z",
-          "updatedAt": "2026-10-28T04:25:14.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE1FZGxMbDR1UXRjVFMtdUw5bTluTUtic0Ruck9TMW1vRXZYcXpETUlsYnNwMUJaT3pJVUR3VldmbG9rZEo4VjZOLWNhZl9VMElEaldBdTJNTjkyaWk2T2NES3NVWW5LVVNpeldRYXVoSFZ2SXo2VG5naA",
-          "title": "内塔尼亚胡：利库德集团是以色列最大政党 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1FZGxMbDR1UXRjVFMtdUw5bTluTUtic0Ruck9TMW1vRXZYcXpETUlsYnNwMUJaT3pJVUR3VldmbG9rZEo4VjZOLWNhZl9VMElEaldBdTJNTjkyaWk2T2NES3NVWW5LVVNpeldRYXVoSFZ2SXo2VG5naA?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T04:12:38.000Z",
-          "updatedAt": "2026-10-28T04:12:38.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTFBMN1o2TC0xelo0aVA0YnljVy1mLXNUYm11MUQyeU5yYUctTTM4ZFp5V3BPWmRrTVhJWmQ5anFScElpNHotSnNIVFhBS2NRT1dIWC16allaNlpUdzk4TG1LQXVhcERwVnZ6R3Y2OUNXNE1LTkdHYUFhdA",
-          "title": "民生一件事｜综合服务平台让新型农业经营主体办事从“多头跑”变为“一站办” - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBMN1o2TC0xelo0aVA0YnljVy1mLXNUYm11MUQyeU5yYUctTTM4ZFp5V3BPWmRrTVhJWmQ5anFScElpNHotSnNIVFhBS2NRT1dIWC16allaNlpUdzk4TG1LQXVhcERwVnZ6R3Y2OUNXNE1LTkdHYUFhdA?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T03:51:06.000Z",
-          "updatedAt": "2026-10-28T03:51:06.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE5tWVN4c1VZaWtjdFpsaFRwd2JXVTVkU01pUTZlTjZ1ZUpzRElXN0JELXQ5Q2U0SngxX0dweDIxQ1c2WDlpMEdrSkRVSTdqZVljVGsxQU5COGF6YkF1MUVNa3J5V0lHWFFnc3ltZ1NGcTREZUNIZVJKQQ",
-          "title": "民生一件事｜用服务“力度”提升社区治理“温度” 让民生诉求件件有回音 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5tWVN4c1VZaWtjdFpsaFRwd2JXVTVkU01pUTZlTjZ1ZUpzRElXN0JELXQ5Q2U0SngxX0dweDIxQ1c2WDlpMEdrSkRVSTdqZVljVGsxQU5COGF6YkF1MUVNa3J5V0lHWFFnc3ltZ1NGcTREZUNIZVJKQQ?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T03:44:16.000Z",
-          "updatedAt": "2026-10-28T03:44:16.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTFAyTEdLT2ZKYmVSd0lPc25uNy14cGlNVkFfTHZ1YXE4VE1sTnZ3WWM2YzVQVDBpLTBIRWxlNGtJNmxqOEdFY1htcG5xejVFUXB3V2s5NFh2TFZPdmU5TktIQlBSSFhwV1BpY21fbnJuSU1LdTBvX2U0Uw",
-          "title": "特朗普：只有中期选举“诚实公正”才接受其结果 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFAyTEdLT2ZKYmVSd0lPc25uNy14cGlNVkFfTHZ1YXE4VE1sTnZ3WWM2YzVQVDBpLTBIRWxlNGtJNmxqOEdFY1htcG5xejVFUXB3V2s5NFh2TFZPdmU5TktIQlBSSFhwV1BpY21fbnJuSU1LdTBvX2U0Uw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T03:03:43.000Z",
-          "updatedAt": "2026-10-28T03:03:43.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE5DV0hKcHktQk9SQ1lydVNIUHMtRGVxN3BpVVNuRFQyeW9kWFF1c1BpV3B0WV9hczFzUnVPcWZJRmNkOW04OHc2YVNSTWN2WFpyN0JTaFN2LV9TWkluMWw4Vnp1b0ozTXVBZGNJRThTNlZ2bE41d3VTYw",
-          "title": "国台办：祖国终将统一也必将统一的历史大势不可阻挡 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5DV0hKcHktQk9SQ1lydVNIUHMtRGVxN3BpVVNuRFQyeW9kWFF1c1BpV3B0WV9hczFzUnVPcWZJRmNkOW04OHc2YVNSTWN2WFpyN0JTaFN2LV9TWkluMWw4Vnp1b0ozTXVBZGNJRThTNlZ2bE41d3VTYw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T02:33:29.000Z",
-          "updatedAt": "2026-10-28T02:33:29.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTFBIN1RxV3RaQTZUNkUzOUhtZmR6N2kwTXhIN2U3M0NURk53bk92c0NQN3FYQ1ZYVTJXSXU5UE1tNjZSTlU0U1Y0Zkg2N3EycnI1NnZzMFFZUzlRMjYxek1HMnhVVG5VRU8tQ1B5Y3lHTnNwR3ZzSnBoaw",
-          "title": "透过亮眼数据看第140届广交会第二期展会成绩单 “广交天下客”绘开放长卷 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBIN1RxV3RaQTZUNkUzOUhtZmR6N2kwTXhIN2U3M0NURk53bk92c0NQN3FYQ1ZYVTJXSXU5UE1tNjZSTlU0U1Y0Zkg2N3EycnI1NnZzMFFZUzlRMjYxek1HMnhVVG5VRU8tQ1B5Y3lHTnNwR3ZzSnBoaw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T01:34:55.000Z",
-          "updatedAt": "2026-10-28T01:34:55.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE1aSFViN0RQbVR6bTUxM1JJYnVEY1lsZVJSQWNrdEg2bVJTWXBWZ2RkN2RHdnRDRkFlOVN4WmE3bjV2bWxXT3RUamJzY1NQNjI5MzRpMTd3SUVmbmRITFNGX05DNkpTU0RBMUMydDZ5Q0RfNkVudXg4Wg",
-          "title": "台风“烟花”强度逐渐增强 未来对我国近海无影响 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1aSFViN0RQbVR6bTUxM1JJYnVEY1lsZVJSQWNrdEg2bVJTWXBWZ2RkN2RHdnRDRkFlOVN4WmE3bjV2bWxXT3RUamJzY1NQNjI5MzRpMTd3SUVmbmRITFNGX05DNkpTU0RBMUMydDZ5Q0RfNkVudXg4Wg?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T23:47:16.000Z",
-          "updatedAt": "2026-10-27T23:47:16.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        },
-        {
-          "id": "cctv:CBMieEFVX3lxTE1Pa0tmU2k0WXEwMkNWbHF0SklMTVhMZFc5VDBaUnNVNkw5Mi03MzdfS1RGX3ZNU29GOEcxQkNGZV9nUDh2RER5UHB3VDYzbnA4cVZVd0NEZWFScGxFWEQ1WHRNVHNkLUxCdWFXMGhJU2ktRTRzd25ncg",
-          "title": "今明天北京天气以晴为主 昼夜温差超10℃需添衣保暖 - 央视网",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1Pa0tmU2k0WXEwMkNWbHF0SklMTVhMZFc5VDBaUnNVNkw5Mi03MzdfS1RGX3ZNU29GOEcxQkNGZV9nUDh2RER5UHB3VDYzbnA4cVZVd0NEZWFScGxFWEQ1WHRNVHNkLUxCdWFXMGhJU2ktRTRzd25ncg?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T23:24:33.000Z",
-          "updatedAt": "2026-10-27T23:24:33.000Z",
-          "byline": "央视新闻 · 聚合索引",
-          "topic": "国内新闻"
-        }
-      ]
-    },
     "cnn": {
-      "fetchedAt": "2026-10-28T06:51:08.876Z",
+      "fetchedAt": "2026-10-28T07:22:59.812Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -1191,11 +1191,148 @@
         }
       ]
     },
-    "reuters": {
-      "fetchedAt": "2026-10-28T06:51:09.307Z",
+    "ap": {
+      "fetchedAt": "2026-10-28T07:23:00.247Z",
       "edition": "",
       "tip": "",
       "items": [
+        {
+          "id": "ap:CBMikgFBVV95cUxOM1hja3hGcG1XTFEyajJxMVdPaUZZdkVnd1hMOUlEUDU1Z091NHlvR3FmelozWjhFc2Z6YjVsZWJBR1FoS3F2OU1QU0g0T3ZkWmVqSkFkYXhhMEludXdlaTJNdnU1bE5zNVFVYTZLeURJWUtNY0hSTWJ3ZUt4cWJ1dlVjMi1nWGtNc3Q1RlNJSGFjdw",
+          "title": "Serbian police say assailant killed after attacking a guard outside the Israeli Embassy in Belgrade - AP News",
+          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOM1hja3hGcG1XTFEyajJxMVdPaUZZdkVnd1hMOUlEUDU1Z091NHlvR3FmelozWjhFc2Z6YjVsZWJBR1FoS3F2OU1QU0g0T3ZkWmVqSkFkYXhhMEludXdlaTJNdnU1bE5zNVFVYTZLeURJWUtNY0hSTWJ3ZUt4cWJ1dlVjMi1nWGtNc3Q1RlNJSGFjdw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:58:00.000Z",
+          "updatedAt": "2026-10-28T06:58:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMisAFBVV95cUxNTkotV3h0WGxNZkd3ZDliRzFVLTJ4cGhNVXNsMk1XS1lPLXZyOVp1bFEwSUJPV0tJcGVVakh1dFNxTEM4cjI4ejA2T0NPT3lIdDNqZUJnNl9ITTR0dno0YzdaQkJiNVkyb3A4MlVlb0RGUUhWRFY3cU1kV3FpT0NGaWt1SHdxc1doZDhwektLRGdPYWpyYjZKUEZMZGo5YVF4a013Y3VLMjRCZEp1ZW9PVA",
+          "title": "King Charles III arrives in Bahamas for official Caribbean trip as slavery reparation demands grow - AP News",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNTkotV3h0WGxNZkd3ZDliRzFVLTJ4cGhNVXNsMk1XS1lPLXZyOVp1bFEwSUJPV0tJcGVVakh1dFNxTEM4cjI4ejA2T0NPT3lIdDNqZUJnNl9ITTR0dno0YzdaQkJiNVkyb3A4MlVlb0RGUUhWRFY3cU1kV3FpT0NGaWt1SHdxc1doZDhwektLRGdPYWpyYjZKUEZMZGo5YVF4a013Y3VLMjRCZEp1ZW9PVA?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:27:00.000Z",
+          "updatedAt": "2026-10-28T05:27:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMinwFBVV95cUxQLW9ZWWdKVGhaeDZYZHcxTldIUzBMckdhdXIyak9JenN6RHNWTGNKUER0SXQ3UGpHLXlSTzF6SUtxUzNOV3NlUXJGYkhOZ0RaeTJ5aFVBTGhwZWRBVHVQdVBwTE56bmNkUWNaN0FBUVhyVndzcFlHVFRCODhZcE9qZm9NXzRZNUdua3FZZEhMS3BqcVl4NzVYMUQzU05QMkE",
+          "title": "Rays stun Brewers with 2-run rally in 12th inning and force World Series Game 5 with 4-3 win - AP News",
+          "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQLW9ZWWdKVGhaeDZYZHcxTldIUzBMckdhdXIyak9JenN6RHNWTGNKUER0SXQ3UGpHLXlSTzF6SUtxUzNOV3NlUXJGYkhOZ0RaeTJ5aFVBTGhwZWRBVHVQdVBwTE56bmNkUWNaN0FBUVhyVndzcFlHVFRCODhZcE9qZm9NXzRZNUdua3FZZEhMS3BqcVl4NzVYMUQzU05QMkE?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:13:00.000Z",
+          "updatedAt": "2026-10-28T05:13:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMingFBVV95cUxOYVBiQjE0QTJza2Y3LV9qZi1mSWh6QzY4ZXRqYmVzNGZDb2UxU0VaODliT1N6WTFlY1pjcTJhdnB2dHFRWGhUMnlPSHBnemIyVnBiaEpwaWF5NkxNLWZPZElRTjM4U0xwRkpoZnhSekEtdllFT18wdThnQS1vU2EySTA1UlIzTV94bG5aSl9yZW1xQXBlYmJWVDFYSmNuZw",
+          "title": "Brazil's Flávio Bolsonaro and family will get US visas after election loss, State Department says - AP News",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOYVBiQjE0QTJza2Y3LV9qZi1mSWh6QzY4ZXRqYmVzNGZDb2UxU0VaODliT1N6WTFlY1pjcTJhdnB2dHFRWGhUMnlPSHBnemIyVnBiaEpwaWF5NkxNLWZPZElRTjM4U0xwRkpoZnhSekEtdllFT18wdThnQS1vU2EySTA1UlIzTV94bG5aSl9yZW1xQXBlYmJWVDFYSmNuZw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T04:58:00.000Z",
+          "updatedAt": "2026-10-28T04:58:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMimgFBVV95cUxQTjZwSHA4OFBaR3JuMHQxem5wOWlIX3ppalRJRHZOLWs0aHk5V3Zlei1KR2FrZzRGX2Q3UmhxZ25YYm5WNzBvVmFSX1I4N3ZTeldBOUdRck1nSm9PMWt5MmNtcDlYTWZOR0hfSUhvb3h1NlRJUlJsRVNqNGhJMGZaZ01zM0U4NWRlTGxQR0Y4dGE2dkZEMllzaU1B",
+          "title": "Exit polls suggest no clear winner in Israel’s election, but Netanyahu is far from defeated - AP News",
+          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQTjZwSHA4OFBaR3JuMHQxem5wOWlIX3ppalRJRHZOLWs0aHk5V3Zlei1KR2FrZzRGX2Q3UmhxZ25YYm5WNzBvVmFSX1I4N3ZTeldBOUdRck1nSm9PMWt5MmNtcDlYTWZOR0hfSUhvb3h1NlRJUlJsRVNqNGhJMGZaZ01zM0U4NWRlTGxQR0Y4dGE2dkZEMllzaU1B?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T03:55:00.000Z",
+          "updatedAt": "2026-10-28T03:55:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMiswFBVV95cUxOTXBRQWtGd3R6TThQTzE1bG5tc2FRd3djYVVsd0JiYl9MbTV4dWtXV2RsOTNiV3E4T2Nmdm1hYS1CazJPdVNKUG92aWJIcEdiQnhIaXJmbmZQZzNrZTgzMWswSmIzOUFvcll4NHhKYWNBR0hKaEJVaDNsNjJNMW5XM1VSdXRvUFd2cUFRcW9POWl6T1FyUWhGSmpPUnk2Mndtb1k5V2Fray15NGJDTzA0Y1NzTQ",
+          "title": "Disinformation videos, likely from Russia, are exploiting real people to malign Senate candidates - AP News",
+          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOTXBRQWtGd3R6TThQTzE1bG5tc2FRd3djYVVsd0JiYl9MbTV4dWtXV2RsOTNiV3E4T2Nmdm1hYS1CazJPdVNKUG92aWJIcEdiQnhIaXJmbmZQZzNrZTgzMWswSmIzOUFvcll4NHhKYWNBR0hKaEJVaDNsNjJNMW5XM1VSdXRvUFd2cUFRcW9POWl6T1FyUWhGSmpPUnk2Mndtb1k5V2Fray15NGJDTzA0Y1NzTQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T03:14:00.000Z",
+          "updatedAt": "2026-10-28T03:14:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMiW0FVX3lxTE1DVGVUcl95ZUJpNjQwRlQ1UGFiS1FvZURuRy1SRXVhdVlnREtMOW93d0NZY1c2dHJacGlfNUFJd3ZFZ3JtdXVnOFBhUVlWWHBXdnBzTHJuU09lbUE",
+          "title": "U.S. Department of Justice - AP News",
+          "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1DVGVUcl95ZUJpNjQwRlQ1UGFiS1FvZURuRy1SRXVhdVlnREtMOW93d0NZY1c2dHJacGlfNUFJd3ZFZ3JtdXVnOFBhUVlWWHBXdnBzTHJuU09lbUE?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T02:22:17.000Z",
+          "updatedAt": "2026-10-28T02:22:17.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMingFBVV95cUxPT3FzN2hmU2pzMWV4aE9ZNUZ3aGxWanQzRTZwUGpGRkNnVVhHOURnLTltR2tvWlM5WkR0c19ueWFMejBWY25WWDNBbC1pN24yS19DaWJKTUE2bF8tV1hDSGpUMDQ4MFdsVFF1b3Q1TXVMeHFMazQtbDRMM1hRN0ZoQjAwSXJFMHVsbnR4eDdnclZWanBCYWZyVkROYVlzdw",
+          "title": "FACT FOCUS: Kennedy's claim that Arabs 'don't produce science' meets a Nobel Prize reality check - AP News",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPT3FzN2hmU2pzMWV4aE9ZNUZ3aGxWanQzRTZwUGpGRkNnVVhHOURnLTltR2tvWlM5WkR0c19ueWFMejBWY25WWDNBbC1pN24yS19DaWJKTUE2bF8tV1hDSGpUMDQ4MFdsVFF1b3Q1TXVMeHFMazQtbDRMM1hRN0ZoQjAwSXJFMHVsbnR4eDdnclZWanBCYWZyVkROYVlzdw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T02:06:00.000Z",
+          "updatedAt": "2026-10-28T02:06:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMimwFBVV95cUxNNnBPa2VzUUoxM3RCb0cyd0Fmem05T0lHMVJrejNkdGdGLU1xRmZGQ0g4UDA5N2g2NVRSU0QyTkVWUTFaYXYxUVhDVUZuZElEaDA3dkNZTW9nM3VjXzlyR2R0LXA5a0doNmh5SF9WVVd0UDlYb3hRRHVnalJuZjdGSkNxYWVmUnVLZlJVMXFzX0tReVV0MnVDQ2Jodw",
+          "title": "Grand jury refuses to indict former White House aide Cassidy Hutchinson, AP sources say - AP News",
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNNnBPa2VzUUoxM3RCb0cyd0Fmem05T0lHMVJrejNkdGdGLU1xRmZGQ0g4UDA5N2g2NVRSU0QyTkVWUTFaYXYxUVhDVUZuZElEaDA3dkNZTW9nM3VjXzlyR2R0LXA5a0doNmh5SF9WVVd0UDlYb3hRRHVnalJuZjdGSkNxYWVmUnVLZlJVMXFzX0tReVV0MnVDQ2Jodw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T02:02:00.000Z",
+          "updatedAt": "2026-10-28T02:02:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMilwFBVV95cUxQSFNKN0ZYWlpwbTl6aV91dkRrYVpUZktMVzIta0hXb21GR1k0SURSb3lOZVFkTmhPR2Z4VUJXZm9WaC1rLWwtLXN0OVhYR3NobFhmTzhTSEVmRzkxWDdRSlVNVkNQTVpNSUduQXBDdC1pV1VzcGUxaXNtalJoYXFJVjUyQnFKUGV0QmJYQmVPbG15bVBOZXZF",
+          "title": "Trump says he’s ending restrictions on climate-warming methane from oil drilling - AP News",
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQSFNKN0ZYWlpwbTl6aV91dkRrYVpUZktMVzIta0hXb21GR1k0SURSb3lOZVFkTmhPR2Z4VUJXZm9WaC1rLWwtLXN0OVhYR3NobFhmTzhTSEVmRzkxWDdRSlVNVkNQTVpNSUduQXBDdC1pV1VzcGUxaXNtalJoYXFJVjUyQnFKUGV0QmJYQmVPbG15bVBOZXZF?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T01:15:00.000Z",
+          "updatedAt": "2026-10-28T01:15:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMimAFBVV95cUxNMTQ4UjVlWS1MVlhxNUFHOVlZSk1IWHk2ai1tRGdfRkNxQ2RBUmd1eDZKMXkxTTR5cjJYTDRxem5CXzRrQ0lUd3VkMFlTVUhHVlVReEk5MWZna1NPempEXzA2UUlqREZzNGNPazdRQlNWdWJqdUZxMTktZHBBV0xkNHAzcHFBbmVhVEY0NHNaYTZmdWpTaHViMg",
+          "title": "Soccer star Kylian Mbappé apologizes for apparent reference to Mao as a ‘dictator’ - AP News",
+          "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNMTQ4UjVlWS1MVlhxNUFHOVlZSk1IWHk2ai1tRGdfRkNxQ2RBUmd1eDZKMXkxTTR5cjJYTDRxem5CXzRrQ0lUd3VkMFlTVUhHVlVReEk5MWZna1NPempEXzA2UUlqREZzNGNPazdRQlNWdWJqdUZxMTktZHBBV0xkNHAzcHFBbmVhVEY0NHNaYTZmdWpTaHViMg?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T01:14:00.000Z",
+          "updatedAt": "2026-10-28T01:14:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "ap:CBMikgFBVV95cUxPUnNFYkswVTNNR0trQlNVMmxTVFk4THIxWUpJcFZJbUsyN2ZHdzFqNXM0U2pBWU9uRzg2SkJhQkYxYjlySHRfS2cxMy1xRTRBRnB3LWhMTjk5VmxiM09mRk9JRlBTY0p1UlFhMFRYNlR1VmxGdUFCbXFnbU85THg3ZVVHUHdodEVKZmxnakVwT1ZJdw",
+          "title": "Saudi Arabia says air defenses intercept Houthi missiles over capital, and other Mideast news - AP News",
+          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPUnNFYkswVTNNR0trQlNVMmxTVFk4THIxWUpJcFZJbUsyN2ZHdzFqNXM0U2pBWU9uRzg2SkJhQkYxYjlySHRfS2cxMy1xRTRBRnB3LWhMTjk5VmxiM09mRk9JRlBTY0p1UlFhMFRYNlR1VmxGdUFCbXFnbU85THg3ZVVHUHdodEVKZmxnakVwT1ZJdw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T01:00:00.000Z",
+          "updatedAt": "2026-10-28T01:00:00.000Z",
+          "byline": "美联社 AP · 聚合索引",
+          "topic": "国际新闻"
+        }
+      ]
+    },
+    "reuters": {
+      "fetchedAt": "2026-10-28T07:23:00.720Z",
+      "edition": "",
+      "tip": "",
+      "items": [
+        {
+          "id": "reuters:CBMipwFBVV95cUxNbkllcjg1YWtwdkVRQmtyXzVCQXNUM1VBc3VKYS1ZTXBsbTBFMEhaSzc0Z3FHSUN3bC1sTmtBMzI4cnU0RW1pa0xtRUxzWTU4UWpYV3hYOExqWGZ5MjdsNEtVV1l3YzJwbEdUcTdXeHlxejd0ZXFObFhUN05aNXY4aUNXSTJJekhIdUdRVTZWSjhsUEhqVDZFLXczbTJwZkUtUGEwUmlsSQ",
+          "title": "EXCLUSIVE: Rio Tinto proposes 56% pay jump for CEO as mining sector fights for talent - Reuters",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNbkllcjg1YWtwdkVRQmtyXzVCQXNUM1VBc3VKYS1ZTXBsbTBFMEhaSzc0Z3FHSUN3bC1sTmtBMzI4cnU0RW1pa0xtRUxzWTU4UWpYV3hYOExqWGZ5MjdsNEtVV1l3YzJwbEdUcTdXeHlxejd0ZXFObFhUN05aNXY4aUNXSTJJekhIdUdRVTZWSjhsUEhqVDZFLXczbTJwZkUtUGEwUmlsSQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:03:00.000Z",
+          "updatedAt": "2026-10-28T05:03:00.000Z",
+          "byline": "路透社 Reuters · 聚合索引",
+          "topic": "国际新闻"
+        },
         {
           "id": "reuters:CBMixgFBVV95cUxQTDFWeWo1UVJwSDh4OXB5RnJyVVhXaG1zNHZIMlMyZmpaV0FEU3llN21sZG05OGpyUEZtR3FuTTJ6Y2pBZzEwWVU0dFRPSkExVFRfUGg0SFpzb2tLWDlObGFIQ3Axa2lodWgySngtb2ZEMUFxcXlwZUJnbmdNcTZCalJtSDV5TUpTM282XzFldlZTM012WFRhc0hQamIwOGMxUlpYOEsxUDh1UVkyWjE0aWh2OVdFOTN1cEVKVER0RmE4eEhudGc",
           "title": "EXCLUSIVE: China's CXMT to start advanced AI memory production despite poor yields, sources say - Reuters",
@@ -1305,21 +1442,11 @@
           "updatedAt": "2026-10-28T01:23:00.000Z",
           "byline": "路透社 Reuters · 聚合索引",
           "topic": "国际新闻"
-        },
-        {
-          "id": "reuters:CBMiogFBVV95cUxNVDBiTUtVdXhyTk5manktYnZ3anFPSUVJYXdtV3BSLVJRQmRsaXNxVU1COHViWkJ6ZFlhbGplZFQ2MzNBZDNoY1VSVHN2X0FVRnl4QjF4SjNPcU9OS3pNcGpaYWdDelNWYkV4Slg0QnBDSi1JQmY3XzZ3cWpRRUVndGQzWmQwUExuSkNpWHpGVUkzWEVPck9HQndNcGswZnBLYkE",
-          "title": "ASEAN envoy to lead humanitarian mission to Myanmar - Reuters",
-          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNVDBiTUtVdXhyTk5manktYnZ3anFPSUVJYXdtV3BSLVJRQmRsaXNxVU1COHViWkJ6ZFlhbGplZFQ2MzNBZDNoY1VSVHN2X0FVRnl4QjF4SjNPcU9OS3pNcGpaYWdDelNWYkV4Slg0QnBDSi1JQmY3XzZ3cWpRRUVndGQzWmQwUExuSkNpWHpGVUkzWEVPck9HQndNcGswZnBLYkE?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T01:21:00.000Z",
-          "updatedAt": "2026-10-28T01:21:00.000Z",
-          "byline": "路透社 Reuters · 聚合索引",
-          "topic": "国际新闻"
         }
       ]
     },
     "afp": {
-      "fetchedAt": "2026-10-28T06:51:09.323Z",
+      "fetchedAt": "2026-10-28T07:23:00.326Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -1334,6 +1461,86 @@
           "topic": "国际新闻"
         },
         {
+          "id": "afp:CBMiTEFVX3lxTE1iX1V3cnZfRFktQWJrWDhfdHQ3NXkwM0Q0RXJNWEw5Y082UlphOF91UFZPLWJTQzZ3X1lCVmNYODNZNnZqbTltQkZUYVY",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1iX1V3cnZfRFktQWJrWDhfdHQ3NXkwM0Q0RXJNWEw5Y082UlphOF91UFZPLWJTQzZ3X1lCVmNYODNZNnZqbTltQkZUYVY?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T01:51:20.000Z",
+          "updatedAt": "2026-10-28T01:51:20.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTE5Ra3hiZzA1cXpSaG04bjBWUS1yeHhISy1MNHpvSUdqalM2bVo3R1NUMm01OFNQa3VaUnFZREFlaHNOUGlrRkpoMl85amo",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5Ra3hiZzA1cXpSaG04bjBWUS1yeHhISy1MNHpvSUdqalM2bVo3R1NUMm01OFNQa3VaUnFZREFlaHNOUGlrRkpoMl85amo?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T00:46:03.000Z",
+          "updatedAt": "2026-10-28T00:46:03.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTFAxNEpsQTNpZFRfUENYenU0OWFONFlLdDlXd2hvNS12S29IbTA3V0RVaWl3NjVVcHlMbHhWWURvMHZTZ1I2OEpQc1pud1g",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFAxNEpsQTNpZFRfUENYenU0OWFONFlLdDlXd2hvNS12S29IbTA3V0RVaWl3NjVVcHlMbHhWWURvMHZTZ1I2OEpQc1pud1g?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T00:44:33.000Z",
+          "updatedAt": "2026-10-28T00:44:33.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTE9PMGV2X1VMV0pyRkl1QlF2a2gzS0FmYVhNMXduV2lIVG9UamRUczVtYklLNXB1MlZZZkR2cmtLSV9QVjh1cExJLWJLRGM",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9PMGV2X1VMV0pyRkl1QlF2a2gzS0FmYVhNMXduV2lIVG9UamRUczVtYklLNXB1MlZZZkR2cmtLSV9QVjh1cExJLWJLRGM?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T00:41:50.000Z",
+          "updatedAt": "2026-10-28T00:41:50.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTE1vUGhJRTVkNWIweTNvUjRXQmNIM3Z4UzlZZ2RkRDFPaVprLVZvYkl4TkxxSUdhaXpHeXFDa21WWHlST1lVRTkydV90a0E",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1vUGhJRTVkNWIweTNvUjRXQmNIM3Z4UzlZZ2RkRDFPaVprLVZvYkl4TkxxSUdhaXpHeXFDa21WWHlST1lVRTkydV90a0E?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T00:25:21.000Z",
+          "updatedAt": "2026-10-28T00:25:21.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTE1mX1llXzJ5SHFZUmFJR1N2dGh3Znl1RmV3RHZma3pzYWM1T0FHeXlsR29PaFAyRUdxUVBDQ2tlbldOUEQyMHRLdU05TVU",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1mX1llXzJ5SHFZUmFJR1N2dGh3Znl1RmV3RHZma3pzYWM1T0FHeXlsR29PaFAyRUdxUVBDQ2tlbldOUEQyMHRLdU05TVU?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-27T22:52:55.000Z",
+          "updatedAt": "2026-10-27T22:52:55.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTE9EcnNVR05ZZUN4RGZzMjk3bmpPMnRYZUtxR2lmaDZtUHhGYWZ3UGJtOTdFeDlKVlBOaW4tdUtkcGZjaU1fX1ptSDBkQWg",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9EcnNVR05ZZUN4RGZzMjk3bmpPMnRYZUtxR2lmaDZtUHhGYWZ3UGJtOTdFeDlKVlBOaW4tdUtkcGZjaU1fX1ptSDBkQWg?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-27T21:18:22.000Z",
+          "updatedAt": "2026-10-27T21:18:22.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "afp:CBMiTEFVX3lxTFB0SG15X0ZsQ1FPbjMtLVFYVUVGWnpyYW5FMWlPdVp4YjAzMUFPcDhlX2Jtd2lvX0JFdGJsS2haZExTUTVIcjQ0akRTVEM",
+          "title": "- AFP Fact Check",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFB0SG15X0ZsQ1FPbjMtLVFYVUVGWnpyYW5FMWlPdVp4YjAzMUFPcDhlX2Jtd2lvX0JFdGJsS2haZExTUTVIcjQ0akRTVEM?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-27T21:18:09.000Z",
+          "updatedAt": "2026-10-27T21:18:09.000Z",
+          "byline": "法新社 · 事实核查 · 聚合索引",
+          "topic": "国际新闻"
+        },
+        {
           "id": "afp:CBMiTEFVX3lxTFBWcF9FNTJWTXpSY0pWUnYzelJnbWU5SXBFaDVvdzlwYW5CbkpvNzVJalBlMGc3V1VwV1BWNmRJRnY1bFg2c1o3eWY2b24",
           "title": "- AFP Fact Check",
           "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFBWcF9FNTJWTXpSY0pWUnYzelJnbWU5SXBFaDVvdzlwYW5CbkpvNzVJalBlMGc3V1VwV1BWNmRJRnY1bFg2c1o3eWY2b24?oc=5",
@@ -1344,239 +1551,62 @@
           "topic": "国际新闻"
         },
         {
-          "id": "afp:CBMiWEFVX3lxTE8yRWpva3prSTJLZDVyTW9qMDFpWk0xdTZhcXFNWU5HLTZza19NdXk5Z1BkX0VsRGJJNWMtZTRrOFFMNHdaaE93M2lGekFuS1drVjZVTGVGdFk",
-          "title": "Unfounded Zelensky Canadian bunker story originated on imposter website - AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE8yRWpva3prSTJLZDVyTW9qMDFpWk0xdTZhcXFNWU5HLTZza19NdXk5Z1BkX0VsRGJJNWMtZTRrOFFMNHdaaE93M2lGekFuS1drVjZVTGVGdFk?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T20:49:44.000Z",
-          "updatedAt": "2026-10-27T20:49:44.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiWEFVX3lxTE5tNzNwNjRtNVoxZ3hqdXI5aHRtbEJVbnMtNUpHUzVkaHo3QVQ4czhia1NMZDl1TG5MUXVtOEJibEpYUGhuVmVkaEZPb2VtZ3BmamdCUUNvTVQ",
-          "title": "Localized voting machine issues are not evidence of widespread fraud - AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5tNzNwNjRtNVoxZ3hqdXI5aHRtbEJVbnMtNUpHUzVkaHo3QVQ4czhia1NMZDl1TG5MUXVtOEJibEpYUGhuVmVkaEZPb2VtZ3BmamdCUUNvTVQ?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T20:43:11.000Z",
-          "updatedAt": "2026-10-27T20:43:11.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiTEFVX3lxTFAzNDFHLVZkd200dEhpR1Fwa0YwY3FQOEdOakFqaDF2ZmNuRVlRYXRBNzkzMDlwT3RzaEdTTVRrcVAzVTAxV0kwaVZGQWw",
+          "id": "afp:CBMiTEFVX3lxTE9qczVkMWduTjYyWU93R1JaR0l2UHc0R2NmcjJCV0R1UnhtY2dKWkZ1TVdUOFBpcTNaZzFuUW0wd2R2WDlyWG5rUVYtdFI",
           "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFAzNDFHLVZkd200dEhpR1Fwa0YwY3FQOEdOakFqaDF2ZmNuRVlRYXRBNzkzMDlwT3RzaEdTTVRrcVAzVTAxV0kwaVZGQWw?oc=5",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9qczVkMWduTjYyWU93R1JaR0l2UHc0R2NmcjJCV0R1UnhtY2dKWkZ1TVdUOFBpcTNaZzFuUW0wd2R2WDlyWG5rUVYtdFI?oc=5",
           "summary": "",
-          "publishedAt": "2026-10-27T20:32:01.000Z",
-          "updatedAt": "2026-10-27T20:32:01.000Z",
+          "publishedAt": "2026-10-27T21:09:35.000Z",
+          "updatedAt": "2026-10-27T21:09:35.000Z",
           "byline": "法新社 · 事实核查 · 聚合索引",
           "topic": "国际新闻"
         },
         {
-          "id": "afp:CBMiTEFVX3lxTE1xNUxIOGN5Q0RTaTA4eEIxeUFZZXc5SG5CXzRUdk9iNjFBZENCdkNqT3h4cTVwQndBZmhOYndhbEl0c0o1UGxzSXNkTnQ",
+          "id": "afp:CBMiTEFVX3lxTE9JSnJnTFJBN2g1MVB6SzFhZUhudk1za3FOWXdFQ2JiSUVyNU5fZ0NrcjBEbE4xRkVDOWJSNUJnRDNSWlB6V0pOQ20tMl8",
           "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1xNUxIOGN5Q0RTaTA4eEIxeUFZZXc5SG5CXzRUdk9iNjFBZENCdkNqT3h4cTVwQndBZmhOYndhbEl0c0o1UGxzSXNkTnQ?oc=5",
+          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9JSnJnTFJBN2g1MVB6SzFhZUhudk1za3FOWXdFQ2JiSUVyNU5fZ0NrcjBEbE4xRkVDOWJSNUJnRDNSWlB6V0pOQ20tMl8?oc=5",
           "summary": "",
-          "publishedAt": "2026-10-27T14:14:31.000Z",
-          "updatedAt": "2026-10-27T14:14:31.000Z",
+          "publishedAt": "2026-10-27T21:07:14.000Z",
+          "updatedAt": "2026-10-27T21:07:14.000Z",
           "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiTEFVX3lxTE5LQTZCUFZvRDE4cTdrTVd6bW1VTlRxSU9qM2NjUHFiaFZEM2xuU1J2WkR3N0dUcFN1aEZERUVzV3pjdTd1aGVkQkJYWHQ",
-          "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5LQTZCUFZvRDE4cTdrTVd6bW1VTlRxSU9qM2NjUHFiaFZEM2xuU1J2WkR3N0dUcFN1aEZERUVzV3pjdTd1aGVkQkJYWHQ?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T14:00:45.000Z",
-          "updatedAt": "2026-10-27T14:00:45.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiTEFVX3lxTFBzaS1tVEtRa1J2NVF0dnF0SFhTcEljRTlScDZTV0FKNjVUYU1oWnRJaWpoY3FxdndlbG5lVER6RzNkNEpBSFZIMU9RSTU",
-          "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFBzaS1tVEtRa1J2NVF0dnF0SFhTcEljRTlScDZTV0FKNjVUYU1oWnRJaWpoY3FxdndlbG5lVER6RzNkNEpBSFZIMU9RSTU?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T12:44:56.000Z",
-          "updatedAt": "2026-10-27T12:44:56.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiTEFVX3lxTE5ja1IwWTNJT0FGZzhEdnZlV1VJRnhlTDZlU2lzazVIMk5yWlZzcFJDeWFxTkEyY0Y1V0xKOFpHUUxrd0NXNzl6M2RSSTE",
-          "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5ja1IwWTNJT0FGZzhEdnZlV1VJRnhlTDZlU2lzazVIMk5yWlZzcFJDeWFxTkEyY0Y1V0xKOFpHUUxrd0NXNzl6M2RSSTE?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T12:30:38.000Z",
-          "updatedAt": "2026-10-27T12:30:38.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiTEFVX3lxTE5pbE9Ud19oU3A3MWdnZl9uem01U2ZFQzBUS3Y0bWpWZnYxSko0SHNYbVhSM1hxb2xlMXpnTXZ5LWFWNkpUVXYzUFpTTHE",
-          "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5pbE9Ud19oU3A3MWdnZl9uem01U2ZFQzBUS3Y0bWpWZnYxSko0SHNYbVhSM1hxb2xlMXpnTXZ5LWFWNkpUVXYzUFpTTHE?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T12:18:47.000Z",
-          "updatedAt": "2026-10-27T12:18:47.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiTEFVX3lxTE9HUmhzcm50WDRBWDQ5STZ6cTVCaEJzeDZHX1pFZzgzcGFfOEFXYXRMVV9YWUVYWk1GdTJsYkRLNFhxVkhQS3owSkcyYng",
-          "title": "- AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9HUmhzcm50WDRBWDQ5STZ6cTVCaEJzeDZHX1pFZzgzcGFfOEFXYXRMVV9YWUVYWk1GdTJsYkRLNFhxVkhQS3owSkcyYng?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T11:12:04.000Z",
-          "updatedAt": "2026-10-27T11:12:04.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "afp:CBMiWEFVX3lxTE1DdDdMOHNLSXRMakV5N1dvVnJ4ZTU1NGR1TFZENWVYSHJhR2JwbkZPX3VqUDVzU0l0SF9uV2d5ajVHZlZwLVd4aVptQTZzaEZzVEMxRDBDTFY",
-          "title": "South African court ruling on asylum seekers marked by unrest and disinformation - AFP Fact Check",
-          "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1DdDdMOHNLSXRMakV5N1dvVnJ4ZTU1NGR1TFZENWVYSHJhR2JwbkZPX3VqUDVzU0l0SF9uV2d5ajVHZlZwLVd4aVptQTZzaEZzVEMxRDBDTFY?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T10:53:11.000Z",
-          "updatedAt": "2026-10-27T10:53:11.000Z",
-          "byline": "法新社 · 事实核查 · 聚合索引",
-          "topic": "国际新闻"
-        }
-      ]
-    },
-    "nyt": {
-      "fetchedAt": "2026-10-28T06:51:09.892Z",
-      "edition": "",
-      "tip": "",
-      "items": [
-        {
-          "id": "nyt:https://www.nytimes.com/live/2026/10/27/world/israel-elections",
-          "title": "Rivals in Israel Election Strike Tone of Triumph, but Outcome Is Far From Clear",
-          "url": "https://www.nytimes.com/live/2026/10/27/world/israel-elections",
-          "summary": "Addressing supporters after midnight, Prime Minister Benjamin Netanyahu and Gadi Eisenkot, who leads a bloc of opposition parties,",
-          "publishedAt": "2026-10-28T06:46:19.000Z",
-          "updatedAt": "2026-10-28T06:46:19.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/27/world/asia/korea-tensions-border-dmz-mdl.html",
-          "title": "Tensions Between North and South Korea Stem From Decade-Old Border Dispute",
-          "url": "https://www.nytimes.com/2026/10/27/world/asia/korea-tensions-border-dmz-mdl.html",
-          "summary": "A heated disagreement over recent land mine explosions is part of the legacy of the truce that halted the Korean War 73 years ago.",
-          "publishedAt": "2026-10-28T06:04:27.000Z",
-          "updatedAt": "2026-10-28T06:04:27.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/27/world/venezuela-machado-israel-elections.html",
-          "title": "Venezuela’s Moment of Truth",
-          "url": "https://www.nytimes.com/2026/10/27/world/venezuela-machado-israel-elections.html",
-          "summary": "The country’s most popular politician, María Corina Machado, has returned home from exile. What happens next?",
-          "publishedAt": "2026-10-28T06:04:02.000Z",
-          "updatedAt": "2026-10-28T06:04:02.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/live/2026/10/28/world/israel-elections/heres-the-latest",
-          "title": "Here’s the latest.",
-          "url": "https://www.nytimes.com/live/2026/10/28/world/israel-elections/heres-the-latest",
-          "summary": "",
-          "publishedAt": "2026-10-28T05:37:18.000Z",
-          "updatedAt": "2026-10-28T05:37:18.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/28/world/middleeast/israel-election-herzog-prime-minister.html",
-          "title": "Israel’s President, Isaac Herzog, Faces a Difficult Choice",
-          "url": "https://www.nytimes.com/2026/10/28/world/middleeast/israel-election-herzog-prime-minister.html",
-          "summary": "The president has a largely ceremonial role, except after elections when it is his responsibility to pick a candidate for prime mi",
-          "publishedAt": "2026-10-28T05:18:10.000Z",
-          "updatedAt": "2026-10-28T05:18:10.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/28/world/europe/spain-saic-ferrol-china.html",
-          "title": "A Chinese Port Could Be a Lifeline for Spain, but Also a Threat",
-          "url": "https://www.nytimes.com/2026/10/28/world/europe/spain-saic-ferrol-china.html",
-          "summary": "Residents say a proposed Chinese car plant in northern Spain will create new jobs. Others say it’s a long-term risk, distilling a ",
-          "publishedAt": "2026-10-28T04:01:08.000Z",
-          "updatedAt": "2026-10-28T04:01:08.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/27/world/asia/hong-kong-apartment-horror-movies.html",
-          "title": "Hong Kong’s Property Market Is (Literally) the Stuff of Horror Movies",
-          "url": "https://www.nytimes.com/2026/10/27/world/asia/hong-kong-apartment-horror-movies.html",
-          "summary": "In the city’s “apartment horror” films, one of the world’s least affordable housing markets is a backdrop for exploring superstiti",
-          "publishedAt": "2026-10-28T03:36:13.000Z",
-          "updatedAt": "2026-10-28T03:36:13.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/live/2026/10/27/world/israel-elections/heres-the-latest",
-          "title": "Here’s the latest.",
-          "url": "https://www.nytimes.com/live/2026/10/27/world/israel-elections/heres-the-latest",
-          "summary": "",
-          "publishedAt": "2026-10-28T02:40:52.000Z",
-          "updatedAt": "2026-10-28T02:40:52.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/27/world/europe/raf-fairford-charges-uk-air-base-us-iran.html",
-          "title": "RAF Fairford Incident Was Coordinated By Man Acting for Iran, UK Prosecutors Say",
-          "url": "https://www.nytimes.com/2026/10/27/world/europe/raf-fairford-charges-uk-air-base-us-iran.html",
-          "summary": "Two British men were charged Tuesday over a suspected plot targeting a base used by the United States. Prosecutors believe they we",
-          "publishedAt": "2026-10-28T02:39:46.000Z",
-          "updatedAt": "2026-10-28T02:39:46.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/27/world/europe/egypt-press-crackdown-mada-masr-attalah.html",
-          "title": "Egyptian Court Orders News Site Closed as Critics Warn of a Crackdown",
-          "url": "https://www.nytimes.com/2026/10/27/world/europe/egypt-press-crackdown-mada-masr-attalah.html",
-          "summary": "Mada Masr, one of Egypt’s few independent media outlets, said a judge ordered it closed for operating without a license and detain",
-          "publishedAt": "2026-10-28T02:38:45.000Z",
-          "updatedAt": "2026-10-28T02:38:45.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/26/world/americas/brazil-election-lula-win-what-to-know.html",
-          "title": "What to Know About Brazil’s Election, and What Comes Next",
-          "url": "https://www.nytimes.com/2026/10/26/world/americas/brazil-election-lula-win-what-to-know.html",
-          "summary": "President Luis Inácio Lula da Silva’s victory ended a string of election wins by right-wing candidates in Latin America. His oppon",
-          "publishedAt": "2026-10-28T02:36:51.000Z",
-          "updatedAt": "2026-10-28T02:36:51.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "nyt:https://www.nytimes.com/2026/10/27/world/middleeast/israel-election-exit-polls-close.html",
-          "title": "What to Expect Now That Polls Are Closed in Israel",
-          "url": "https://www.nytimes.com/2026/10/27/world/middleeast/israel-election-exit-polls-close.html",
-          "summary": "Polls have closed across the country. Exit polls may offer clues about the direction of the voting but not necessarily a clear win",
-          "publishedAt": "2026-10-28T02:00:13.000Z",
-          "updatedAt": "2026-10-28T02:00:13.000Z",
-          "byline": "",
           "topic": "国际新闻"
         }
       ]
     },
     "guardian": {
-      "fetchedAt": "2026-10-28T06:51:10.067Z",
+      "fetchedAt": "2026-10-28T07:23:01.641Z",
       "edition": "",
       "tip": "",
       "items": [
+        {
+          "id": "guardian:https://www.theguardian.com/world/live/2026/oct/28/israel-election-results-live-updates-exit-polls-netanyahu-likud-eisenkot-latest-news",
+          "title": "Israel election results live: vote count under way as exit polls point to tie between Netanyahu and Eisenkot blocs",
+          "url": "https://www.theguardian.com/world/live/2026/oct/28/israel-election-results-live-updates-exit-polls-netanyahu-likud-eisenkot-latest-news",
+          "summary": "Both blocs fall short of the 61 seats needed to form a government in initial forecasts as support for Palestinian parties surgesFu",
+          "publishedAt": "2026-10-28T07:17:13.000Z",
+          "updatedAt": "2026-10-28T07:17:13.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "guardian:https://www.theguardian.com/world/2026/oct/28/king-charles-confirms-he-will-discuss-legacy-of-slavery-at-commonwealth-summit",
+          "title": "King Charles to discuss legacy of slavery with Commonwealth leaders at summit",
+          "url": "https://www.theguardian.com/world/2026/oct/28/king-charles-confirms-he-will-discuss-legacy-of-slavery-at-commonwealth-summit",
+          "summary": "Royal tour of Caribbean comes as poll suggests majority support among younger Britons for dialogue on slavery reparationsKing Char",
+          "publishedAt": "2026-10-28T06:55:35.000Z",
+          "updatedAt": "2026-10-28T06:55:35.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "guardian:https://www.theguardian.com/world/2026/oct/28/wednesday-briefing-we-asked-you-what-do-you-want-from-the-burnham-governments-first-budget",
+          "title": "Wednesday briefing: We asked you - what do you want from the Burnham government’s first budget?",
+          "url": "https://www.theguardian.com/world/2026/oct/28/wednesday-briefing-we-asked-you-what-do-you-want-from-the-burnham-governments-first-budget",
+          "summary": "In today’s newsletter: First Edition readers and people struggling with the cost of living tell us what the government could do to",
+          "publishedAt": "2026-10-28T06:43:48.000Z",
+          "updatedAt": "2026-10-28T06:43:48.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
         {
           "id": "guardian:https://www.theguardian.com/world/2026/oct/27/flavio-bolsonaro-brazil-argentina-fled",
           "title": "Flávio Bolsonaro flees Brazil after presidential election loss, reports say",
@@ -1594,16 +1624,6 @@
           "summary": "Get our breaking news email, free app or daily news podcastOnline hate is spilling into the real world, AFP warnsAFP Commissioner ",
           "publishedAt": "2026-10-28T06:35:49.000Z",
           "updatedAt": "2026-10-28T06:35:49.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "guardian:https://www.theguardian.com/world/live/2026/oct/28/israel-election-results-live-updates-exit-polls-netanyahu-likud-eisenkot-latest-news",
-          "title": "Israel election results live: vote count underway as exit polls point to tie between Netanyahu and Eisenkot blocs",
-          "url": "https://www.theguardian.com/world/live/2026/oct/28/israel-election-results-live-updates-exit-polls-netanyahu-likud-eisenkot-latest-news",
-          "summary": "Both blocs fall short of the 61 seats needed to form a government in initial forecasts as support for Palestinian parties surgesFu",
-          "publishedAt": "2026-10-28T06:31:13.000Z",
-          "updatedAt": "2026-10-28T06:31:13.000Z",
           "byline": "",
           "topic": "国际新闻"
         },
@@ -1676,161 +1696,288 @@
           "updatedAt": "2026-10-28T05:00:55.000Z",
           "byline": "",
           "topic": "国际新闻"
-        },
+        }
+      ]
+    },
+    "nyt": {
+      "fetchedAt": "2026-10-28T07:23:01.226Z",
+      "edition": "",
+      "tip": "",
+      "items": [
         {
-          "id": "guardian:https://www.theguardian.com/world/live/2026/oct/27/israel-elections-knesset-netanyahu-likud-eisenkot-gaza-latest-updates",
-          "title": "Major Israeli TV networks revise polling projections – as it happened",
-          "url": "https://www.theguardian.com/world/live/2026/oct/27/israel-elections-knesset-netanyahu-likud-eisenkot-gaza-latest-updates",
-          "summary": "This blog had now closed – our live Israel election results coverage continues hereIsrael election results live updatesAcross Isra",
-          "publishedAt": "2026-10-28T04:08:29.000Z",
-          "updatedAt": "2026-10-28T04:08:29.000Z",
+          "id": "nyt:https://www.nytimes.com/live/2026/10/27/world/israel-elections",
+          "title": "Rivals in Israel Election Strike Tone of Triumph, but Outcome Is Far From Clear",
+          "url": "https://www.nytimes.com/live/2026/10/27/world/israel-elections",
+          "summary": "Addressing supporters after midnight, Prime Minister Benjamin Netanyahu and Gadi Eisenkot, who leads a bloc of opposition parties,",
+          "publishedAt": "2026-10-28T06:46:19.000Z",
+          "updatedAt": "2026-10-28T06:46:19.000Z",
           "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "guardian:https://www.theguardian.com/us-news/live/2026/oct/27/comey-trump-rubio-texas-vance-israel-midterms-politics-latest-news-updates",
-          "title": "Trump tells Texas campaign rally crowd he’s rolling back environmental rules to curb methane pollution – as it happened",
-          "url": "https://www.theguardian.com/us-news/live/2026/oct/27/comey-trump-rubio-texas-vance-israel-midterms-politics-latest-news-updates",
-          "summary": "This live blog is now closed.Sign up for the Breaking News US emailUS voters: tell us what issues will decide your vote?Speaking t",
-          "publishedAt": "2026-10-28T02:00:46.000Z",
-          "updatedAt": "2026-10-28T02:00:46.000Z",
+          "id": "nyt:https://www.nytimes.com/2026/10/27/world/asia/korea-tensions-border-dmz-mdl.html",
+          "title": "Tensions Between North and South Korea Stem From Decade-Old Border Dispute",
+          "url": "https://www.nytimes.com/2026/10/27/world/asia/korea-tensions-border-dmz-mdl.html",
+          "summary": "A heated disagreement over recent land mine explosions is part of the legacy of the truce that halted the Korean War 73 years ago.",
+          "publishedAt": "2026-10-28T06:04:27.000Z",
+          "updatedAt": "2026-10-28T06:04:27.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/27/world/venezuela-machado-israel-elections.html",
+          "title": "Venezuela’s Moment of Truth",
+          "url": "https://www.nytimes.com/2026/10/27/world/venezuela-machado-israel-elections.html",
+          "summary": "The country’s most popular politician, María Corina Machado, has returned home from exile. What happens next?",
+          "publishedAt": "2026-10-28T06:04:02.000Z",
+          "updatedAt": "2026-10-28T06:04:02.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/live/2026/10/28/world/israel-elections/heres-the-latest",
+          "title": "Here’s the latest.",
+          "url": "https://www.nytimes.com/live/2026/10/28/world/israel-elections/heres-the-latest",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:37:18.000Z",
+          "updatedAt": "2026-10-28T05:37:18.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/28/world/middleeast/israel-election-herzog-prime-minister.html",
+          "title": "Israel’s President, Isaac Herzog, Faces a Difficult Choice",
+          "url": "https://www.nytimes.com/2026/10/28/world/middleeast/israel-election-herzog-prime-minister.html",
+          "summary": "The president has a largely ceremonial role, except after elections when it is his responsibility to pick a candidate for prime mi",
+          "publishedAt": "2026-10-28T05:18:10.000Z",
+          "updatedAt": "2026-10-28T05:18:10.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/28/world/europe/spain-saic-ferrol-china.html",
+          "title": "A Chinese Port Could Be a Lifeline for Spain, but Also a Threat",
+          "url": "https://www.nytimes.com/2026/10/28/world/europe/spain-saic-ferrol-china.html",
+          "summary": "Residents say a proposed Chinese car plant in northern Spain will create new jobs. Others say it’s a long-term risk, distilling a ",
+          "publishedAt": "2026-10-28T04:01:09.000Z",
+          "updatedAt": "2026-10-28T04:01:09.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/27/world/asia/hong-kong-apartment-horror-movies.html",
+          "title": "Hong Kong’s Property Market Is (Literally) the Stuff of Horror Movies",
+          "url": "https://www.nytimes.com/2026/10/27/world/asia/hong-kong-apartment-horror-movies.html",
+          "summary": "In the city’s “apartment horror” films, one of the world’s least affordable housing markets is a backdrop for exploring superstiti",
+          "publishedAt": "2026-10-28T03:36:13.000Z",
+          "updatedAt": "2026-10-28T03:36:13.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/live/2026/10/27/world/israel-elections/heres-the-latest",
+          "title": "Here’s the latest.",
+          "url": "https://www.nytimes.com/live/2026/10/27/world/israel-elections/heres-the-latest",
+          "summary": "",
+          "publishedAt": "2026-10-28T02:40:52.000Z",
+          "updatedAt": "2026-10-28T02:40:52.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/27/world/europe/raf-fairford-charges-uk-air-base-us-iran.html",
+          "title": "RAF Fairford Incident Was Coordinated By Man Acting for Iran, UK Prosecutors Say",
+          "url": "https://www.nytimes.com/2026/10/27/world/europe/raf-fairford-charges-uk-air-base-us-iran.html",
+          "summary": "Two British men were charged Tuesday over a suspected plot targeting a base used by the United States. Prosecutors believe they we",
+          "publishedAt": "2026-10-28T02:39:46.000Z",
+          "updatedAt": "2026-10-28T02:39:46.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/27/world/europe/egypt-press-crackdown-mada-masr-attalah.html",
+          "title": "Egyptian Court Orders News Site Closed as Critics Warn of a Crackdown",
+          "url": "https://www.nytimes.com/2026/10/27/world/europe/egypt-press-crackdown-mada-masr-attalah.html",
+          "summary": "Mada Masr, one of Egypt’s few independent media outlets, said a judge ordered it closed for operating without a license and detain",
+          "publishedAt": "2026-10-28T02:38:45.000Z",
+          "updatedAt": "2026-10-28T02:38:45.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/26/world/americas/brazil-election-lula-win-what-to-know.html",
+          "title": "What to Know About Brazil’s Election, and What Comes Next",
+          "url": "https://www.nytimes.com/2026/10/26/world/americas/brazil-election-lula-win-what-to-know.html",
+          "summary": "President Luis Inácio Lula da Silva’s victory ended a string of election wins by right-wing candidates in Latin America. His oppon",
+          "publishedAt": "2026-10-28T02:36:51.000Z",
+          "updatedAt": "2026-10-28T02:36:51.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "nyt:https://www.nytimes.com/2026/10/27/world/middleeast/israel-election-exit-polls-close.html",
+          "title": "What to Expect Now That Polls Are Closed in Israel",
+          "url": "https://www.nytimes.com/2026/10/27/world/middleeast/israel-election-exit-polls-close.html",
+          "summary": "Polls have closed across the country. Exit polls may offer clues about the direction of the voting but not necessarily a clear win",
+          "publishedAt": "2026-10-28T02:00:13.000Z",
+          "updatedAt": "2026-10-28T02:00:13.000Z",
           "byline": "",
           "topic": "国际新闻"
         }
       ]
     },
-    "ap": {
-      "fetchedAt": "2026-10-28T06:51:10.153Z",
+    "lemonde": {
+      "fetchedAt": "2026-10-28T07:23:01.553Z",
       "edition": "",
       "tip": "",
       "items": [
         {
-          "id": "ap:CBMinwFBVV95cUxQLW9ZWWdKVGhaeDZYZHcxTldIUzBMckdhdXIyak9JenN6RHNWTGNKUER0SXQ3UGpHLXlSTzF6SUtxUzNOV3NlUXJGYkhOZ0RaeTJ5aFVBTGhwZWRBVHVQdVBwTE56bmNkUWNaN0FBUVhyVndzcFlHVFRCODhZcE9qZm9NXzRZNUdua3FZZEhMS3BqcVl4NzVYMUQzU05QMkE",
-          "title": "Rays stun Brewers with 2-run rally in 12th inning and force World Series Game 5 with 4-3 win - AP News",
-          "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQLW9ZWWdKVGhaeDZYZHcxTldIUzBMckdhdXIyak9JenN6RHNWTGNKUER0SXQ3UGpHLXlSTzF6SUtxUzNOV3NlUXJGYkhOZ0RaeTJ5aFVBTGhwZWRBVHVQdVBwTE56bmNkUWNaN0FBUVhyVndzcFlHVFRCODhZcE9qZm9NXzRZNUdua3FZZEhMS3BqcVl4NzVYMUQzU05QMkE?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T05:13:00.000Z",
-          "updatedAt": "2026-10-28T05:13:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/environment/article/2026/10/28/trump-drastically-rolls-back-oil-and-gas-methane-rules_6765739_114.html",
+          "title": "Trump drastically rolls back oil and gas methane rules",
+          "url": "https://www.lemonde.fr/en/environment/article/2026/10/28/trump-drastically-rolls-back-oil-and-gas-methane-rules_6765739_114.html",
+          "summary": "The US president is pushing ways of bringing down energy costs ahead of the midterms, amid voter anger over soaring oil costs caus",
+          "publishedAt": "2026-10-28T07:01:34.000Z",
+          "updatedAt": "2026-10-28T07:01:34.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMingFBVV95cUxOYVBiQjE0QTJza2Y3LV9qZi1mSWh6QzY4ZXRqYmVzNGZDb2UxU0VaODliT1N6WTFlY1pjcTJhdnB2dHFRWGhUMnlPSHBnemIyVnBiaEpwaWF5NkxNLWZPZElRTjM4U0xwRkpoZnhSekEtdllFT18wdThnQS1vU2EySTA1UlIzTV94bG5aSl9yZW1xQXBlYmJWVDFYSmNuZw",
-          "title": "Brazil's Flávio Bolsonaro and family will get US visas after election loss, State Department says - AP News",
-          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOYVBiQjE0QTJza2Y3LV9qZi1mSWh6QzY4ZXRqYmVzNGZDb2UxU0VaODliT1N6WTFlY1pjcTJhdnB2dHFRWGhUMnlPSHBnemIyVnBiaEpwaWF5NkxNLWZPZElRTjM4U0xwRkpoZnhSekEtdllFT18wdThnQS1vU2EySTA1UlIzTV94bG5aSl9yZW1xQXBlYmJWVDFYSmNuZw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T04:58:00.000Z",
-          "updatedAt": "2026-10-28T04:58:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/28/from-tulsa-to-santa-fe-along-route-66-meeting-those-erased-from-history-when-the-entire-country-has-the-common-cold-the-black-community-has-the-flu_6765706_4.html",
+          "title": "From Tulsa to Santa Fe along Route 66, meeting those erased from history: 'When the entire country has the common cold, the Black community has the flu'",
+          "url": "https://www.lemonde.fr/en/international/article/2026/10/28/from-tulsa-to-santa-fe-along-route-66-meeting-those-erased-from-history-when-the-entire-country-has-the-common-cold-the-black-community-has-the-flu_6765706_4.html",
+          "summary": "'Route 66, the pulse of America' (3/6). Between ultraconservative Oklahoma, still haunted by racism, and New Mexico, where a Nativ",
+          "publishedAt": "2026-10-28T03:39:29.000Z",
+          "updatedAt": "2026-10-28T03:39:29.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMimgFBVV95cUxQTjZwSHA4OFBaR3JuMHQxem5wOWlIX3ppalRJRHZOLWs0aHk5V3Zlei1KR2FrZzRGX2Q3UmhxZ25YYm5WNzBvVmFSX1I4N3ZTeldBOUdRck1nSm9PMWt5MmNtcDlYTWZOR0hfSUhvb3h1NlRJUlJsRVNqNGhJMGZaZ01zM0U4NWRlTGxQR0Y4dGE2dkZEMllzaU1B",
-          "title": "Exit polls suggest no clear winner in Israel’s election, but Netanyahu is far from defeated - AP News",
-          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQTjZwSHA4OFBaR3JuMHQxem5wOWlIX3ppalRJRHZOLWs0aHk5V3Zlei1KR2FrZzRGX2Q3UmhxZ25YYm5WNzBvVmFSX1I4N3ZTeldBOUdRck1nSm9PMWt5MmNtcDlYTWZOR0hfSUhvb3h1NlRJUlJsRVNqNGhJMGZaZ01zM0U4NWRlTGxQR0Y4dGE2dkZEMllzaU1B?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T03:55:00.000Z",
-          "updatedAt": "2026-10-28T03:55:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/culture/article/2026/10/28/ghana-s-colonial-ghosts-and-objects-find-new-life-at-the-fondation-cartier_6765673_30.html",
+          "title": "Ghana's colonial ghosts and objects find new life at the Fondation Cartier",
+          "url": "https://www.lemonde.fr/en/culture/article/2026/10/28/ghana-s-colonial-ghosts-and-objects-find-new-life-at-the-fondation-cartier_6765673_30.html",
+          "summary": "For his exhibition 'Le Temps des récoltes' ('Harvest Time'), Ghanaian artist Ibrahim Mahama brings together seven artists and two ",
+          "publishedAt": "2026-10-28T03:06:52.000Z",
+          "updatedAt": "2026-10-28T06:50:41.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMiswFBVV95cUxOTXBRQWtGd3R6TThQTzE1bG5tc2FRd3djYVVsd0JiYl9MbTV4dWtXV2RsOTNiV3E4T2Nmdm1hYS1CazJPdVNKUG92aWJIcEdiQnhIaXJmbmZQZzNrZTgzMWswSmIzOUFvcll4NHhKYWNBR0hKaEJVaDNsNjJNMW5XM1VSdXRvUFd2cUFRcW9POWl6T1FyUWhGSmpPUnk2Mndtb1k5V2Fray15NGJDTzA0Y1NzTQ",
-          "title": "Disinformation videos, likely from Russia, are exploiting real people to malign Senate candidates - AP News",
-          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOTXBRQWtGd3R6TThQTzE1bG5tc2FRd3djYVVsd0JiYl9MbTV4dWtXV2RsOTNiV3E4T2Nmdm1hYS1CazJPdVNKUG92aWJIcEdiQnhIaXJmbmZQZzNrZTgzMWswSmIzOUFvcll4NHhKYWNBR0hKaEJVaDNsNjJNMW5XM1VSdXRvUFd2cUFRcW9POWl6T1FyUWhGSmpPUnk2Mndtb1k5V2Fray15NGJDTzA0Y1NzTQ?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T03:14:00.000Z",
-          "updatedAt": "2026-10-28T03:14:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/india/article/2026/10/28/india-evacuates-tens-of-thousands-as-cyclone-arnab-makes-landfall_6765642_168.html",
+          "title": "India evacuates tens of thousands as Cyclone Arnab makes landfall",
+          "url": "https://www.lemonde.fr/en/india/article/2026/10/28/india-evacuates-tens-of-thousands-as-cyclone-arnab-makes-landfall_6765642_168.html",
+          "summary": "Authorities ordered thousands to move inland or take shelter in the states of Andhra Pradesh and Odisha ahead of the storm, while ",
+          "publishedAt": "2026-10-28T01:49:22.000Z",
+          "updatedAt": "2026-10-28T07:10:36.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMingFBVV95cUxPT3FzN2hmU2pzMWV4aE9ZNUZ3aGxWanQzRTZwUGpGRkNnVVhHOURnLTltR2tvWlM5WkR0c19ueWFMejBWY25WWDNBbC1pN24yS19DaWJKTUE2bF8tV1hDSGpUMDQ4MFdsVFF1b3Q1TXVMeHFMazQtbDRMM1hRN0ZoQjAwSXJFMHVsbnR4eDdnclZWanBCYWZyVkROYVlzdw",
-          "title": "FACT FOCUS: Kennedy's claim that Arabs 'don't produce science' meets a Nobel Prize reality check - AP News",
-          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPT3FzN2hmU2pzMWV4aE9ZNUZ3aGxWanQzRTZwUGpGRkNnVVhHOURnLTltR2tvWlM5WkR0c19ueWFMejBWY25WWDNBbC1pN24yS19DaWJKTUE2bF8tV1hDSGpUMDQ4MFdsVFF1b3Q1TXVMeHFMazQtbDRMM1hRN0ZoQjAwSXJFMHVsbnR4eDdnclZWanBCYWZyVkROYVlzdw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T02:06:00.000Z",
-          "updatedAt": "2026-10-28T02:06:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/28/israeli-elections-exit-polls-show-no-clear-winner-as-netanyahu-and-opposition-bloc-neck-and-neck_6765641_4.html",
+          "title": "Israeli elections: Netanyahu's bloc leads after 50% of votes counted",
+          "url": "https://www.lemonde.fr/en/international/article/2026/10/28/israeli-elections-exit-polls-show-no-clear-winner-as-netanyahu-and-opposition-bloc-neck-and-neck_6765641_4.html",
+          "summary": "The partial results are likely to change, with several exit polls showing Benjamin Netanyahu's bloc and that of opposition candida",
+          "publishedAt": "2026-10-28T01:47:16.000Z",
+          "updatedAt": "2026-10-28T06:47:21.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMimwFBVV95cUxNNnBPa2VzUUoxM3RCb0cyd0Fmem05T0lHMVJrejNkdGdGLU1xRmZGQ0g4UDA5N2g2NVRSU0QyTkVWUTFaYXYxUVhDVUZuZElEaDA3dkNZTW9nM3VjXzlyR2R0LXA5a0doNmh5SF9WVVd0UDlYb3hRRHVnalJuZjdGSkNxYWVmUnVLZlJVMXFzX0tReVV0MnVDQ2Jodw",
-          "title": "Grand jury refuses to indict former White House aide Cassidy Hutchinson, AP sources say - AP News",
-          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNNnBPa2VzUUoxM3RCb0cyd0Fmem05T0lHMVJrejNkdGdGLU1xRmZGQ0g4UDA5N2g2NVRSU0QyTkVWUTFaYXYxUVhDVUZuZElEaDA3dkNZTW9nM3VjXzlyR2R0LXA5a0doNmh5SF9WVVd0UDlYb3hRRHVnalJuZjdGSkNxYWVmUnVLZlJVMXFzX0tReVV0MnVDQ2Jodw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T02:02:00.000Z",
-          "updatedAt": "2026-10-28T02:02:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/les-decodeurs/article/2026/10/28/how-chinese-toxic-loans-fueled-zambia-s-debt-spiral_6765640_8.html",
+          "title": "How Chinese 'toxic loans' fueled Zambia's debt spiral",
+          "url": "https://www.lemonde.fr/en/les-decodeurs/article/2026/10/28/how-chinese-toxic-loans-fueled-zambia-s-debt-spiral_6765640_8.html",
+          "summary": "Confidential banking documents reveal that loans from the Industrial and Commercial Bank of China financially choked the African n",
+          "publishedAt": "2026-10-28T01:11:04.000Z",
+          "updatedAt": "2026-10-28T01:11:04.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMiW0FVX3lxTE1DVGVUcl95ZUJpNjQwRlQ1UGFiS1FvZURuRy1SRXVhdVlnREtMOW93d0NZY1c2dHJacGlfNUFJd3ZFZ3JtdXVnOFBhUVlWWHBXdnBzTHJuU09lbUE",
-          "title": "U.S. Department of Justice - AP News",
-          "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1DVGVUcl95ZUJpNjQwRlQ1UGFiS1FvZURuRy1SRXVhdVlnREtMOW93d0NZY1c2dHJacGlfNUFJd3ZFZ3JtdXVnOFBhUVlWWHBXdnBzTHJuU09lbUE?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T01:36:58.000Z",
-          "updatedAt": "2026-10-28T01:36:58.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/28/egypt-releases-prominent-journalist-lina-attalah-from-custody_6765574_4.html",
+          "title": "Egypt releases prominent journalist Lina Attalah from custody",
+          "url": "https://www.lemonde.fr/en/international/article/2026/10/28/egypt-releases-prominent-journalist-lina-attalah-from-custody_6765574_4.html",
+          "summary": "Lina Attalah war released from custody on Tuesday, hours after she was detained and after a court ordered the closure of her websi",
+          "publishedAt": "2026-10-27T23:24:16.000Z",
+          "updatedAt": "2026-10-28T07:09:31.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMilwFBVV95cUxQSFNKN0ZYWlpwbTl6aV91dkRrYVpUZktMVzIta0hXb21GR1k0SURSb3lOZVFkTmhPR2Z4VUJXZm9WaC1rLWwtLXN0OVhYR3NobFhmTzhTSEVmRzkxWDdRSlVNVkNQTVpNSUduQXBDdC1pV1VzcGUxaXNtalJoYXFJVjUyQnFKUGV0QmJYQmVPbG15bVBOZXZF",
-          "title": "Trump says he’s ending restrictions on climate-warming methane from oil drilling - AP News",
-          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQSFNKN0ZYWlpwbTl6aV91dkRrYVpUZktMVzIta0hXb21GR1k0SURSb3lOZVFkTmhPR2Z4VUJXZm9WaC1rLWwtLXN0OVhYR3NobFhmTzhTSEVmRzkxWDdRSlVNVkNQTVpNSUduQXBDdC1pV1VzcGUxaXNtalJoYXFJVjUyQnFKUGV0QmJYQmVPbG15bVBOZXZF?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T01:15:00.000Z",
-          "updatedAt": "2026-10-28T01:15:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/gaza-belongs-to-us-as-israel-votes-settlers-set-up-camp-on-the-border-of-the-palestinian-enclave_6765420_4.html",
+          "title": "'Gaza belongs to us!': As Israel votes, settlers set up camp on the border of the Palestinian enclave",
+          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/gaza-belongs-to-us-as-israel-votes-settlers-set-up-camp-on-the-border-of-the-palestinian-enclave_6765420_4.html",
+          "summary": "Ten days before the October 27 legislative elections, around 20 families took over a plot of land less than a kilometer from the s",
+          "publishedAt": "2026-10-27T18:18:30.000Z",
+          "updatedAt": "2026-10-27T18:18:30.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMimAFBVV95cUxNMTQ4UjVlWS1MVlhxNUFHOVlZSk1IWHk2ai1tRGdfRkNxQ2RBUmd1eDZKMXkxTTR5cjJYTDRxem5CXzRrQ0lUd3VkMFlTVUhHVlVReEk5MWZna1NPempEXzA2UUlqREZzNGNPazdRQlNWdWJqdUZxMTktZHBBV0xkNHAzcHFBbmVhVEY0NHNaYTZmdWpTaHViMg",
-          "title": "Soccer star Kylian Mbappé apologizes for apparent reference to Mao as a ‘dictator’ - AP News",
-          "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNMTQ4UjVlWS1MVlhxNUFHOVlZSk1IWHk2ai1tRGdfRkNxQ2RBUmd1eDZKMXkxTTR5cjJYTDRxem5CXzRrQ0lUd3VkMFlTVUhHVlVReEk5MWZna1NPempEXzA2UUlqREZzNGNPazdRQlNWdWJqdUZxMTktZHBBV0xkNHAzcHFBbmVhVEY0NHNaYTZmdWpTaHViMg?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T01:14:00.000Z",
-          "updatedAt": "2026-10-28T01:14:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/record-turnout-as-israeli-voters-deliver-verdict-on-netanyahu_6765419_4.html",
+          "title": "Israeli election turnout hits 77%, its highest level since 1999",
+          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/record-turnout-as-israeli-voters-deliver-verdict-on-netanyahu_6765419_4.html",
+          "summary": "Voter turnout was the highest since 1999, with more than 77% of eligible voters casting ballots. Initial projections on Tuesday ni",
+          "publishedAt": "2026-10-27T17:08:59.000Z",
+          "updatedAt": "2026-10-28T06:43:35.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMikgFBVV95cUxPUnNFYkswVTNNR0trQlNVMmxTVFk4THIxWUpJcFZJbUsyN2ZHdzFqNXM0U2pBWU9uRzg2SkJhQkYxYjlySHRfS2cxMy1xRTRBRnB3LWhMTjk5VmxiM09mRk9JRlBTY0p1UlFhMFRYNlR1VmxGdUFCbXFnbU85THg3ZVVHUHdodEVKZmxnakVwT1ZJdw",
-          "title": "Saudi Arabia says air defenses intercept Houthi missiles over capital - AP News",
-          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPUnNFYkswVTNNR0trQlNVMmxTVFk4THIxWUpJcFZJbUsyN2ZHdzFqNXM0U2pBWU9uRzg2SkJhQkYxYjlySHRfS2cxMy1xRTRBRnB3LWhMTjk5VmxiM09mRk9JRlBTY0p1UlFhMFRYNlR1VmxGdUFCbXFnbU85THg3ZVVHUHdodEVKZmxnakVwT1ZJdw?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T01:00:00.000Z",
-          "updatedAt": "2026-10-28T01:00:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/yemen-s-houthis-claim-attacks-on-saudi-oil-refinery-and-defense-ministry_6765418_4.html",
+          "title": "Yemen's Houthis claim attacks on Saudi oil refinery and defense ministry",
+          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/yemen-s-houthis-claim-attacks-on-saudi-oil-refinery-and-defense-ministry_6765418_4.html",
+          "summary": "Earlier on Tuesday, a Houthi official said the Egyptian parliament's decision to authorize defensive military support for Saudi Ar",
+          "publishedAt": "2026-10-27T16:59:54.000Z",
+          "updatedAt": "2026-10-27T16:59:54.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMimwFBVV95cUxOS3FCdjVLLTlFWmFCU0N3TnlEeEhuM2tGSFBPMUdWejBiSE9ERmZOVUVtOGg0ZkJyLWRTVm9QMVZrdXNFSjhfV3Bpdl9SN3VqOWxQSDVZNDE2UFlZWnRsQzB3cmQ2a1pxQjA0cmVqSFVGYllMWUIwV09UZlY3ZG45aG5UVEhXclhzUVJEWjdFZkNzVW9SMHk4V2pxOA",
-          "title": "T-wolves' Anthony Edwards needs procedure on right knee, will miss several weeks, AP source says - AP News",
-          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOS3FCdjVLLTlFWmFCU0N3TnlEeEhuM2tGSFBPMUdWejBiSE9ERmZOVUVtOGg0ZkJyLWRTVm9QMVZrdXNFSjhfV3Bpdl9SN3VqOWxQSDVZNDE2UFlZWnRsQzB3cmQ2a1pxQjA0cmVqSFVGYllMWUIwV09UZlY3ZG45aG5UVEhXclhzUVJEWjdFZkNzVW9SMHk4V2pxOA?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-28T00:30:00.000Z",
-          "updatedAt": "2026-10-28T00:30:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/le-monde-africa/article/2026/10/27/africa-ebola-outbreak-passes-10-000-cases-mostly-in-dr-congo_6765413_124.html",
+          "title": "Africa Ebola outbreak passes 10,000 cases, mostly in DR Congo",
+          "url": "https://www.lemonde.fr/en/le-monde-africa/article/2026/10/27/africa-ebola-outbreak-passes-10-000-cases-mostly-in-dr-congo_6765413_124.html",
+          "summary": "According to the DRC's figures, 10,060 people have been infected and 4,887 have died since the virus was first detected there in M",
+          "publishedAt": "2026-10-27T15:47:05.000Z",
+          "updatedAt": "2026-10-27T15:53:42.000Z",
+          "byline": "",
           "topic": "国际新闻"
         },
         {
-          "id": "ap:CBMiqAFBVV95cUxPbm95bTdpVk5ZdnFONElTaDJ2SW9VM1RoUkppRXBCRlhuMVhtY3Q3RG9YNG5xdnQzOHVkTXJvcTFFN2hsbV9zYWFzYUxtQTNJaXBMX3RuRGxQay02cWlrbmdVUDlPWklmdFdHU0VFZTVWWnlmeDhVQzh6eTA5RElMZG80TGNIa2o3NXI4dXNFUUNJMWY4S3dRdFRudzJXLWx2OVk2T1JIS0k",
-          "title": "Alexander brothers each get 30 years in prison after women speak of being drugged and raped by them - AP News",
-          "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPbm95bTdpVk5ZdnFONElTaDJ2SW9VM1RoUkppRXBCRlhuMVhtY3Q3RG9YNG5xdnQzOHVkTXJvcTFFN2hsbV9zYWFzYUxtQTNJaXBMX3RuRGxQay02cWlrbmdVUDlPWklmdFdHU0VFZTVWWnlmeDhVQzh6eTA5RElMZG80TGNIa2o3NXI4dXNFUUNJMWY4S3dRdFRudzJXLWx2OVk2T1JIS0k?oc=5",
-          "summary": "",
-          "publishedAt": "2026-10-27T23:32:00.000Z",
-          "updatedAt": "2026-10-27T23:32:00.000Z",
-          "byline": "美联社 AP · 聚合索引",
+          "id": "lemonde:https://www.lemonde.fr/en/economy/article/2026/10/27/in-china-mbappe-s-remarks-calling-mao-a-dictator-come-at-exorbitant-financial-cost_6765412_19.html",
+          "title": "In China, Mbappé's remarks calling Mao a 'dictator' come at exorbitant financial cost",
+          "url": "https://www.lemonde.fr/en/economy/article/2026/10/27/in-china-mbappe-s-remarks-calling-mao-a-dictator-come-at-exorbitant-financial-cost_6765412_19.html",
+          "summary": "The video, in which the French football star mentioned a parody depicting him as Mao Zedong, drew the anger of China's foreign min",
+          "publishedAt": "2026-10-27T15:45:10.000Z",
+          "updatedAt": "2026-10-27T15:45:10.000Z",
+          "byline": "",
           "topic": "国际新闻"
         }
       ]
     },
     "aljazeera": {
-      "fetchedAt": "2026-10-28T06:51:10.646Z",
+      "fetchedAt": "2026-10-28T07:23:01.443Z",
       "edition": "",
       "tip": "",
       "items": [
+        {
+          "id": "aljazeera:https://www.aljazeera.com/?t=1793091393",
+          "title": "The next phase of military rule in Egypt is here",
+          "url": "https://www.aljazeera.com/opinions/2026/10/28/the-next-phase-of-military-rule-in-egypt-is-here?traffic_source=rss",
+          "summary": "El-Sisi’s announcement that he will not run for a fourth term may signal a new leadership arrangement.",
+          "publishedAt": "2026-10-28T06:36:59.000Z",
+          "updatedAt": "2026-10-28T06:36:59.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
+        {
+          "id": "aljazeera:https://www.aljazeera.com/?t=1793158447",
+          "title": "Experts defer to AI in decision-making, Anthropic study finds",
+          "url": "https://www.aljazeera.com/economy/2026/10/28/experts-defer-to-ai-in-decision-making-anthropic-study-finds?traffic_source=rss",
+          "summary": "Professional analysts chose options that matched AI assistant's preference 86 percent of the time, research finds.",
+          "publishedAt": "2026-10-28T06:33:19.000Z",
+          "updatedAt": "2026-10-28T06:33:19.000Z",
+          "byline": "",
+          "topic": "国际新闻"
+        },
         {
           "id": "aljazeera:https://www.aljazeera.com/?t=1793164115",
           "title": "Arsenal knocked out of League Cup by fourth-tier Fleetwood Town",
@@ -1930,158 +2077,138 @@
           "updatedAt": "2026-10-28T02:53:35.000Z",
           "byline": "",
           "topic": "国际新闻"
-        },
-        {
-          "id": "aljazeera:https://www.aljazeera.com/?t=1793154087",
-          "title": "Netanyahu: Coalition with Arab parties would be ‘shameful’",
-          "url": "https://www.aljazeera.com/video/newsfeed/2026/10/28/netanyahu-coalition-with-arab-parties-would-be?traffic_source=rss",
-          "summary": "Netanyahu has called the prospect of working with Arab parties to form a government ‘a disgrace and a shame’.",
-          "publishedAt": "2026-10-28T02:26:27.000Z",
-          "updatedAt": "2026-10-28T02:26:27.000Z",
-          "byline": "",
-          "topic": "国际新闻"
-        },
-        {
-          "id": "aljazeera:https://www.aljazeera.com/?t=1793136360",
-          "title": "Arab parties on track to win record seats in Israel election, polls show",
-          "url": "https://www.aljazeera.com/news/2026/10/28/arab-parties-could-win-18-seats-in-israeli-elections-exit-polls-suggest?traffic_source=rss",
-          "summary": "Record-breaking voter turnout among Palestinian citizens of Israel hits around 80 percent, early indications show.",
-          "publishedAt": "2026-10-28T00:43:56.000Z",
-          "updatedAt": "2026-10-28T00:43:56.000Z",
-          "byline": "",
-          "topic": "国际新闻"
         }
       ]
     },
-    "lemonde": {
-      "fetchedAt": "2026-10-28T06:51:10.743Z",
+    "ft": {
+      "fetchedAt": "2026-10-28T07:23:02.149Z",
       "edition": "",
       "tip": "",
       "items": [
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/28/from-tulsa-to-santa-fe-along-route-66-meeting-those-erased-from-history-when-the-entire-country-has-the-common-cold-the-black-community-has-the-flu_6765706_4.html",
-          "title": "From Tulsa to Santa Fe along Route 66, meeting those erased from history: 'When the entire country has the common cold, the Black community has the flu'",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/28/from-tulsa-to-santa-fe-along-route-66-meeting-those-erased-from-history-when-the-entire-country-has-the-common-cold-the-black-community-has-the-flu_6765706_4.html",
-          "summary": "'Route 66, the pulse of America' (3/6). Between ultraconservative Oklahoma, still haunted by racism, and New Mexico, where a Nativ",
-          "publishedAt": "2026-10-28T03:39:29.000Z",
-          "updatedAt": "2026-10-28T03:39:29.000Z",
+          "id": "ft:6abfda69-f4f7-45d5-922c-f4b65a72bcdc",
+          "title": "The AI bubble already popped — in China",
+          "url": "https://www.ft.com/content/6abfda69-f4f7-45d5-922c-f4b65a72bcdc?syn-25a6b1a6=1",
+          "summary": "Plus, two cheers for CGBs",
+          "publishedAt": "2026-10-28T06:30:03.000Z",
+          "updatedAt": "2026-10-28T06:30:03.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/culture/article/2026/10/28/ghana-s-colonial-ghosts-and-objects-find-new-life-at-the-fondation-cartier_6765673_30.html",
-          "title": "Ghana’s colonial ghosts and objects find new life at the Fondation Cartier",
-          "url": "https://www.lemonde.fr/en/culture/article/2026/10/28/ghana-s-colonial-ghosts-and-objects-find-new-life-at-the-fondation-cartier_6765673_30.html",
-          "summary": "For his exhibition 'Le Temps des récoltes' ('Harvest Time'), Ghanaian artist Ibrahim Mahama brings together seven artists and two ",
-          "publishedAt": "2026-10-28T03:06:56.000Z",
-          "updatedAt": "2026-10-28T03:06:56.000Z",
+          "id": "ft:6dab34da-a039-46e6-9547-0c7213a00001",
+          "title": "No clear winner in Israeli election, exit polls suggest",
+          "url": "https://www.ft.com/content/6dab34da-a039-46e6-9547-0c7213a00001?syn-25a6b1a6=1",
+          "summary": "Benjamin Netanyahu urges rivals to join Jewish coalition and shun Arab parties as neither bloc set for majority",
+          "publishedAt": "2026-10-28T06:10:23.000Z",
+          "updatedAt": "2026-10-28T06:10:23.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/india/article/2026/10/28/india-evacuates-tens-of-thousands-as-cyclone-arnab-makes-landfall_6765642_168.html",
-          "title": "India evacuates tens of thousands as Cyclone Arnab makes landfall",
-          "url": "https://www.lemonde.fr/en/india/article/2026/10/28/india-evacuates-tens-of-thousands-as-cyclone-arnab-makes-landfall_6765642_168.html",
-          "summary": "Authorities ordered thousands to move inland or take shelter in the states of Andhra Pradesh and Odisha ahead of the storm, while ",
-          "publishedAt": "2026-10-28T01:49:23.000Z",
-          "updatedAt": "2026-10-28T01:49:23.000Z",
+          "id": "ft:efbe2a33-8a12-4d71-9599-26c86b9d8a0f",
+          "title": "EU spars over ‘associate member’ label for Canada on eve of Carney summit",
+          "url": "https://www.ft.com/content/efbe2a33-8a12-4d71-9599-26c86b9d8a0f?syn-25a6b1a6=1",
+          "summary": "Also in this newsletter: Industry bosses warn plan to limit gas-fired power prices will distort Europe’s electricity market",
+          "publishedAt": "2026-10-28T06:00:04.000Z",
+          "updatedAt": "2026-10-28T06:00:04.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/28/israeli-elections-exit-polls-show-no-clear-winner-as-netanyahu-and-opposition-bloc-neck-and-neck_6765641_4.html",
-          "title": "Israeli elections: Netanyahu's bloc leads after 50% of votes counted",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/28/israeli-elections-exit-polls-show-no-clear-winner-as-netanyahu-and-opposition-bloc-neck-and-neck_6765641_4.html",
-          "summary": "The partial results are likely to change, with several exit polls showing Benjamin Netanyahu's bloc and that of opposition candida",
-          "publishedAt": "2026-10-28T01:47:16.000Z",
-          "updatedAt": "2026-10-28T06:47:21.000Z",
+          "id": "ft:fadbee3f-16cd-4892-a41f-7d6682b77e4d",
+          "title": "FirstFT: Israel’s election deadlock",
+          "url": "https://www.ft.com/content/fadbee3f-16cd-4892-a41f-7d6682b77e4d?syn-25a6b1a6=1",
+          "summary": "Also in today’s newsletter: UK Budget day and Russia-US energy deals",
+          "publishedAt": "2026-10-28T05:33:00.000Z",
+          "updatedAt": "2026-10-28T05:33:00.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/les-decodeurs/article/2026/10/28/how-chinese-toxic-loans-fueled-zambia-s-debt-spiral_6765640_8.html",
-          "title": "How Chinese 'toxic loans' fueled Zambia's debt spiral",
-          "url": "https://www.lemonde.fr/en/les-decodeurs/article/2026/10/28/how-chinese-toxic-loans-fueled-zambia-s-debt-spiral_6765640_8.html",
-          "summary": "Confidential banking documents reveal that loans from the Industrial and Commercial Bank of China financially choked the African n",
-          "publishedAt": "2026-10-28T01:11:04.000Z",
-          "updatedAt": "2026-10-28T01:11:04.000Z",
+          "id": "ft:e464d3da-dad9-4fa3-b99f-1b89fdd1e2a4",
+          "title": "BoE to kick off short and precautionary tightening cycle in November",
+          "url": "https://www.ft.com/content/e464d3da-dad9-4fa3-b99f-1b89fdd1e2a4",
+          "summary": "Read the BoE’s October forecast from the FT’s Monetary Policy Radar team",
+          "publishedAt": "2026-10-28T05:30:03.000Z",
+          "updatedAt": "2026-10-28T05:30:03.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/28/egypt-releases-prominent-journalist-lina-attalah-from-custody_6765574_4.html",
-          "title": "Egypt releases prominent journalist Lina Attalah from custody",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/28/egypt-releases-prominent-journalist-lina-attalah-from-custody_6765574_4.html",
-          "summary": "Lina Attalah war released from custody on Tuesday, hours after she was detained and after a court ordered the closure of her websi",
-          "publishedAt": "2026-10-27T23:24:19.000Z",
-          "updatedAt": "2026-10-27T23:24:19.000Z",
+          "id": "ft:4f122702-3765-4e9f-a94f-4b786bc2af15",
+          "title": "Israel’s election: what happens next?",
+          "url": "https://www.ft.com/content/4f122702-3765-4e9f-a94f-4b786bc2af15",
+          "summary": "Exit polls suggest neither Prime Minister Benjamin Netanyahu nor his rivals have a simple path to form a government",
+          "publishedAt": "2026-10-28T05:17:20.000Z",
+          "updatedAt": "2026-10-28T05:17:20.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/gaza-belongs-to-us-as-israel-votes-settlers-set-up-camp-on-the-border-of-the-palestinian-enclave_6765420_4.html",
-          "title": "'Gaza belongs to us!': As Israel votes, settlers set up camp on the border of the Palestinian enclave",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/gaza-belongs-to-us-as-israel-votes-settlers-set-up-camp-on-the-border-of-the-palestinian-enclave_6765420_4.html",
-          "summary": "Ten days before the October 27 legislative elections, around 20 families took over a plot of land less than a kilometer from the s",
-          "publishedAt": "2026-10-27T18:18:30.000Z",
-          "updatedAt": "2026-10-27T18:18:30.000Z",
+          "id": "ft:f7164ca2-ed17-4b41-ab78-3b66fc4cb4ad",
+          "title": "Can local communities reinvent the UK high street?",
+          "url": "https://www.ft.com/video/f7164ca2-ed17-4b41-ab78-3b66fc4cb4ad?syn-25a6b1a6=1",
+          "summary": "The FT's retail correspondent Laura Onita visits the once-prosperous towns of Dewsbury and Birkenhead",
+          "publishedAt": "2026-10-28T05:10:03.000Z",
+          "updatedAt": "2026-10-28T05:10:03.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/record-turnout-as-israeli-voters-deliver-verdict-on-netanyahu_6765419_4.html",
-          "title": "Israeli election turnout hits 77%, its highest level since 1999",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/record-turnout-as-israeli-voters-deliver-verdict-on-netanyahu_6765419_4.html",
-          "summary": "Voter turnout was the highest since 1999, with more than 77% of eligible voters casting ballots. Initial projections on Tuesday ni",
-          "publishedAt": "2026-10-27T17:08:59.000Z",
-          "updatedAt": "2026-10-28T06:43:35.000Z",
+          "id": "ft:29ab9e0a-47a0-4789-b32e-86308a47eb53",
+          "title": "The stateless quant titan",
+          "url": "https://www.ft.com/content/29ab9e0a-47a0-4789-b32e-86308a47eb53?syn-25a6b1a6=1",
+          "summary": "Peter de Putron is one of the most influential and enigmatic figures in the world of trading",
+          "publishedAt": "2026-10-28T05:00:24.000Z",
+          "updatedAt": "2026-10-28T05:00:24.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/yemen-s-houthis-claim-attacks-on-saudi-oil-refinery-and-defense-ministry_6765418_4.html",
-          "title": "Yemen's Houthis claim attacks on Saudi oil refinery and defense ministry",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/yemen-s-houthis-claim-attacks-on-saudi-oil-refinery-and-defense-ministry_6765418_4.html",
-          "summary": "Earlier on Tuesday, a Houthi official said the Egyptian parliament's decision to authorize defensive military support for Saudi Ar",
-          "publishedAt": "2026-10-27T16:59:54.000Z",
-          "updatedAt": "2026-10-27T16:59:54.000Z",
+          "id": "ft:52b656d0-fa0e-44b2-be1a-5f74735e90e0",
+          "title": "EU countries may use UK-built migrant centres in Rwanda",
+          "url": "https://www.ft.com/content/52b656d0-fa0e-44b2-be1a-5f74735e90e0?syn-25a6b1a6=1",
+          "summary": "Five nations plan to deport failed asylum seekers to Kigali, potentially using British facilities from abandoned 2022 scheme",
+          "publishedAt": "2026-10-28T05:00:23.000Z",
+          "updatedAt": "2026-10-28T05:00:23.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/le-monde-africa/article/2026/10/27/africa-ebola-outbreak-passes-10-000-cases-mostly-in-dr-congo_6765413_124.html",
-          "title": "Africa Ebola outbreak passes 10,000 cases, mostly in DR Congo",
-          "url": "https://www.lemonde.fr/en/le-monde-africa/article/2026/10/27/africa-ebola-outbreak-passes-10-000-cases-mostly-in-dr-congo_6765413_124.html",
-          "summary": "According to the DRC's figures, 10,060 people have been infected and 4,887 have died since the virus was first detected there in M",
-          "publishedAt": "2026-10-27T15:47:05.000Z",
-          "updatedAt": "2026-10-27T15:53:42.000Z",
+          "id": "ft:95dabc01-47da-4f9f-ad0b-19cdc966fed6",
+          "title": "Britain needs a coherent economic strategy — can Healey deliver one?",
+          "url": "https://www.ft.com/content/95dabc01-47da-4f9f-ad0b-19cdc966fed6?syn-25a6b1a6=1",
+          "summary": "The chancellor’s first priority in the Budget is to make the UK look prudent again",
+          "publishedAt": "2026-10-28T05:00:23.000Z",
+          "updatedAt": "2026-10-28T05:00:23.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/economy/article/2026/10/27/in-china-mbappe-s-remarks-calling-mao-a-dictator-come-at-exorbitant-financial-cost_6765412_19.html",
-          "title": "In China, Mbappé's remarks calling Mao a 'dictator' come at exorbitant financial cost",
-          "url": "https://www.lemonde.fr/en/economy/article/2026/10/27/in-china-mbappe-s-remarks-calling-mao-a-dictator-come-at-exorbitant-financial-cost_6765412_19.html",
-          "summary": "The video, in which the French football star mentioned a parody depicting him as Mao Zedong, drew the anger of China's foreign min",
-          "publishedAt": "2026-10-27T15:45:10.000Z",
-          "updatedAt": "2026-10-27T15:45:10.000Z",
+          "id": "ft:4ea17c8c-ca26-40be-85d2-4d4a8e41a4bd",
+          "title": "Giorgia Meloni’s government set to pass EU-compliant budget for 2027",
+          "url": "https://www.ft.com/content/4ea17c8c-ca26-40be-85d2-4d4a8e41a4bd",
+          "summary": "Italy’s three-party governing coalition plans €23.5bn package of tax cuts and spending increases",
+          "publishedAt": "2026-10-28T05:00:23.000Z",
+          "updatedAt": "2026-10-28T05:00:23.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         },
         {
-          "id": "lemonde:https://www.lemonde.fr/en/international/article/2026/10/27/iraqi-court-jails-french-nationals-for-belonging-to-is_6765411_4.html",
-          "title": "Iraqi court jails French nationals for belonging to IS",
-          "url": "https://www.lemonde.fr/en/international/article/2026/10/27/iraqi-court-jails-french-nationals-for-belonging-to-is_6765411_4.html",
-          "summary": "Seven French nationals were part of a group of 47 French citizens transferred from Syria last year.",
-          "publishedAt": "2026-10-27T15:28:16.000Z",
-          "updatedAt": "2026-10-27T15:28:16.000Z",
+          "id": "ft:ee862c14-9e71-4023-b632-5c76b7b92892",
+          "title": "The FT Budget quiz: How does Britain compare?",
+          "url": "https://www.ft.com/content/ee862c14-9e71-4023-b632-5c76b7b92892",
+          "summary": "How exceptional is the reality facing the UK chancellor John Healey? Test your fiscal knowledge with our questions",
+          "publishedAt": "2026-10-28T05:00:15.000Z",
+          "updatedAt": "2026-10-28T05:00:15.000Z",
           "byline": "",
-          "topic": "国际新闻"
+          "topic": "财经新闻"
         }
       ]
     },
     "openai": {
-      "fetchedAt": "2026-10-28T06:51:11.042Z",
+      "fetchedAt": "2026-10-28T07:23:02.937Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -2207,262 +2334,8 @@
         }
       ]
     },
-    "ft": {
-      "fetchedAt": "2026-10-28T06:51:11.157Z",
-      "edition": "",
-      "tip": "",
-      "items": [
-        {
-          "id": "ft:6abfda69-f4f7-45d5-922c-f4b65a72bcdc",
-          "title": "The AI bubble already popped — in China",
-          "url": "https://www.ft.com/content/6abfda69-f4f7-45d5-922c-f4b65a72bcdc?syn-25a6b1a6=1",
-          "summary": "Plus, two cheers for CGBs",
-          "publishedAt": "2026-10-28T06:30:03.000Z",
-          "updatedAt": "2026-10-28T06:30:03.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:6dab34da-a039-46e6-9547-0c7213a00001",
-          "title": "No clear winner in Israeli election, exit polls suggest",
-          "url": "https://www.ft.com/content/6dab34da-a039-46e6-9547-0c7213a00001?syn-25a6b1a6=1",
-          "summary": "Benjamin Netanyahu urges rivals to join Jewish coalition and shun Arab parties as neither bloc set for majority",
-          "publishedAt": "2026-10-28T06:10:23.000Z",
-          "updatedAt": "2026-10-28T06:10:23.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:efbe2a33-8a12-4d71-9599-26c86b9d8a0f",
-          "title": "EU spars over ‘associate member’ label for Canada on eve of Carney summit",
-          "url": "https://www.ft.com/content/efbe2a33-8a12-4d71-9599-26c86b9d8a0f?syn-25a6b1a6=1",
-          "summary": "Also in this newsletter: Industry bosses warn plan to limit gas-fired power prices will distort Europe’s electricity market",
-          "publishedAt": "2026-10-28T06:00:04.000Z",
-          "updatedAt": "2026-10-28T06:00:04.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:fadbee3f-16cd-4892-a41f-7d6682b77e4d",
-          "title": "FirstFT: Israel’s election deadlock",
-          "url": "https://www.ft.com/content/fadbee3f-16cd-4892-a41f-7d6682b77e4d?syn-25a6b1a6=1",
-          "summary": "Also in today’s newsletter: UK Budget day and Russia-US energy deals",
-          "publishedAt": "2026-10-28T05:33:00.000Z",
-          "updatedAt": "2026-10-28T05:33:00.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:e464d3da-dad9-4fa3-b99f-1b89fdd1e2a4",
-          "title": "BoE to kick off short and precautionary tightening cycle in November",
-          "url": "https://www.ft.com/content/e464d3da-dad9-4fa3-b99f-1b89fdd1e2a4",
-          "summary": "Read the BoE’s October forecast from the FT’s Monetary Policy Radar team",
-          "publishedAt": "2026-10-28T05:30:03.000Z",
-          "updatedAt": "2026-10-28T05:30:03.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:4f122702-3765-4e9f-a94f-4b786bc2af15",
-          "title": "Israel’s election: What happens next?",
-          "url": "https://www.ft.com/content/4f122702-3765-4e9f-a94f-4b786bc2af15",
-          "summary": "Exit polls suggest neither Prime Minister Benjamin Netanyahu nor his rivals have a simple path to form a government",
-          "publishedAt": "2026-10-28T05:17:20.000Z",
-          "updatedAt": "2026-10-28T05:17:20.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:f7164ca2-ed17-4b41-ab78-3b66fc4cb4ad",
-          "title": "Can local communities reinvent the UK high street?",
-          "url": "https://www.ft.com/video/f7164ca2-ed17-4b41-ab78-3b66fc4cb4ad?syn-25a6b1a6=1",
-          "summary": "The FT's retail correspondent Laura Onita visits the once-prosperous towns of Dewsbury and Birkenhead",
-          "publishedAt": "2026-10-28T05:10:03.000Z",
-          "updatedAt": "2026-10-28T05:10:03.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:29ab9e0a-47a0-4789-b32e-86308a47eb53",
-          "title": "The stateless quant titan",
-          "url": "https://www.ft.com/content/29ab9e0a-47a0-4789-b32e-86308a47eb53?syn-25a6b1a6=1",
-          "summary": "Peter de Putron is one of the most influential and enigmatic figures in the world of trading",
-          "publishedAt": "2026-10-28T05:00:24.000Z",
-          "updatedAt": "2026-10-28T05:00:24.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:52b656d0-fa0e-44b2-be1a-5f74735e90e0",
-          "title": "EU countries may use UK-built migrant centres in Rwanda",
-          "url": "https://www.ft.com/content/52b656d0-fa0e-44b2-be1a-5f74735e90e0?syn-25a6b1a6=1",
-          "summary": "Five nations plan to deport failed asylum seekers to Kigali, potentially using British facilities from abandoned 2022 scheme",
-          "publishedAt": "2026-10-28T05:00:23.000Z",
-          "updatedAt": "2026-10-28T05:00:23.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:95dabc01-47da-4f9f-ad0b-19cdc966fed6",
-          "title": "Britain needs a coherent economic strategy — can Healey deliver one?",
-          "url": "https://www.ft.com/content/95dabc01-47da-4f9f-ad0b-19cdc966fed6?syn-25a6b1a6=1",
-          "summary": "The chancellor’s first priority in the Budget is to make the UK look prudent again",
-          "publishedAt": "2026-10-28T05:00:23.000Z",
-          "updatedAt": "2026-10-28T05:00:23.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:4ea17c8c-ca26-40be-85d2-4d4a8e41a4bd",
-          "title": "Giorgia Meloni’s government set to pass EU-compliant budget for 2027",
-          "url": "https://www.ft.com/content/4ea17c8c-ca26-40be-85d2-4d4a8e41a4bd",
-          "summary": "Italy’s three-party governing coalition plans €23.5bn package of tax cuts and spending increases",
-          "publishedAt": "2026-10-28T05:00:23.000Z",
-          "updatedAt": "2026-10-28T05:00:23.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        },
-        {
-          "id": "ft:ee862c14-9e71-4023-b632-5c76b7b92892",
-          "title": "The FT Budget quiz: How does Britain compare?",
-          "url": "https://www.ft.com/content/ee862c14-9e71-4023-b632-5c76b7b92892",
-          "summary": "How exceptional is the reality facing the UK chancellor John Healey? Test your fiscal knowledge with our questions",
-          "publishedAt": "2026-10-28T05:00:15.000Z",
-          "updatedAt": "2026-10-28T05:00:15.000Z",
-          "byline": "",
-          "topic": "财经新闻"
-        }
-      ]
-    },
-    "techcrunch": {
-      "fetchedAt": "2026-10-28T06:51:11.625Z",
-      "edition": "",
-      "tip": "",
-      "items": [
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182406",
-          "title": "VCs will make billions on Anthropic’s IPO, but Amazon is set to make much (much) more",
-          "url": "https://techcrunch.com/2026/10/27/vcs-will-make-billions-on-anthropics-ipo-but-amazon-is-set-to-make-much-much-more/",
-          "summary": "Massive note conversions reveal the true extent of Amazon's ownership in Anthropic.",
-          "publishedAt": "2026-10-28T01:15:28.000Z",
-          "updatedAt": "2026-10-28T01:15:28.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182387",
-          "title": "Parents sue OpenAI, alleging GPT-4o coached their daughter off seizure medication",
-          "url": "https://techcrunch.com/2026/10/27/parents-sue-openai-alleging-gpt-4o-coached-their-daughter-off-seizure-medication/",
-          "summary": "A family is suing OpenAI, saying ChatGPT coached their daughter to quietly taper off her seizure medication and keep it from her d",
-          "publishedAt": "2026-10-27T23:34:27.000Z",
-          "updatedAt": "2026-10-27T23:34:27.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3181301",
-          "title": "The data center boom has an upside: innovation for the US grid",
-          "url": "https://techcrunch.com/2026/10/27/the-data-center-boom-has-an-upside-innovation-for-the-us-grid/",
-          "summary": "As the AI boom stresses the existing power grid, all sorts of new opportunities for grid modernization are also emerging as a resu",
-          "publishedAt": "2026-10-27T22:55:41.000Z",
-          "updatedAt": "2026-10-27T22:55:41.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182297",
-          "title": "Bank of America kindly asks that you don’t share your banking password with your AI assistant",
-          "url": "https://techcrunch.com/2026/10/27/bank-of-america-kindly-asks-that-you-dont-share-your-banking-password-with-your-ai-assistant/",
-          "summary": "The banking giant reminds customers that \"you're responsible for activity\" resulting from your AI agents' access.",
-          "publishedAt": "2026-10-27T21:44:34.000Z",
-          "updatedAt": "2026-10-27T21:44:34.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182153",
-          "title": "Who’s really in charge at Anthropic after the IPO?",
-          "url": "https://techcrunch.com/2026/10/27/whos-really-in-charge-at-anthropic-after-the-ipo/",
-          "summary": "Here's a clear explanation of Anthropic's incredibly complex governance structure.",
-          "publishedAt": "2026-10-27T21:38:28.000Z",
-          "updatedAt": "2026-10-27T21:38:28.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182189",
-          "title": "Disruptive raises $10B fund to make big bets on at least 10 companies",
-          "url": "https://techcrunch.com/2026/10/27/disruptive-raises-10b-fund-to-make-big-bets-on-at-least-10-companies/",
-          "summary": "Disruptive has made headlines in recent years for pouring money into companies like chip startup Groq and the AI voice-generation ",
-          "publishedAt": "2026-10-27T18:55:35.000Z",
-          "updatedAt": "2026-10-27T18:55:35.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182002",
-          "title": "Frontier AI labs say their models refuted the Exponential Time Hypothesis. What does that mean?",
-          "url": "https://techcrunch.com/2026/10/27/frontier-ai-labs-say-their-models-refuted-the-exponential-time-hypothesis-what-does-that-mean/",
-          "summary": "TechCrunch spoke to the MIT computer scientist charged with explaining OpenAI's latest mind-bending discovery.",
-          "publishedAt": "2026-10-27T17:08:08.000Z",
-          "updatedAt": "2026-10-27T17:08:08.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182045",
-          "title": "Google’s Genie 4 world model adds audio, more realistic worlds, and real-time steering",
-          "url": "https://techcrunch.com/2026/10/27/googles-genie-4-world-model-adds-audio-more-realistic-worlds-and-real-time-steering/",
-          "summary": "Genie 4 can maintain a consistent scene for up to two minutes, double Genie 3's limit, and offers better physics and more humanlik",
-          "publishedAt": "2026-10-27T16:30:57.000Z",
-          "updatedAt": "2026-10-27T16:30:57.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182018",
-          "title": "Meta AI director Rohit Patel leaves to take on Microsoft Office and Google Workspace",
-          "url": "https://techcrunch.com/2026/10/27/meta-ai-director-rohit-patel-leaves-to-take-on-microsoft-office-and-google-workspace/",
-          "summary": "Rohit Patel is departing Meta after eight years working on AI evaluations and reinforcement learning, TechCrunch has exclusively l",
-          "publishedAt": "2026-10-27T14:59:09.000Z",
-          "updatedAt": "2026-10-27T14:59:09.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3182015",
-          "title": "Japan internet giant GMO says hackers posted stolen customer data",
-          "url": "https://techcrunch.com/2026/10/27/japan-internet-giant-gmo-says-hackers-posted-stolen-customer-data/",
-          "summary": "Japan's GMO Internet is verifying alleged customer data posted by suspected hackers following a cloud service breach.",
-          "publishedAt": "2026-10-27T13:32:57.000Z",
-          "updatedAt": "2026-10-27T13:32:57.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3181922",
-          "title": "Opera introduces a new web standard to let users deploy AI locally in their browser",
-          "url": "https://techcrunch.com/2026/10/27/opera-introduces-a-new-web-standard-to-let-users-deploy-ai-locally-in-their-browser/",
-          "summary": "The new standard, WebAI, is designed to work with a variety of AI models.",
-          "publishedAt": "2026-10-27T13:00:00.000Z",
-          "updatedAt": "2026-10-27T13:00:00.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        },
-        {
-          "id": "techcrunch:https://techcrunch.com/?p=3181881",
-          "title": "General Compute raises $100 million Series A, countering the neocloud disaster narrative",
-          "url": "https://techcrunch.com/2026/10/27/general-compute-raises-100-million-series-a-countering-the-neocloud-disaster-narrative/",
-          "summary": "General Compute is betting on inference chips from outside the Nvidia ecosystem.",
-          "publishedAt": "2026-10-27T13:00:00.000Z",
-          "updatedAt": "2026-10-27T13:00:00.000Z",
-          "byline": "",
-          "topic": "AI 动态"
-        }
-      ]
-    },
     "huggingface": {
-      "fetchedAt": "2026-10-28T06:51:11.738Z",
+      "fetchedAt": "2026-10-28T07:23:02.505Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -2588,8 +2461,135 @@
         }
       ]
     },
+    "techcrunch": {
+      "fetchedAt": "2026-10-28T07:23:02.217Z",
+      "edition": "",
+      "tip": "",
+      "items": [
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182406",
+          "title": "VCs will make billions on Anthropic’s IPO, but Amazon is set to make much (much) more",
+          "url": "https://techcrunch.com/2026/10/27/vcs-will-make-billions-on-anthropics-ipo-but-amazon-is-set-to-make-much-much-more/",
+          "summary": "Massive note conversions reveal the true extent of Amazon's ownership in Anthropic.",
+          "publishedAt": "2026-10-28T01:15:28.000Z",
+          "updatedAt": "2026-10-28T01:15:28.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182387",
+          "title": "Parents sue OpenAI, alleging GPT-4o coached their daughter off seizure medication",
+          "url": "https://techcrunch.com/2026/10/27/parents-sue-openai-alleging-gpt-4o-coached-their-daughter-off-seizure-medication/",
+          "summary": "A family is suing OpenAI, saying ChatGPT coached their daughter to quietly taper off her seizure medication and keep it from her d",
+          "publishedAt": "2026-10-27T23:34:27.000Z",
+          "updatedAt": "2026-10-27T23:34:27.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3181301",
+          "title": "The data center boom has an upside: innovation for the US grid",
+          "url": "https://techcrunch.com/2026/10/27/the-data-center-boom-has-an-upside-innovation-for-the-us-grid/",
+          "summary": "As the AI boom stresses the existing power grid, all sorts of new opportunities for grid modernization are also emerging as a resu",
+          "publishedAt": "2026-10-27T22:55:41.000Z",
+          "updatedAt": "2026-10-27T22:55:41.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182297",
+          "title": "Bank of America kindly asks that you don’t share your banking password with your AI assistant",
+          "url": "https://techcrunch.com/2026/10/27/bank-of-america-kindly-asks-that-you-dont-share-your-banking-password-with-your-ai-assistant/",
+          "summary": "The banking giant reminds customers that \"you're responsible for activity\" resulting from your AI agents' access.",
+          "publishedAt": "2026-10-27T21:44:34.000Z",
+          "updatedAt": "2026-10-27T21:44:34.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182153",
+          "title": "Who’s really in charge at Anthropic after the IPO?",
+          "url": "https://techcrunch.com/2026/10/27/whos-really-in-charge-at-anthropic-after-the-ipo/",
+          "summary": "Here's a clear explanation of Anthropic's incredibly complex governance structure.",
+          "publishedAt": "2026-10-27T21:38:28.000Z",
+          "updatedAt": "2026-10-27T21:38:28.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182189",
+          "title": "Disruptive raises $10B fund to make big bets on at least 10 companies",
+          "url": "https://techcrunch.com/2026/10/27/disruptive-raises-10b-fund-to-make-big-bets-on-at-least-10-companies/",
+          "summary": "Disruptive has made headlines in recent years for pouring money into companies like chip startup Groq and the AI voice-generation ",
+          "publishedAt": "2026-10-27T18:55:35.000Z",
+          "updatedAt": "2026-10-27T18:55:35.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182002",
+          "title": "Frontier AI labs say their models refuted the Exponential Time Hypothesis. What does that mean?",
+          "url": "https://techcrunch.com/2026/10/27/frontier-ai-labs-say-their-models-refuted-the-exponential-time-hypothesis-what-does-that-mean/",
+          "summary": "TechCrunch spoke to the MIT computer scientist charged with explaining OpenAI's latest mind-bending discovery.",
+          "publishedAt": "2026-10-27T17:08:08.000Z",
+          "updatedAt": "2026-10-27T17:08:08.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182045",
+          "title": "Google’s Genie 4 world model adds audio, more realistic worlds, and real-time steering",
+          "url": "https://techcrunch.com/2026/10/27/googles-genie-4-world-model-adds-audio-more-realistic-worlds-and-real-time-steering/",
+          "summary": "Genie 4 can maintain a consistent scene for up to two minutes, double Genie 3's limit, and offers better physics and more humanlik",
+          "publishedAt": "2026-10-27T16:30:57.000Z",
+          "updatedAt": "2026-10-27T16:30:57.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182018",
+          "title": "Meta AI director Rohit Patel leaves to take on Microsoft Office and Google Workspace",
+          "url": "https://techcrunch.com/2026/10/27/meta-ai-director-rohit-patel-leaves-to-take-on-microsoft-office-and-google-workspace/",
+          "summary": "Rohit Patel is departing Meta after eight years working on AI evaluations and reinforcement learning, TechCrunch has exclusively l",
+          "publishedAt": "2026-10-27T14:59:09.000Z",
+          "updatedAt": "2026-10-27T14:59:09.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3182015",
+          "title": "Japan internet giant GMO says hackers posted stolen customer data",
+          "url": "https://techcrunch.com/2026/10/27/japan-internet-giant-gmo-says-hackers-posted-stolen-customer-data/",
+          "summary": "Japan's GMO Internet is verifying alleged customer data posted by suspected hackers following a cloud service breach.",
+          "publishedAt": "2026-10-27T13:32:57.000Z",
+          "updatedAt": "2026-10-27T13:32:57.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3181922",
+          "title": "Opera introduces a new web standard to let users deploy AI locally in their browser",
+          "url": "https://techcrunch.com/2026/10/27/opera-introduces-a-new-web-standard-to-let-users-deploy-ai-locally-in-their-browser/",
+          "summary": "The new standard, WebAI, is designed to work with a variety of AI models.",
+          "publishedAt": "2026-10-27T13:00:00.000Z",
+          "updatedAt": "2026-10-27T13:00:00.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        },
+        {
+          "id": "techcrunch:https://techcrunch.com/?p=3181881",
+          "title": "General Compute raises $100 million Series A, countering the neocloud disaster narrative",
+          "url": "https://techcrunch.com/2026/10/27/general-compute-raises-100-million-series-a-countering-the-neocloud-disaster-narrative/",
+          "summary": "General Compute is betting on inference chips from outside the Nvidia ecosystem.",
+          "publishedAt": "2026-10-27T13:00:00.000Z",
+          "updatedAt": "2026-10-27T13:00:00.000Z",
+          "byline": "",
+          "topic": "AI 动态"
+        }
+      ]
+    },
     "krebs": {
-      "fetchedAt": "2026-10-28T06:51:11.866Z",
+      "fetchedAt": "2026-10-28T07:23:03.696Z",
       "edition": "",
       "tip": "",
       "items": [
@@ -2694,163 +2694,297 @@
           "topic": "安全阅读"
         }
       ]
+    },
+    "guancha": {
+      "fetchedAt": "2026-10-28T07:22:59.074Z",
+      "edition": "",
+      "tip": "",
+      "items": [
+        {
+          "id": "guancha:CBMiY0FVX3lxTE9BeTdnTS1EaENSZ2hJbVlqUTMwTHBBZ0xXTTlkU2dDNi05azU1NHNnMGdNM2Jlb2gxSy1kRDAtZ3o5YXFjTzcxNHBwTWFyVXJER0c5dEMtUmNjOFdjWmY3eWRuaw",
+          "title": "无人机袭击暂停后 俄罗斯炼油产能恢复 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9BeTdnTS1EaENSZ2hJbVlqUTMwTHBBZ0xXTTlkU2dDNi05azU1NHNnMGdNM2Jlb2gxSy1kRDAtZ3o5YXFjTzcxNHBwTWFyVXJER0c5dEMtUmNjOFdjWmY3eWRuaw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T07:04:00.000Z",
+          "updatedAt": "2026-10-28T07:04:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMic0FVX3lxTFBtT3ZXRWdTZzMtNFVNUG1EMlRjTy1VZnVvNDJzRmR0Y0hpZDM5VkhGSGtHNUhhbFNRUnBKMVhwaWVEQTlKdW9jcGhJNTdqVWppbzBoVDFMQ2tWTkk2QUpYUHBjZXJLVTRUdG1WaFdYM2RoZzQ",
+          "title": "特朗普对美媒开炮：你们什么时候才能放弃“人工智能”一词？ - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBtT3ZXRWdTZzMtNFVNUG1EMlRjTy1VZnVvNDJzRmR0Y0hpZDM5VkhGSGtHNUhhbFNRUnBKMVhwaWVEQTlKdW9jcGhJNTdqVWppbzBoVDFMQ2tWTkk2QUpYUHBjZXJLVTRUdG1WaFdYM2RoZzQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:29:00.000Z",
+          "updatedAt": "2026-10-28T06:29:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMiZkFVX3lxTE5SUk4zd0ctUTVnM3draHlVN0xWMW0xbUU5R0VaLTZWMzVZVE5fclZLYy1uc2ZWUF9jOTdyTHJ2aHJGVmUyYkJzN3FkVDF0V0dwRWdhTzdXX2lTcXdSUXFXLVhYMGZ0QQ",
+          "title": "科普丛书出现“双头虾”“鱼头人身”等图片，中国农业出版社回应 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5SUk4zd0ctUTVnM3draHlVN0xWMW0xbUU5R0VaLTZWMzVZVE5fclZLYy1uc2ZWUF9jOTdyTHJ2aHJGVmUyYkJzN3FkVDF0V0dwRWdhTzdXX2lTcXdSUXFXLVhYMGZ0QQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:11:00.000Z",
+          "updatedAt": "2026-10-28T06:11:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMiYkFVX3lxTE1Ca2RiUkJIMFo1YlBDelYxQy1DczlscmxBaXVzUDZNVDA5czV6MjlIaDFvenpmYXZzZExIZWN2NkJJbnIxX0REblhVV3hSMGZ2ejBEUjhjOFUyc3M2bEpyZkhn",
+          "title": "通用汽车“拥抱科技股”，将从纽交所转至纳斯达克上市 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1Ca2RiUkJIMFo1YlBDelYxQy1DczlscmxBaXVzUDZNVDA5czV6MjlIaDFvenpmYXZzZExIZWN2NkJJbnIxX0REblhVV3hSMGZ2ejBEUjhjOFUyc3M2bEpyZkhn?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T06:02:00.000Z",
+          "updatedAt": "2026-10-28T06:02:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMic0FVX3lxTE51RlNNVXV6MkZfeUExRkNnblNENkgwY3l4aHdUU05nWFlwZE1XRHVWY3VmeU9WSEJlcjkzWkgzS0ZZMTNLdzJOQkdUc3NVSWFnZVQwVTNkZnBnT3I0UmJPLVpNTWdvV09Pb2ZTVU1NUDE3MHc",
+          "title": "总台体育青少中心：不认可皇马的表态，道歉到位前一切免谈 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE51RlNNVXV6MkZfeUExRkNnblNENkgwY3l4aHdUU05nWFlwZE1XRHVWY3VmeU9WSEJlcjkzWkgzS0ZZMTNLdzJOQkdUc3NVSWFnZVQwVTNkZnBnT3I0UmJPLVpNTWdvV09Pb2ZTVU1NUDE3MHc?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:57:00.000Z",
+          "updatedAt": "2026-10-28T05:57:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMic0FVX3lxTE02XzRQVWM3dnBDR3VoeG9iT0NLWXktY0h4OUhhbU5meGM3bTd5a1lneS1RUEdiMldVd2kyR0JVVzdtQ0tSbmVaX0Z4b3owTVhEZzNucVB3bXNid3dfVHVLckpEc3NlS21ZbzZJaTZXbVJoaFE",
+          "title": "在联大发生言语冲突后，美国驱逐一名古巴驻联合国外交官 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE02XzRQVWM3dnBDR3VoeG9iT0NLWXktY0h4OUhhbU5meGM3bTd5a1lneS1RUEdiMldVd2kyR0JVVzdtQ0tSbmVaX0Z4b3owTVhEZzNucVB3bXNid3dfVHVLckpEc3NlS21ZbzZJaTZXbVJoaFE?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:53:00.000Z",
+          "updatedAt": "2026-10-28T05:53:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMigwFBVV95cUxOQ2VYemFFMWQyMDBSdzJWZm1Jek9VMTRyVEpKMXVqZVZCcTd0OTJTOXBqdkVOcUdIMHpVZlhUWUpXR0R3aE1rQ1liMFVuYzRjcXQxcWZ4YmlpNC1walFvRW5iOFl3T2ktQUNielM1RGJMRlgtOEstTkVsV25wX3cwQXc2bw",
+          "title": "美国海军2026财年发生27起A级航空和水面事故，创至少十年来新高 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOQ2VYemFFMWQyMDBSdzJWZm1Jek9VMTRyVEpKMXVqZVZCcTd0OTJTOXBqdkVOcUdIMHpVZlhUWUpXR0R3aE1rQ1liMFVuYzRjcXQxcWZ4YmlpNC1walFvRW5iOFl3T2ktQUNielM1RGJMRlgtOEstTkVsV25wX3cwQXc2bw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:42:00.000Z",
+          "updatedAt": "2026-10-28T05:42:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMic0FVX3lxTE9HSERHVXdyemkteGZnb2tnc0VXc1BMZlhzVnB2NHdIWVFqVklPT0prMWpaR0xtMmVNb2VyQ2JXTnFzLVF1aGlHRTN6TTc4dlJCakNzRFFZYzJvTFdoM3ZMMHVQejVHNGgzaU5HY3ZQVzdXOWs",
+          "title": "普京@欧洲：别挖坑害人，小心自己掉下去 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9HSERHVXdyemkteGZnb2tnc0VXc1BMZlhzVnB2NHdIWVFqVklPT0prMWpaR0xtMmVNb2VyQ2JXTnFzLVF1aGlHRTN6TTc4dlJCakNzRFFZYzJvTFdoM3ZMMHVQejVHNGgzaU5HY3ZQVzdXOWs?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:33:00.000Z",
+          "updatedAt": "2026-10-28T05:33:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMic0FVX3lxTE5TMVQ1bXk0VkVuWVN5dFNjRG90Z3dOSC00RVI0TXFNaHQ0NnVsM0JNRTV2WVhpRGxHV3ZmMXZuRi1mYXBxYmowcEF4NmoyWGV2cE1SVHNiXzdPbXZDWEU3LVM1X3ZYdERmUDF3WnFMVDRCSjg",
+          "title": "2年4次涉华争议，皇马还想当鸵鸟？！ - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5TMVQ1bXk0VkVuWVN5dFNjRG90Z3dOSC00RVI0TXFNaHQ0NnVsM0JNRTV2WVhpRGxHV3ZmMXZuRi1mYXBxYmowcEF4NmoyWGV2cE1SVHNiXzdPbXZDWEU3LVM1X3ZYdERmUDF3WnFMVDRCSjg?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:28:00.000Z",
+          "updatedAt": "2026-10-28T05:28:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMiZEFVX3lxTE1FZVpxZUVMbXJRbTk2VVVUVGIyLUhFSjcwYm5ZbHJlVGRYNFZWaTJETjdLZmgxMXlqSUFJZGg0UTNQVmlfUXJNM3VxdjBTUWItMS0xYTM1bkduQ0hxOWdTYWVzdFQ",
+          "title": "董事长首成中国女首富，蓝思科技净利润却腰斩了 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1FZVpxZUVMbXJRbTk2VVVUVGIyLUhFSjcwYm5ZbHJlVGRYNFZWaTJETjdLZmgxMXlqSUFJZGg0UTNQVmlfUXJNM3VxdjBTUWItMS0xYTM1bkduQ0hxOWdTYWVzdFQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:23:00.000Z",
+          "updatedAt": "2026-10-28T05:23:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMiZkFVX3lxTE1yYmpfSzItQmw1cVBoTWpHUzFKNXhLRTFrcldsbk40M2Jiclg0S1FhbUludXVkNXUxNUFIT3I1UjFzaW1RNnpDZ0dNQ0tmUXhvMXNpMDF6dXkzT2Q5Zm5OSVZieXo4QQ",
+          "title": "台陆委会称“拒张凌赫赴台是因其多次发表贬损台湾地位言论”，国台办回应 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1yYmpfSzItQmw1cVBoTWpHUzFKNXhLRTFrcldsbk40M2Jiclg0S1FhbUludXVkNXUxNUFIT3I1UjFzaW1RNnpDZ0dNQ0tmUXhvMXNpMDF6dXkzT2Q5Zm5OSVZieXo4QQ?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:13:00.000Z",
+          "updatedAt": "2026-10-28T05:13:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        },
+        {
+          "id": "guancha:CBMiZkFVX3lxTFBwa1pjN196Qzh6dTV3R3RRX2hRMC1mcGJwZ1lQRVFGdVlDbzB2eWl0VWZUVzczSmxnQVFFTWhvWFB3NzQ0d19rSDZNTk9BdW5hTnR0N0JKS1hsNWNwOU9ob3FyYlprZw",
+          "title": "蒋方舟时隔108天再发文，此前因论文造假被撤销人大硕士学位 - 观察者网",
+          "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBwa1pjN196Qzh6dTV3R3RRX2hRMC1mcGJwZ1lQRVFGdVlDbzB2eWl0VWZUVzczSmxnQVFFTWhvWFB3NzQ0d19rSDZNTk9BdW5hTnR0N0JKS1hsNWNwOU9ob3FyYlprZw?oc=5",
+          "summary": "",
+          "publishedAt": "2026-10-28T05:04:00.000Z",
+          "updatedAt": "2026-10-28T05:04:00.000Z",
+          "byline": "观察者网 · 聚合索引",
+          "topic": "国内新闻"
+        }
+      ]
     }
   },
-  "checkedAt": "2026-10-28T06:51:05.976Z",
+  "checkedAt": "2026-10-28T07:22:56.018Z",
   "health": {
-    "dev": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-27T21:36:55.000Z"
-    },
     "daily": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
       "latestAt": "2026-10-27T16:00:00.000Z"
     },
-    "chinanews": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T06:45:20.000Z"
-    },
-    "radar": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T06:29:38.000Z"
-    },
-    "security": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-22T17:21:30.000Z"
-    },
-    "xinhua": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T06:26:44.000Z"
-    },
-    "bbc": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T04:22:59.000Z"
-    },
-    "cctv": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T06:08:54.000Z"
-    },
-    "cnn": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T04:23:00.000Z"
-    },
-    "reuters": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T04:50:00.000Z"
-    },
-    "afp": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T05:54:51.000Z"
-    },
-    "nyt": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T06:46:19.000Z"
-    },
-    "guardian": {
-      "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
-      "failures": 0,
-      "error": "",
-      "latestAt": "2026-10-28T06:36:14.000Z"
-    },
     "ai": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
       "latestAt": "2026-10-26T16:00:00.000Z"
     },
+    "radar": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T06:29:38.000Z"
+    },
+    "dev": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-27T21:36:55.000Z"
+    },
+    "security": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-22T17:21:30.000Z"
+    },
+    "chinanews": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T07:16:46.000Z"
+    },
+    "xinhua": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T06:26:44.000Z"
+    },
+    "cctv": {
+      "status": "stale",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 1,
+      "error": "来源日期倒退，保留较新快照",
+      "latestAt": "2026-10-28T06:24:02.000Z"
+    },
+    "bbc": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T04:22:59.000Z"
+    },
+    "cnn": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T04:23:00.000Z"
+    },
     "ap": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
-      "latestAt": "2026-10-28T05:13:00.000Z"
+      "latestAt": "2026-10-28T06:58:00.000Z"
     },
-    "aljazeera": {
+    "reuters": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
-      "latestAt": "2026-10-28T06:07:19.000Z"
+      "latestAt": "2026-10-28T05:03:00.000Z"
+    },
+    "afp": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T05:54:51.000Z"
+    },
+    "guardian": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T07:17:13.000Z"
+    },
+    "nyt": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T06:46:19.000Z"
     },
     "lemonde": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
-      "latestAt": "2026-10-28T03:39:29.000Z"
+      "latestAt": "2026-10-28T07:01:34.000Z"
     },
-    "openai": {
+    "aljazeera": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
-      "latestAt": "2026-10-27T15:00:00.000Z"
+      "latestAt": "2026-10-28T06:36:59.000Z"
     },
     "ft": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
       "latestAt": "2026-10-28T06:30:03.000Z"
     },
-    "techcrunch": {
+    "openai": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
-      "latestAt": "2026-10-28T01:15:28.000Z"
+      "latestAt": "2026-10-27T15:00:00.000Z"
     },
     "huggingface": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
       "latestAt": "2026-10-27T17:16:52.000Z"
     },
+    "techcrunch": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T01:15:28.000Z"
+    },
     "krebs": {
       "status": "ok",
-      "checkedAt": "2026-10-28T06:51:05.976Z",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
       "failures": 0,
       "error": "",
       "latestAt": "2026-10-21T15:26:07.000Z"
+    },
+    "guancha": {
+      "status": "ok",
+      "checkedAt": "2026-10-28T07:22:56.018Z",
+      "failures": 0,
+      "error": "",
+      "latestAt": "2026-10-28T07:04:00.000Z"
     }
   }
 }

@@ -11,6 +11,7 @@
     rss('chinanews','中国新闻网','china','国内新闻','https://www.chinanews.com.cn/rss/china.xml','https://www.chinanews.com.cn/'),
     indexed('xinhua','新华网','news.cn','china','https://www.news.cn/','zh-CN'),
     indexed('cctv','央视新闻','news.cctv.com','china','https://news.cctv.com/','zh-CN'),
+    indexed('guancha','观察者网','www.guancha.cn','china','https://www.guancha.cn/','zh-CN'),
     rss('bbc','BBC News','world','国际新闻','https://feeds.bbci.co.uk/news/world/rss.xml','https://www.bbc.com/news'),
     indexed('cnn','CNN','cnn.com','world','https://www.cnn.com/'),
     indexed('ap','美联社 AP','apnews.com','world','https://apnews.com/'),
