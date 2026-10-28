@@ -10,19 +10,26 @@
   <link rel="canonical" href="https://flyfish567.github.io/index.html">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/flyfish.css?v=b6683c2034">
+  <link rel="stylesheet" href="/css/briefing.css?v=c41e9e0203">
+  <link rel="stylesheet" href="/css/markets.css?v=991a23ec96">
   <script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script>
   <script defer src="/js/effects.js?v=7ecb1ae91a"></script>
-  <script defer src="/js/flyfish.js?v=2c7cc1186a"></script>
-  <script defer src="/js/search.js?v=02f4581cdc"></script>
+  <script defer src="/js/search-core.js?v=17e3a11227"></script>
+  <script defer src="/js/flyfish.js?v=ae6b5af3a1"></script>
+  <script defer src="/js/search.js?v=13d7a9e7b1"></script>
   <script defer src="/js/explore.js?v=3e4f8a5d20"></script>
   <script defer src="/js/motion.js?v=d716fa0a3d"></script>
   <script defer src="/js/details.js?v=94a9622d25"></script>
-  <script defer src="/js/pointer-play.js?v=b2c1772f08"></script>
-  <script defer src="/js/background-fish.js?v=1d60e5e7cb"></script>
+  <script defer src="/js/pointer-play.js?v=604fa89b50"></script>
+  <script defer src="/js/background-fish.js?v=2138a3c10a"></script>
   <script defer src="/js/travel-map.js?v=7c7680f4be"></script>
   <script defer src="/js/life-nav.js?v=8868aa20b4"></script>
   <script defer src="/js/navigation.js?v=93ee5cb51d"></script>
   <script defer src="/js/global-music.js?v=ef8950d9e4"></script>
+  <script defer src="/js/briefing-sources.js?v=bfec0d3c38"></script>
+  <script defer src="/js/briefing.js?v=5df14b5c08"></script>
+  <script defer src="/js/market-data.js?v=7ccf7fe402"></script>
+  <script defer src="/js/markets.js?v=d4e5ed46ad"></script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body data-view="home">
 <section class="opening-screen" aria-label="欢迎来到 FLYFISHING" hidden>
@@ -58,6 +65,8 @@
     
       <a href="/album/" >日常</a>
     
+      <a href="/briefing/" >每日</a>
+    
       <a href="/music/" >音乐</a>
     
       <a href="/about/" >关于</a>
@@ -75,15 +84,20 @@
       <a class="button intro-about" href="/about/"><span class="action-label">认识一下我</span></a>
     </div>
   </div>
-  <a class="sky-cover" data-pointer-light href="/album/"><img src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg" alt="蓝天、白云与天台" fetchpriority="high" decoding="async" width="800" height="440"><div><strong>普通日子，也有好风景</strong></div></a>
+  <a class="sky-cover" data-pointer-light href="/album/"><img src="/images/sky-1280.webp" srcset="/images/sky-480.webp 480w, /images/sky-800.webp 800w, /images/sky-1280.webp 1280w, /images/sky-1600.webp 1600w" sizes="(max-width: 610px) calc(100vw - 36px), (max-width: 1280px) 57vw, 740px" alt="蓝天、白云与天台" fetchpriority="high" decoding="async" width="1600" height="866"><div><strong>普通日子，也有好风景</strong></div></a>
 </section>
 
-  <div class="section-heading"><h2 id="latest-title">最近更新</h2></div>
+  <section class="home-updates" aria-labelledby="home-updates-title">
+  <div class="updates-label"><span class="eyebrow">LITTLE UPDATES</span><h2 id="home-updates-title">小站近况</h2></div>
+  <div class="updates-list"><a href="/briefing/"><time datetime="2026-10-28">2026.10.28</time><span class="update-kind">小站更新</span><span class="update-title">每日看板：资讯、订阅与地区行情</span><span aria-hidden="true">↗</span></a><a href="/about/#now-title"><time datetime="2026-10-23">2026.10.23</time><span class="update-kind">近况</span><span class="update-title">最近在学、在做和喜欢的事</span><span aria-hidden="true">↗</span></a><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/WP/NSSround%2328Team_Web_WP/"><time datetime="2026-04-06">2026.04.06</time><span class="update-kind">文章修订</span><span class="update-title">NSSround#28Team_Web_WP</span><span aria-hidden="true">↗</span></a></div>
+</section>
+
+  <div class="section-heading"><h2 id="latest-title">最新文章</h2><a href="/briefing/">看看每日简报 ↗</a></div>
   <div class="site-layout ">
     <main id="main"><section aria-labelledby="latest-title">
 <div class="post-list">
 
-  <article class="post-card" data-pointer-light  data-title="如何快速完成github学生认证 从个人资料、学校邮箱到双重身份验证，记录一次 github 学生认证的申请过程。 学生认证" data-topics="[&#34;学生认证&#34;]" data-kind="study" data-year="2026" data-category="github">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" data-title="如何快速完成github学生认证 从个人资料、学校邮箱到双重身份验证，记录一次 github 学生认证的申请过程。 学生认证" data-topics="[&#34;学生认证&#34;]" data-kind="study" data-year="2026" data-category="github">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/" aria-label="阅读 如何快速完成Github学生认证"><span>工具</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <rect x="7" y="12" width="50" height="35" rx="5"/><path d="M22 56h20M32 47v9M23 24l-7 6 7 6M41 24l7 6-7 6"/>
@@ -93,7 +107,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81">工具与经验</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E6%9D%82/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%AE%8C%E6%88%90Github%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81/">如何快速完成Github学生认证</a></h2><p>从个人资料、学校邮箱到双重身份验证，记录一次 GitHub 学生认证的申请过程。</p><div class="post-meta"><time datetime="2026-04-06T12:43:57.741Z">2026.04.06</time><a href="/articles/?topic=%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81"># 学生认证</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="3.24 周二晚 想起一些和身体、焦虑有关的小事。今天早点睡吧，晚安。 小记" data-topics="[&#34;小记&#34;]" data-kind="life" data-year="2026" data-category="小记">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/" data-title="3.24 周二晚 想起一些和身体、焦虑有关的小事。今天早点睡吧，晚安。 小记" data-topics="[&#34;小记&#34;]" data-kind="life" data-year="2026" data-category="小记">
     <a class="post-symbol life-symbol" href="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/" aria-label="阅读 3.24 周二晚"><span>小记</span><small>LIFE</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <circle cx="44" cy="18" r="9"/><path d="M16 48h31a9 9 0 0 0 0-18 14 14 0 0 0-27-5 12 12 0 0 0-4 23Z"/>
@@ -103,7 +117,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E5%B0%8F%E8%AE%B0">生活小记</a><h2><a href="/article/%E5%B0%8F%E8%AE%B0/3%E6%9C%88/3.24%E5%91%A8%E4%BA%8C%E6%99%9A%E6%99%9A%E5%BC%A0%E9%9B%AA%E5%B3%B0%E5%8E%BB%E4%B8%96/">3.24 周二晚</a></h2><p>想起一些和身体、焦虑有关的小事。今天早点睡吧，晚安。</p><div class="post-meta"><time datetime="2026-03-24T14:29:47.583Z">2026.03.24</time><a href="/articles/?topic=%E5%B0%8F%E8%AE%B0"># 小记</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="xss-labs靶场搭建 记录 xss-labs 环境搭建的参考资料，以及目录和访问路径的注意事项。 靶场搭建 xss" data-topics="[&#34;靶场搭建&#34;,&#34;XSS&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" data-title="xss-labs靶场搭建 记录 xss-labs 环境搭建的参考资料，以及目录和访问路径的注意事项。 靶场搭建 xss" data-topics="[&#34;靶场搭建&#34;,&#34;XSS&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" aria-label="阅读 XSS-labs靶场搭建"><span>XSS</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M23 16 7 32l16 16M41 16l16 16-16 16M37 10 27 54"/>
@@ -113,7 +127,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=XSS">XSS</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%BC%8F%E6%B4%9E/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/">XSS-labs靶场搭建</a></h2><p>记录 XSS-labs 环境搭建的参考资料，以及目录和访问路径的注意事项。</p><div class="post-meta"><time datetime="2026-03-24T06:19:13.794Z">2026.03.24</time><a href="/articles/?topic=%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA"># 靶场搭建</a><a href="/articles/?topic=XSS"># XSS</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="魔术方法构造和析构 梳理构造、析构和序列化相关魔术方法的触发时机，结合 php 示例回看。 php反序列化" data-topics="[&#34;PHP反序列化&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" data-title="魔术方法构造和析构 梳理构造、析构和序列化相关魔术方法的触发时机，结合 php 示例回看。 php反序列化" data-topics="[&#34;PHP反序列化&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" aria-label="阅读 魔术方法构造和析构"><span>PHP</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M23 16 7 32l16 16M41 16l16 16-16 16M37 10 27 54"/>
@@ -123,7 +137,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">PHP反序列化</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/">魔术方法构造和析构</a></h2><p>梳理构造、析构和序列化相关魔术方法的触发时机，结合 PHP 示例回看。</p><div class="post-meta"><time datetime="2026-03-24T06:19:13.783Z">2026.03.24</time><a href="/articles/?topic=PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"># PHP反序列化</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="php反序列化基础知识 从类、对象和成员属性开始，整理 php 面向对象与反序列化的基础知识。 php反序列化" data-topics="[&#34;PHP反序列化&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-title="php反序列化基础知识 从类、对象和成员属性开始，整理 php 面向对象与反序列化的基础知识。 php反序列化" data-topics="[&#34;PHP反序列化&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" aria-label="阅读 PHP反序列化基础知识"><span>PHP</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M23 16 7 32l16 16M41 16l16 16-16 16M37 10 27 54"/>
@@ -133,7 +147,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">PHP反序列化</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">PHP反序列化基础知识</a></h2><p>从类、对象和成员属性开始，整理 PHP 面向对象与反序列化的基础知识。</p><div class="post-meta"><time datetime="2026-03-24T06:19:13.778Z">2026.03.24</time><a href="/articles/?topic=PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"># PHP反序列化</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="文件上传漏洞 梳理上传校验、服务端解析与常见绕过方式，整理靶场中遇到的题型。 文件上传" data-topics="[&#34;文件上传&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" data-title="文件上传漏洞 梳理上传校验、服务端解析与常见绕过方式，整理靶场中遇到的题型。 文件上传" data-topics="[&#34;文件上传&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" aria-label="阅读 文件上传漏洞"><span>文件上传</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M8 49V17a5 5 0 0 1 5-5h14l6 7h18a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5ZM8 27h48"/>
@@ -143,7 +157,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">文件上传</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">文件上传漏洞</a></h2><p>梳理上传校验、服务端解析与常见绕过方式，整理靶场中遇到的题型。</p><div class="post-meta"><time datetime="2026-03-24T06:19:09.663Z">2026.03.24</time><a href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"># 文件上传</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="一句话木马大全 文件上传学习过程中收集的代码片段，按脚本语言整理，便于回看。 文件上传" data-topics="[&#34;文件上传&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E5%A4%A7%E5%85%A8/" data-title="一句话木马大全 文件上传学习过程中收集的代码片段，按脚本语言整理，便于回看。 文件上传" data-topics="[&#34;文件上传&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E5%A4%A7%E5%85%A8/" aria-label="阅读 一句话木马大全"><span>文件上传</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M8 49V17a5 5 0 0 1 5-5h14l6 7h18a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5ZM8 27h48"/>
@@ -153,7 +167,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">文件上传</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E5%A4%A7%E5%85%A8/">一句话木马大全</a></h2><p>文件上传学习过程中收集的代码片段，按脚本语言整理，便于回看。</p><div class="post-meta"><time datetime="2026-03-24T06:19:09.660Z">2026.03.24</time><a href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"># 文件上传</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="upload-labs 结合 upload-labs 记录文件上传校验的判断方法、常见绕过与解题过程。 wp 文件上传" data-topics="[&#34;WP&#34;,&#34;文件上传&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/upload-labs%E9%9D%B6%E5%9C%BA/" data-title="upload-labs 结合 upload-labs 记录文件上传校验的判断方法、常见绕过与解题过程。 wp 文件上传" data-topics="[&#34;WP&#34;,&#34;文件上传&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/upload-labs%E9%9D%B6%E5%9C%BA/" aria-label="阅读 upload-labs"><span>文件上传</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M8 49V17a5 5 0 0 1 5-5h14l6 7h18a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5ZM8 27h48"/>
@@ -163,7 +177,7 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">文件上传</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/upload-labs%E9%9D%B6%E5%9C%BA/">upload-labs</a></h2><p>结合 upload-labs 记录文件上传校验的判断方法、常见绕过与解题过程。</p><div class="post-meta"><time datetime="2026-03-24T06:19:09.655Z">2026.03.24</time><a href="/articles/?topic=WP"># WP</a><a href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"># 文件上传</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="fuzz! 一把梭！ fuzz! 目录遍历" data-topics="[&#34;目录遍历&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/FUZZ!/" data-title="fuzz! 一把梭！ fuzz! 目录遍历" data-topics="[&#34;目录遍历&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/FUZZ!/" aria-label="阅读 FUZZ!"><span>目录遍历</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M8 49V17a5 5 0 0 1 5-5h14l6 7h18a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5ZM8 27h48"/>
@@ -173,14 +187,14 @@
     <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86">目录遍历</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86/FUZZ!/">FUZZ!</a></h2><p>一把梭！ fuzz!</p><div class="post-meta"><time datetime="2026-03-24T06:19:09.643Z">2026.03.24</time><a href="/articles/?topic=%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86"># 目录遍历</a></div></div>
   </article>
 
-  <article class="post-card" data-pointer-light  data-title="php命令执行靶场搭建 从 wsl2、kali 到 docker，整理靶场搭建的参考资料和过程中的问题。 靶场搭建 命令执行" data-topics="[&#34;靶场搭建&#34;,&#34;命令执行&#34;]" data-kind="study" data-year="2026" data-category="学习">
+  <article class="post-card" data-pointer-light  data-url="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" data-title="php命令执行靶场搭建 从 wsl2、kali 到 docker，整理靶场搭建的参考资料和过程中的问题。 命令执行 靶场搭建" data-topics="[&#34;命令执行&#34;,&#34;靶场搭建&#34;]" data-kind="study" data-year="2026" data-category="学习">
     <a class="post-symbol " href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" aria-label="阅读 PHP命令执行靶场搭建"><span>命令执行</span><small>NOTES</small><svg class="post-emblem" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
   <path d="M23 16 7 32l16 16M41 16l16 16-16 16M37 10 27 54"/>
 
 </svg>
 </a>
-    <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C">命令执行</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/">PHP命令执行靶场搭建</a></h2><p>从 WSL2、Kali 到 Docker，整理靶场搭建的参考资料和过程中的问题。</p><div class="post-meta"><time datetime="2026-03-24T06:19:09.633Z">2026.03.24</time><a href="/articles/?topic=%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA"># 靶场搭建</a><a href="/articles/?topic=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"># 命令执行</a></div></div>
+    <div class="post-copy"><a class="post-topic" href="/articles/?topic=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C">命令执行</a><h2><a href="/article/%E5%AD%A6%E4%B9%A0/%E5%AE%89%E5%85%A8/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/">PHP命令执行靶场搭建</a></h2><p>从 WSL2、Kali 到 Docker，整理靶场搭建的参考资料和过程中的问题。</p><div class="post-meta"><time datetime="2026-03-24T06:19:09.633Z">2026.03.24</time><a href="/articles/?topic=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"># 命令执行</a><a href="/articles/?topic=%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA"># 靶场搭建</a></div></div>
   </article>
 
 </div>
@@ -191,7 +205,7 @@
     
 <aside class="sidebar" aria-label="关于作者与专题">
 
-  <section class="side-panel profile-panel" data-pointer-light><div class="profile-sky" aria-hidden="true"><img src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg" alt="" loading="lazy" decoding="async"></div><div class="profile-top"><span class="avatar-fallback">F</span><img class="avatar" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" alt="FLYFISH 的头像" loading="lazy" width="68" height="68"></div><h2>FLYFISH</h2><ul class="profile-roles" aria-label="个人身份"><li>学生</li></ul><div class="social-links"><a href="https://github.com/FLYFISH567" target="_blank" rel="noopener">GitHub</a><a href="https://space.bilibili.com/351361938" target="_blank" rel="noopener">Bilibili</a></div></section>
+  <section class="side-panel profile-panel" data-pointer-light><div class="profile-sky" aria-hidden="true"><img src="/images/sky-480.webp" alt="" loading="lazy" decoding="async" width="480" height="260"></div><div class="profile-top"><span class="avatar-fallback">F</span><img class="avatar" src="https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg" alt="FLYFISH 的头像" loading="lazy" width="68" height="68"></div><h2>FLYFISH</h2><ul class="profile-roles" aria-label="个人身份"><li>学生</li></ul><div class="social-links"><a href="https://github.com/FLYFISH567" target="_blank" rel="noopener">GitHub</a><a href="https://space.bilibili.com/351361938" target="_blank" rel="noopener">Bilibili</a></div></section>
   <section class="side-panel note-panel" data-pointer-light><span class="eyebrow">一则说说 / 2025/07/27</span><p>暑假暑假居然已过22天，还是如此颓唐</p></section>
   <section class="side-panel topics-panel" data-pointer-light><h2>常用专题</h2><ul class="topic-list"><li><a href="/articles/?topic=SQL%E6%B3%A8%E5%85%A5"><span>SQL注入</span><small>14<span class="topic-count-unit"> 篇</span></small></a></li><li><a href="/articles/?topic=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span>命令执行</span><small>9<span class="topic-count-unit"> 篇</span></small></a></li><li><a href="/articles/?topic=WP"><span>WP</span><small>6<span class="topic-count-unit"> 篇</span></small></a></li><li><a href="/articles/?topic=SSTI"><span>SSTI</span><small>6<span class="topic-count-unit"> 篇</span></small></a></li><li><a href="/articles/?topic=SSRF"><span>SSRF</span><small>5<span class="topic-count-unit"> 篇</span></small></a></li><li><a href="/articles/?topic=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span>文件上传</span><small>3<span class="topic-count-unit"> 篇</span></small></a></li></ul><a class="all-topics" href="/articles/">全部专题</a></section>
 

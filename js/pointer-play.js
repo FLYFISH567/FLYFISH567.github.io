@@ -5,7 +5,7 @@
   root.dataset.pointerWaterReady='true';
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),mouse=matchMedia('(hover:hover) and (pointer:fine)');
   // 留白才参与互动；正文、原生控件、地图、播放器和小鱼继续使用自己的手势。
-  const excluded='a,button,input,textarea,select,label,summary,[contenteditable],[role=button],[role=slider],[draggable=true],dialog,.site-header,.site-footer,.opening-screen,.travel-map-canvas,.background-fish,.fish-settings,.music-dock,.reading-panel,.article-body,.post-copy,.post-symbol,.essay-card,.show-card,.note-panel,.now-playing,.player-shell,.aplayer,pre,code';
+  const excluded='.briefing-page,.home-updates,.warning-card,a,button,input,textarea,select,label,summary,[contenteditable],[role=button],[role=slider],[draggable=true],dialog,.site-header,.site-footer,.opening-screen,.travel-map-canvas,.background-fish,.fish-settings,.music-dock,.reading-panel,.article-body,.post-copy,.post-symbol,.essay-card,.show-card,.note-panel,.now-playing,.player-shell,.aplayer,pre,code';
   const surfaces='html,body,div,section,main,article,aside,header,footer,nav';
   const limit=72;
   let canvas=null,ctx=null,unsupported=false,particles=[],frame=0,lastFrame=0,drag=null,hover=null,lastHover=0,lastTrail=0,pageHidden=false;
