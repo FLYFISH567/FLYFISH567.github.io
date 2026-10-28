@@ -4,7 +4,8 @@ on:
   push:
     branches: [source]
   schedule:
-    - cron: '13,43 * * * *'
+    # Temporary short interval to verify scheduler recovery; restore after a real schedule run.
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
