@@ -27,7 +27,14 @@ async function main(){
   assert.throws(()=>api.parse(guancha,guanchaFeed('user.guancha.cn'),Parser),'Fengwen user posts are a separate publication stream');
   const older=structuredClone(result.snapshot);older.sources.dev.fetchedAt=new Date(now+10000).toISOString();older.sources.dev.items[0].publishedAt=stamp;const chosen=merge(structuredClone(result.snapshot),older);assert.equal(chosen.sources.dev.items[0].title,'Current news','A newer fetch cannot roll content back');
   await assert.rejects(()=>responseText('https://example.org',async()=>({ok:true,headers:new Map([['content-length','5000000']])})),/too large/);
-  const workflow=yaml.load(fs.readFileSync('.github/workflows/pages.yml','utf8'));assert.equal(workflow.on.schedule[0].cron,'17 * * * *');assert.equal(workflow.jobs.deploy.needs,'build');assert.equal(workflow.jobs.check.needs,'deploy');assert.equal(workflow.concurrency['cancel-in-progress'],false);
+  const workflow=yaml.load(fs.readFileSync('.github/workflows/pages.yml','utf8'));assert.equal(workflow.on.schedule[0].cron,'13,43 * * * *');assert.equal(workflow.jobs.deploy.needs,'build');assert.equal(workflow.jobs.check.needs,'deploy');assert.equal(workflow.concurrency['cancel-in-progress'],false);
+  // 定时运行通常不改变提交号，必须核验本次任务号与采集时间。
+  const vm=require('vm'),liveSource=fs.readFileSync('tools/check-live.cjs','utf8'),snapshot=structuredClone(result.snapshot);snapshot.checkedAt=new Date().toISOString();
+  async function liveCheck(run,stamp,lagOnce=false){const fakeProcess={env:{GITHUB_SHA:'source-head',GITHUB_RUN_ID:'current-run'},exitCode:0};let feedCalls=0;
+    await vm.runInNewContext(liveSource,{require:name=>name==='assert/strict'?assert:name==='child_process'?{}:api,process:fakeProcess,console:{log(){},error(){}},Date,AbortSignal,setTimeout:fn=>{fn();},fetch:async url=>({ok:true,status:200,json:async()=>url.includes('/release.json')?{source_commit:'source-head',workflow_run:run,news_checked_at:stamp}:{...snapshot,checkedAt:lagOnce&&feedCalls++===0?new Date(Date.now()-60000).toISOString():snapshot.checkedAt},text:async()=>'<nav id="main-nav"></nav>'})});return fakeProcess.exitCode;}
+  assert.equal(await liveCheck('older-run',snapshot.checkedAt),1,'An old run of the same commit cannot pass');
+  assert.equal(await liveCheck('current-run',new Date(Date.now()-60000).toISOString()),1,'Mixed release and data cannot pass');
+  assert.equal(await liveCheck('current-run',snapshot.checkedAt,true),0,'A brief CDN propagation delay is retried');
   console.log('PASS: partial outages, bounded retries, frozen feeds, rollback protection, empty editions, indexed-publisher validation, size limits and scheduled deployment gates.');
 }
 main().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>dom.window.close());

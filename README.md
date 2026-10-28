@@ -2,7 +2,7 @@
 
 清新蓝白的 Hexo 个人博客，保留学习文章、生活小记、相册、足迹和音乐。
 
-每日看板位于 `/briefing/`：国内外新闻、AI 动态、财经、Codex 雷达、开发与安全阅读，支持本机未读、收藏、订阅与自选行情。后台每小时采集 23 个来源（含观察者网官网新闻索引），失败保留带日期的备用快照。可运行 `npm run news:update` 手动更新仓库种子，详细边界见内容维护指南。
+每日看板位于 `/briefing/`：国内外新闻、AI 动态、财经、Codex 雷达、开发与安全阅读，支持本机未读、收藏、订阅与自选行情。后台每半小时采集 23 个来源（含观察者网官网新闻索引），失败保留带日期的备用快照。可运行 `npm run news:update` 手动更新仓库种子，详细边界见内容维护指南。
 
 - 访问网站：https://flyfish567.github.io/
 - 源码分支：`source`（本分支）
@@ -49,7 +49,7 @@ npm run verify
 git push origin source
 ```
 
-`.github/workflows/pages.yml` 在源码推送、每小时第 17 分钟（UTC），或手动触发时执行：安装锁定依赖 → 恢复线上最近成功快照 → 多源采集 → 刷新行情备用值 → 构建和完整检查 → Pages 发布 → 核对线上版本、资讯新鲜度与关键页面。任何构建/校验失败均不替换线上站点；某个新闻源失败时保留该源原日期的数据。默认分支必须为 `source`，Pages 发布方式必须为 GitHub Actions，`github-pages` 环境须允许 `source` 分支部署。
+`.github/workflows/pages.yml` 在源码推送、每小时第 13、43 分钟（UTC，每半小时），或手动触发时执行：安装锁定依赖 → 恢复线上最近成功快照 → 多源采集 → 刷新行情备用值 → 构建和完整检查 → Pages 发布 → 核对线上版本、资讯新鲜度与关键页面。任何构建/校验失败均不替换线上站点；某个新闻源失败时保留该源原日期的数据。默认分支必须为 `source`，Pages 发布方式必须为 GitHub Actions，`github-pages` 环境须允许 `source` 分支部署。
 
 手动重跑可以在 [Actions 页面](https://github.com/FLYFISH567/FLYFISH567.github.io/actions/workflows/pages.yml) 点击 Run workflow，或在已登录 GitHub CLI 的本机运行 `npm run deploy`。此命令检查源码已提交并推送，然后触发相同流水线；不再向 `main` 复制网页。线上 `release.json` 记录源码提交、任务编号与本次采集时间。
 
