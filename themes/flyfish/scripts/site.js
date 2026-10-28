@@ -82,14 +82,37 @@ hexo.extend.helper.register('ff_safe_url', function (value) {
 hexo.extend.helper.register('ff_page_kind', function (page) {
   if (page.ff_kind) return page.ff_kind;
   const path = String(page.path || '');
+  if (/^Warning\//.test(path)) return 'warning';
   if (page.type === 'music') return 'music';
   if (page.type === 'album' || page.type === 'album_detail') return page.type;
   if (page.type === 'about') return 'about';
   if (page.type === 'essay') return 'essay';
+  if (page.type === 'briefing') return 'briefing';
   if (/^bangumis\//.test(path) || page.title === hexo.config.bangumi?.title) return 'bangumi';
   if (/^(archives|categories|tags)\//.test(path) || ['categories','tags'].includes(page.type)) return 'articles';
   return 'page';
 });
+hexo.extend.helper.register('ff_updates', function () {
+  const entries=[];
+  for(const item of data().site_updates||[])if(item.date&&item.title&&/^\/(?!\/)/.test(item.url||''))entries.push({kind:'小站更新',title:item.title,date:String(item.date),url:this.url_for(item.url)});
+  for(const post of allPosts()){
+    if(moment(post.updated).startOf('day').isAfter(moment(post.date).startOf('day')))entries.push({kind:'文章修订',title:post.title,date:moment(post.updated).format('YYYY-MM-DD'),url:this.ff_post_url(post.path)});
+  }
+  for(const album of data().album||[])for(const [index,group] of (album.album_list||[]).entries()){
+    const time=moment(String(group.date),['YYYY-M-D','YYYY-MM-DD','YYYY/M/D','YYYY/MM/DD'],true);
+    if(time.isValid())entries.push({kind:'相册',title:group.content||album.class_name,date:time.format('YYYY-MM-DD'),url:this.url_for(album.path_name.replace(/\/$/,'')+'/')+'#photo-group-'+index});
+  }
+  for(const item of data().essay?.[0]?.essay_list||[]){const time=moment(String(item.date),['YYYY-MM-DD','YYYY/MM/DD'],true);if(time.isValid())entries.push({kind:'说说',title:item.content,date:time.format('YYYY-MM-DD'),url:this.url_for('/essay/')});}
+  if(data().now?.updated)entries.push({kind:'近况',title:'最近在学、在做和喜欢的事',date:String(data().now.updated),url:this.url_for('/about/#now-title')});
+  return entries.sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
+});
+const briefing=require('../source/js/briefing-sources.js');
+const markets=require('../source/js/market-data.js');
+hexo.extend.helper.register('ff_markets',()=>markets);
+hexo.extend.helper.register('ff_market_snapshot',()=>markets.cleanSnapshot(data().markets));
+hexo.extend.helper.register('ff_briefing',()=>briefing.cleanSnapshot(data().briefing));
+hexo.extend.helper.register('ff_briefing_sources',()=>briefing.SOURCES);
+hexo.extend.generator.register('flyfish-briefing',()=>({path:'briefing/feed.json',data:JSON.stringify(data().briefing||{version:1,sources:{}})}));
 hexo.extend.helper.register('ff_related', function (post) {
   const own = tags(post);
   return allPosts().filter(p => p.path !== post.path).map(p => ({post:p,score:tags(p).filter(t => own.includes(t)).length})).sort((a,b) => b.score-a.score).slice(0,3).map(x=>x.post);

@@ -22,7 +22,7 @@
     return counts[root.dataset.effects==='light'?0:root.dataset.effects==='lively'?2:1];
   };
   if(customInput)customInput.max=String(maxFish);
-  const avoid='.site-header,.post-card,.side-panel,.reading-panel,.illustrated-heading,.life-nav,.album-card,.photo-grid,.show-card,.now-playing,.player-shell,.music-playlist-picker,.about-profile,.about-section,.about-facts,.about-more,.about-intro,.about-favourites,.now-card,.about-footprints,.intro-copy>*,.sky-cover,.section-heading,.pagination,.hub-controls,.topic-filters,.album-filters,.watch-tabs,.filter-status,.watch-count,.site-footer,.fish-settings[open],.fish-settings[open] .fish-settings-panel,.effects-settings[open] .effects-panel,.music-dock,.music-controls,.navigation-notice';
+  const avoid='.market-board,.briefing-heading,.briefing-topline,.briefing-main,.briefing-panel,.home-updates,.warning-card,.site-header,.post-card,.side-panel,.reading-panel,.illustrated-heading,.life-nav,.album-card,.photo-grid,.show-card,.now-playing,.player-shell,.music-playlist-picker,.about-profile,.about-section,.about-facts,.about-more,.about-intro,.about-favourites,.now-card,.about-footprints,.intro-copy>*,.sky-cover,.section-heading,.pagination,.hub-controls,.topic-filters,.album-filters,.watch-tabs,.filter-status,.watch-count,.site-footer,.fish-settings[open],.fish-settings[open] .fish-settings-panel,.effects-settings[open] .effects-panel,.music-dock,.music-controls,.navigation-notice';
   const pool=[],size=44,fishHeight=36,margin=8;
   const bearing=Math.random()*Math.PI*2,goldenAngle=Math.PI*(3-Math.sqrt(5));
   let width=innerWidth,height=innerHeight,top=86,boxes=[],spaces=[],capacity=0,autoCapacity=0,autoCap=1;

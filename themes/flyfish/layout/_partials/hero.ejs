@@ -5,5 +5,5 @@
       <a class="button intro-about" href="<%= url_for('/about/') %>"><span class="action-label">认识一下我</span></a>
     </div>
   </div>
-  <a class="sky-cover" data-pointer-light href="<%= url_for('/album/') %>"><img src="<%= theme.hero_image %>" alt="蓝天、白云与天台" fetchpriority="high" decoding="async" width="800" height="440"><div><strong>普通日子，也有好风景</strong></div></a>
+  <a class="sky-cover" data-pointer-light href="<%= url_for('/album/') %>"><img src="<%= url_for(theme.hero_image) %>" <% if(theme.hero_image_srcset) { %>srcset="<%= theme.hero_image_srcset %>" sizes="(max-width: 610px) calc(100vw - 36px), (max-width: 1280px) 57vw, 740px"<% } %> alt="蓝天、白云与天台" fetchpriority="high" decoding="async" width="1600" height="866"><div><strong>普通日子，也有好风景</strong></div></a>
 </section>

@@ -5,13 +5,16 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <script>try{if(localStorage.getItem('flyfish-theme')==='dark')document.documentElement.dataset.theme='dark';const tier=localStorage.getItem('flyfish-effects-tier');document.documentElement.dataset.effects=['light','standard','lively'].includes(tier)?tier:'standard';}catch{document.documentElement.dataset.effects='standard';}</script>
-  <title><%= view==='home' ? config.title + ' · ' + config.subtitle : (page.title || page.category || page.tag || '文章库') + ' · ' + config.title %></title>
+  <title><%= view==='home' ? config.title + ' · ' + config.subtitle : (view==='warning'?'前方高能 · 小彩蛋':page.title || page.category || page.tag || '文章库') + ' · ' + config.title %></title>
   <meta name="description" content="<%= is_post() ? ff_summary(page) : config.description + ' · 学习笔记与生活记录' %>">
   <link rel="canonical" href="<%= full_url_for(page.path || '').replaceAll('#','%23').replaceAll('?','%3F') %>">
   <link rel="icon" type="image/svg+xml" href="<%= url_for('/favicon.svg') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/flyfish.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/briefing.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/markets.css') %>">
   <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
   <script defer src="<%= ff_asset('js/effects.js') %>"></script>
+  <script defer src="<%= ff_asset('js/search-core.js') %>"></script>
   <script defer src="<%= ff_asset('js/flyfish.js') %>"></script>
   <script defer src="<%= ff_asset('js/search.js') %>"></script>
   <script defer src="<%= ff_asset('js/explore.js') %>"></script>
@@ -23,6 +26,10 @@
   <script defer src="<%= ff_asset('js/life-nav.js') %>"></script>
   <script defer src="<%= ff_asset('js/navigation.js') %>"></script>
   <script defer src="<%= ff_asset('js/global-music.js') %>"></script>
+  <script defer src="<%= ff_asset('js/briefing-sources.js') %>"></script>
+  <script defer src="<%= ff_asset('js/briefing.js') %>"></script>
+  <script defer src="<%= ff_asset('js/market-data.js') %>"></script>
+  <script defer src="<%= ff_asset('js/markets.js') %>"></script>
 </head>
 <body data-view="<%= view %>">
 <%- partial('_partials/opening') %>
@@ -32,7 +39,7 @@
   <a class="brand" href="<%= url_for('/') %>"><span class="brand-mark" aria-hidden="true"></span><span><%= config.title %></span></a>
   <button class="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav">菜单</button>
   <nav id="main-nav" aria-label="主导航">
-    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'}]) { %>
+    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'}]) { %>
       <a href="<%= url_for(item.url) %>" <%- item.active ? 'aria-current="page"' : '' %>><%= item.label %></a>
     <% } %>
     <button type="button" class="nav-search" data-open-search aria-label="搜索文章" aria-haspopup="dialog" aria-controls="site-search">搜索 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></button>
@@ -42,7 +49,8 @@
 <div class="site-shell">
   <div class="page-content" data-page-content>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/hero') %><% } %>
-  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最近更新</h2></div><% } %>
+  <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/home-updates') %><% } %>
+  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><a href="<%= url_for('/briefing/') %>">看看每日简报 ↗</a></div><% } %>
   <div class="site-layout <%= hasAside ? '' : 'full-width' %>">
     <main id="main"><%- body %></main>
     <% if(hasAside) { %><%- partial('_partials/sidebar',{view}) %><% } %>

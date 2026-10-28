@@ -60,22 +60,36 @@
   if(hub){
     const input=$('input[name=q]',hub),year=$('select[name=year]',hub),cards=$$('[data-post-card]',hub),buttons=$$('[data-topic]',hub);
     const params=new URLSearchParams(location.search);
+    const search=window.FlyfishSearch,retry=$('[data-fulltext-retry]',hub);
+    let fullText=null,loading=false,searchFailed=false;
+    async function loadFullText(){
+      if(!search||loading||fullText)return;
+      loading=true;searchFailed=false;if(retry)retry.hidden=true;
+      try{const records=await search.load(hub.dataset.searchIndex);fullText=new Map(records.map(post=>[search.key(post.url),post]));}catch{searchFailed=true;}
+      finally{loading=false;if(hub.isConnected&&!pageController.signal.aborted)apply();}
+    }
     let selected=params.get('topic')||hub.dataset.initialTopic||'';
     let category=hub.dataset.initialCategory||'';
     if(selected.toLowerCase()==='xss')selected='XSS';
     input.value=params.get('q')||'';year.value=params.get('year')||hub.dataset.initialYear||'';
     function apply(updateURL=false){
       const query=input.value.trim().toLocaleLowerCase();let count=0;
-      for(const card of cards){const topics=JSON.parse(card.dataset.topics);const visible=(!query||card.dataset.title.includes(query))&&(!selected||topics.includes(selected))&&(!year.value||card.dataset.year===year.value)&&(!category||card.dataset.category.split('|').includes(category));card.hidden=!visible;if(visible)count++;}
+      if(query&&search&&!fullText&&!searchFailed)loadFullText();
+      const words=query.split(/\s+/).filter(Boolean);
+      for(const card of cards){const topics=JSON.parse(card.dataset.topics),record=fullText?.get(search.key(card.dataset.url));const textMatches=!query||(record?search.matches(record,query):words.every(word=>card.dataset.title.includes(word)));const visible=textMatches&&(!selected||topics.includes(selected))&&(!year.value||card.dataset.year===year.value)&&(!category||card.dataset.category.split('|').includes(category));card.hidden=!visible;if(visible)count++;}
       buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.topic===selected)));
       $('[data-results-count]',hub).textContent=`${selected?selected+' · ':''}${category?category+' · ':''}共 ${count} 篇文章`;
-      $('[data-no-results]',hub).hidden=count>0;
+      if(query&&loading)$('[data-results-count]',hub).textContent='正在搜索标题、标签和正文…';
+      if(query&&searchFailed)$('[data-results-count]',hub).textContent=`正文搜索暂不可用 · 当前按标题、摘要和标签找到 ${count} 篇`;
+      if(retry)retry.hidden=!query||!searchFailed;
+      $('[data-no-results]',hub).hidden=count>0||loading;
       const currentButton=buttons.find(b=>b.dataset.topic===selected);if(currentButton?.closest('details'))currentButton.closest('details').open=true;
       if(updateURL){const url=new URL(location.href);for(const key of ['q','topic','year','search'])url.searchParams.delete(key);if(query)url.searchParams.set('q',input.value.trim());if(selected)url.searchParams.set('topic',selected);if(year.value)url.searchParams.set('year',year.value);history.replaceState(null,'',url);}
     }
     buttons.forEach(button=>button.addEventListener('click',()=>{selected=button.dataset.topic;category='';apply(true);}));
     input.addEventListener('input',()=>apply(true));year.addEventListener('change',()=>apply(true));
     $('[data-reset-filters]',hub).addEventListener('click',()=>{input.value='';year.value='';selected='';category='';apply(true);});
+    retry?.addEventListener('click',loadFullText);
     apply();if(params.has('search'))input.focus();
   }
   const albums=$('[data-album-library]');

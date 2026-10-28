@@ -1,6 +1,9 @@
 # FLYFISH — 清新蓝白，文章与生活共用一套导航。
 avatar: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.img1.jpg
-hero_image: https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg
+# 原图地址保留在维护指南；本地响应式 WebP 保持原画面，减少首屏流量。
+hero_image: /images/sky-1280.webp
+hero_image_small: /images/sky-480.webp
+hero_image_srcset: /images/sky-480.webp 480w, /images/sky-800.webp 800w, /images/sky-1280.webp 1280w, /images/sky-1600.webp 1600w
 hero_title: 日子慢慢过，故事慢慢写。
 github: https://github.com/FLYFISH567
 bilibili: https://space.bilibili.com/351361938

@@ -32,7 +32,7 @@
   function render(){
     if(!posts)return;
     const query=lower(input.value.trim()),terms=[...new Set(query.split(/\s+/).filter(Boolean))];
-    const matches=terms.length?posts.filter(post=>terms.every(term=>post.searchable.includes(term))).map(post=>({post,score:terms.reduce((score,term)=>score+(post.titleText.includes(term)?30:0)+(post.tagText.includes(term)?16:0)+(post.summaryText.includes(term)?6:0),post.titleText.includes(query)?40:0)})).sort((a,b)=>b.score-a.score).map(item=>item.post):posts.slice(0,6);
+    const matches=terms.length?window.FlyfishSearch.rank(posts,query):posts.slice(0,6);
     const fragment=document.createDocumentFragment();
     for(const post of matches){
       const item=document.createElement('li'),link=document.createElement('a'),title=document.createElement('h3'),copy=document.createElement('p'),meta=document.createElement('small');
@@ -40,15 +40,12 @@
       link.append(title,copy,meta);item.append(link);fragment.append(item);
     }
     results.replaceChildren(fragment);results.scrollTop=0;
-    status.textContent=terms.length?(matches.length?'找到 '+matches.length+' 篇文章':'没有找到匹配文章，试试其他关键词。'):'最近更新 · 共 '+posts.length+' 篇文章';
+    status.textContent=terms.length?(matches.length?'找到 '+matches.length+' 篇文章':'没有找到匹配文章，试试其他关键词。'):'最新文章 · 共 '+posts.length+' 篇文章';
   }
   async function load(){
     if(posts){render();return;}
     status.textContent='正在加载搜索…';retry.hidden=true;
-    if(!pending)pending=fetch(dialog.dataset.searchIndex,{cache:'no-cache'}).then(response=>{if(!response.ok)throw new Error('search');return response.json();}).then(data=>{
-      if(!Array.isArray(data.posts))throw new Error('index');
-      posts=data.posts.map(post=>({...post,titleText:lower(post.title),tagText:lower(post.tags.join(' ')),summaryText:lower(post.summary),searchable:lower([post.title,post.tags.join(' '),post.summary,post.text].join(' '))}));
-    }).catch(error=>{pending=null;throw error;});
+    if(!pending)pending=window.FlyfishSearch.load(dialog.dataset.searchIndex).then(data=>{posts=data;}).catch(error=>{pending=null;throw error;});
     try{await pending;render();}catch{status.textContent='搜索暂时无法加载，请重试。';retry.hidden=false;}
   }
   function open(){

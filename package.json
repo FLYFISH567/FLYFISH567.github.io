@@ -7,6 +7,8 @@
     "clean": "hexo clean",
     "deploy": "node tools/deploy.cjs",
     "server": "hexo server",
+    "news:update": "node tools/update-briefing.cjs",
+    "markets:update": "node tools/update-markets.cjs",
     "test": "node tools/check.cjs",
     "verify": "npm run build && npm test"
   },

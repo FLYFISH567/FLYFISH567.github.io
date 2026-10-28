@@ -191,6 +191,65 @@ wishlist:
 
 完全关闭时，把 `_config.flyfish.yml` 中的 `pointer_play` 改成 `false` 后重新构建。逻辑在 `themes/flyfish/source/js/pointer-play.js`，配色跟随网站的浅色/深色主题。
 
+## 每日看板
+
+入口为 `/briefing/`，导航中的“每日”。保持现有音乐常驻机制，普通站内切页时不会重建音频。
+
+栏目分为综合要闻、AI 动态、Codex 雷达、开发工具、安全阅读。综合要闻把国内与国际消息放在一起；AI 栏汇集国内外模型、产品和行业报道，不根据品牌国籍猜测新闻归属。模型发布、价格与额度等标签由标题关键词辅助归类，仅用于浏览。来源没发新消息时保留日期，不生成“每天固定条数”的内容。
+
+数据与界面分工：
+
+| 文件 | 用途 |
+| --- | --- |
+| `themes/flyfish/source/js/briefing-sources.js` | 来源 URL、解析、缓存周期、分类与行情自选项；同时供浏览器与更新工具使用 |
+| `source/_data/briefing.json` | 随站点发布的备用资讯快照，包含每个来源的真实获取时间与条目日期 |
+| `themes/flyfish/source/js/briefing.js` | 分类、关键词、未读、收藏、更新、桌面提醒与行情组件的生命周期 |
+| `themes/flyfish/layout/_partials/briefing.ejs` | 初始页面、来源说明与设置 |
+| `themes/flyfish/source/css/briefing.css` | 看板、首页近况与彩蛋的样式 |
+| `source/_data/site_updates.yml` | 手动记录真实的小站功能更新，进入首页“小站近况” |
+
+当前来源：
+
+- 综合日报使用 [60s-static-host 公布的静态 JSON](https://github.com/vikiboss/60s-static-host)，以北京时间生成日期 URL。当天尚未发布时只尝试前一天一次，界面保留实际简报日期。
+- AI 日报使用 [60s 文档所列的公共实例](https://docs.60s-api.viki.moe/7306811m0) `60s.crystelf.top`，原内容由 AI 工具集整理；通常是前一日信息，也可能没有条目。入口与限制见 [AI 资讯文档](https://docs.60s-api.viki.moe/375130803e0)。公共实例不保证长期可用，替换 URL 时应先验证实际格式及博客域名的 CORS。
+- Codex 雷达读取 [Radar Ultra 公开 Atom](https://data.radarultra.com/open/codex-resets/feed/zh-hans.atom)，保留“已预告 / 已执行 / 人工确认”等来源状态。这是第三方记录，不读取用户的 OpenAI 账户、不计算个人剩余额度，也不接入对方的登录、浏览器推送或 Firebase 服务。
+- 开发与安全分别读取 [GitHub Changelog RSS](https://github.blog/changelog/feed/) 和 [GitHub Security RSS](https://github.blog/security/feed/)，保留英文原题及短摘要。
+
+浏览器先显示备用快照，数据过期时再直接读取公开来源；全站每分钟只检查是否需要更新，实际网络请求遵守来源周期：雷达 15 分钟，综合日报、开发、安全各 1 小时，AI 日报 6 小时。离开看板且没有开启提醒时，不在其他页面拉取资讯；没有启用桌面提醒时，网页不可见就暂停检查；主动启用提醒后，后台标签可继续按来源周期检查（受浏览器节流影响）。手动“检查更新”也有至少 60 秒的间隔。HTTP 429 的 `Retry-After` 会限制后续请求，失败时不修改旧快照时间。所有接口响应按纯文本构造节点，外链仅接受不含凭据的 HTTPS URL，不引入通用跨域代理。
+
+要更新随站点发布的备用内容，在发布前运行：
+
+```powershell
+npm run news:update
+npm run verify
+```
+
+这个命令只读取公开来源，并更新 `source/_data/briefing.json`；某个来源失败时保留已有快照。`/briefing/feed.json` 是同一份静态备用快照，不是实时后端接口。无需每天重新发布，浏览器仍会按上述周期检查新消息。
+
+未读状态、收藏、订阅和行情自选只保存在当前浏览器；最多保留 100 条完整收藏及 1000 条已读记录，收藏不会因来源滚动移除条目而立刻消失。存储被禁用时仍能阅读和筛选，界面提示设置只能保留在当前会话。
+
+桌面提醒默认关闭，只有访客主动点击后才申请浏览器权限。它只在网页保持打开、来源有新记录时提醒，不会把首次载入的历史消息全部弹出。关闭网页后不推送；目前没有服务端 Web Push、邮件、微信或 Telegram 推送。需要后台推送时应另建消息服务，不能复用参考站点的用户令牌。
+
+市场行情现改为独立的“环球市场”卡片区，放在资讯上方，按中国内地、中国香港、美国、日本、韩国和黄金分组。候选共 20 项：上证、深证、沪深300、中证500/1000、中证A500、创业板、科创50、北证50；恒生、恒生科技、恒生国企；纳斯达克综合/100、标普500、道琼斯；日经225、韩国综合 KOSPI；国际现货黄金、上海金 Au99.99。默认精选 8 项，自选可以在管理面板修改、保存或恢复。
+
+指数直接读取腾讯财经公开行情，日本、韩国和黄金读取华尔街见闻公开行情。当前端能直接读取时不使用跨域代理，不再嵌入第三方 iframe，也不再用 CFD 代替美股现货指数。显示价格、涨跌、涨跌幅与来源实际报价时间；所有时间换算成北京时间。腾讯美股本地时间通过 `America/New_York` 换算，兼容夏令时。国际金价单位为美元/盎司，上海金为元/克，分别标注。
+
+页面可见、行情展开时每分钟检查一次，同一提供方合并请求。地区切换和离开页面会取消旧请求，迟到响应不能覆盖新视图；新响应的报价时间早于已有报价时保留已有值。收盘、午休、节假日和延迟不根据星期或电脑当前时间猜测，直接显示最近报价的时间；因此“今日 05:15”表示这条报价的北京时间，不能自动理解为此时仍在交易。请求失败时保留原时间并标“缓存”，没有有效报价则显示横线。
+
+相关文件：`themes/flyfish/source/js/market-data.js`（统一品种目录、解析与时区）、`markets.js`（自选与刷新）、`layout/_partials/markets.ejs`、`source/css/markets.css`、`source/_data/markets.json`（随站点发布的备用报价）。发布前可运行 `npm run markets:update` 更新备用报价。数据源说明收在“数据来源”折叠项中，卡片不再重复长段提示。行情自选使用独立浏览器存储，并迁移旧版本的已选品种。
+
+验证：`node tools/verify-briefing.cjs`、`node tools/verify-search.cjs` 和 `node tools/verify-markets.cjs`，也已纳入 `npm test`。
+
+## 首页、搜索与彩蛋
+
+首页文章列表现在叫“最新文章”，按原有发布日期排序。“小站近况”单独按实际日期合并小站变更、个人近况、文章修订、相册与说说，不把构建时间当作内容更新。
+
+文章库和顶部搜索共用 `search-core.js` 与 `/search-index.json`，都搜索标题、摘要、标签及正文，空格分词使用 AND 匹配。文章库仍可叠加专题和年份筛选；索引失败时显示标题等字段的降级结果和重试入口，不把它说成完整的全文结果。
+
+首页天空图原图为 `https://flyfish567.oss-cn-shenzhen.aliyuncs.com/web.imgbackground.jpg`（2559×1385，约 4.68 MB）。当前在主题 `source/images/` 保存 480、800、1280、1600 宽的 WebP，分别约 16、31、56、73 KB；浏览器按 `srcset/sizes` 和设备像素比选择，侧栏使用 480 宽版本。换图时同时更新 `_config.flyfish.yml` 的 `hero_image / hero_image_small / hero_image_srcset`。此处只做尺寸与压缩，没有改动画面内容。
+
+`/Warning/` 仍保留，原文件作为历史内容不改写；主题路由改用 `_partials/warning.ejs` 渲染相同彩蛋文字。旧 HTML 中的全局 `body / *` 样式、外部图标库与定时脚本不再嵌入页面，避免污染导航和站内切页。页面标题为“前方高能 · 小彩蛋”。
+
 ## 更新后预览
 
 ```powershell

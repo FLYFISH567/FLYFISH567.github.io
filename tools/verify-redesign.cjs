@@ -33,8 +33,8 @@ if(fs.existsSync(path.join(output,'search.xml'))){
 }
 assert.equal(hub('[data-topic="XSS"]').length,1,'XSS aliases must have one filter');
 assert.equal(hub('[data-topic="xss"]').length,0,'Lowercase XSS alias should be merged');
-for(const route of ['index.html','articles/index.html','life/index.html','music/index.html','about/index.html','album/index.html','essay/index.html','bangumis/index.html','comments/index.html','archives/index.html','categories/index.html','tags/index.html']){
-  const $=load(route);assert.equal($('#main-nav a').length,5,`Unexpected navigation: ${route}`);
+for(const route of ['index.html','articles/index.html','life/index.html','music/index.html','briefing/index.html','about/index.html','album/index.html','essay/index.html','bangumis/index.html','comments/index.html','archives/index.html','categories/index.html','tags/index.html']){
+  const $=load(route);assert.deepEqual($('#main-nav a').map((_,el)=>$(el).attr('href')).get(),['/','/articles/','/album/','/briefing/','/music/','/about/'],`Unexpected navigation: ${route}`);
   assert.equal($('#main-nav button[data-open-search][aria-controls="site-search"]').length,1,`Search must open a dialog: ${route}`);
   assert.equal($('#site-search').length,1,`Missing standalone search dialog: ${route}`);
   assert.equal($('#main-nav a[href^="javascript:"]').length,0,`Nonfunctional parent navigation: ${route}`);
