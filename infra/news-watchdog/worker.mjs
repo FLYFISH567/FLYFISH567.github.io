@@ -5,8 +5,11 @@ const ACTIVE = new Set(['queued', 'in_progress', 'waiting', 'pending', 'requeste
 
 export async function checkAndDispatch(env, fetcher = fetch, now = Date.now()) {
   if (!env.GITHUB_NEWS_TOKEN) throw new Error('GitHub secret is missing');
+  const staleMinutes = Number(env.STALE_AFTER_MINUTES ?? 20);
+  if (!Number.isInteger(staleMinutes) || staleMinutes < 1 || staleMinutes > 60) throw new Error('Invalid freshness threshold');
   const request = (url, options = {}) => fetcher(url, {
-    ...options, redirect: 'error', signal: AbortSignal.timeout(10000)
+    // Workers supports manual/follow only; manual also prevents credential redirects.
+    ...options, redirect: 'manual', signal: AbortSignal.timeout(10000)
   });
   let checkedAt = NaN;
   try {
@@ -14,7 +17,7 @@ export async function checkAndDispatch(env, fetcher = fetch, now = Date.now()) {
     if (response.ok) checkedAt = Date.parse((await response.json()).news_checked_at);
   } catch { /* An unavailable snapshot also needs recovery. */ }
   const age = now - checkedAt;
-  if (Number.isFinite(age) && age >= -60000 && age < 20 * 60000) return {status: 'fresh'};
+  if (Number.isFinite(age) && age >= -60000 && age < staleMinutes * 60000) return {status: 'fresh'};
 
   const api = `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}`;
   const headers = {
@@ -30,8 +33,11 @@ export async function checkAndDispatch(env, fetcher = fetch, now = Date.now()) {
   if (!Array.isArray(runs.workflow_runs)) throw new Error('Invalid GitHub run response');
   if (runs.workflow_runs.some(run => ACTIVE.has(run.status))) return {status: 'running'};
   const response = await request(`${api}/dispatches`, {method: 'POST', headers, body: JSON.stringify({ref: 'source'})});
-  if (response.status !== 204) throw new Error(`GitHub dispatch failed (${response.status})`);
-  return {status: 'dispatched'};
+  if (response.status === 204) return {status: 'dispatched'}; // Older API response.
+  if (response.status !== 200) throw new Error(`GitHub dispatch failed (${response.status})`);
+  const dispatched = await response.json();
+  if (!Number.isSafeInteger(dispatched.workflow_run_id) || dispatched.workflow_run_id <= 0) throw new Error('Invalid GitHub dispatch response');
+  return {status: 'dispatched', runId: dispatched.workflow_run_id};
 }
 
 export default {
@@ -40,7 +46,7 @@ export default {
       console.log(JSON.stringify({event: 'news-watchdog', ...result}));
     }).catch(error => {
       // Only our fixed diagnostic messages may reach logs or runtime exceptions.
-      const message = /^(GitHub secret is missing|Invalid GitHub run response|GitHub (run check|dispatch) failed \(\d{3}\))$/.test(error?.message)
+      const message = /^(GitHub secret is missing|Invalid freshness threshold|Invalid GitHub (run|dispatch) response|GitHub (run check|dispatch) failed \(\d{3}\))$/.test(error?.message)
         ? error.message : 'Network request failed';
       console.error(JSON.stringify({event: 'news-watchdog', status: 'failed', error: message}));
       throw new Error(message);

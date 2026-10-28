@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
   const {checkAndDispatch, default: worker} = await import('../infra/news-watchdog/worker.mjs');
   const now = Date.parse('2026-10-28T12:00:00Z');
   const env = {GITHUB_NEWS_TOKEN: 'test-only-secret'};
-  async function scenario({age = 30, runs = [], runStatus = 200, dispatchStatus = 204, offline = false} = {}) {
+  async function scenario({age = 30, runs = [], runStatus = 200, dispatchStatus = 200, dispatchBody = {workflow_run_id: 123}, offline = false, staleMinutes} = {}) {
     const calls = [];
     const fetcher = async (url, options) => {
       calls.push({url, options});
@@ -14,16 +14,23 @@ const assert = require('node:assert/strict');
         return Response.json({news_checked_at: new Date(now - age * 60000).toISOString()});
       }
       assert.equal(new URL(url).hostname, 'api.github.com');
-      assert.equal(options.redirect, 'error');
+      assert.equal(options.redirect, 'manual', 'Workers-compatible requests must not follow credential redirects');
       if (url.includes('/runs?')) return Response.json({workflow_runs: runs}, {status: runStatus});
       assert.deepEqual(JSON.parse(options.body), {ref: 'source'});
-      return new Response(null, {status: dispatchStatus});
+      return dispatchStatus === 200 ? Response.json(dispatchBody) : new Response(null, {status: dispatchStatus});
     };
-    return {result: await checkAndDispatch(env, fetcher, now), calls};
+    return {result: await checkAndDispatch({...env, ...(staleMinutes === undefined ? {} : {STALE_AFTER_MINUTES: staleMinutes})}, fetcher, now), calls};
   }
   const fresh = await scenario({age: 5});
   assert.equal(fresh.result.status, 'fresh'); assert.equal(fresh.calls.length, 1);
   assert.equal((await scenario()).result.status, 'dispatched');
+  assert.equal((await scenario()).result.runId, 123);
+  assert.equal((await scenario({dispatchStatus: 204})).result.status, 'dispatched');
+  await assert.rejects(scenario({dispatchBody: {}}), /Invalid GitHub dispatch response/);
+  assert.equal((await scenario({age: 19})).result.status, 'fresh');
+  assert.equal((await scenario({age: 20})).result.status, 'dispatched');
+  assert.equal((await scenario({age: 5, staleMinutes: '1'})).result.status, 'dispatched');
+  for (const staleMinutes of ['0', '61', 'garbage', '1.5']) await assert.rejects(scenario({staleMinutes}), /Invalid freshness threshold/);
   assert.equal((await scenario({offline: true})).result.status, 'dispatched');
   assert.equal((await scenario({age: -60})).result.status, 'dispatched');
   for (const status of ['queued', 'in_progress', 'waiting', 'pending', 'requested']) {
@@ -31,6 +38,8 @@ const assert = require('node:assert/strict');
     assert.equal(active.result.status, 'running'); assert.equal(active.calls.length, 2);
   }
   await assert.rejects(scenario({runStatus: 401}), /run check failed \(401\)/);
+  await assert.rejects(scenario({runStatus: 302}), /run check failed \(302\)/);
+  await assert.rejects(scenario({dispatchStatus: 302}), /dispatch failed \(302\)/);
   await assert.rejects(scenario({dispatchStatus: 429}), /dispatch failed \(429\)/);
   await assert.rejects(checkAndDispatch({}, () => {throw new Error('must not fetch');}, now), /secret is missing/);
   assert.equal(worker.fetch().status, 404);

@@ -4,6 +4,7 @@
   "compatibility_date": "2026-10-28",
   "workers_dev": false,
   "preview_urls": false,
+  "vars": {"STALE_AFTER_MINUTES": "20"},
   "triggers": {"crons": ["23,53 * * * *"]},
   "observability": {"enabled": true}
 }

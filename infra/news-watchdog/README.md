@@ -8,6 +8,10 @@
 - 数据过期、无法读取或时间异常：先查询 GitHub；已有排队或运行中的任务则跳过，否则触发 `news-pages.yml` 的 `source` 分支。
 - GitHub API 检查失败时不盲目重复触发，错误进入 Cloudflare Workers 日志。失败不会替换网站数据。
 
+`STALE_AFTER_MINUTES` 默认配置为 `20`，仅接受 1–60 的整数。需要现场验证恢复链路时，可临时设为 `1` 并添加五分钟验收定时；确认真实 Scheduled 触发、GitHub 发布及线上新快照后，必须重新按仓库配置部署，恢复 `20` 和仅 `23,53 * * * *`。不要将临时验收参数保存为正式配置。
+
+所有请求使用 `redirect: manual`，不携带凭据跟随跳转。Cloudflare Workers 不支持 `redirect: error`，不能只用 Node 的模拟测试判断兼容性。GitHub `2026-03-10` API 的 dispatch 成功响应为 `200`，须验证并记录 `workflow_run_id`；同时兼容旧版 `204`。依据：[Workers Request](https://developers.cloudflare.com/workers/runtime-apis/request/)、[GitHub workflow dispatch](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event)。
+
 这提供独立触发渠道，不保证新闻源永远可用或整点准时。GitHub 构建、Cloudflare 或上游同时故障时仍可能延迟；页面继续保留最近成功内容及原时间。
 
 ## 部署
