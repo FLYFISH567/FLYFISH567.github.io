@@ -18,7 +18,7 @@
 .market-data-rules dd{margin:0;font-size:11px;line-height:1.9;color:var(--sub)}
 @media(hover:hover) and (pointer:fine){
   .market-board:hover{border-color:color-mix(in srgb,var(--blue) 20%,var(--line));box-shadow:0 8px 28px #20374a0b}
-  .market-quote:hover{background:color-mix(in srgb,var(--soft) 65%,var(--surface));border-color:color-mix(in srgb,var(--blue) 24%,var(--line));box-shadow:0 6px 15px #20374a0d}
+  .market-quote:hover{border-color:color-mix(in srgb,var(--blue) 24%,var(--line))}
   .market-groups button:not([aria-pressed=true]):hover,.market-manage:hover{color:var(--blue);background:var(--soft)}
   .market-information>summary:hover .market-information-label{color:var(--blue)}
   .market-provider:hover{background:var(--soft);border-color:color-mix(in srgb,var(--blue) 24%,var(--line))}
@@ -27,7 +27,6 @@
 }
 @media(prefers-reduced-motion:no-preference){
   :root:not([data-effects=light]) :is(.market-board,.market-quote,.market-groups button,.market-manage,.market-provider){transition:background-color .16s ease,border-color .16s ease,box-shadow .16s ease,transform .16s ease}
-  @media(hover:hover) and (pointer:fine){:root:not([data-effects=light]) .market-quote:hover{transform:translateY(-2px)}}
 }
 @media(max-width:600px){.market-data-rules{grid-template-columns:1fr;gap:11px}.market-data-rules>div{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px}.market-data-rules dt{margin:0;line-height:1.9}.market-provider{padding:12px}}
 .market-picker{border:1px solid var(--line);background:var(--soft);border-radius:14px;margin:0 0 19px;padding:20px}.market-picker-heading{display:flex;justify-content:space-between;align-items:center;gap:14px;font-size:13px;margin-bottom:15px}.market-picker-heading .text-button{font-size:11px}.market-choice-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 24px}.market-choice-groups fieldset{padding:0;margin:0;border:0;min-width:0;display:grid;align-content:start;gap:8px}.market-choice-groups legend{font-size:11px;color:var(--blue);font-weight:600;margin:0 0 9px;padding:0}.market-choice-groups label{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:11px;line-height:1.6;min-height:22px}.market-choice-groups input{accent-color:var(--blue);margin:0}.market-picker-actions{display:flex;align-items:center;gap:17px;flex-wrap:wrap;margin-top:19px;border-top:1px solid var(--line);padding-top:17px}.market-picker-actions .button{font-size:11px;padding:8px 14px}.market-picker-actions>.text-button{font-size:11px}.market-picker-actions>p{font-size:11px;color:var(--sub);margin:0}

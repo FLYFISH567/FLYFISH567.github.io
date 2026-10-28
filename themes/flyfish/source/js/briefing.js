@@ -45,10 +45,10 @@
   }
   function render(){if(!page?.isConnected)return;const items=selected(),feed=$('[data-briefing-feed]'),fragment=document.createDocumentFragment();
     for(const [i,item] of items.slice(0,limit).entries()){
-      const source=SOURCES.find(s=>s.id===item.sourceId),card=text('article','','briefing-item'+(pref.read[item.id]?' is-read':''));card.dataset.itemId=item.id;
+      const source=SOURCES.find(s=>s.id===item.sourceId),card=text('article','','briefing-item pointer-surface'+(pref.read[item.id]?' is-read':''));card.dataset.itemId=item.id;card.dataset.pointerLight='';
       card.append(text('div',String(i+1).padStart(2,'0'),'briefing-item-index'));
       const body=text('div','','briefing-item-body'),meta=text('div','','briefing-item-meta');
-      meta.append(text('span',source.label,'briefing-category-tag'),text('span',item.byline||source.name));const dateOnly=['daily','ai'].includes(source.id),time=text('time',dateOnly?api.day(item.publishedAt)+' 简报':dateTime(item.publishedAt));time.dateTime=dateOnly?api.day(item.publishedAt):item.publishedAt;meta.append(time);
+      meta.append(text('span',source.label,'briefing-category-tag'),text('span',source.format==='indexed'?source.name:item.byline||source.name));const dateOnly=['daily','ai'].includes(source.id),time=text('time',dateOnly?api.day(item.publishedAt)+' 简报':dateTime(item.publishedAt));time.dateTime=dateOnly?api.day(item.publishedAt):item.publishedAt;meta.append(time);
       const heading=text('h2',''),a=text('a',item.title);a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.readLink=item.id;heading.append(a);body.append(meta,heading);
       if(item.summary)body.append(text('p',item.summary));
       const actions=text('div','','briefing-item-actions');const topic=text('span',item.topic||source.label);actions.append(topic);
@@ -59,7 +59,7 @@
     $('[data-briefing-empty]').textContent=!pref.sources.length?'还没有选择资讯来源。勾选右侧订阅，就能开始阅读。':mode==='saved'?'还没有匹配的收藏，点击消息下方的“收藏”即可保存。':'暂时没有匹配的消息，换个分类或关键词试试。';
     $('[data-briefing-more]').hidden=items.length<=limit;
     $('[data-briefing-clear]').hidden=!query;
-    const unread=entries().filter(item=>!pref.read[item.id]).length;
+    const unread=items.filter(item=>!pref.read[item.id]).length;
     $('[data-briefing-results]').textContent=(CATEGORIES.find(c=>c[0]===category)?.[1]||'全部')+' · '+items.length+' 条'+(mode==='all'?' · '+unread+' 条未读':'');
     const delayed=cache.checkedAt&&Date.now()-Date.parse(cache.checkedAt)>10800000;
     $('[data-briefing-status]').textContent=status||(cache.checkedAt?'后台采集于 '+dateTime(cache.checkedAt)+(delayed?' · 更新延迟，显示上次内容':''):'正在检查站内更新…');
@@ -107,6 +107,7 @@
   let pageController=null;
   function init(){page=document.querySelector('[data-briefing]');if(!page)return;
     pageController=new AbortController();const signal=pageController.signal;category=new URLSearchParams(location.search).get('category')||'all';if(!CATEGORIES.some(c=>c[0]===category))category='all';mode='all';query='';limit=12;
+    page.querySelectorAll('.briefing-subscription-group').forEach(group=>group.addEventListener('toggle',()=>{if(group.open)page?.querySelectorAll('.briefing-subscription-group').forEach(other=>{if(other!==group)other.open=false;});},{signal}));
     try{mergeSnapshot(api.cleanSnapshot(JSON.parse($('[data-briefing-seed]').textContent)));write(CACHE,cache);}catch{}
     const today=new Date();$('[data-briefing-date]').textContent=new Intl.DateTimeFormat('zh-CN',{month:'long',day:'numeric',weekday:'long',timeZone:'Asia/Shanghai'}).format(today);
     page.addEventListener('click',event=>{

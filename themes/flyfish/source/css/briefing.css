@@ -41,48 +41,57 @@ body[data-view=briefing] .site-layout.full-width{max-width:none}.briefing-headin
 @media(max-width:480px){.briefing-filterbar .briefing-search{flex-basis:100%;height:46px}.briefing-search input{font-size:16px}.briefing-read-filters{width:100%}.briefing-read-filters button{flex:1;min-height:32px;padding:0 12px}}
 
 /* 订阅、出处与新鲜度合在同一分类中，刷新时保留展开状态。 */
-.briefing-reader-panel .briefing-panel-title h2{margin:4px 0 10px}
-.briefing-reader-panel .briefing-subscription-count{margin:0 0 16px}
-.briefing-reader-panel .briefing-subscriptions{display:block;max-height:min(390px,max(180px,calc(100dvh - 480px)));overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent;margin:0 -6px;padding:0 6px}
+.briefing-layout{grid-template-columns:minmax(0,1fr) 320px}
+.briefing-aside{position:static}
+.briefing-reader-panel{padding:24px}
+.briefing-reader-panel .eyebrow{font-size:10px}
+.briefing-reader-panel .briefing-panel-title h2{font-size:20px;margin:4px 0 10px}
+.briefing-reader-panel .briefing-subscription-count{font-size:13px;line-height:1.7;margin:0 0 16px}
+.briefing-reader-panel .briefing-subscriptions{display:block;max-height:none;overflow:visible;margin:0;padding:0}
 .briefing-reader-panel .briefing-subscription-group{border-bottom:1px solid var(--line)}
 .briefing-reader-panel .briefing-subscription-group:last-child{border-bottom:0}
-.briefing-subscription-group>summary{display:grid;grid-template-columns:minmax(0,1fr) auto 16px;align-items:center;gap:10px;min-height:40px;padding:9px 8px;border-radius:8px}
-.briefing-subscription-group>summary .briefing-group-name{font-size:12px;color:var(--ink)}
-.briefing-subscription-group>summary .briefing-group-count{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.briefing-subscription-group>summary{display:grid;grid-template-columns:minmax(0,1fr) auto 18px;align-items:center;gap:12px;min-height:49px;padding:12px 10px;border-radius:9px}
+.briefing-subscription-group>summary .briefing-group-name{font-size:15px;color:var(--ink)}
+.briefing-subscription-group>summary .briefing-group-count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .briefing-disclosure{display:inline-grid;place-items:center;width:16px;height:16px;font-size:14px;color:var(--muted)}
 .briefing-disclosure:after{content:'+'}
 details[open]>.briefing-disclosure:after,details[open]>summary>.briefing-disclosure:after{content:'−'}
 .briefing-subscription-group[open]>summary{background:var(--soft)}
 .briefing-subscription-group>div{display:block;padding:3px 0 7px}
-.briefing-source-choice{padding:12px 8px;border-bottom:1px solid var(--line);border-radius:8px}
+.briefing-source-choice{padding:15px 10px;border-bottom:1px solid var(--line);border-radius:9px}
 .briefing-source-choice:last-child{border-bottom:0}
-.briefing-subscriptions .briefing-source-toggle{align-items:flex-start;gap:8px;font-size:12px;line-height:1.7;color:var(--ink)}
-.briefing-source-toggle input{flex-shrink:0;margin-top:4px}
-.briefing-source-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:5px 0 5px 21px;color:var(--muted);font-size:10px}
-.briefing-source-info{margin-left:21px;font-size:11px;line-height:1.8;color:var(--sub)}
-.briefing-source-info>summary{display:inline-block;list-style:none;padding:2px 0;color:var(--sub);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+.briefing-source-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.briefing-subscriptions .briefing-source-toggle{align-items:flex-start;gap:10px;font-size:14px;line-height:1.7;color:var(--ink);min-width:0}
+.briefing-source-toggle input{flex-shrink:0;margin-top:5px;width:15px;height:15px}
+.briefing-source-heading>[data-briefing-source-records]{flex-shrink:0;padding-top:4px;color:var(--muted);font-size:12px;line-height:1.7;font-variant-numeric:tabular-nums}
+.briefing-source-info{margin-left:25px;font-size:13px;line-height:1.8;color:var(--sub)}
+.briefing-source-info>summary{display:inline-block;list-style:none;padding:6px 0 2px;color:var(--sub);font-size:13px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
 .briefing-source-info[open]>summary{color:var(--blue)}
 .briefing-source-info>a{display:inline-block;color:var(--blue);margin:5px 0}
-.briefing-source-info>p{font-size:11px;line-height:1.9;margin:0 0 6px;color:var(--sub)}
-.briefing-source-info>small{display:block;color:var(--muted);font-size:10px;line-height:1.8}
+.briefing-source-info>p{font-size:13px;line-height:1.9;margin:0 0 8px;color:var(--sub)}
+.briefing-source-info>small{display:block;color:var(--muted);font-size:12px;line-height:1.9}
 .briefing-source-info>.source-is-stale{color:#a9772f}
 .briefing-preferences{border-top:1px solid var(--line);margin-top:13px;padding-top:10px}
-.briefing-preferences>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;border-radius:8px;list-style:none;font-size:12px;color:var(--sub)}
+.briefing-preferences>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:9px;list-style:none;font-size:14px;color:var(--sub)}
 .briefing-preferences .briefing-notification{border:0;margin-top:6px;padding:8px}
 .briefing-preferences .briefing-note:last-child{margin-bottom:0}
 .briefing-page summary::-webkit-details-marker{display:none}
 .briefing-item:focus-within{background:color-mix(in srgb,var(--soft) 55%,var(--surface))}
 .briefing-item h2 a:focus-visible{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
 @media(hover:hover) and (pointer:fine){
-  .briefing-item:hover{background:color-mix(in srgb,var(--soft) 55%,var(--surface))}
+  .briefing-item:hover{background:transparent}
   .briefing-item:hover h2 a{color:var(--blue)}
   .briefing-item h2 a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
   .briefing-page :is(.briefing-categories button,.briefing-read-filters button):not([aria-pressed=true]):hover{background:color-mix(in srgb,var(--surface) 70%,transparent);color:var(--blue)}
   .briefing-item-actions>button:hover{color:var(--blue);text-decoration:underline;text-underline-offset:4px}
-  .briefing-subscription-group>summary:hover,.briefing-preferences>summary:hover,.briefing-source-choice:hover{background:var(--soft)}
+  .briefing-source-choice:hover{background:transparent}
   .briefing-subscription-group>summary:hover .briefing-group-name,.briefing-preferences>summary:hover{color:var(--blue)}
   .briefing-source-info>summary:hover,.briefing-today a:hover{color:var(--blue);text-decoration:underline;text-underline-offset:4px}
 }
 @media(prefers-reduced-motion:no-preference){:root:not([data-effects=light]) :is(.briefing-item,.briefing-item h2 a,.briefing-categories button,.briefing-read-filters button,.briefing-subscription-group>summary,.briefing-preferences>summary,.briefing-source-choice){transition:background-color .16s ease,color .16s ease}}
-@media(max-width:760px){.briefing-reader-panel{grid-column:1/-1}.briefing-reader-panel .briefing-subscriptions{max-height:none;overflow:visible}}
+/* 与首页“常用专题”使用相同的鼠标光晕，具体坐标由通用光效引擎更新。 */
+.briefing-page .pointer-surface:before{background:radial-gradient(circle 190px at var(--pointer-x) var(--pointer-y),color-mix(in srgb,var(--blue) 11%,transparent),transparent 78%)}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.briefing-page :is(.market-board,.market-quote,.briefing-reader-panel).has-pointer{border-color:color-mix(in srgb,var(--blue) 25%,var(--line));box-shadow:0 6px 24px color-mix(in srgb,var(--blue) 8%,transparent)}}
+@media(max-width:1000px){.briefing-layout{grid-template-columns:minmax(0,1fr) 290px}.briefing-reader-panel{padding:21px}}
+@media(max-width:760px){.briefing-layout{grid-template-columns:1fr}.briefing-reader-panel{grid-column:1/-1}.briefing-reader-panel .briefing-subscriptions{max-height:none;overflow:visible}}
 @media(max-height:600px){.briefing-aside{position:static}}

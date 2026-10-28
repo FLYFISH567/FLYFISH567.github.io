@@ -33,6 +33,7 @@ function setup(options={}){
   const state=setup();await flush();assert.equal(state.calls,0,'Fresh snapshot does not hit public services');assert.equal(state.permissionCalls,0,'No automatic notification permission prompt');
   assert.equal(state.doc.querySelector('.briefing-heading h1').textContent,'每日看板');
   assert.equal(state.doc.querySelectorAll('.briefing-aside>.briefing-panel').length,1,'Subscription and source information share one panel');
+  assert.equal(state.doc.querySelectorAll('.briefing-source-meta').length,0,'Reader-facing source rows have no technical type labels');
   const sourceInput=state.doc.querySelector('[data-briefing-source=guancha]'),sourceGroup=sourceInput.closest('.briefing-subscription-group'),sourceInfo=sourceInput.closest('.briefing-source-choice').querySelector('.briefing-source-info');
   sourceGroup.open=true;sourceInfo.open=true;sourceInput.click();
   assert.equal(sourceGroup.open,true,'Preference changes preserve the open category');assert.equal(sourceInfo.open,true,'Preference changes preserve source details');
@@ -52,6 +53,16 @@ function setup(options={}){
   state.doc.dispatchEvent(new state.w.CustomEvent('flyfish:before-page'));state.doc.dispatchEvent(new state.w.CustomEvent('flyfish:page'));state.click('[data-briefing-category=ai]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,Math.min(12,aiCount));
   state.click('[data-briefing-notify]');await flush();assert.equal(state.permissionCalls,1);assert.equal(state.notices,0);
   state.dom.window.close();
+  const scoped=setup(),dailyCount=snapshot.sources.daily.items.length;
+  scoped.click('[data-briefing-category=general]');
+  const count=()=>scoped.doc.querySelector('[data-briefing-results]').textContent;
+  assert.equal(count(),`综合日报 · ${dailyCount} 条 · ${dailyCount} 条未读`,'Unread count follows the selected category');
+  const title=scoped.doc.querySelector('.briefing-item h2 a').textContent;scoped.click('[data-briefing-action=read]');
+  assert.equal(count(),`综合日报 · ${dailyCount} 条 · ${dailyCount-1} 条未读`);
+  scoped.input(title);assert.equal(count(),'综合日报 · 1 条 · 0 条未读','Unread count follows the search result');
+  scoped.click('[data-briefing-clear]');scoped.click('[data-briefing-read-all]');assert.equal(count(),`综合日报 · ${dailyCount} 条 · 0 条未读`);
+  scoped.click('[data-briefing-category=china]');const chinaCount=api.SOURCES.filter(s=>s.category==='china').reduce((n,s)=>n+(snapshot.sources[s.id]?.items.length||0),0);
+  assert.equal(count(),`国内 · ${chinaCount} 条 · ${chinaCount} 条未读`,'Reading one category does not mark another category read');scoped.dom.window.close();
   const offline=setup({stale:true});await flush();assert.equal(offline.calls,7,'One same-origin request and bounded direct fallback; new media never require browser CORS');assert.ok(offline.doc.querySelectorAll('.briefing-item').length>0);
   const unavailable=api.SOURCES.filter(s=>!s.serverOnly||(offline.seed.health[s.id]&&offline.seed.health[s.id].status!=='ok')).length;
   assert.equal(offline.doc.querySelectorAll('.source-is-stale').length,unavailable,'Direct failures and recorded background warnings remain visible');

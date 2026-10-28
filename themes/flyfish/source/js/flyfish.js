@@ -13,24 +13,27 @@
   if(storage.get('flyfish-theme')==='dark')root.dataset.theme='dark';
   $('.theme-toggle')?.setAttribute('aria-label',root.dataset.theme==='dark'?'切换浅色模式':'切换深色模式');
   function initLights(){
-  // 光晕仅在指定按钮、封面和卡片内响应鼠标，不追踪整页，也不替换系统光标。
-  const pointerMotion=matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
-  $$('[data-pointer-light]').forEach(surface=>{
-    let frame=0,position=null;
-    const reset=()=>{cancelAnimationFrame(frame);frame=0;position=null;surface.classList.remove('has-pointer');['--pointer-x','--pointer-y','--parallax-x','--parallax-y'].forEach(name=>surface.style.removeProperty(name));};
-    surface.addEventListener('pointermove',event=>{
-      if(!pointerMotion.matches||root.dataset.effects==='light'||event.pointerType!=='mouse')return;
-      position={x:event.clientX,y:event.clientY};
-      if(frame)return;
-      frame=requestAnimationFrame(()=>{frame=0;if(!position)return;const rect=surface.getBoundingClientRect();surface.style.setProperty('--pointer-x',`${position.x-rect.left}px`);surface.style.setProperty('--pointer-y',`${position.y-rect.top}px`);if(surface.classList.contains('sky-cover')&&rect.width&&rect.height){surface.style.setProperty('--parallax-x',`${((position.x-rect.left)/rect.width-.5)*8}px`);surface.style.setProperty('--parallax-y',`${((position.y-rect.top)/rect.height-.5)*6}px`);}surface.classList.add('has-pointer');});
-    },{passive:true,signal:pageController.signal});
-    surface.addEventListener('pointerleave',reset,{signal:pageController.signal});
-    surface.addEventListener('pointercancel',reset,{signal:pageController.signal});
-    surface.addEventListener('blur',reset,{signal:pageController.signal});
-    pointerMotion.addEventListener('change',reset,{signal:pageController.signal});
-    document.addEventListener('flyfish:effectschange',reset,{signal:pageController.signal});
-    pageDisposers.push(reset);
-  });
+    // 复用同一光晕，通过事件委托支持筛选和刷新后生成的新卡片。
+    const pointerMotion=matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)'),signal=pageController.signal;
+    let surface=null,frame=0,position=null;
+    const reset=()=>{cancelAnimationFrame(frame);frame=0;position=null;if(surface){surface.classList.remove('has-pointer');['--pointer-x','--pointer-y','--parallax-x','--parallax-y'].forEach(name=>surface.style.removeProperty(name));}surface=null;};
+    document.addEventListener('pointermove',event=>{
+      if(!pointerMotion.matches||root.dataset.effects==='light'||event.pointerType!=='mouse'){reset();return;}
+      const next=event.target.closest?.('[data-pointer-light]');
+      if(!next){reset();return;}if(next!==surface){reset();surface=next;}
+      position={x:event.clientX,y:event.clientY};if(frame)return;
+      frame=requestAnimationFrame(()=>{frame=0;if(!position||!surface?.isConnected){reset();return;}const rect=surface.getBoundingClientRect(),x=position.x-rect.left,y=position.y-rect.top;surface.style.setProperty('--pointer-x',`${x}px`);surface.style.setProperty('--pointer-y',`${y}px`);if(surface.classList.contains('sky-cover')&&rect.width&&rect.height){surface.style.setProperty('--parallax-x',`${Math.max(-4,Math.min(4,(x/rect.width-.5)*8))}px`);surface.style.setProperty('--parallax-y',`${Math.max(-3,Math.min(3,(y/rect.height-.5)*6))}px`);}surface.classList.add('has-pointer');});
+    },{passive:true,signal});
+    document.addEventListener('pointerout',event=>{const related=event.relatedTarget;if(surface&&(!related?.nodeType||!surface.contains(related)))reset();},{signal});
+    document.addEventListener('pointerleave',event=>{if(event.target===surface)reset();},{capture:true,signal});
+    document.addEventListener('pointercancel',reset,{signal});
+    document.addEventListener('blur',reset,{capture:true,signal});
+    document.addEventListener('scroll',reset,{capture:true,passive:true,signal});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();},{signal});
+    document.defaultView?.addEventListener('resize',reset,{passive:true,signal});
+    document.defaultView?.addEventListener('pagehide',reset,{signal});
+    pointerMotion.addEventListener('change',reset,{signal});
+    document.addEventListener('flyfish:effectschange',reset,{signal});pageDisposers.push(reset);
   }
   $('.theme-toggle')?.addEventListener('click',()=>{const dark=root.dataset.theme!=='dark';root.dataset.theme=dark?'dark':'light';storage.set('flyfish-theme',root.dataset.theme);$('.theme-toggle').setAttribute('aria-label',dark?'切换浅色模式':'切换深色模式');});
   $('.menu-toggle')?.addEventListener('click',event=>{const open=$('#main-nav').classList.toggle('is-open');event.currentTarget.setAttribute('aria-expanded',String(open));});

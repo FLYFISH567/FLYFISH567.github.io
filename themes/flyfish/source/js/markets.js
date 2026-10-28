@@ -22,7 +22,7 @@
     const host=$('[data-market-grid]'),fragment=document.createDocumentFragment();
     for(const id of activeIds()){
       const market=api.byId(id),quote=cache.quotes[id],direction=quote?.percent>0?'is-up':quote?.percent<0?'is-down':'is-flat';
-      const card=element('article','','market-quote '+direction);card.dataset.marketId=id;card.setAttribute('aria-label',market.name);
+      const card=element('article','','market-quote pointer-surface '+direction);card.dataset.marketId=id;card.dataset.pointerLight='';card.setAttribute('aria-label',market.name);
       const heading=element('div','','market-quote-heading'),name=element('h3',market.name),region=element('span',api.GROUPS.find(g=>g.id===market.group).short);name.title=market.description;heading.append(name,region);
       const price=element('div','','market-price');price.append(element('strong',quote?quote.price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—'));if(market.unit!=='点')price.append(element('small',market.unit));
       const change=element('div','','market-change');if(quote){change.append(element('span',(quote.change>0?'+':'')+quote.change.toFixed(2)),element('span',(quote.percent>0?'+':'')+quote.percent.toFixed(2)+'%','market-percent'));}else change.textContent=failed.has(id)?'暂时无法获取':'正在读取报价';

@@ -33,11 +33,21 @@ cover.getBoundingClientRect=()=>({left:100,top:20,width:600,height:300});
 const source=fs.readFileSync('themes/flyfish/source/js/flyfish.js','utf8');
 const start=source.indexOf('  function initLights(){'),end=source.indexOf("  $('.theme-toggle')?.addEventListener",start);
 const pointer={matches:true,addEventListener(){}};
-vm.runInNewContext(source.slice(start,end)+'\ninitLights();',{document:doc,root:doc.documentElement,pageController:new w.AbortController(),pageDisposers:[],$$:selector=>Array.from(doc.querySelectorAll(selector)),matchMedia:()=>pointer,requestAnimationFrame:w.requestAnimationFrame,cancelAnimationFrame:w.cancelAnimationFrame});
+const lightsController=new w.AbortController(),lightDisposers=[];
+vm.runInNewContext(source.slice(start,end)+'\ninitLights();',{document:doc,root:doc.documentElement,pageController:lightsController,pageDisposers:lightDisposers,$$:selector=>Array.from(doc.querySelectorAll(selector)),matchMedia:()=>pointer,requestAnimationFrame:w.requestAnimationFrame,cancelAnimationFrame:w.cancelAnimationFrame});
 const move=new w.MouseEvent('pointermove',{bubbles:true,clientX:350,clientY:100});Object.defineProperty(move,'pointerType',{value:'mouse'});cover.dispatchEvent(move);state.flush();
 assert.ok(cover.classList.contains('has-pointer'));assert.ok(Math.abs(parseFloat(cover.style.getPropertyValue('--parallax-x')))<=4);assert.ok(Math.abs(parseFloat(cover.style.getPropertyValue('--parallax-y')))<=3);
 cover.dispatchEvent(new w.Event('pointerleave'));assert.equal(cover.style.getPropertyValue('--parallax-x'),'');assert.equal(cover.classList.contains('has-pointer'),false);
 pointer.matches=false;cover.dispatchEvent(move);assert.equal(state.frames.size,0);
+// 动态插入、嵌套卡片和页面清理复用同一帧，不需要反复绑定节点。
+pointer.matches=true;const parent=doc.createElement('section'),dynamic=doc.createElement('article');parent.dataset.pointerLight='';dynamic.dataset.pointerLight='';parent.append(dynamic);doc.body.append(parent);
+dynamic.getBoundingClientRect=()=>({left:10,top:20,width:260,height:150});
+dynamic.dispatchEvent(move);dynamic.dispatchEvent(move);assert.equal(state.frames.size,1,'Pointer motion shares one pending frame');state.flush();
+assert.equal(dynamic.classList.contains('has-pointer'),true,'New cards work without rebinding');assert.equal(parent.classList.contains('has-pointer'),false,'Only the nearest nested surface lights up');
+doc.dispatchEvent(new w.Event('scroll'));assert.equal(dynamic.classList.contains('has-pointer'),false,'Scroll clears old coordinates');
+doc.documentElement.dataset.effects='light';dynamic.dispatchEvent(move);assert.equal(state.frames.size,0,'Light mode skips pointer tracking');doc.documentElement.dataset.effects='standard';
+dynamic.dispatchEvent(move);dynamic.remove();state.flush();assert.equal(dynamic.classList.contains('has-pointer'),false,'Removed cards cannot be updated by a late frame');parent.append(dynamic);
+dynamic.dispatchEvent(move);lightsController.abort();lightDisposers.forEach(dispose=>dispose());assert.equal(state.frames.size,0);dynamic.dispatchEvent(move);assert.equal(state.frames.size,0,'Navigation removes the delegated listeners');
 // 子内容的 animationend 不应提前清除整张说说卡片的入场动画。
 const entries=new JSDOM('<article class="essay-card"><header>日期</header><p>正文</p></article><article class="post-card"></article>',{runScripts:'outside-only'});
 const ew=entries.window;let observe;
