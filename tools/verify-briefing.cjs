@@ -31,6 +31,13 @@ function setup(options={}){
 }
 (async()=>{
   const state=setup();await flush();assert.equal(state.calls,0,'Fresh snapshot does not hit public services');assert.equal(state.permissionCalls,0,'No automatic notification permission prompt');
+  assert.equal(state.doc.querySelector('.briefing-heading h1').textContent,'每日看板');
+  assert.equal(state.doc.querySelectorAll('.briefing-aside>.briefing-panel').length,1,'Subscription and source information share one panel');
+  const sourceInput=state.doc.querySelector('[data-briefing-source=guancha]'),sourceGroup=sourceInput.closest('.briefing-subscription-group'),sourceInfo=sourceInput.closest('.briefing-source-choice').querySelector('.briefing-source-info');
+  sourceGroup.open=true;sourceInfo.open=true;sourceInput.click();
+  assert.equal(sourceGroup.open,true,'Preference changes preserve the open category');assert.equal(sourceInfo.open,true,'Preference changes preserve source details');
+  const domesticCount=api.SOURCES.filter(s=>s.category==='china').length;
+  assert.equal(state.doc.querySelector('[data-briefing-group-count=china]').textContent,(domesticCount-1)+' / '+domesticCount);sourceInput.click();
   const aiCount=api.SOURCES.filter(s=>s.category==='ai').reduce((n,s)=>n+(snapshot.sources[s.id]?.items.length||0),0);
   state.click('[data-briefing-category=ai]');assert.equal(state.doc.querySelectorAll('.briefing-item').length,Math.min(12,aiCount));
   state.input('腾讯');assert.ok([...state.doc.querySelectorAll('.briefing-item h2')].every(e=>e.textContent.includes('腾讯')));state.input('');

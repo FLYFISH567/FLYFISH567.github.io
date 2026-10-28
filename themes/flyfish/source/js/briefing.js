@@ -34,12 +34,14 @@
     button.textContent=pref.notify&&Notification.permission==='granted'?'关闭桌面提醒':'开启桌面提醒';button.setAttribute('aria-pressed',String(pref.notify&&Notification.permission==='granted'));
     copy.textContent=Notification.permission==='denied'?'浏览器已阻止提醒；可在网站权限中修改。':pref.notify?'网页保持打开时，提醒已订阅来源的新消息；关闭网页后不会推送。':'网页保持打开时提醒新消息；关闭网页后不会推送。';
   }
-  function renderSources(){if(!page)return;const host=$('[data-briefing-sources]');host.replaceChildren();
-    for(const spec of SOURCES){const group=cache.sources[spec.id],node=text('div','','briefing-source'),a=text('a',spec.name+' ↗');a.href=spec.home;a.target='_blank';a.rel='noopener noreferrer';node.append(a,text('p',spec.note));
+  function renderSources(){if(!page)return;
+    for(const spec of SOURCES){const group=cache.sources[spec.id],node=$('[data-briefing-source-info="'+spec.id+'"]');if(!node)continue;
       const health=cache.health?.[spec.id],failed=errors.has(spec.id)||(health&&health.status!=='ok'),latest=group?.items.reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');
       const stamp=group?'获取于 '+dateTime(group.fetchedAt)+(group.edition?' · 简报日期 '+group.edition:latest?' · 最新报道 '+dateTime(latest):''):'暂无可用快照';
-      const freshness=text('small',(failed?'暂时无法更新 · ':'')+stamp);if(failed)freshness.className='source-is-stale';node.append(freshness);host.append(node);
+      const freshness=$('[data-briefing-source-freshness]',node);freshness.textContent=(failed?'暂时无法更新 · ':'')+stamp;freshness.classList.toggle('source-is-stale',!!failed);
+      $('[data-briefing-source-records]',node).textContent=group?group.items.length+' 条':'等待更新';
     }
+    page.querySelectorAll('[data-briefing-group-count]').forEach(label=>{const group=SOURCES.filter(s=>s.category===label.dataset.briefingGroupCount);label.textContent=group.filter(s=>pref.sources.includes(s.id)).length+' / '+group.length;});
   }
   function render(){if(!page?.isConnected)return;const items=selected(),feed=$('[data-briefing-feed]'),fragment=document.createDocumentFragment();
     for(const [i,item] of items.slice(0,limit).entries()){
@@ -47,7 +49,7 @@
       card.append(text('div',String(i+1).padStart(2,'0'),'briefing-item-index'));
       const body=text('div','','briefing-item-body'),meta=text('div','','briefing-item-meta');
       meta.append(text('span',source.label,'briefing-category-tag'),text('span',item.byline||source.name));const dateOnly=['daily','ai'].includes(source.id),time=text('time',dateOnly?api.day(item.publishedAt)+' 简报':dateTime(item.publishedAt));time.dateTime=dateOnly?api.day(item.publishedAt):item.publishedAt;meta.append(time);
-      const heading=text('h2',''),a=text('a',item.title+' ↗');a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.readLink=item.id;heading.append(a);body.append(meta,heading);
+      const heading=text('h2',''),a=text('a',item.title);a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.readLink=item.id;heading.append(a);body.append(meta,heading);
       if(item.summary)body.append(text('p',item.summary));
       const actions=text('div','','briefing-item-actions');const topic=text('span',item.topic||source.label);actions.append(topic);
       for(const [action,label,pressed] of [['read',pref.read[item.id]?'已读':'标为已读',!!pref.read[item.id]],['save',pref.saved[item.id]?'已收藏':'收藏',!!pref.saved[item.id]]]){const b=text('button',label);b.type='button';b.dataset.briefingAction=action;b.dataset.itemId=item.id;b.setAttribute('aria-pressed',String(pressed));b.setAttribute('aria-label',label+'：'+item.title);actions.append(b);}

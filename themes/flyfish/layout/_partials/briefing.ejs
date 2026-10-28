@@ -2,8 +2,8 @@
 <section class="briefing-page" data-briefing data-feed-url="<%= url_for('/briefing/feed.json') %>">
   <script type="application/json" data-briefing-seed><%- JSON.stringify(seed).replaceAll('<','\\u003c') %></script>
   <header class="briefing-heading">
-    <div><span class="eyebrow">YOUR DAILY WINDOW</span><h1>每日看板<span class="briefing-heading-dot" aria-hidden="true">.</span></h1><p>世界消息，和你关心的市场。听着歌，慢慢看。</p></div>
-    <div class="briefing-today"><time data-briefing-date><%= date(new Date(),'MM月DD日') %></time><span>国内外要闻 · AI · 市场</span><a href="<%= url_for('/music/') %>">去音乐馆，选一首背景音乐 ↗</a></div>
+    <div><span class="eyebrow">YOUR DAILY WINDOW</span><h1>每日看板</h1><p>世界消息，和你关心的市场。听着歌，慢慢看。</p></div>
+    <div class="briefing-today"><time data-briefing-date><%= date(new Date(),'MM月DD日') %></time><span>国内外要闻 · AI · 市场</span><a href="<%= url_for('/music/') %>">去音乐馆，选一首背景音乐</a></div>
   </header>
   <%- partial('markets') %>
   <div class="briefing-topline"><p data-briefing-status role="status">已载入 <%= entries.length %> 条来源记录，正在检查更新…</p><div><button type="button" class="text-button" data-briefing-refresh>检查更新</button><button type="button" class="text-button" data-briefing-read-all>本次列表标为已读</button></div></div>
@@ -12,16 +12,28 @@
       <nav class="briefing-categories" aria-label="资讯分类"><% for(const [key,label] of ff_briefing_categories()) { %><button type="button" data-briefing-category="<%= key %>" aria-pressed="<%= key==='all' %>"><%= label %></button><% } %></nav>
       <div class="briefing-filterbar"><div class="search-field briefing-search" role="search" aria-label="看板资讯搜索"><svg class="briefing-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input type="search" data-briefing-search placeholder="搜索新闻、媒体或关键词" aria-label="搜索资讯" maxlength="120"><button type="button" class="briefing-search-clear" data-briefing-clear aria-label="清除搜索" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div><div class="briefing-read-filters" role="group" aria-label="阅读状态"><button type="button" data-briefing-mode="all" aria-pressed="true">全部</button><button type="button" data-briefing-mode="unread" aria-pressed="false">未读</button><button type="button" data-briefing-mode="saved" aria-pressed="false">收藏</button></div></div>
       <p class="briefing-results" data-briefing-results aria-live="polite">最新记录</p>
-      <div class="briefing-feed" data-briefing-feed><% for(const [index,item] of entries.slice(0,12).entries()) { %><article class="briefing-item"><div class="briefing-item-index"><%= String(index+1).padStart(2,'0') %></div><div class="briefing-item-body"><div class="briefing-item-meta"><span><%= item.source.label %></span><span><%= item.source.name %></span><time datetime="<%= item.publishedAt %>"><%= date(item.publishedAt,'MM.DD') %></time></div><h2><a href="<%= item.url %>" target="_blank" rel="noopener noreferrer"><%= item.title %> ↗</a></h2><% if(item.summary) { %><p><%= item.summary %></p><% } %></div></article><% } %></div>
+      <div class="briefing-feed" data-briefing-feed><% for(const [index,item] of entries.slice(0,12).entries()) { %><article class="briefing-item"><div class="briefing-item-index"><%= String(index+1).padStart(2,'0') %></div><div class="briefing-item-body"><div class="briefing-item-meta"><span><%= item.source.label %></span><span><%= item.source.name %></span><time datetime="<%= item.publishedAt %>"><%= date(item.publishedAt,'MM.DD') %></time></div><h2><a href="<%= item.url %>" target="_blank" rel="noopener noreferrer"><%= item.title %></a></h2><% if(item.summary) { %><p><%= item.summary %></p><% } %></div></article><% } %></div>
       <p class="empty-state" data-briefing-empty hidden>这里暂时没有匹配的消息。换个分类，或清除关键词试试。</p>
-      <button type="button" class="briefing-more" data-briefing-more hidden>再看 12 条 ↓</button>
+      <button type="button" class="briefing-more" data-briefing-more hidden>再看 12 条</button>
       <noscript><p class="briefing-note">当前为随站点发布的快照。开启 JavaScript 后可检查新资讯、筛选与保存阅读状态。</p></noscript>
     </div>
     <aside class="briefing-aside" aria-label="订阅与来源设置">
-      <section class="briefing-panel"><div class="briefing-panel-title"><div><span class="eyebrow">MAKE IT YOURS</span><h2>我的订阅</h2></div></div><p class="briefing-subscription-count" data-briefing-subscription-count><%= sources.length %> 个消息来源</p><div class="briefing-subscriptions"><% for(const [key,label] of ff_briefing_categories().filter(c=>c[0]!=='all')) { const group=sources.filter(s=>s.category===key); %><details class="briefing-subscription-group"><summary><%= label %><span><%= group.length %></span></summary><div><% for(const source of group) { %><label><input type="checkbox" data-briefing-source="<%= source.id %>" checked><span><%= source.name %></span></label><% } %></div></details><% } %></div>
-        <div class="briefing-notification"><button type="button" class="button" data-briefing-notify>开启桌面提醒</button><p data-briefing-notify-status class="briefing-note">网页保持打开时提醒新消息；关闭网页后不会推送。</p></div><p class="briefing-note" data-briefing-storage>未读、收藏、自选与订阅偏好保存在当前浏览器。</p>
+      <section class="briefing-panel briefing-reader-panel" aria-labelledby="briefing-reader-title">
+        <div class="briefing-panel-title"><div><span class="eyebrow">MAKE IT YOURS</span><h2 id="briefing-reader-title">订阅与来源</h2></div></div>
+        <p class="briefing-subscription-count" data-briefing-subscription-count>已订阅 <%= sources.length %> / <%= sources.length %> 个来源</p>
+        <div class="briefing-subscriptions" data-briefing-sources><% for(const [key,label] of ff_briefing_categories().filter(c=>c[0]!=='all')) { const group=sources.filter(s=>s.category===key); %>
+          <details class="briefing-subscription-group"><summary><span class="briefing-group-name"><%= label %></span><span class="briefing-group-count" data-briefing-group-count="<%= key %>"><%= group.length %> / <%= group.length %></span><span class="briefing-disclosure" aria-hidden="true"></span></summary>
+            <div><% for(const source of group) { const record=seed.sources[source.id]; %>
+              <div class="briefing-source-choice" data-briefing-source-info="<%= source.id %>">
+                <label class="briefing-source-toggle"><input type="checkbox" data-briefing-source="<%= source.id %>" checked><span><%= source.name %></span></label>
+                <div class="briefing-source-meta"><span><%= source.format==='indexed'?'聚合索引':['rss','atom'].includes(source.format)?'公开订阅':'公开汇总' %></span><span data-briefing-source-records><%= record?record.items.length+' 条':'等待更新' %></span></div>
+                <details class="briefing-source-info"><summary>来源与更新</summary><a href="<%= source.home %>" target="_blank" rel="noopener noreferrer">访问原站</a><p><%= source.note %></p><small data-briefing-source-freshness><%= record?'获取于 '+date(record.fetchedAt,'MM/DD HH:mm'):'暂无可用快照' %></small></details>
+              </div>
+            <% } %></div>
+          </details>
+        <% } %></div>
+        <details class="briefing-preferences"><summary>提醒与阅读设置<span class="briefing-disclosure" aria-hidden="true"></span></summary><div class="briefing-notification"><button type="button" class="button" data-briefing-notify>开启桌面提醒</button><p data-briefing-notify-status class="briefing-note">网页保持打开时提醒新消息；关闭网页后不会推送。</p><p class="briefing-note" data-briefing-storage>未读、收藏、自选与订阅偏好保存在当前浏览器。</p></div></details>
       </section>
-      <details class="briefing-panel briefing-source-panel"><summary>消息从哪里来</summary><div class="briefing-source-details"><span class="eyebrow">SOURCES & FRESHNESS</span><h2>消息从哪里来</h2><div data-briefing-sources><% for(const source of sources) { %><div class="briefing-source"><a href="<%= source.home %>" target="_blank" rel="noopener noreferrer"><%= source.name %> ↗</a><p><%= source.note %></p></div><% } %></div><p class="briefing-note">这里呈现来源报道与订阅记录，保留出处及日期。Codex 雷达为第三方观察，不代表你的个人额度。</p></div></details>
     </aside>
   </div>
 </section>
