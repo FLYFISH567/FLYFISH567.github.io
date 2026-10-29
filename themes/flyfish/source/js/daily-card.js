@@ -56,7 +56,23 @@
     const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     timer = setTimeout(render, next - now + 100);
   }
-  render();
-  document.addEventListener('flyfish:page', render);
+  function initMoment() {
+    const card = document.querySelector('[data-sidebar-moment]');
+    if (!card || card.dataset.momentReady) return;
+    const tabs = card.querySelector('[data-moment-tabs]');
+    const buttons = [...card.querySelectorAll('[data-moment-tab]')];
+    const panels = [...card.querySelectorAll('[data-moment-panel]')];
+    if (!tabs || !buttons.length) return;
+    card.dataset.momentReady = 'true';
+    tabs.hidden = false;
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const selected = button.dataset.momentTab;
+      buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      panels.forEach(panel => { panel.hidden = panel.dataset.momentPanel !== selected; });
+    }));
+  }
+  function initPage() { render(); initMoment(); }
+  initPage();
+  document.addEventListener('flyfish:page', initPage);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
 })();

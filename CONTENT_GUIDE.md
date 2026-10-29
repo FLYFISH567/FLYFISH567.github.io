@@ -297,6 +297,17 @@ npm run build
 
 新闻列表显示当前分类、未读/收藏模式与搜索状态，不展示快照条目总数及未读总数，避免被误认为当天新闻量。阅读状态和收藏使用当前浏览器的 localStorage，普通关闭、重新打开后仍保留，不跨设备同步；清除网站数据、无痕会话结束或存储不可用时无法长期保留。同源标签页会同步已读和收藏变化。
 
-### 关于页「今日一句」
+### 首页侧栏「今日一句」与说说
 
 句库位于 `themes/flyfish/source/js/daily-card.js`，目前有 36 条：12 条中国古诗、6 条外国作品译意和 18 条小站原创短句。每条按访客的本地日期稳定轮换，跨零点和重新进入页面时会更新；36 天后循环。不同分类按固定顺序穿插，增删条目时不必保持分类数量一致。古诗和译意使用 `[句子, 来源]` 形式，旁边的注释链接指向核对过的作品原文；外国作品由本站按原文译意，卡片中明确标注“译意”。新增引用时请先核实原文、作者和作品，并保留可核查链接；原创短句只需加入 `notes` 数组。至少保留一条句子。执行 `node tools/verify-daily-card.cjs` 可验证当前句库与日期切换行为；改变条目总数后需同步更新该检查中的数量。
+
+
+首页侧栏默认显示今日一句，可以切换到最新说说；关于页的‘逛逛小站’提供文章、相册和音乐入口。
+
+### 常用导航与小工具
+
+网站入口按分组维护在 source/_data/toolbox.yml，可修改名称、说明、图标文字和 HTTPS 地址。四个本地工具按需展开，转换在浏览器内完成。运行 node tools/verify-toolbox.cjs 检查入口和工具交互。
+
+### 评论区
+
+文章和 /comments/ 留言页使用 Giscus，评论保存在 FLYFISH567/FLYFISH567.github.io 的 GitHub Discussions，访客需登录 GitHub。每篇文章以 Hexo 永久路径的 SHA-256 标识独立关联，路径改变会对应新的讨论；front matter 设置 comments: false 可以关闭该文章评论。更换仓库或分类时，需更新 themes/flyfish/source/js/comments.js 中的仓库名与 ID、分类名与 ID，并确认 GitHub 仓库的 Discussions 已开启，且在 https://github.com/apps/giscus/installations/new 安装 Giscus 并授权该仓库。运行 node tools/verify-comments.cjs 检查加载、主题与站内导航。

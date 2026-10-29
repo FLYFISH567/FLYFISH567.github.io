@@ -13,14 +13,18 @@
     base64: ['Base64 编解码', '将 UTF-8 文本与 Base64 相互转换。', '输入文本或 Base64', '编码', '解码'],
     time: ['时间戳转换', '支持秒或毫秒时间戳，以及可识别的日期时间。', '例如 1700000000 或 2023-11-15 10:00:00', '时间戳 → 日期', '日期 → 时间戳']
   };
+  const workspace = root.querySelector('[data-tool-workspace]');
   let active = 'json';
   function selectTool(key) {
     active = key; const config = configs[key];
-    root.querySelectorAll('[data-tool]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tool === key)));
+    workspace.hidden = false;
+    root.querySelectorAll('[data-tool]').forEach(button => button.setAttribute('aria-expanded', String(button.dataset.tool === key)));
     title.textContent = config[0]; description.textContent = config[1]; input.placeholder = config[2]; primary.textContent = config[3]; secondary.textContent = config[4]; now.hidden = key !== 'time';
     label.textContent = key === 'time' ? '时间戳或日期' : '输入内容'; input.value = ''; output.value = ''; status.textContent = '';
+    title.focus({preventScroll:true}); workspace.scrollIntoView({behavior:'auto',block:'nearest'});
   }
   root.querySelectorAll('[data-tool]').forEach(button => button.addEventListener('click', () => selectTool(button.dataset.tool)));
+  root.querySelector('[data-tool-close]').addEventListener('click', () => { workspace.hidden = true; root.querySelectorAll('[data-tool]').forEach(button => button.setAttribute('aria-expanded', 'false')); Array.from(root.querySelectorAll('[data-tool]')).find(button => button.dataset.tool === active)?.focus(); });
   function convert(action) {
     const value = input.value;
     if (!value.trim()) { status.textContent = '请先输入内容。'; output.value = ''; return; }

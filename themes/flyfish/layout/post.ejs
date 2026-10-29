@@ -3,4 +3,5 @@
   <details class="mobile-toc"><summary>这篇文章的目录</summary><%- toc(page.content,{list_number:false,max_depth:4}) %></details>
   <div class="article-body"><%- page.content %></div>
   <footer class="article-footer"><div class="article-tags"><% for(const t of ff_tags(page)) { %><a href="<%= url_for('/articles/?topic='+encodeURIComponent(t)) %>"># <%= t %></a><% } %></div><p>作者 <%= config.author %> · 本文遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 协议，转载请注明出处。</p><nav class="post-neighbours" aria-label="相邻文章"><% if(page.prev) { %><a href="<%= ff_post_url(page.prev.path) %>"><small>上一篇</small><span><%= page.prev.title %></span></a><% } %><% if(page.next) { %><a href="<%= ff_post_url(page.next.path) %>"><small>下一篇</small><span><%= page.next.title %></span></a><% } %></nav></footer>
+  <% if(page.comments !== false) { %><%- partial('_partials/comments') %><% } %>
 </article>

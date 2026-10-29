@@ -1,0 +1,25 @@
+# 常用入口。每个分组下按顺序添加名称、说明、图标文字和 HTTPS 网址。
+- id: ai
+  title: AI 与灵感
+  subtitle: 把想法聊开，把问题想清楚。
+  items:
+    - { name: DeepSeek, description: AI 对话与思考, mark: DS, url: 'https://chat.deepseek.com/' }
+    - { name: ChatGPT, description: 探索问题与创作, mark: AI, url: 'https://chatgpt.com/' }
+    - { name: Kimi, description: 阅读资料与对话, mark: K, url: 'https://kimi.com/' }
+    - { name: 豆包, description: 随时聊聊新想法, mark: 豆, url: 'https://www.doubao.com/' }
+- id: learn
+  title: 学习与开发
+  subtitle: 查资料，动手做点什么。
+  items:
+    - { name: GitHub, description: 发现项目与代码, mark: GH, url: 'https://github.com/' }
+    - { name: MDN, description: Web 技术文档, mark: M, url: 'https://developer.mozilla.org/zh-CN/' }
+    - { name: Web Security Academy, description: Web 安全学习与练习, mark: W, url: 'https://portswigger.net/web-security' }
+    - { name: Python 文档, description: Python 官方参考手册, mark: Py, url: 'https://docs.python.org/zh-cn/3/' }
+- id: life
+  title: 生活与发现
+  subtitle: 休息一下，去看看更大的世界。
+  items:
+    - { name: 哔哩哔哩, description: 视频、番剧与兴趣, mark: B, url: 'https://www.bilibili.com/' }
+    - { name: 网易云音乐, description: 为此刻选一首歌, mark: ♪, url: 'https://music.163.com/' }
+    - { name: Unsplash, description: 摄影与视觉灵感, mark: U, url: 'https://unsplash.com/' }
+    - { name: 维基百科, description: 从好奇开始探索, mark: W, url: 'https://zh.wikipedia.org/' }

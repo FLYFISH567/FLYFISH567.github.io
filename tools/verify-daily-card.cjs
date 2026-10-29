@@ -16,3 +16,25 @@ assert.equal(seen.size,36);assert.ok([...attributions].some(value=>value.include
 const saved=nodes['[data-daily-quote]'];nodes['[data-daily-quote]']=null;events['flyfish:page']();nodes['[data-daily-quote]']=saved;current=new Date(2026,1,8,10).getTime();events['flyfish:page']();assert.equal(result().date,'2026-02-08','Returning to the page must refresh');
 current=new Date(2026,1,9,10).getTime();events.visibilitychange();assert.equal(result().date,'2026-02-09','Returning to a visible tab refreshes the date');
 console.log('PASS: 36 distinct daily sentences, source labels, stable same-day selection, midnight refresh, navigation and visibility recovery.');
+// 首页侧栏用真实生成的标记验证手动切换和站内返回。
+const {JSDOM}=require('jsdom');
+const html=fs.readFileSync('public/index.html','utf8');
+const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://example.test/'}),win=dom.window,doc=win.document;
+let card=doc.querySelector('[data-sidebar-moment]');
+assert.ok(card,'Home sidebar contains the daily card');
+assert.equal(card.querySelector('[data-moment-tabs]').hidden,true,'No-script default keeps controls hidden');
+assert.equal(card.querySelector('[data-moment-panel="quote"]').hidden,false,'No-script default shows a quote');
+assert.equal(card.querySelector('[data-moment-panel="essay"]').hidden,true);
+assert.ok(card.querySelector('noscript a[href="/essay/"]'),'No-script users can still reach notes');
+win.eval(source);
+const checkSwitch=()=>{
+  const tabs=card.querySelector('[data-moment-tabs]'),quote=card.querySelector('[data-moment-tab="quote"]'),essay=card.querySelector('[data-moment-tab="essay"]');
+  assert.equal(tabs.hidden,false);assert.equal(quote.getAttribute('aria-pressed'),'true');
+  essay.click();assert.equal(essay.getAttribute('aria-pressed'),'true');assert.equal(quote.getAttribute('aria-pressed'),'false');
+  assert.equal(card.querySelector('[data-moment-panel="quote"]').hidden,true);assert.equal(card.querySelector('[data-moment-panel="essay"]').hidden,false);
+  quote.click();assert.equal(card.querySelector('[data-moment-panel="quote"]').hidden,false);assert.equal(card.querySelector('[data-moment-panel="essay"]').hidden,true);
+};
+checkSwitch();
+const next=new JSDOM(html).window.document.querySelector('[data-sidebar-moment]');card.replaceWith(doc.importNode(next,true));card=doc.querySelector('[data-sidebar-moment]');doc.dispatchEvent(new win.Event('flyfish:page'));checkSwitch();
+win.close();
+console.log('PASS: home quote and latest note switch accessibly, retain a no-script fallback, and initialize after navigation.');

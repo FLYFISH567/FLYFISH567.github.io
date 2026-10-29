@@ -60,6 +60,7 @@ hexo.extend.helper.register('ff_album', function (page) {
 });
 hexo.extend.helper.register('ff_shows', () => data().bangumis || {wantWatch:[],watching:[],watched:[]});
 hexo.extend.helper.register('ff_shelf', () => data().shelf || {films:[],books:[]});
+hexo.extend.helper.register('ff_toolbox_links', () => data().toolbox || []);
 hexo.extend.helper.register('ff_about', () => data().about?.[0] || {});
 // 旧文章没有日期 front matter；固定现有日期，原始 Markdown 保持不变。
 // 日后作者显式填写 date/updated 时，以作者的值为准。

@@ -1,18 +1,25 @@
+<% const groups=ff_toolbox_links(); const tools=[['json','{ }','JSON 格式化','整理与检查数据'],['url','%','URL 编解码','处理链接参数'],['base64','64','Base64 编解码','支持中文文本'],['time','◷','时间戳转换','时间与数字互转']]; %>
 <section class="toolbox-page" data-toolbox>
-  <header class="toolbox-heading"><span class="eyebrow">LITTLE HELPERS</span><h1>在线工具箱</h1><p>把常用的小工具收进这里，随用随走。</p><span class="toolbox-private">✦ 所有内容只在当前浏览器处理</span></header>
-  <div class="toolbox-layout">
-    <nav class="toolbox-tabs" aria-label="选择工具">
-      <button type="button" data-tool="json" aria-pressed="true"><span>{ }</span><strong>JSON 格式化</strong><small>整理与检查数据</small></button>
-      <button type="button" data-tool="url" aria-pressed="false"><span>↗</span><strong>URL 编解码</strong><small>处理链接参数</small></button>
-      <button type="button" data-tool="base64" aria-pressed="false"><span>64</span><strong>Base64 编解码</strong><small>支持中文文本</small></button>
-      <button type="button" data-tool="time" aria-pressed="false"><span>◷</span><strong>时间戳转换</strong><small>时间与数字互转</small></button>
-    </nav>
-    <div class="toolbox-workspace">
-      <div class="toolbox-workspace-heading"><div><span class="eyebrow">WORKSPACE</span><h2 data-tool-title>JSON 格式化</h2><p data-tool-description>粘贴 JSON，一键整理或压缩。</p></div><button type="button" class="toolbox-clear" data-tool-clear>清空</button></div>
+  <header class="toolbox-hero">
+    <div class="toolbox-hero-copy"><span class="eyebrow">A LITTLE CORNER OF THE INTERNET</span><h1>常用导航<span> &amp; 小工具</span></h1><p>收集一些网站入口，和随手就能用的小工具。<br>需要的时候，从这里出发。</p><nav class="toolbox-quick" aria-label="导航分类"><a href="#toolbox-sites">逛逛网站 <span aria-hidden="true">↓</span></a><a href="#toolbox-local">打开小工具 <span aria-hidden="true">↓</span></a></nav></div>
+    <div class="toolbox-hero-art" aria-hidden="true"><span class="toolbox-orbit orbit-one"></span><span class="toolbox-orbit orbit-two"></span><span class="toolbox-star star-one">✦</span><span class="toolbox-star star-two">✧</span><span class="toolbox-compass">✳</span><span class="toolbox-art-label">YOUR LITTLE<br>LAUNCHPAD</span></div>
+  </header>
+  <div id="toolbox-sites" class="toolbox-section-start"><div><span class="eyebrow">FIND YOUR WAY</span><h2>去想去的地方</h2><p>挑一个入口，开启今天的探索。</p></div><span class="toolbox-external-label">外部网站 · 新标签页打开</span></div>
+  <% for(const [index,group] of groups.entries()) { const valid=(group.items||[]).filter(item=>item && item.name && /^https:\/\//i.test(item.url||'')); %>
+  <section class="toolbox-directory" aria-labelledby="toolbox-group-<%= index %>">
+    <div class="toolbox-directory-heading"><div><span class="toolbox-group-number"><%= String(index+1).padStart(2,'0') %> /</span><h3 id="toolbox-group-<%= index %>"><%= group.title %></h3></div><p><%= group.subtitle %></p></div>
+    <div class="toolbox-site-grid"><% for(const item of valid) { %><a class="toolbox-site" href="<%= item.url %>" target="_blank" rel="noopener noreferrer" aria-label="<%= item.name %>，<%= item.description %>（新标签页打开）"><span class="toolbox-site-mark" aria-hidden="true"><%= item.mark %></span><span class="toolbox-site-copy"><strong><%= item.name %></strong><small><%= item.description %></small></span><span class="toolbox-site-out" aria-hidden="true">↗</span></a><% } %></div>
+  </section>
+  <% } %>
+  <section class="toolbox-local" id="toolbox-local" aria-labelledby="toolbox-local-title">
+    <div class="toolbox-section-start"><div><span class="eyebrow">LITTLE HELPERS</span><h2 id="toolbox-local-title">随手用的小工具</h2><p>挑一个工具，需要时再打开。</p></div><span class="toolbox-private">✦ 内容只在当前浏览器处理</span></div>
+    <div class="toolbox-tools"><% for(const [key,icon,name,desc] of tools) { %><button type="button" data-tool="<%= key %>" aria-controls="toolbox-workspace" aria-expanded="false"><span class="toolbox-tool-icon" aria-hidden="true"><%= icon %></span><span><strong><%= name %></strong><small><%= desc %></small></span><span class="toolbox-tool-open" aria-hidden="true">＋</span></button><% } %></div>
+    <div class="toolbox-workspace" id="toolbox-workspace" data-tool-workspace hidden>
+      <div class="toolbox-workspace-heading"><div><span class="eyebrow">WORKSPACE</span><h3 data-tool-title tabindex="-1">JSON 格式化</h3><p data-tool-description>粘贴 JSON，一键整理或压缩。</p></div><div class="toolbox-workspace-controls"><button type="button" class="toolbox-clear" data-tool-clear>清空</button><button type="button" class="toolbox-close" data-tool-close aria-label="收起工具">×</button></div></div>
       <label for="tool-input" data-tool-input-label>输入内容</label><textarea id="tool-input" data-tool-input spellcheck="false" placeholder='例如 {"hello":"world"}'></textarea>
       <div class="toolbox-actions"><button type="button" data-tool-action="primary">格式化</button><button type="button" data-tool-action="secondary">压缩</button><button type="button" class="toolbox-now" data-tool-now hidden>填入当前时间戳</button></div>
       <div class="toolbox-output-heading"><label for="tool-output">结果</label><button type="button" data-tool-copy>复制结果</button></div><textarea id="tool-output" data-tool-output readonly spellcheck="false" placeholder="结果会出现在这里"></textarea><p class="toolbox-status" role="status" aria-live="polite" data-tool-status></p>
-      <noscript><p>请开启 JavaScript 后使用这些工具。</p></noscript>
     </div>
-  </div>
+    <noscript><p class="toolbox-noscript">开启 JavaScript 后可以使用小工具；上方网站链接仍可正常访问。</p></noscript>
+  </section>
 </section>

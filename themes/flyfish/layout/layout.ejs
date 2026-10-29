@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="<%= ff_asset('css/markets.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/toolbox.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/shelf.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/personal-cards.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/comments.css') %>">
   <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
   <script defer src="<%= ff_asset('js/effects.js') %>"></script>
   <script defer src="<%= ff_asset('js/search-core.js') %>"></script>
@@ -24,6 +26,7 @@
   <script defer src="<%= ff_asset('js/details.js') %>"></script>
   <script defer src="<%= ff_asset('js/daily-card.js') %>"></script>
   <script defer src="<%= ff_asset('js/toolbox.js') %>"></script>
+  <script defer src="<%= ff_asset('js/comments.js') %>"></script>
   <% if(theme.pointer_play!==false) { %><script defer src="<%= ff_asset('js/pointer-play.js') %>"></script><% } %>
   <script defer src="<%= ff_asset('js/background-fish.js') %>"></script>
   <script defer src="<%= ff_asset('js/travel-map.js') %>"></script>
@@ -60,7 +63,7 @@
     <% if(hasAside) { %><%- partial('_partials/sidebar',{view}) %><% } %>
   </div>
   </div>
-  <footer class="site-footer"><span>© 2025–<%= new Date().getFullYear() %> <%= config.author %> · <%= theme.footer_motto || 'Love and be loved' %></span><span class="footer-actions"><button type="button" class="wander-button" data-open-explore hidden><%- partial('_partials/wander-icon') %><span>随便逛逛</span></button><button type="button" data-replay-opening hidden>重播开屏</button><a href="<%= url_for('/articles/') %>"><%= site.posts.length %> 篇文章</a></span><%- partial('_partials/footer-fish') %></footer>
+  <footer class="site-footer"><span>© 2025–<%= new Date().getFullYear() %> <%= config.author %> · <%= theme.footer_motto || 'Love and be loved' %></span><span class="footer-actions"><button type="button" class="wander-button" data-open-explore hidden><%- partial('_partials/wander-icon') %><span>随便逛逛</span></button><button type="button" data-replay-opening hidden>重播开屏</button><a href="<%= url_for('/articles/') %>"><%= site.posts.length %> 篇文章</a><a href="<%= url_for('/comments/') %>">留言</a></span><%- partial('_partials/footer-fish') %></footer>
 </div>
 <%- partial('_partials/search') %>
 <%- partial('_partials/explore') %>
