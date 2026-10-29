@@ -1,0 +1,5 @@
+# 书影音收藏。填写真实的记录后重新生成网站；留空时显示等待收藏的卡片。
+# date 建议加引号，如 '2026-10-29'。cover 可填站内路径或 https 图片地址。
+# status、date、rating、note、quote、cover 都可省略；rating 使用 1–5 分。
+films: []
+books: []

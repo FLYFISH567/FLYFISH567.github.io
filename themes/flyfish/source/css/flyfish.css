@@ -518,7 +518,7 @@ body:is([data-view=essay],[data-view=life])>.site-shell{max-width:1100px}
 .keyboard-navigation .footer-fish-button:focus{outline:2px solid var(--blue);outline-offset:4px;border-radius:4px}
 .fish-ocean{position:fixed;inset:0;z-index:8;pointer-events:none;overflow:hidden;contain:layout style}
 .background-fish{position:absolute;left:0;top:0;display:grid;place-items:center;width:44px;height:36px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--blue);opacity:var(--fish-opacity,.42);pointer-events:none;user-select:none;-webkit-user-select:none;touch-action:auto;will-change:transform;outline:none}
-.fish-art{display:block;line-height:0;transform:scale(var(--fish-scale,1)) scaleX(var(--fish-facing,1));pointer-events:none}
+.fish-art{position:relative;display:block;line-height:0;transform:scale(var(--fish-scale,1)) scaleX(var(--fish-facing,1));pointer-events:none}
 .fish-teal{color:color-mix(in srgb,var(--blue) 52%,#5e9e9e)}
 .fish-art svg{display:block;width:44px;height:32px;overflow:visible}
 .fish-art .fish-tail{transform-origin:13px 16px}
@@ -539,9 +539,17 @@ body:is([data-view=essay],[data-view=life])>.site-shell{max-width:1100px}
   .fish-art .fish-tail{animation:background-tail var(--tail-duration,.38s) ease-in-out infinite alternate}
   .is-arriving .fish-art{animation:fish-wake .45s ease both}
   .background-fish.is-resting .fish-tail{animation-play-state:paused}
+  .fish-ocean[data-growth=curious] .background-fish:not(.is-resting) .fish-art svg{animation:fish-curious 3.6s ease-in-out infinite}
+  .fish-ocean[data-growth=relaxed] .background-fish:not(.is-resting) .fish-art svg{animation:fish-relaxed 4.8s ease-in-out infinite}
+  .fish-ocean[data-growth=playful] .background-fish:nth-of-type(3n+1):not(.is-resting) .fish-art::after{content:"";position:absolute;left:38px;top:7px;width:4px;height:4px;border:1px solid currentColor;border-radius:50%;box-shadow:5px -5px 0 -1px currentColor;animation:fish-bubbles 2.8s ease-out infinite;pointer-events:none}
+  :root[data-effects=light] .fish-ocean .fish-art svg{animation:none!important}
+  :root[data-effects=light] .fish-ocean .fish-art::after{display:none}
   .fish-caption{transition:opacity .15s,visibility .15s}
   @keyframes background-tail{from{transform:scaleX(.7)}to{transform:scaleX(1)}}
   @keyframes fish-wake{from{opacity:0}to{opacity:1}}
+  @keyframes fish-curious{0%,65%,100%{transform:rotate(0)}75%{transform:rotate(-9deg)}85%{transform:rotate(4deg)}}
+  @keyframes fish-relaxed{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-5deg)}}
+  @keyframes fish-bubbles{0%,25%{opacity:0;transform:translateY(0) scale(.6)}40%{opacity:.7}100%{opacity:0;transform:translateY(-13px) scale(1)}}
 }
 .fish-settings{font:11px/1.6 var(--font-ui);color:var(--muted)}
 .fish-settings summary{display:flex;align-items:center;gap:6px;min-height:28px;list-style:none;user-select:none}
@@ -882,3 +890,18 @@ body.dialog-open .music-dock{visibility:hidden}
 @media(prefers-reduced-motion:no-preference){.music-loading-spinner{animation:spin .8s linear infinite}}
 .music-dock{left:max(22px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}
 @media(max-width:610px){.music-dock{left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom))}}
+
+/* A little daily note on the about page. */
+.about-daily{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;min-height:190px;padding:22px 24px;border:1px solid color-mix(in srgb,var(--blue) 12%,var(--line));border-radius:16px;background:var(--soft)}
+.about-daily::after{content:'✧';position:absolute;right:-9px;bottom:17px;font-size:90px;line-height:1;color:var(--blue);opacity:.07;pointer-events:none}
+.about-daily-top,.about-daily-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.about-daily-top .eyebrow{font-size:11px;letter-spacing:1px}
+.about-daily-sparkle{color:var(--blue);font-size:19px}
+.about-daily-quote{position:relative;z-index:1;margin:18px 0;color:var(--ink);font-size:15px;font-weight:600;line-height:1.8}
+.about-daily-bottom{position:relative;z-index:1;color:var(--sub);font-size:10px}
+.about-daily-bottom time{font-variant-numeric:tabular-nums;color:var(--blue);white-space:nowrap}
+.about-chapters a svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
+.about-chapters a:hover svg,.about-chapters a:focus-visible svg{transform:translateY(3px)}
+@media(max-width:800px){.about-daily{padding:20px}}
+@media(max-width:600px){.about-daily{min-height:150px;padding:17px 19px}.about-daily-quote{margin:12px 0;font-size:14px}}
+@media(prefers-reduced-motion:reduce){.about-chapters a svg{transition:none}}

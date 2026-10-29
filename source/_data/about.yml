@@ -73,7 +73,7 @@
     game_tips: 爱好游戏
     herf: https://supercell.com/en/games/clashroyale/
     game_title: 皇室战争
-    game_uid: "自闭的自闭桶玩家"
+    game_uid: "世界上最好玩的游戏"
     game_bg: https://pic.kts.g.mi.com/1962cf844ed46d112c90e6bddfaaddfa286371655443573569.jpg
   comic:
     comic_tips: 爱好番剧
@@ -113,5 +113,4 @@
         datatime: 2025-01-01
       - name: 晓林
         amount: CRAZY50
-        datatime: 2025-06-26  
-  
+        datatime: 2025-06-26

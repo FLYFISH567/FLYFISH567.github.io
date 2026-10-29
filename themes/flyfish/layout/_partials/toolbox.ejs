@@ -1,0 +1,18 @@
+<section class="toolbox-page" data-toolbox>
+  <header class="toolbox-heading"><span class="eyebrow">LITTLE HELPERS</span><h1>在线工具箱</h1><p>把常用的小工具收进这里，随用随走。</p><span class="toolbox-private">✦ 所有内容只在当前浏览器处理</span></header>
+  <div class="toolbox-layout">
+    <nav class="toolbox-tabs" aria-label="选择工具">
+      <button type="button" data-tool="json" aria-pressed="true"><span>{ }</span><strong>JSON 格式化</strong><small>整理与检查数据</small></button>
+      <button type="button" data-tool="url" aria-pressed="false"><span>↗</span><strong>URL 编解码</strong><small>处理链接参数</small></button>
+      <button type="button" data-tool="base64" aria-pressed="false"><span>64</span><strong>Base64 编解码</strong><small>支持中文文本</small></button>
+      <button type="button" data-tool="time" aria-pressed="false"><span>◷</span><strong>时间戳转换</strong><small>时间与数字互转</small></button>
+    </nav>
+    <div class="toolbox-workspace">
+      <div class="toolbox-workspace-heading"><div><span class="eyebrow">WORKSPACE</span><h2 data-tool-title>JSON 格式化</h2><p data-tool-description>粘贴 JSON，一键整理或压缩。</p></div><button type="button" class="toolbox-clear" data-tool-clear>清空</button></div>
+      <label for="tool-input" data-tool-input-label>输入内容</label><textarea id="tool-input" data-tool-input spellcheck="false" placeholder='例如 {"hello":"world"}'></textarea>
+      <div class="toolbox-actions"><button type="button" data-tool-action="primary">格式化</button><button type="button" data-tool-action="secondary">压缩</button><button type="button" class="toolbox-now" data-tool-now hidden>填入当前时间戳</button></div>
+      <div class="toolbox-output-heading"><label for="tool-output">结果</label><button type="button" data-tool-copy>复制结果</button></div><textarea id="tool-output" data-tool-output readonly spellcheck="false" placeholder="结果会出现在这里"></textarea><p class="toolbox-status" role="status" aria-live="polite" data-tool-status></p>
+      <noscript><p>请开启 JavaScript 后使用这些工具。</p></noscript>
+    </div>
+  </div>
+</section>

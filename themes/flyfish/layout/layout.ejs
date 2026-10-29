@@ -1,4 +1,4 @@
-<% const view = is_post() ? 'post' : is_home() ? 'home' : ff_page_kind(page); const inLife=['life','essay','album','album_detail','bangumi'].includes(view); const hasAside=['home','post'].includes(view); %>
+<% const view = is_post() ? 'post' : is_home() ? 'home' : ff_page_kind(page); const inLife=['life','essay','album','album_detail','bangumi','shelf'].includes(view); const hasAside=['home','post'].includes(view); %>
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="<%= ff_asset('css/flyfish.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/briefing.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/markets.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/toolbox.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/shelf.css') %>">
   <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
   <script defer src="<%= ff_asset('js/effects.js') %>"></script>
   <script defer src="<%= ff_asset('js/search-core.js') %>"></script>
@@ -20,6 +22,8 @@
   <script defer src="<%= ff_asset('js/explore.js') %>"></script>
   <script defer src="<%= ff_asset('js/motion.js') %>"></script>
   <script defer src="<%= ff_asset('js/details.js') %>"></script>
+  <script defer src="<%= ff_asset('js/daily-card.js') %>"></script>
+  <script defer src="<%= ff_asset('js/toolbox.js') %>"></script>
   <% if(theme.pointer_play!==false) { %><script defer src="<%= ff_asset('js/pointer-play.js') %>"></script><% } %>
   <script defer src="<%= ff_asset('js/background-fish.js') %>"></script>
   <script defer src="<%= ff_asset('js/travel-map.js') %>"></script>
@@ -39,7 +43,7 @@
   <a class="brand" href="<%= url_for('/') %>"><span class="brand-mark" aria-hidden="true"></span><span><%= config.title %></span></a>
   <button class="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav">菜单</button>
   <nav id="main-nav" aria-label="主导航">
-    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'}]) { %>
+    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'工具箱',url:'/toolbox/',active:view==='toolbox'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'}]) { %>
       <a href="<%= url_for(item.url) %>" <%- item.active ? 'aria-current="page"' : '' %>><%= item.label %></a>
     <% } %>
     <button type="button" class="nav-search" data-open-search aria-label="搜索文章" aria-haspopup="dialog" aria-controls="site-search">搜索 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></button>

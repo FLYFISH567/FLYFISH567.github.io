@@ -1,2 +1,2 @@
 <% const kind=ff_page_kind(page); %>
-<% if(['articles','life','essay','album','album_detail','about','music','bangumi','briefing','warning'].includes(kind)) { %><%- partial('_partials/'+kind) %><% } else { %><section class="reading-panel"><header class="page-heading"><h1><%= page.title %></h1></header><div class="article-body"><%- page.content %></div></section><% } %>
+<% if(['articles','life','essay','album','album_detail','about','music','bangumi','shelf','toolbox','briefing','warning'].includes(kind)) { %><%- partial('_partials/'+kind) %><% } else { %><section class="reading-panel"><header class="page-heading"><h1><%= page.title %></h1></header><div class="article-body"><%- page.content %></div></section><% } %>

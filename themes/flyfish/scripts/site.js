@@ -59,6 +59,7 @@ hexo.extend.helper.register('ff_album', function (page) {
   return (data().album || []).find(a => a.path_name.replace(/\/$/, '') === current);
 });
 hexo.extend.helper.register('ff_shows', () => data().bangumis || {wantWatch:[],watching:[],watched:[]});
+hexo.extend.helper.register('ff_shelf', () => data().shelf || {films:[],books:[]});
 hexo.extend.helper.register('ff_about', () => data().about?.[0] || {});
 // 旧文章没有日期 front matter；固定现有日期，原始 Markdown 保持不变。
 // 日后作者显式填写 date/updated 时，以作者的值为准。
@@ -89,6 +90,8 @@ hexo.extend.helper.register('ff_page_kind', function (page) {
   if (page.type === 'about') return 'about';
   if (page.type === 'essay') return 'essay';
   if (page.type === 'briefing') return 'briefing';
+  if (page.type === 'shelf') return 'shelf';
+  if (page.type === 'toolbox') return 'toolbox';
   if (/^bangumis\//.test(path) || page.title === hexo.config.bangumi?.title) return 'bangumi';
   if (/^(archives|categories|tags)\//.test(path) || ['categories','tags'].includes(page.type)) return 'articles';
   return 'page';
