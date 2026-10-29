@@ -22,7 +22,7 @@
     const host=$('[data-market-grid]'),fragment=document.createDocumentFragment(),ids=activeIds();
     const quotes=ids.map(id=>cache.quotes[id]).filter(Boolean),up=quotes.filter(q=>q.percent>0).length,down=quotes.filter(q=>q.percent<0).length;
     page.dataset.marketTone=up>down?'up':down>up?'down':up?'mixed':'neutral';
-    page.style.setProperty('--market-wash',(quotes.length?4+6*Math.abs(up-down)/quotes.length:0).toFixed(1)+'%');
+    page.style.setProperty('--market-wash',(quotes.length?8+10*Math.abs(up-down)/quotes.length:0).toFixed(1)+'%');
     for(const id of ids){
       const market=api.byId(id),quote=cache.quotes[id],direction=quote?.percent>0?'is-up':quote?.percent<0?'is-down':'is-flat';
       const card=element('article','','market-quote pointer-surface '+direction);card.dataset.marketId=id;card.dataset.pointerLight='';card.setAttribute('aria-label',market.name);
