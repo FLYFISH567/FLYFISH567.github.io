@@ -47,7 +47,7 @@
       card.append(text('div',String(i+1).padStart(2,'0'),'briefing-item-index'));
       const body=text('div','','briefing-item-body'),meta=text('div','','briefing-item-meta');
       meta.append(text('span',source.label,'briefing-category-tag'),text('span',source.format==='indexed'?source.name:item.byline||source.name));const dateOnly=['daily','ai'].includes(source.id),time=text('time',dateOnly?api.day(item.publishedAt)+' 简报':dateTime(item.publishedAt));time.dateTime=dateOnly?api.day(item.publishedAt):item.publishedAt;meta.append(time);
-      const heading=text('h2',''),a=text('a',item.title);a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.readLink=item.id;heading.append(a);body.append(meta,heading);
+      const heading=text('h2',''),a=text('a',item.title);const latin=(item.title.match(/[A-Za-z]/g)||[]).length,han=(item.title.match(/[\u3400-\u9fff]/g)||[]).length;if(latin>=8&&latin>han*2)a.lang='en';a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.readLink=item.id;heading.append(a);body.append(meta,heading);
       if(item.summary)body.append(text('p',item.summary));
       const actions=text('div','','briefing-item-actions');const topic=text('span',item.topic||source.label);actions.append(topic);
       for(const [action,label,pressed] of [['read',pref.read[item.id]?'已读':'标为已读',!!pref.read[item.id]],['save',pref.saved[item.id]?'已收藏':'收藏',!!pref.saved[item.id]]]){const b=text('button',label);b.type='button';b.dataset.briefingAction=action;b.dataset.itemId=item.id;b.setAttribute('aria-pressed',String(pressed));b.setAttribute('aria-label',label+'：'+item.title);actions.append(b);}

@@ -13,12 +13,12 @@ const first=result();assert.ok(first.text&&first.attribution);assert.equal(first
 events['flyfish:page']();assert.deepEqual(result(),first,'Same day must be stable after navigation');
 nextClick();const preview=result();assert.notEqual(preview.text,first.text,'Manual next shows another sentence');
 current=new Date(2026,0,2,0,0,0,100).getTime();callback();assert.equal(result().date,'2026-01-02');assert.notEqual(result().text,first.text,'Midnight advances the sentence');assert.equal(result().text,preview.text,'Midnight resets the manual offset');
-const seen=new Set(),attributions=new Set();
-for(let i=0;i<36;i++) {current=new Date(2026,0,1+i,12).getTime();events['flyfish:page']();const item=result();assert.ok(item.text&&item.attribution);assert.ok(!seen.has(item.text),'Sentences should be unique');seen.add(item.text);attributions.add(item.attribution);}
-assert.equal(seen.size,36);assert.ok([...attributions].some(value=>value.includes('译意')));assert.ok([...attributions].some(value=>value.includes('原创')));assert.ok([...attributions].some(value=>value.includes('王维')));
+const seen=new Set(),attributions=new Set(),categoryCounts={original:0,translated:0,classical:0};
+for(let i=0;i<365;i++) {current=new Date(2026,0,1+i,12).getTime();events['flyfish:page']();const item=result();assert.ok(item.text&&item.attribution);assert.ok(!seen.has(item.text),'Sentences should be unique');seen.add(item.text);attributions.add(item.attribution);if(item.attribution.includes("原创"))categoryCounts.original++;else if(item.attribution.includes("译意"))categoryCounts.translated++;else categoryCounts.classical++;}
+assert.equal(seen.size,365);assert.deepEqual(categoryCounts,{original:184,translated:6,classical:175});current=new Date(2027,0,1,12).getTime();events["flyfish:page"]();assert.equal(result().text,first.text,"Daily selection repeats after 365 days");assert.ok([...attributions].some(value=>value.includes('译意')));assert.ok([...attributions].some(value=>value.includes('原创')));assert.ok([...attributions].some(value=>value.includes('王维')));
 const saved=nodes['[data-daily-quote]'];nodes['[data-daily-quote]']=null;events['flyfish:page']();nodes['[data-daily-quote]']=saved;current=new Date(2026,1,8,10).getTime();events['flyfish:page']();assert.equal(result().date,'2026-02-08','Returning to the page must refresh');
 current=new Date(2026,1,9,10).getTime();events.visibilitychange();assert.equal(result().date,'2026-02-09','Returning to a visible tab refreshes the date');
-console.log('PASS: 36 distinct daily sentences, source labels, stable same-day selection, midnight refresh, navigation and visibility recovery.');
+console.log('PASS: 365 distinct daily sentences, source labels, stable same-day selection, midnight refresh, navigation and visibility recovery.');
 // 首页侧栏用真实生成的标记验证手动切换和站内返回。
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('public/index.html','utf8');

@@ -1,0 +1,22 @@
+/* Optional local-time atmosphere: only the page background changes; theme colors stay intact. */
+:root[data-atmosphere-season=spring]{--season-glow:rgba(233,157,178,.16)}
+:root[data-atmosphere-season=summer]{--season-glow:rgba(93,194,169,.15)}
+:root[data-atmosphere-season=autumn]{--season-glow:rgba(230,168,100,.16)}
+:root[data-atmosphere-season=winter]{--season-glow:rgba(135,180,235,.17)}
+:root[data-atmosphere-time=morning]{--time-glow:rgba(255,203,152,.15)}
+:root[data-atmosphere-time=day]{--time-glow:rgba(137,196,243,.12)}
+:root[data-atmosphere-time=evening]{--time-glow:rgba(243,156,142,.17)}
+:root[data-atmosphere-time=night]{--time-glow:rgba(130,145,223,.15)}
+:root[data-atmosphere-festival=new-year]{--festival-glow:rgba(237,143,116,.12)}
+:root[data-atmosphere-festival=national-day]{--festival-glow:rgba(228,128,110,.12)}
+:root[data-atmosphere-festival=christmas]{--festival-glow:rgba(129,186,158,.14)}
+:root[data-atmosphere-season] body,
+:root[data-atmosphere-season][data-theme=dark] body:not([data-view=post]),
+:root[data-atmosphere-season][data-theme=dark] body[data-view=home]{background-image:radial-gradient(ellipse 500px 360px at 50% 0,var(--festival-glow,transparent),transparent 75%),radial-gradient(ellipse 800px 580px at 2% 220px,var(--season-glow),transparent 75%),radial-gradient(ellipse 720px 650px at 98% 700px,var(--time-glow),transparent 76%)}
+.seasonal-toggle{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--sub);font:11px/1.4 var(--font-ui);white-space:nowrap}
+.seasonal-toggle[aria-pressed=true]{border-color:var(--blue);color:var(--blue);background:var(--soft)}
+.seasonal-toggle:hover{color:var(--blue)}
+.seasonal-toggle:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+/* Extra control needs the compact menu sooner on narrow tablets. */
+@media (min-width:611px) and (max-width:780px){.header-inner{flex-wrap:wrap;gap:15px;min-height:67px;padding:14px 20px}.brand{font-size:18px}.menu-toggle{display:block;min-height:40px;min-width:48px}#main-nav{display:none;width:100%;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;padding:0 0 5px}#main-nav.is-open{display:flex;padding:9px 0 4px;border-top:1px solid var(--line)}#main-nav.is-open>a{min-height:40px;display:inline-flex;align-items:center}#main-nav button.nav-search{padding-left:0}}

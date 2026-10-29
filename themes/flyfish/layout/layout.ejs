@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="<%= ff_asset('css/shelf.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/personal-cards.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/comments.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/fish-home.css') %>">
+  <link rel="stylesheet" href="<%= ff_asset('css/seasonal-atmosphere.css') %>">
   <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
   <script defer src="<%= ff_asset('js/effects.js') %>"></script>
   <script defer src="<%= ff_asset('js/search-core.js') %>"></script>
@@ -26,6 +28,9 @@
   <script defer src="<%= ff_asset('js/details.js') %>"></script>
   <script defer src="<%= ff_asset('js/daily-card.js') %>"></script>
   <script defer src="<%= ff_asset('js/toolbox.js') %>"></script>
+  <script defer src="<%= ff_asset('js/shelf.js') %>"></script>
+  <script defer src="<%= ff_asset('js/fish-home.js') %>"></script>
+  <script defer src="<%= ff_asset('js/seasonal-atmosphere.js') %>"></script>
   <script defer src="<%= ff_asset('js/comments.js') %>"></script>
   <% if(theme.pointer_play!==false) { %><script defer src="<%= ff_asset('js/pointer-play.js') %>"></script><% } %>
   <script defer src="<%= ff_asset('js/background-fish.js') %>"></script>
@@ -57,13 +62,13 @@
   <div class="page-content" data-page-content>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/hero') %><% } %>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/home-updates') %><% } %>
-  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><a class="briefing-entry" href="<%= url_for('/briefing/') %>"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h3M8 16h3m4-4h1m-1 4h1"/></svg><span>每日看板</span><span aria-hidden="true">↗</span></a></div><% } %>
+  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><a class="briefing-entry" href="<%= url_for('/briefing/') %>"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h3M8 16h3m4-4h1m-1 4h1"/></svg><span>每日看板</span></a></div><% } %>
   <div class="site-layout <%= hasAside ? '' : 'full-width' %>">
     <main id="main"><%- body %></main>
     <% if(hasAside) { %><%- partial('_partials/sidebar',{view}) %><% } %>
   </div>
   </div>
-  <footer class="site-footer"><span>© 2025–<%= new Date().getFullYear() %> <%= config.author %> · <%= theme.footer_motto || 'Love and be loved' %></span><span class="footer-actions"><button type="button" class="wander-button" data-open-explore hidden><%- partial('_partials/wander-icon') %><span>随便逛逛</span></button><button type="button" data-replay-opening hidden>重播开屏</button><a href="<%= url_for('/articles/') %>"><%= site.posts.length %> 篇文章</a><a href="<%= url_for('/comments/') %>">留言</a></span><%- partial('_partials/footer-fish') %></footer>
+  <footer class="site-footer"><span>© 2025–<%= new Date().getFullYear() %> <%= config.author %> · <%= theme.footer_motto || 'Love and be loved' %></span><span class="footer-actions"><button type="button" class="wander-button" data-open-explore hidden><%- partial('_partials/wander-icon') %><span>随便逛逛</span></button><button type="button" data-replay-opening hidden>重播开屏</button><a href="<%= url_for('/articles/') %>"><%= site.posts.length %> 篇文章</a><a href="<%= url_for('/changelog/') %>">更新日志</a><a href="<%= url_for('/comments/') %>">留言</a></span><%- partial('_partials/footer-fish') %></footer>
 </div>
 <%- partial('_partials/search') %>
 <%- partial('_partials/explore') %>

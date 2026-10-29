@@ -1,1 +1,12 @@
-<section class="not-found"><span class="eyebrow">404</span><h1>页面未找到</h1><p>试试搜索文章，或返回首页。</p><div class="intro-actions"><a class="button primary" href="<%= url_for('/articles/') %>">搜索文章</a><a href="<%= url_for('/') %>">回到首页 →</a></div></section>
+<section class="not-found fish-home-page">
+  <span class="eyebrow">404 · LITTLE DETOUR</span><h1>这条路暂时找不到了</h1><p>小鱼也有点迷路了。陪它绕过礁石，游回小屋吧。</p>
+  <noscript><p>启用 JavaScript 后可玩小鱼寻路，也可以直接回到首页。</p></noscript>
+  <div class="fish-home-game" data-fish-home hidden>
+    <div class="fish-home-heading"><div><span class="eyebrow">A LITTLE GAME</span><h2>帮小鱼回家</h2></div><button type="button" class="fish-home-reset" data-fish-reset>重新开始</button></div>
+    <p class="fish-home-help">点击方向按钮，或选中海面后用方向键移动。深色格子是礁石。</p>
+    <div class="fish-home-board" data-fish-board tabindex="0" aria-label="小鱼寻路，五行五列。选中海面后用方向键移动；也可以使用下方方向按钮。"></div>
+    <p class="fish-home-status" data-fish-status role="status" aria-live="polite"></p>
+    <div class="fish-home-controls" role="group" aria-label="小鱼移动方向"><button type="button" data-fish-move="up" aria-label="向上">↑</button><div><button type="button" data-fish-move="left" aria-label="向左">←</button><button type="button" data-fish-move="down" aria-label="向下">↓</button><button type="button" data-fish-move="right" aria-label="向右">→</button></div></div>
+  </div>
+  <div class="intro-actions"><a class="button primary" href="<%= url_for('/') %>">回到首页</a><a class="button" href="<%= url_for('/articles/') %>">看看文章</a></div>
+</section>

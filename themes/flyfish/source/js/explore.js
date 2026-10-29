@@ -8,6 +8,16 @@
   const go=dialog.querySelector('[data-explore-go]'),next=dialog.querySelector('[data-explore-next]');
   const key='flyfish-explore-recent';
   let catalog=null,pending=null,kind='all',opener=null,request=0,photoRequest=0,probe=null,imageTimer=0;
+  const ideas=[
+    {id:'idea:music',title:'给此刻选一首歌',summary:'打开音乐馆，挑一首想听的旋律。',url:dialog.dataset.musicUrl,action:'去音乐馆'},
+    {id:'idea:anime',title:'看看故事清单',summary:'从追番列表里挑一部感兴趣的故事。',url:dialog.dataset.bangumiUrl,action:'去看追番'},
+    {id:'idea:sky',title:'抬头看看天空',summary:'花一分钟看看窗外，留意云和光的颜色。'},
+    {id:'idea:write',title:'记下一件小事',summary:'写一句今天遇到的有趣瞬间，长短都可以。'},
+    {id:'idea:stretch',title:'站起来伸个懒腰',summary:'离开座位活动一下肩颈，给自己一点休息时间。'},
+    {id:'idea:curiosity',title:'给好奇心十分钟',summary:'选一个刚刚想到的问题，花十分钟探索它。'},
+    {id:'idea:water',title:'喝杯水，慢一会儿',summary:'放下手里的事，给自己倒一杯水。'},
+    {id:'idea:photo',title:'收藏一片光',summary:'用相机记录身边的一束光或一个喜欢的角落。'}
+  ];
   let recent=[];
   try{const value=JSON.parse(sessionStorage.getItem(key)||'[]');if(Array.isArray(value))recent=value.filter(id=>typeof id==='string').slice(-12);}catch{}
   function stopImage(){
@@ -67,9 +77,23 @@
       probe.onerror=failed;imageTimer=setTimeout(failed,10000);probe.src=entry.image;
     }
   }
+  function showIdea() {
+    const options=ideas.filter(item=>item.id!==recent.at(-1));
+    const item=options[Math.floor(Math.random()*options.length)];
+    recent=[...recent.filter(id=>id!==item.id),item.id].slice(-12);
+    try{sessionStorage.setItem(key,JSON.stringify(recent));}catch{}
+    stopImage();preview.hidden=false;preview.dataset.kind='idea';photo.hidden=true;
+    dialog.querySelector('[data-explore-label]').textContent='灵感扭蛋 / 一件小事';
+    dialog.querySelector('[data-explore-heading]').textContent=item.title;
+    dialog.querySelector('[data-explore-summary]').textContent=item.summary;
+    const time=dialog.querySelector('[data-explore-date]');time.textContent='';time.removeAttribute('datetime');
+    go.hidden=!item.url;if(item.url){go.href=item.url;go.textContent=item.action;}else go.removeAttribute('href');
+    status.textContent='给今天一点小灵感。';
+  }
   async function choose(){
     const ticket=++request;stopImage();next.disabled=true;go.hidden=true;dialog.setAttribute('aria-busy','true');status.textContent='正在挑选…';
     try{
+      if(kind==='idea'){showIdea();next.querySelector('span').textContent='换一个';return;}
       const items=await load();if(ticket!==request||!dialog.open)return;
       const entry=pick(items);
       if(!entry){preview.hidden=true;status.textContent='这一类暂时没有可逛的内容，换一种试试。';return;}
@@ -81,12 +105,16 @@
       preview.hidden=true;status.textContent='暂时没有挑选成功，再试一次吧。';next.querySelector('span').textContent='重试';
     }finally{if(ticket===request){next.disabled=false;dialog.setAttribute('aria-busy','false');}}
   }
-  document.querySelectorAll('[data-open-explore]').forEach(button=>{
-    button.hidden=false;
-    button.addEventListener('click',()=>{
-      if(document.querySelector('dialog[open]'))return;
-      opener=button;dialog.showModal();document.body.classList.add('dialog-open');modes[0].focus();choose();
-    });
+  function revealOpeners(){document.querySelectorAll('[data-open-explore]').forEach(button=>{button.hidden=false;});}
+  revealOpeners();
+  document.addEventListener('flyfish:page',revealOpeners);
+  document.addEventListener('click',event=>{
+    const button=event.target.closest?.('[data-open-explore]');
+    if(!button||document.querySelector('dialog[open]'))return;
+    opener=button;kind=button.dataset.exploreMode==='idea'?'idea':'all';
+    modes.forEach(mode=>mode.setAttribute('aria-pressed',String(mode.dataset.exploreKind===kind)));
+    dialog.showModal();document.body.classList.add('dialog-open');
+    modes.find(mode=>mode.dataset.exploreKind===kind)?.focus();choose();
   });
   modes.forEach(button=>button.addEventListener('click',()=>{
     kind=button.dataset.exploreKind;modes.forEach(mode=>mode.setAttribute('aria-pressed',String(mode===button)));choose();

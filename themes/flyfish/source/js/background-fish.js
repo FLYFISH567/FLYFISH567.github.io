@@ -29,26 +29,25 @@
   let width=innerWidth,height=innerHeight,top=86,boxes=[],spaces=[],capacity=0,autoCapacity=0,autoCap=1;
   let dirty=true,frame=0,last=0,pageHidden=false,suspended=false,scrollUntil=0,summonUntil=0,scrollTimer=0;
   let clock=performance.now(),dialogOpen=false,summonSerial=0,controlsAt=Infinity,feedbackUntil=0,feedback='';
-  // 只累计当前页面可见的时间；切换页面重新开始，不写入本地存储。
-  const growthStages=[
-    {at:0,id:'swimming',note:'小鱼正陪你慢慢游。阅读久一点，它会有新的动作。',caption:'一起慢慢游 · 按住拖动'},
-    {at:30000,id:'curious',note:'陪伴 30 秒 · 小鱼好奇地探了探头。',caption:'好奇地探头 · 按住拖动'},
-    {at:120000,id:'playful',note:'陪伴 2 分钟 · 小鱼开心地吐起泡泡。',caption:'吐个泡泡 · 按住拖动'},
-    {at:300000,id:'relaxed',note:'陪伴 5 分钟 · 小鱼安心地悠游起来。',caption:'陪你悠游 · 按住拖动'}
-  ];
-  let readingTime=0,readingSince=document.hidden?null:performance.now(),growthTimer=0,growthStage=growthStages[0];
-  function updateGrowth(){
-    clearTimeout(growthTimer);
-    const elapsed=readingTime+(readingSince===null?0:performance.now()-readingSince);
-    growthStage=growthStages.filter(stage=>elapsed>=stage.at).at(-1)||growthStages[0];
-    ocean.dataset.growth=growthStage.id;
-    if(growthLabel)growthLabel.textContent=reduced.matches?'已跟随系统设置暂停小鱼动画。':growthStage.note;
-    const next=growthStages.find(stage=>stage.at>elapsed);
-    if(next&&readingSince!==null)growthTimer=setTimeout(updateGrowth,next.at-elapsed);
+  // 每条鱼独立安排小动作。使用现有动画循环的有效时间，后台和暂停时不推进。
+  const fishActions=['curious','playful','relaxed'];
+  const actionCaptions={curious:'好奇地探头 · 按住拖动',playful:'吐个泡泡 · 按住拖动',relaxed:'陪你悠游 · 按住拖动'};
+  const nextActionDelay=()=>1+Math.random()*29;
+  function resetAction(fish){fish.action='';fish.actionLeft=0;fish.actionDelay=nextActionDelay();fish.el.removeAttribute('data-action');}
+  function advanceAction(fish,delta){
+    if(engaged(fish)||fish.relocating||root.dataset.effects==='light')return;
+    if(fish.action){
+      fish.actionLeft-=delta;
+      if(fish.actionLeft<=0){fish.action='';fish.el.removeAttribute('data-action');fish.actionDelay=nextActionDelay();}
+      return;
+    }
+    fish.actionDelay-=delta;
+    if(fish.actionDelay<=0){
+      const options=fishActions.filter(action=>action!==fish.lastAction);
+      fish.action=options[Math.floor(Math.random()*options.length)];fish.lastAction=fish.action;
+      fish.actionLeft=3;fish.el.dataset.action=fish.action;
+    }
   }
-  function pauseReading(){if(readingSince!==null){readingTime+=performance.now()-readingSince;readingSince=null;}updateGrowth();}
-  function resumeReading(){if(readingSince===null&&!document.hidden){readingSince=performance.now();}updateGrowth();}
-  function resetReading(){readingTime=0;readingSince=document.hidden?null:performance.now();updateGrowth();}
   const clamp=(value,min,max)=>Math.max(min,Math.min(value,Math.max(min,max)));
   const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
   const active=()=>pool.filter(fish=>fish.active);
@@ -170,7 +169,7 @@
     el.classList.toggle('hint-below',fish.y<top+42);
     el.classList.toggle('is-occluded',!!fish.relocating);
     el.setAttribute('aria-pressed',String(fish.paused));
-    const message=fish.held?'抓住啦 · 松手留在这里':fish.paused?'休息一下 · 空格继续':fish.calledUntil>clock?'我来啦':fish.restUntil>clock?'在这里歇一会儿':growthStage.caption;
+    const message=fish.held?'抓住啦 · 松手留在这里':fish.paused?'休息一下 · 空格继续':fish.calledUntil>clock?'我来啦':fish.restUntil>clock?'在这里歇一会儿':actionCaptions[fish.action]||'一起慢慢游 · 按住拖动';
     if(fish.caption.textContent!==message)fish.caption.textContent=message;
     if(engaged(fish)||fish.calledUntil>clock){
       fish.caption.style.left=`${clamp(fish.x+size/2-fish.caption.offsetWidth/2,8,width-fish.caption.offsetWidth-8)-fish.x}px`;
@@ -201,6 +200,7 @@
     const angle=bearing+index*goldenAngle+(Math.random()-.5)*.35;
     const heading={x:Math.cos(angle),y:Math.sin(angle)};
     const fish={el,caption:el.querySelector('.fish-caption'),active:false,x:8,y:top,facing:heading.x<0?-1:1,heading,cruise:140+Math.random()*260,pace:.78+Math.random()*.44,trail:[],turnAfter:0,restUntil:0,dropPoint:null,target:null,retry:0,held:null,hovered:false,focused:false,paused:false,relocating:0,calledUntil:0,lastSummoned:0,retireTimer:0};
+    resetAction(fish);
     el.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&mouse.matches&&!suspended){fish.hovered=true;render(fish);}});
     el.addEventListener('pointerleave',()=>{fish.hovered=false;render(fish);});
     el.addEventListener('pointerdown',event=>{
@@ -230,6 +230,7 @@
   }
   function updateControls(){
     const count=active().length;
+    if(growthLabel)growthLabel.textContent=reduced.matches?'已跟随系统设置暂停小鱼动画。':root.dataset.effects==='light'?'轻量动效下，小鱼保持安静巡游。':'每条小鱼会不时探头、吐泡泡或悠游。';
     if(control)control.hidden=false;
     const label=reduced.matches?'已减少动态':mode==='off'?'已关闭':mode==='auto'?`自动 · ${count?count+' 条':'休息中'}`:count===Number(mode)?`${mode} 条`:`${mode} 条 · ${count?'留白限 '+count:'暂歇'}`;
     if(countLabel&&countLabel.textContent!==label)countLabel.textContent=label;
@@ -277,6 +278,7 @@
     if(dirty){measure();reconcile();if(!active().length){sync();return;}}
     if(time>=controlsAt)updateControls();
     for(const fish of active()){
+      advanceAction(fish,delta);
       if(!fish.held&&!fish.hovered&&!fish.paused){
         if(covered(fish)){
           if(!fish.relocating)fish.relocating=time+240;
@@ -340,21 +342,20 @@
   window.addEventListener('scroll',()=>{dirty=true;scrollUntil=performance.now()+140;ocean.classList.add('is-scrolling');for(const fish of pool)fish.hovered=false;clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{scrollUntil=0;ocean.classList.remove('is-scrolling');refresh();},160);},{passive:true});
   window.addEventListener('resize',()=>{scrollUntil=0;for(const fish of pool)release(fish);refresh();},{passive:true});
   window.addEventListener('blur',()=>{for(const fish of pool){release(fish);fish.hovered=false;}});
-  window.addEventListener('pagehide',()=>{pageHidden=true;pauseReading();clearTimeout(scrollTimer);sync();});
-  window.addEventListener('pageshow',()=>{pageHidden=false;resumeReading();scrollUntil=0;refresh();});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseReading();else if(!pageHidden)resumeReading();for(const fish of pool)fish.hovered=false;sync();});
+  window.addEventListener('pagehide',()=>{pageHidden=true;clearTimeout(scrollTimer);sync();});
+  window.addEventListener('pageshow',()=>{pageHidden=false;scrollUntil=0;refresh();});
+  document.addEventListener('visibilitychange',()=>{for(const fish of pool)fish.hovered=false;sync();});
   window.addEventListener('storage',event=>{if(event.key===key){mode=validMode(event.newValue)?event.newValue:'6';refresh();}});
   document.addEventListener('flyfish:music-layout',refresh);
   document.addEventListener('flyfish:effectschange',refresh);document.addEventListener('flyfish:page',()=>{
-    resetReading();
-    for(const fish of pool){release(fish);fish.el.blur();fish.hovered=false;if(fish.calledUntil){fish.calledUntil=0;fish.restUntil=0;fish.retry=0;}}
+    for(const fish of pool){resetAction(fish);release(fish);fish.el.blur();fish.hovered=false;if(fish.calledUntil){fish.calledUntil=0;fish.restUntil=0;fish.retry=0;}}
     feedbackUntil=0;refresh();
   });
-  reduced.addEventListener('change',()=>{updateGrowth();refresh();});mouse.addEventListener('change',refresh);
+  reduced.addEventListener('change',refresh);mouse.addEventListener('change',refresh);
   new MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['data-opening']});
   const dialogs=Array.from(document.querySelectorAll('dialog'));
   const updateDialogs=()=>{dialogOpen=dialogs.some(dialog=>dialog.open);sync();};
   dialogs.forEach(dialog=>new MutationObserver(updateDialogs).observe(dialog,{attributes:true,attributeFilter:['open']}));
   if('ResizeObserver' in window)new ResizeObserver(()=>{dirty=true;if(!frame&&!blocked())refresh();}).observe(document.querySelector('.site-shell')||document.body);
-  document.fonts?.ready.then(refresh);dialogOpen=dialogs.some(dialog=>dialog.open);updateGrowth();refresh();
+  document.fonts?.ready.then(refresh);dialogOpen=dialogs.some(dialog=>dialog.open);refresh();
 })();

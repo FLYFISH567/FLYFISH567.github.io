@@ -10,3 +10,6 @@
 
 /* 封面加载失败时恢复电影或书籍图形，不把卡片误标为可点击。 */
 .shelf-cover.has-cover{position:relative}.shelf-cover.has-cover .shelf-cover-fallback{display:none}.shelf-cover.has-cover.image-error .shelf-cover-fallback{display:block}.shelf-cover.has-cover.image-error img{position:absolute}.shelf-cover.image-error:after{content:none}
+
+/* 分类链接在启用脚本后切换内容；无脚本时仍可跳转到对应区块。 */
+.shelf-section[hidden]{display:none}.shelf-jump a[aria-current=page]{background:var(--blue);border-color:var(--blue);color:#fff}.shelf-jump a[aria-current=page] span{color:inherit;opacity:.8}.shelf-jump a:focus-visible{outline:2px solid var(--blue);outline-offset:3px}

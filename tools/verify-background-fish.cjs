@@ -174,6 +174,21 @@ function setup(options={}){
   remeasured.w.dispatchEvent(new remeasured.w.Event('resize'));steady.tick(20);remeasured.tick(20);
   assert.deepEqual(remeasured.fish().map(remeasured.point),steady.fish().map(steady.point),'An unchanged layout does not reset all routes');
   steady.dom.window.close();remeasured.dom.window.close();
+  const growth=setup({saved:'6',seed:31}),firstActions=new Map(),seenActions=new Set();
+  for(let step=1;step<=751;step++){
+    growth.tick();
+    for(const el of growth.fish())if(el.dataset.action){if(!firstActions.has(el))firstActions.set(el,step);seenActions.add(el.dataset.action);}
+  }
+  assert.equal(firstActions.size,6,'Every fish starts an action within 1–30 seconds of active animation');
+  assert.ok(new Set(firstActions.values()).size>1,'Fish do not all act at the same time');
+  assert.ok(seenActions.size>1,'The school performs different actions');
+  growth.tick(25);const beforeHidden=growth.fish().map(el=>el.dataset.action||'');growth.visibility(true);growth.tick(1000);
+  assert.deepEqual(growth.fish().map(el=>el.dataset.action||''),beforeHidden,'Background time does not advance actions');
+  growth.visibility(false);growth.doc.dispatchEvent(new growth.w.Event('flyfish:page'));
+  assert.ok(growth.fish().every(el=>!el.dataset.action),'Navigation clears previous-page actions');assert.equal(growth.frames.size,1);growth.dom.window.close();
+  const quietGrowth=setup({saved:'6',tier:'light'});quietGrowth.tick(800);
+  assert.ok(quietGrowth.fish().every(el=>!el.dataset.action),'Light effects omit extra actions');quietGrowth.dom.window.close();
+  console.log('PASS: independent short fish actions, background pause, navigation reset and light-effects behavior.');
   console.log('PASS: dispersed births across 24 seeded wide/gutter layouts, mixed travel directions and stable routes during measurement.');
   console.log('PASS: manual counts 1–12 in all three tiers, integrated automatic density controls, panel recovery, stale interaction cleanup, cross-page summons and system motion overrides.');
   console.log('PASS: custom 1–12 counts/validation/persistence, bounded pool and one loop, overlapping fish without collisions, safe content routes, drag/keyboard/touch, scroll recovery and motion/dialog/history suspension.');

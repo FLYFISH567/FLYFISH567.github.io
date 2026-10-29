@@ -1,17 +1,13 @@
 <% const shelf=ff_shelf(); const films=Array.isArray(shelf.films)?shelf.films.filter(item=>item && item.title):[]; const books=Array.isArray(shelf.books)?shelf.books.filter(item=>item && item.title):[]; %>
-<section class="shelf-page">
+<section class="shelf-page" data-shelf>
   <header class="page-heading shelf-heading">
     <div><span class="eyebrow">STORIES TO KEEP</span><h1>书影音</h1><p>把喜欢的故事，留在这里。</p></div>
     <div class="shelf-heading-art" aria-hidden="true"><span>✦</span><span>▤</span><span>◌</span></div>
   </header>
   <%- partial('life-nav') %>
-  <div class="shelf-intro">
-    <div><span class="shelf-intro-label">一座故事收藏馆</span><h2>有些故事，值得慢慢回味。</h2><p>电影里的光影、书页间的句子，还有追过的番，都在这里相遇。</p></div>
-    <a href="<%= url_for('/bangumis/') %>">去看看追番 <span aria-hidden="true">↗</span></a>
-  </div>
-  <nav class="shelf-jump" aria-label="收藏分类"><a href="#films">电影 <span><%= films.length %></span></a><a href="#books">书籍 <span><%= books.length %></span></a></nav>
+  <nav class="shelf-jump" aria-label="收藏分类"><a href="#films" data-shelf-filter="films">电影 <span><%= films.length %></span></a><a href="#books" data-shelf-filter="books">书籍 <span><%= books.length %></span></a></nav>
   <% for(const section of [{id:'films',label:'电影',english:'FILM',items:films,empty:'留一张票根给下一部好电影。',verb:'观影'},{id:'books',label:'书籍',english:'BOOKS',items:books,empty:'留一页空白给下一本好书。',verb:'阅读'}]) { %>
-    <section class="shelf-section" id="<%= section.id %>" aria-labelledby="<%= section.id %>-title">
+    <section class="shelf-section" data-shelf-section="<%= section.id %>" id="<%= section.id %>" aria-labelledby="<%= section.id %>-title">
       <div class="shelf-section-heading"><div><span class="eyebrow"><%= section.english %></span><h2 id="<%= section.id %>-title"><%= section.label %></h2></div><span><%= section.items.length %> 个收藏</span></div>
       <% if(!section.items.length) { %>
         <div class="shelf-empty"><div class="shelf-empty-art <%= section.id %>" aria-hidden="true"><%= section.id==='films'?'▷':'▤' %></div><div><strong>故事还在路上</strong><p><%= section.empty %></p></div></div>

@@ -94,3 +94,6 @@ details[open]>.briefing-disclosure:after,details[open]>summary>.briefing-disclos
 @media(max-width:1000px){.briefing-layout{grid-template-columns:minmax(0,1fr) 290px}.briefing-reader-panel{padding:21px}}
 @media(max-width:760px){.briefing-layout{grid-template-columns:1fr}.briefing-reader-panel{grid-column:1/-1}.briefing-reader-panel .briefing-subscriptions{max-height:none;overflow:visible}}
 @media(max-height:600px){.briefing-aside{position:static}}
+
+/* 英文标题按词断行并允许长词折行，保留完整原文。 */
+.briefing-item h2 a[lang=en]{hyphens:auto;overflow-wrap:anywhere;word-break:normal;letter-spacing:0;line-height:1.48;text-wrap:pretty}.briefing-item h2:has(a[lang=en]){font-size:clamp(16px,1.45vw,18px);line-height:1.48}@media(max-width:480px){.briefing-item h2:has(a[lang=en]){font-size:16px;line-height:1.5}}
