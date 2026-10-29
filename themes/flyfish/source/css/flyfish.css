@@ -905,3 +905,24 @@ body.dialog-open .music-dock{visibility:hidden}
 @media(max-width:800px){.about-daily{padding:20px}}
 @media(max-width:600px){.about-daily{min-height:150px;padding:17px 19px}.about-daily-quote{margin:12px 0;font-size:14px}}
 @media(prefers-reduced-motion:reduce){.about-chapters a svg{transition:none}}
+
+/* 根据链接的用途分别提示：章节编号、联系图标、故事封面和操作文字。 */
+.about-intro .about-social a{gap:8px}
+.about-social svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.about-chapters a{gap:7px}
+.about-chapters a span{font:600 9px/1 var(--font-code,monospace);letter-spacing:.04em;color:var(--blue);opacity:.7}
+.about-chapters a:hover span,.about-chapters a:focus-visible span{opacity:1}
+.about-interest-heading .about-link-chevron{font-size:19px;line-height:1;color:var(--blue)}
+.about-story>div{position:relative}
+.about-story-peek{position:absolute;right:10px;bottom:10px;padding:5px 9px;border-radius:8px;background:#17283edb;color:#fff;font-size:11px;opacity:0;transform:translateY(4px);pointer-events:none}
+.about-story:focus-visible .about-story-peek,.about-story:hover .about-story-peek{opacity:1;transform:translateY(0)}
+.about-story h4{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:4px}
+.about-story:hover h4,.about-story:focus-visible h4{text-decoration-color:currentColor}
+.about-game-copy .section-link{gap:7px;padding:8px 11px;border:1px solid var(--line);border-radius:9px}
+.about-game-copy .section-link:hover{border-color:var(--blue);background:var(--soft)}
+.about-game-copy .section-link svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.about-play{display:inline-grid;place-items:center;width:21px;height:21px;margin-left:5px;border-radius:50%;background:var(--soft);color:var(--blue);font-size:8px}
+.about-daily-content{margin:16px 0}.about-daily-content .about-daily-quote{margin:0 0 7px}.about-daily-attribution{display:block;color:var(--sub);font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+@media(prefers-reduced-motion:no-preference){.about-story-peek{transition:opacity .2s,transform .2s}}
+@media(max-width:600px){.about-intro .about-social a{gap:6px}.about-social svg{width:14px;height:14px}.about-daily-content{margin:12px 0}}
+@media(hover:none){.about-story h4{text-decoration-color:var(--line)}}
