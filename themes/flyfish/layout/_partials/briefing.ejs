@@ -25,8 +25,8 @@
           <details class="briefing-subscription-group"><summary class="pointer-surface" data-pointer-light><span class="briefing-group-name"><%= label %></span><span class="briefing-group-count" data-briefing-group-count="<%= key %>"><%= group.length %> / <%= group.length %></span><span class="briefing-disclosure" aria-hidden="true"></span></summary>
             <div><% for(const source of group) { const record=seed.sources[source.id]; %>
               <div class="briefing-source-choice pointer-surface" data-pointer-light data-briefing-source-info="<%= source.id %>">
-                <div class="briefing-source-heading"><label class="briefing-source-toggle"><input type="checkbox" data-briefing-source="<%= source.id %>" checked><span><%= source.name %></span></label><span data-briefing-source-records><%= record?record.items.length+' 条':'等待更新' %></span></div>
-                <details class="briefing-source-info"><summary>查看详情</summary><a href="<%= source.home %>" target="_blank" rel="noopener noreferrer">访问原站</a><p><%= source.note %></p><small data-briefing-source-freshness><%= record?'获取于 '+date(record.fetchedAt,'MM/DD HH:mm'):'暂无可用快照' %></small></details>
+                <div class="briefing-source-heading"><label class="briefing-source-toggle"><input type="checkbox" data-briefing-source="<%= source.id %>" checked><span><%= source.name %></span></label><a class="briefing-source-visit" href="<%= source.home %>" target="_blank" rel="noopener noreferrer" aria-label="访问<%= source.name %>网站（新标签页）">访问网站</a></div>
+                <details class="briefing-source-info"><summary>来源说明</summary><p><%= source.note %></p><small data-briefing-source-freshness><%= record?'获取于 '+date(record.fetchedAt,'MM/DD HH:mm'):'暂无可用快照' %></small></details>
               </div>
             <% } %></div>
           </details>

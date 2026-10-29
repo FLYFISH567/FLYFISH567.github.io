@@ -38,7 +38,6 @@
       const health=cache.health?.[spec.id],failed=errors.has(spec.id)||(health&&health.status!=='ok'),latest=group?.items.reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');
       const stamp=group?'获取于 '+dateTime(group.fetchedAt)+(group.edition?' · 简报日期 '+group.edition:latest?' · 最新报道 '+dateTime(latest):''):'暂无可用快照';
       const freshness=$('[data-briefing-source-freshness]',node);freshness.textContent=(failed?'暂时无法更新 · ':'')+stamp;freshness.classList.toggle('source-is-stale',!!failed);
-      $('[data-briefing-source-records]',node).textContent=group?group.items.length+' 条':'等待更新';
     }
     page.querySelectorAll('[data-briefing-group-count]').forEach(label=>{const group=SOURCES.filter(s=>s.category===label.dataset.briefingGroupCount);label.textContent=group.filter(s=>pref.sources.includes(s.id)).length+' / '+group.length;});
   }
