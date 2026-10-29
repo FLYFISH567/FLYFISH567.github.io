@@ -27,7 +27,7 @@
     "hexo-renderer-marked": "^7.0.0",
     "hexo-server": "^3.0.0",
     "hexo-util": "^3.3.0",
-    "moment": "^2.30.1"
+    "moment": "^2.31.0"
   },
   "engines": {
     "node": ">=22"
