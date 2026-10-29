@@ -26,7 +26,7 @@ YAML 使用空格缩进，日期建议写成带引号的 `'2026-10-24'`。`#` �
 
 ## 书影音收藏
 
-“日常”里的“书影音”连接电影和书籍收藏，也可以从这里进入原有追番列表。`source/_data/shelf.yml` 的 `films` 和 `books` 初始为空，不会自动添加虚构的观看或阅读记录。添加真实记录时，把对应的 `[]` 改成列表，例如：
+“日常”里的“书影音”连接电影和书籍收藏，也可以从这里进入原有追番列表。`source/_data/shelf.yml` 的 `films` 和 `books` 分别维护电影与书籍，现已按要求加入《绿皮书》《肖申克的救赎》《三体》《铃芽之旅》，没有推测评分、日期或观看及阅读状态。新增记录时继续追加列表，例如：
 
 ```yaml
 films:
@@ -44,7 +44,7 @@ books:
     quote: 记下想收藏的句子。
 ```
 
-上述名称和内容只是维护格式示例，不会自动出现在网站上。可按需省略除 `title` 以外的字段；没有封面时会显示图形占位，日期请按真实记录填写。
+上述名称和内容只是维护格式示例，不会自动出现在网站上。可按需省略除 `title` 以外的字段；没有封面或远程图片加载失败时会显示图形占位，日期请按真实记录填写。现有封面来自外部站点，若以后失效可在 `cover` 中替换为可用的 HTTPS 图片或站内图片路径。
 
 关于页依次展示个人介绍、最近在做、动漫与游戏、旅行足迹。番剧卡片读取 `comic.comic_list`；游戏卡片读取 `game.game_title / game_uid / game_bg`，官网地址兼容原有的 `game.herf`，新数据可写 `game.href`。`game_uid` 展示原有玩家介绍，不额外标注为账号 ID；游戏图片失败时保留手柄图案、标题与官网入口。音乐偏好读取 `music.music_title`，点击进入站内音乐馆。
 
@@ -311,3 +311,7 @@ npm run build
 ### 评论区
 
 文章和 /comments/ 留言页使用 Giscus，评论保存在 FLYFISH567/FLYFISH567.github.io 的 GitHub Discussions，访客需登录 GitHub。每篇文章以 Hexo 永久路径的 SHA-256 标识独立关联，路径改变会对应新的讨论；front matter 设置 comments: false 可以关闭该文章评论。更换仓库或分类时，需更新 themes/flyfish/source/js/comments.js 中的仓库名与 ID、分类名与 ID，并确认 GitHub 仓库的 Discussions 已开启，且在 https://github.com/apps/giscus/installations/new 安装 Giscus 并授权该仓库。运行 node tools/verify-comments.cjs 检查加载、主题与站内导航。
+
+### 每日句子和页面预取补充
+
+首页侧栏的再读一句可依次浏览句库；手动选择只在当前页面会话有效，跨日恢复当天默认句。开屏或空闲时预热最多两个主栏目，悬停、聚焦或触碰链接时尝试预取目标；隐藏页面、省流量及 2G 下不预取。内存最多保留 6 页、2 分钟，预取失败不会阻止跳转；浏览器 HTTP 缓存仍遵循服务器策略。运行 `node tools/verify-prefetch.cjs` 检查预取策略。

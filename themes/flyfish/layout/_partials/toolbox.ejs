@@ -1,14 +1,14 @@
 <% const groups=ff_toolbox_links(); const tools=[['json','{ }','JSON 格式化','整理与检查数据'],['url','%','URL 编解码','处理链接参数'],['base64','64','Base64 编解码','支持中文文本'],['time','◷','时间戳转换','时间与数字互转']]; %>
 <section class="toolbox-page" data-toolbox>
   <header class="toolbox-hero">
-    <div class="toolbox-hero-copy"><span class="eyebrow">A LITTLE CORNER OF THE INTERNET</span><h1>常用导航<span> &amp; 小工具</span></h1><p>收集一些网站入口，和随手就能用的小工具。<br>需要的时候，从这里出发。</p><nav class="toolbox-quick" aria-label="导航分类"><a href="#toolbox-sites">逛逛网站 <span aria-hidden="true">↓</span></a><a href="#toolbox-local">打开小工具 <span aria-hidden="true">↓</span></a></nav></div>
+    <div class="toolbox-hero-copy"><span class="eyebrow">A LITTLE CORNER OF THE INTERNET</span><h1>常用导航<span> &amp; 小工具</span></h1><p>收集一些网站入口，和随手就能用的小工具。<br>需要的时候，从这里出发。</p><nav class="toolbox-quick" aria-label="导航分类"><a href="#toolbox-sites">逛逛网站</a><a href="#toolbox-local">打开小工具</a></nav></div>
     <div class="toolbox-hero-art" aria-hidden="true"><span class="toolbox-orbit orbit-one"></span><span class="toolbox-orbit orbit-two"></span><span class="toolbox-star star-one">✦</span><span class="toolbox-star star-two">✧</span><span class="toolbox-compass">✳</span><span class="toolbox-art-label">YOUR LITTLE<br>LAUNCHPAD</span></div>
   </header>
-  <div id="toolbox-sites" class="toolbox-section-start"><div><span class="eyebrow">FIND YOUR WAY</span><h2>去想去的地方</h2><p>挑一个入口，开启今天的探索。</p></div><span class="toolbox-external-label">外部网站 · 新标签页打开</span></div>
+  <div id="toolbox-sites" class="toolbox-section-start"><div><span class="eyebrow">FIND YOUR WAY</span><h2>去想去的地方</h2><p>挑一个入口，开启今天的探索。</p></div></div>
   <% for(const [index,group] of groups.entries()) { const valid=(group.items||[]).filter(item=>item && item.name && /^https:\/\//i.test(item.url||'')); %>
   <section class="toolbox-directory" aria-labelledby="toolbox-group-<%= index %>">
     <div class="toolbox-directory-heading"><div><span class="toolbox-group-number"><%= String(index+1).padStart(2,'0') %> /</span><h3 id="toolbox-group-<%= index %>"><%= group.title %></h3></div><p><%= group.subtitle %></p></div>
-    <div class="toolbox-site-grid"><% for(const item of valid) { %><a class="toolbox-site" href="<%= item.url %>" target="_blank" rel="noopener noreferrer" aria-label="<%= item.name %>，<%= item.description %>（新标签页打开）"><span class="toolbox-site-mark" aria-hidden="true"><%= item.mark %></span><span class="toolbox-site-copy"><strong><%= item.name %></strong><small><%= item.description %></small></span><span class="toolbox-site-out" aria-hidden="true">↗</span></a><% } %></div>
+    <div class="toolbox-site-grid"><% for(const item of valid) { %><a class="toolbox-site" href="<%= item.url %>" target="_blank" rel="noopener noreferrer" aria-label="<%= item.name %>，<%= item.description %>（新标签页打开）"><span class="toolbox-site-mark" aria-hidden="true"><%= item.mark %></span><span class="toolbox-site-copy"><strong><%= item.name %></strong><small><%= item.description %></small></span></a><% } %></div>
   </section>
   <% } %>
   <section class="toolbox-local" id="toolbox-local" aria-labelledby="toolbox-local-title">

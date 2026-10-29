@@ -18,7 +18,6 @@
     <a href="<%= url_for('/music/') %>"><span class="about-map-icon" aria-hidden="true">03</span><span><strong>音乐</strong><small>给旅途加点旋律</small></span></a>
   </nav>
 </header>
-<nav class="about-chapters" aria-label="关于页章节"><a href="#now-title"><span aria-hidden="true">01</span>最近在做</a><a href="#favourites-title"><span aria-hidden="true">02</span>动漫与游戏</a><a href="#footprints-title"><span aria-hidden="true">03</span>足迹与远方</a></nav>
 <%- partial('_partials/now') %>
 <% if(stories.length || game?.game_title) { %>
 <section class="about-favourites" aria-labelledby="favourites-title">

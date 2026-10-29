@@ -39,7 +39,7 @@
   while (groups.notes.length || groups.classics.length || groups.world.length) {
     for (const name of pattern) if (groups[name].length) quotes.push(groups[name].shift());
   }
-  let timer;
+  let timer, selectedDay = null, offset = 0;
   function render() {
     clearTimeout(timer);
     const quote = document.querySelector('[data-daily-quote]');
@@ -48,7 +48,8 @@
     if (!quote || !date) return;
     const now = new Date();
     const day = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
-    const entry = quotes[((day % quotes.length) + quotes.length) % quotes.length];
+    if (selectedDay !== day) { selectedDay = day; offset = 0; }
+    const entry = quotes[(((day + offset) % quotes.length) + quotes.length) % quotes.length];
     quote.textContent = entry[0];
     if (attribution) attribution.textContent = entry[1];
     date.dateTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -65,6 +66,8 @@
     if (!tabs || !buttons.length) return;
     card.dataset.momentReady = 'true';
     tabs.hidden = false;
+    const next = card.querySelector('[data-daily-next]');
+    if (next) { next.hidden = false; next.addEventListener('click', () => { offset = (offset + 1) % quotes.length; render(); }); }
     buttons.forEach(button => button.addEventListener('click', () => {
       const selected = button.dataset.momentTab;
       buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));

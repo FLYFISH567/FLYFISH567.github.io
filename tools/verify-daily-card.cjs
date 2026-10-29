@@ -4,12 +4,15 @@ const source=fs.readFileSync('themes/flyfish/source/js/daily-card.js','utf8');
 let current=new Date(2026,0,1,23,59,59,0).getTime(),callback,delay;
 class FakeDate extends Date { constructor(...args){super(...(args.length?args:[current]));} static now(){return current;} }
 const events={},nodes={'[data-daily-quote]':{},'[data-daily-attribution]':{},'[data-daily-date]':{}};
+let nextClick;const fakeButton={dataset:{momentTab:'quote'},addEventListener(){},setAttribute(){}};
+nodes['[data-sidebar-moment]']={dataset:{},querySelector:selector=>selector==='[data-moment-tabs]'?{}:selector==='[data-daily-next]'?{hidden:true,addEventListener:(event,fn)=>{nextClick=fn;}}:null,querySelectorAll:selector=>selector==='[data-moment-tab]'?[fakeButton]:[]};
 const document={hidden:false,querySelector:selector=>nodes[selector],addEventListener:(name,fn)=>events[name]=fn};
 vm.runInNewContext(source,{Date:FakeDate,document,setTimeout:(fn,ms)=>{callback=fn;delay=ms;return 1;},clearTimeout:()=>{}});
 const result=()=>({text:nodes['[data-daily-quote]'].textContent,attribution:nodes['[data-daily-attribution]'].textContent,date:nodes['[data-daily-date]'].dateTime});
 const first=result();assert.ok(first.text&&first.attribution);assert.equal(first.date,'2026-01-01');assert.equal(delay,1100);
 events['flyfish:page']();assert.deepEqual(result(),first,'Same day must be stable after navigation');
-current=new Date(2026,0,2,0,0,0,100).getTime();callback();assert.equal(result().date,'2026-01-02');assert.notEqual(result().text,first.text,'Midnight advances the sentence');
+nextClick();const preview=result();assert.notEqual(preview.text,first.text,'Manual next shows another sentence');
+current=new Date(2026,0,2,0,0,0,100).getTime();callback();assert.equal(result().date,'2026-01-02');assert.notEqual(result().text,first.text,'Midnight advances the sentence');assert.equal(result().text,preview.text,'Midnight resets the manual offset');
 const seen=new Set(),attributions=new Set();
 for(let i=0;i<36;i++) {current=new Date(2026,0,1+i,12).getTime();events['flyfish:page']();const item=result();assert.ok(item.text&&item.attribution);assert.ok(!seen.has(item.text),'Sentences should be unique');seen.add(item.text);attributions.add(item.attribution);}
 assert.equal(seen.size,36);assert.ok([...attributions].some(value=>value.includes('译意')));assert.ok([...attributions].some(value=>value.includes('原创')));assert.ok([...attributions].some(value=>value.includes('王维')));
@@ -25,6 +28,7 @@ assert.ok(card,'Home sidebar contains the daily card');
 assert.equal(card.querySelector('[data-moment-tabs]').hidden,true,'No-script default keeps controls hidden');
 assert.equal(card.querySelector('[data-moment-panel="quote"]').hidden,false,'No-script default shows a quote');
 assert.equal(card.querySelector('[data-moment-panel="essay"]').hidden,true);
+assert.equal(card.querySelector('[data-daily-next]').hidden,true,'No-script page hides interaction');
 assert.ok(card.querySelector('noscript a[href="/essay/"]'),'No-script users can still reach notes');
 win.eval(source);
 const checkSwitch=()=>{
@@ -35,6 +39,8 @@ const checkSwitch=()=>{
   quote.click();assert.equal(card.querySelector('[data-moment-panel="quote"]').hidden,false);assert.equal(card.querySelector('[data-moment-panel="essay"]').hidden,true);
 };
 checkSwitch();
+const dailyBefore=card.querySelector('[data-daily-quote]').textContent, nextButton=card.querySelector('[data-daily-next]');
+assert.equal(nextButton.hidden,false);nextButton.click();assert.notEqual(card.querySelector('[data-daily-quote]').textContent,dailyBefore,'Next selects another quote');
 const next=new JSDOM(html).window.document.querySelector('[data-sidebar-moment]');card.replaceWith(doc.importNode(next,true));card=doc.querySelector('[data-sidebar-moment]');doc.dispatchEvent(new win.Event('flyfish:page'));checkSwitch();
 win.close();
-console.log('PASS: home quote and latest note switch accessibly, retain a no-script fallback, and initialize after navigation.');
+console.log('PASS: home quote and latest note switch accessibly, retain a no-script fallback, cycle on request, and initialize after navigation.');

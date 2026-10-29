@@ -926,3 +926,7 @@ body.dialog-open .music-dock{visibility:hidden}
 @media(prefers-reduced-motion:no-preference){.about-story-peek{transition:opacity .2s,transform .2s}}
 @media(max-width:600px){.about-intro .about-social a{gap:6px}.about-social svg{width:14px;height:14px}.about-daily-content{margin:12px 0}}
 @media(hover:none){.about-story h4{text-decoration-color:var(--line)}}
+
+/* 关于页直接进入内容，给首个章节留出呼吸空间。 */
+.about-intro + .about-now{margin-top:42px}
+@media(max-width:600px){.about-intro + .about-now{margin-top:30px}}

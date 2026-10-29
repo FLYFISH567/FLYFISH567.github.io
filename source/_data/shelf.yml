@@ -1,5 +1,21 @@
 # 书影音收藏。填写真实的记录后重新生成网站；留空时显示等待收藏的卡片。
 # date 建议加引号，如 '2026-10-29'。cover 可填站内路径或 https 图片地址。
 # status、date、rating、note、quote、cover 都可省略；rating 使用 1–5 分。
-films: []
-books: []
+films:
+  - title: 绿皮书
+    creator: 彼得·法雷里 导演
+    # IMDb 电影海报，作品：Green Book（2018）。
+    cover: 'https://m.media-amazon.com/images/M/MV5BYTMxMzNlMDYtYzhlMS00ODMxLWFlM2MtY2U4NzJmOGM3ZTljXkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg'
+  - title: 肖申克的救赎
+    creator: 弗兰克·德拉邦特 导演
+    # Stephen King 官方作品资料页面提供的电影海报。
+    cover: 'https://stephenking.com/images/movies/theatrical_movie/the_shawshank_redemption/us3_.jpg'
+books:
+  - title: 三体
+    creator: 刘慈欣 著
+    # 新华书店的重庆出版社版本封面。
+    cover: 'https://img5.xinhuashudian.com/images/2020/07/29/ee5f947a-5cfe-4c8a-a5a3-846deca1c355.jpg?x-oss-process=image%2Fresize%2Cm_mfit%2Ch_750%2Cw_750'
+  - title: 铃芽之旅
+    creator: 新海诚 著
+    # Bookshop.sg 所列新星出版社简体中文版封面。
+    cover: 'https://bookshop.sg/cdn/shop/files/146620010.jpg?v=1746662568'
