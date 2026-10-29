@@ -21,7 +21,7 @@ const flush=async()=>{for(let i=0;i<35;i++)await Promise.resolve();};
 const open=[];
 function setup(options={}){
  const dom=new JSDOM(html,{url:'https://blog.example/briefing/',runScripts:'outside-only',pretendToBeVisual:true});open.push(dom);const w=dom.window,doc=w.document;
- w.TextDecoder=TextDecoder;if(options.prefs)w.localStorage.setItem('flyfish-market-prefs-v2',JSON.stringify(options.prefs));if(options.old)w.localStorage.setItem('flyfish-briefing-prefs-v1',JSON.stringify({markets:options.old}));
+ w.TextDecoder=TextDecoder;if(options.snapshot)doc.querySelector('[data-market-seed]').textContent=JSON.stringify(options.snapshot);if(options.prefs)w.localStorage.setItem('flyfish-market-prefs-v2',JSON.stringify(options.prefs));if(options.old)w.localStorage.setItem('flyfish-briefing-prefs-v1',JSON.stringify({markets:options.old}));
  if(options.hidden)Object.defineProperty(doc,'hidden',{value:true});if(options.blocked)Object.defineProperty(w,'localStorage',{get(){throw Error('blocked');}});
  let calls=0;const intervals=new Map();let serial=0;
  w.setInterval=(fn,delay)=>{intervals.set(++serial,{fn,delay});return serial;};w.clearInterval=id=>intervals.delete(id);
@@ -29,6 +29,14 @@ function setup(options={}){
  return {dom,w,doc,intervals,get calls(){return calls;},click(selector){const node=doc.querySelector(selector);assert.ok(node,selector);node.click();}};
 }
 (async()=>{try{
+ const moodIds=['sse','szse','csi300','star50','hsi'];
+ function mood(values){const snapshot=structuredClone(seed);snapshot.quotes={};values.forEach((percent,i)=>{if(percent!==null)snapshot.quotes[moodIds[i]]={...seed.quotes[moodIds[i]],percent};});return setup({hidden:true,snapshot,prefs:{watch:moodIds,group:'watch'}});}
+ for(const [values,tone] of [[[1,1,1,-1,-1],'up'],[[-1,-1,-1,1,1],'down'],[[1,-1,0,null,null],'mixed'],[[0,0,0,null,null],'neutral'],[[null,null,null,null,null],'neutral']]){const view=mood(values);assert.equal(view.doc.querySelector('[data-markets]').dataset.marketTone,tone,'Only the visible valid quotes determine the mood');assert.equal(view.doc.querySelectorAll('.market-quote.is-up').length,values.filter(x=>x>0).length);assert.equal(view.doc.querySelectorAll('.market-quote.is-down').length,values.filter(x=>x<0).length);}
+ const changing=mood([-1,-1,-1,1,1]);changing.click('[data-market-group=hk]');assert.equal(changing.doc.querySelector('[data-markets]').dataset.marketTone,'up','Switching regions recomputes the mood instead of carrying over other markets');
+ const mild=mood([1,1,1,-1,-1]),strong=mood([1,1,1,1,1]);assert.ok(parseFloat(mild.doc.querySelector('[data-markets]').style.getPropertyValue('--market-wash'))<parseFloat(strong.doc.querySelector('[data-markets]').style.getPropertyValue('--market-wash')),'Dominance changes tint strength within the subtle range');
+ const refreshSeed=structuredClone(seed);refreshSeed.quotes.sse.percent=-1;refreshSeed.quotes.sse.quotedAt=new Date(Date.now()-86400000).toISOString();
+ const refreshed=setup({snapshot:refreshSeed,prefs:{watch:['sse'],group:'watch'},fetch:async()=>({ok:true,arrayBuffer:async()=>new TextEncoder().encode(tencent('sh000001',3700,10,0.27,new Date().toLocaleString('sv-SE',{timeZone:'Asia/Shanghai'}).replace(/[- :]/g,''))).buffer})});
+ assert.equal(refreshed.doc.querySelector('[data-markets]').dataset.marketTone,'down');await flush();assert.equal(refreshed.doc.querySelector('[data-markets]').dataset.marketTone,'up','A successful quote refresh updates the background');
  const state=setup();await flush();assert.equal(state.calls,2,'One batch per selected provider');assert.equal(state.doc.querySelectorAll('[data-market-id]').length,8);assert.equal(state.doc.querySelectorAll('.market-cached').length,8);
  assert.equal(state.doc.querySelector('[data-market-id=nasdaq] time').dateTime,seed.quotes.nasdaq.quotedAt,'An offline quote keeps its actual timestamp');assert.equal(state.intervals.size,1);
  state.click('[data-market-group=cn]');await flush();assert.equal(state.doc.querySelectorAll('[data-market-id]').length,9);assert.ok(state.doc.querySelector('[data-market-id=star50]'));assert.ok(state.doc.querySelector('[data-market-id=bse50]'));
