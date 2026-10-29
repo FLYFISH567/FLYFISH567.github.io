@@ -50,7 +50,7 @@
   <div class="page-content" data-page-content>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/hero') %><% } %>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/home-updates') %><% } %>
-  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><a href="<%= url_for('/briefing/') %>">看看每日简报 ↗</a></div><% } %>
+  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><a class="briefing-entry" href="<%= url_for('/briefing/') %>"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h3M8 16h3m4-4h1m-1 4h1"/></svg><span>每日看板</span><span aria-hidden="true">↗</span></a></div><% } %>
   <div class="site-layout <%= hasAside ? '' : 'full-width' %>">
     <main id="main"><%- body %></main>
     <% if(hasAside) { %><%- partial('_partials/sidebar',{view}) %><% } %>

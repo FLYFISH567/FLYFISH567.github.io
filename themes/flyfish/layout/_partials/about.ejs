@@ -1,24 +1,50 @@
-<%# 学校/专业/性格/番剧：source/_data/about.yml；近期状态：source/_data/now.yml；联系方式：_config.flyfish.yml。 %>
-<% const about=ff_about(); %>
+<%# 个人资料、番剧与游戏：source/_data/about.yml；近期状态：source/_data/now.yml。 %>
+<% const about=ff_about(), stories=about.comic?.comic_list || [], game=about.game; %>
 <header class="about-intro pointer-surface" data-pointer-light aria-labelledby="about-title">
-  <div class="about-identity">
+  <div class="about-intro-main"><div class="about-identity">
     <img class="about-portrait" src="<%= theme.avatar %>" alt="<%= about.name || config.author %> 的头像" width="112" height="112" decoding="async">
-    <div><span class="eyebrow">ABOUT ME</span><h1 id="about-title">你好，我是 <%= about.name || config.author %></h1><p class="about-motto"><%= about.subtitle %></p></div>
+    <div><span class="eyebrow">A LITTLE ABOUT ME</span><h1 id="about-title">你好，我是 <%= about.name || config.author %></h1><p class="about-motto"><%= about.subtitle %></p></div>
   </div>
-  <p class="about-introduction">我是一名学生。在这里整理学习笔记，也收藏照片、音乐和生活中的片刻。写下来，是为了以后还能回头看看。</p>
+  <p class="about-introduction">我是一名学生，也是 CTF 爱好者。在这里整理学习笔记，收藏照片、音乐和生活中的片刻。写下来，是为了以后还能回头看看。</p>
+  <nav class="social-links" aria-label="联系我"><a href="<%= theme.github %>" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="<%= theme.bilibili %>" target="_blank" rel="noopener">Bilibili <span aria-hidden="true">↗</span></a><a href="mailto:flyfish567@qq.com">写封邮件 <span aria-hidden="true">↗</span></a></nav></div>
+  <div class="about-profile-note"><span class="eyebrow">几枚关键词</span>
   <dl class="about-facts">
     <% if(about.selfInfo?.selfInfoTips2) { %><div><dt>学校</dt><dd><%= about.selfInfo.selfInfoTips2 %></dd></div><% } %>
     <% if(about.selfInfo?.selfInfoContent2) { %><div><dt>专业</dt><dd><%= about.selfInfo.selfInfoContent2 %></dd></div><% } %>
     <% if(about.personalities?.personality_type) { %><div><dt>性格</dt><dd><%= about.personalities.personality_type %></dd></div><% } %>
   </dl>
-  <div class="about-intro-bottom"><p>种一棵树最好的时间是十年前，其次是现在。</p><nav class="social-links" aria-label="联系我"><a href="<%= theme.github %>" target="_blank" rel="noopener">GitHub ↗</a><a href="<%= theme.bilibili %>" target="_blank" rel="noopener">Bilibili ↗</a><a href="mailto:flyfish567@qq.com">邮件 ↗</a></nav></div>
+  <p class="about-profile-quote">种一棵树最好的时间是十年前，<br>其次是现在。</p></div>
 </header>
+<nav class="about-chapters" aria-label="关于页章节"><a href="#now-title">最近在做 <span aria-hidden="true">↓</span></a><a href="#favourites-title">动漫与游戏 <span aria-hidden="true">↓</span></a><a href="#footprints-title">足迹与远方 <span aria-hidden="true">↓</span></a></nav>
 <%- partial('_partials/now') %>
-<% if(about.comic?.comic_list?.length) { %>
+<% if(stories.length || game?.game_title) { %>
 <section class="about-favourites" aria-labelledby="favourites-title">
-  <div class="section-heading"><div><span class="eyebrow">FAVOURITES</span><h2 id="favourites-title">喜欢的故事</h2></div><a href="<%= url_for('/bangumis/') %>">全部追番 ↗</a></div>
-  <div class="about-stories"><% for(const item of about.comic.comic_list) { %><a class="about-story" href="<%= ff_safe_url(item.href) %>" target="_blank" rel="noopener"><div><img src="<%= ff_safe_url(item.cover) %>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div><h3><%= item.name %><span aria-hidden="true">↗</span></h3></a><% } %></div>
-  <p class="about-interests">闲下来也玩<%= about.game?.game_title || '皇室战争' %>，关注近现代历史，还想去更多地方走走。</p>
+  <div class="section-heading"><div><span class="eyebrow">OFF THE CLOCK</span><h2 id="favourites-title">动漫与游戏</h2></div><p class="about-section-note">学习之外，另一面的我。</p></div>
+  <div class="about-interest-grid <%= stories.length && game?.game_title ? '' : 'single-interest' %>">
+    <% if(stories.length) { %>
+    <section class="about-anime" aria-labelledby="anime-title">
+      <div class="about-interest-heading"><h3 id="anime-title">喜欢的故事</h3><a class="section-link" href="<%= url_for('/bangumis/') %>">全部追番 <span aria-hidden="true">↗</span></a></div>
+      <div class="about-stories"><% for(const item of stories) { %><a class="about-story" href="<%= ff_safe_url(item.href) %>" target="_blank" rel="noopener"><div><img src="<%= ff_safe_url(item.cover) %>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div><h4><%= item.name %><span aria-hidden="true">↗</span></h4></a><% } %></div>
+    </section>
+    <% } %>
+    <% if(game?.game_title) { %>
+    <section class="about-games" aria-labelledby="games-title">
+      <div class="about-interest-heading"><h3 id="games-title">常玩的游戏</h3><span class="about-interest-label">GAME TIME</span></div>
+      <article class="about-game-card">
+        <div class="about-game-cover">
+          <svg class="about-game-fallback" width="100" height="80" viewBox="0 0 100 80" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M33 22h34c12 0 19 10 22 26l2 9c2 12-9 17-17 8L63 54H37L26 65c-8 9-19 4-17-8l2-9c3-16 10-26 22-26Z"/><path d="M29 33v15m-7-7h14"/><circle cx="67" cy="35" r="2"/><circle cx="77" cy="44" r="2"/><path d="M43 23v-8h14v8"/></svg>
+          <% if(game.game_bg) { %><img src="<%= ff_safe_url(game.game_bg) %>" alt="<%= game.game_title %>游戏画面" loading="lazy" decoding="async" referrerpolicy="no-referrer"><% } %>
+          <span class="about-game-badge">换个节奏，玩一局</span>
+        </div>
+        <div class="about-game-copy"><span class="eyebrow">PLAYER / FLYFISH</span><h4><%= game.game_title %></h4><% if(game.game_uid) { %><p><%= game.game_uid %></p><% } %><% if(game.href || game.herf) { %><a class="section-link" href="<%= ff_safe_url(game.href || game.herf) %>" target="_blank" rel="noopener">去游戏官网 <span aria-hidden="true">↗</span></a><% } %></div>
+      </article>
+    </section>
+    <% } %>
+  </div>
+  <div class="about-interest-notes">
+    <a href="<%= url_for('/music/') %>" class="about-interest-note"><span class="about-note-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg></span><span><small>耳机里的日常</small><strong><%= about.music?.music_title || '日语流行' %></strong></span><span class="about-note-action">去音乐馆 <span aria-hidden="true">↗</span></span></a>
+    <div class="about-interest-note"><span class="about-note-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7a3 3 0 0 1 3 3v14a4 4 0 0 0-4-2H4ZM14 7a3 3 0 0 1 3-3h3v15h-3a4 4 0 0 0-3 2"/></svg></span><span><small>也在关注</small><strong>近现代历史</strong></span><span class="about-note-detail">回望来路，理解当下</span></div>
+  </div>
 </section>
 <% } %>
 <%- partial('_partials/footprints') %>

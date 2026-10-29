@@ -12,7 +12,7 @@
 | 没有照片的独立足迹、心愿目的地 | `source/_data/footprints.yml` 的 `places` / `wishlist` |
 | 说说 | `source/_data/essay.yml` 的 `essay_list` |
 | 最近在做（纯展示） | `source/_data/now.yml` |
-| 学校、专业、性格、喜欢的番剧 | `source/_data/about.yml` |
+| 学校、专业、性格、喜欢的番剧和游戏 | `source/_data/about.yml` |
 | 头像、首页大图、GitHub/Bilibili、身份标签 | 根目录 `_config.flyfish.yml` |
 | 页脚短句 | `_config.flyfish.yml` → `footer_motto` |
 | 网易云歌单、公开音乐接口 | `_config.flyfish.yml` → `music` |
@@ -22,6 +22,8 @@
 | 开屏、鼠标光晕、小鱼等效果 | `themes/flyfish/source/js/`，样式在同主题的 `source/css/flyfish.css` |
 
 YAML 使用空格缩进，日期建议写成带引号的 `'2026-10-24'`。`#` 后面是维护注释，不会显示给访客。
+
+关于页依次展示个人介绍、最近在做、动漫与游戏、旅行足迹。番剧卡片读取 `comic.comic_list`；游戏卡片读取 `game.game_title / game_uid / game_bg`，官网地址兼容原有的 `game.herf`，新数据可写 `game.href`。`game_uid` 展示原有玩家介绍，不额外标注为账号 ID；游戏图片失败时保留手柄图案、标题与官网入口。音乐偏好读取 `music.music_title`，点击进入站内音乐馆。
 
 ## 添加文章和标签
 

@@ -566,21 +566,30 @@ body:is([data-view=essay],[data-view=life])>.site-shell{max-width:1100px}
 .fish-settings-panel :is(button,input):disabled{opacity:.5;cursor:default}
 .fish-settings-panel p{font-size:11px;line-height:1.7;color:var(--muted)}
 @media(max-width:610px){.ambient-specks i:nth-child(n+3){display:none}.ambient-specks i{width:3px;height:3px}.footer-pond{margin-top:0}.footer-fish-button{font-size:10px}}
-/* 关于页沿一条阅读顺序展开，资料、近况和收藏各展示一次。 */
+/* 关于页：身份与近况 → 动漫和游戏 → 旅行，保留地图的独立布局。 */
 body[data-view=about] #main{max-width:1000px;margin-inline:auto;width:100%;min-width:0}
-.about-intro{padding:32px 36px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(120deg,var(--surface),color-mix(in srgb,var(--surface) 72%,var(--soft)));margin-bottom:36px}
+.about-intro{display:grid;grid-template-columns:minmax(0,1fr) 245px;gap:38px;padding:32px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.about-intro-main{min-width:0;align-self:center}
 .about-identity{display:flex;align-items:center;gap:25px}
-.about-portrait{width:100px;height:100px;border-radius:50%;object-fit:cover;flex-shrink:0;border:5px solid var(--surface);box-shadow:0 0 0 1px var(--line)}
-.about-identity h1{font-size:clamp(25px,3vw,34px);letter-spacing:-.7px;line-height:1.35;margin:9px 0}
+.about-portrait{width:86px;height:86px;border-radius:50%;object-fit:cover;flex-shrink:0;border:4px solid var(--surface);box-shadow:0 0 0 1px var(--line)}
+.about-identity h1{font-size:clamp(25px,3vw,32px);letter-spacing:-.7px;line-height:1.35;margin:9px 0}
 .about-motto{font-size:13px;color:var(--sub)}
-.about-introduction{font-size:14px;line-height:1.95;color:var(--sub);max-width:52em;margin:23px 0 18px}
-.about-intro .about-facts{display:flex;gap:12px 26px;flex-wrap:wrap;margin:0;font-size:12px}
-.about-intro .about-facts>div{display:flex;gap:10px;padding:0;border:0}
-.about-intro .about-facts dd{text-align:left}
-.about-intro-bottom{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin-top:25px;padding-top:19px;border-top:1px solid var(--line)}
-.about-intro-bottom>p{font-size:11px;line-height:1.8;color:var(--muted)}
-.about-intro-bottom .social-links{display:flex;gap:19px;margin:0;font-size:12px;flex-wrap:wrap}
-.about-now,.about-favourites,.about-footprints{margin:0 0 36px}
+.about-introduction{font-size:13px;line-height:1.95;color:var(--sub);max-width:42em;margin:22px 0 19px}
+.about-intro .social-links{gap:10px;margin:0}
+.about-intro .social-links a{display:inline-flex;align-items:center;gap:18px;border:1px solid var(--line);border-radius:9px;padding:7px 12px;background:var(--surface);font-size:12px;color:var(--sub)}
+.about-intro .social-links a:hover{color:var(--blue);border-color:var(--blue);text-decoration:none}
+.about-profile-note{padding:22px 24px;border-radius:13px;background:var(--soft)}
+.about-profile-note>.eyebrow{font-size:11px;letter-spacing:1px}
+.about-intro .about-facts{display:grid;gap:11px;margin:17px 0 0;font-size:12px}
+.about-intro .about-facts>div{display:flex;justify-content:space-between;gap:14px;padding:0;border:0}
+.about-intro .about-facts dt{color:var(--sub)}
+.about-intro .about-facts dd{text-align:right;font-weight:500}
+.about-profile-quote{font-size:11px;line-height:1.9;color:var(--sub);padding-top:15px;margin-top:17px;border-top:1px solid color-mix(in srgb,var(--blue) 14%,var(--line))}
+.about-chapters{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:22px;margin:15px 0 35px;font-size:11px;color:var(--sub)}
+.about-chapters a{display:inline-flex;align-items:center;gap:10px;padding:4px 0}
+.about-chapters a:hover{color:var(--blue)}
+.about-chapters a span{color:var(--muted)}
+.about-now,.about-favourites,.about-footprints{margin:0 0 40px}
 :is(.about-now,.about-favourites,.about-footprints) .section-heading{align-items:center;margin-bottom:19px;gap:15px}
 :is(.about-now,.about-favourites,.about-footprints) .section-heading h2{font-size:22px;margin-top:5px}
 .about-now .eyebrow,.about-favourites .eyebrow,.about-footprints .eyebrow{font-size:10px;letter-spacing:1.5px}
@@ -595,13 +604,46 @@ body[data-view=about] #main{max-width:1000px;margin-inline:auto;width:100%;min-w
 .pointer-surface:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;background:radial-gradient(circle 270px at var(--pointer-x) var(--pointer-y),color-mix(in srgb,var(--blue) 12%,transparent),transparent 76%)}
 .pointer-surface:before{transition:opacity .2s}
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.pointer-surface.has-pointer:before{opacity:1;transition:opacity .2s}}
-.about-stories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.section-link{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--sub);padding-block:5px;white-space:nowrap}
+.section-link:hover{color:var(--blue)}
+.section-link>span{color:var(--muted)}
+.section-heading>a.briefing-entry{display:inline-flex;align-items:center;gap:8px;color:var(--blue);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 11px;text-decoration:none;line-height:1.5}
+.briefing-entry svg{flex-shrink:0}
+.section-heading>a.briefing-entry:hover{border-color:var(--blue);background:var(--surface)}
+.about-section-note{font-size:12px;color:var(--muted)}
+.about-interest-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:30px}
+.about-interest-grid.single-interest{grid-template-columns:1fr}
+.about-anime,.about-games{min-width:0}
+.about-games{display:flex;flex-direction:column}
+.about-interest-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:34px;margin:0 0 15px}
+.about-interest-heading h3{font-size:14px;font-weight:600}
+.about-interest-label{font-size:9px;letter-spacing:1px;color:var(--muted)}
+.about-stories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px 16px}
 .about-story{display:block;min-width:0}
-.about-story>div{aspect-ratio:1.4;overflow:hidden;border-radius:13px;background:var(--soft)}
+.about-story>div{aspect-ratio:1.7;overflow:hidden;border-radius:12px;background:var(--soft)}
 .about-story img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
-.about-story h3{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:13px;font-weight:500;line-height:1.6;padding-top:11px}
-.about-story h3 span{font-size:12px;color:var(--muted)}
-.about-interests{color:var(--sub);font-size:12px;line-height:1.9;margin-top:16px}
+.about-story h4{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:12px;font-weight:500;line-height:1.6;padding-top:9px}
+.about-story h4 span{font-size:12px;color:var(--muted)}
+.about-game-card{flex:1;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:15px;background:var(--surface)}
+.about-game-cover{position:relative;isolation:isolate;display:grid;place-items:center;min-height:190px;flex:1;overflow:hidden;background:linear-gradient(145deg,var(--soft),color-mix(in srgb,var(--blue) 23%,var(--surface)));color:var(--blue)}
+.about-game-fallback{position:absolute;inset:0;margin:auto;opacity:.5}
+.about-game-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;z-index:1}
+.about-game-cover:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#1020389c);z-index:2;pointer-events:none}
+.about-game-cover.image-error:after{content:'';display:block;inset:45% 0 0;background:linear-gradient(transparent,#10203833)}
+.about-game-badge{position:absolute;left:17px;bottom:15px;right:17px;z-index:3;font-size:11px;color:#fff;text-shadow:0 1px 5px #10203880}
+.about-game-copy{padding:23px}
+.about-game-copy>.eyebrow{font-size:9px;letter-spacing:1.3px}
+.about-game-copy h4{font-size:23px;letter-spacing:-.4px;margin:7px 0 8px}
+.about-game-copy p{font-size:12px;line-height:1.8;color:var(--sub);overflow-wrap:anywhere}
+.about-game-copy .section-link{margin-top:19px;color:var(--blue)}
+.about-interest-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:27px;border-block:1px solid var(--line)}
+.about-interest-note{display:flex;align-items:center;gap:15px;min-width:0;padding:20px 0}
+.about-interest-note+.about-interest-note{padding-left:26px;margin-left:26px;border-left:1px solid var(--line)}
+.about-note-icon{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0;border-radius:12px;background:var(--soft);color:var(--blue)}
+.about-interest-note small{display:block;font-size:10px;color:var(--muted);margin-bottom:3px}
+.about-interest-note strong{display:block;font-size:13px;font-weight:500;color:var(--ink)}
+.about-note-action,.about-note-detail{margin-left:auto;font-size:11px;color:var(--sub);white-space:nowrap}
+.about-interest-note:hover .about-note-action{color:var(--blue)}
 .about-footprints{padding-top:29px;border-top:1px solid var(--line)}
 .about-footprints .section-heading{margin-bottom:10px}
 .footprints-count{font-size:11px;color:var(--muted);white-space:nowrap}
@@ -708,14 +750,14 @@ body[data-view=about] #main{max-width:1000px;margin-inline:auto;width:100%;min-w
 .explore-dialog button:focus,.explore-dialog a:focus{outline:none}
 .keyboard-navigation .explore-dialog :is(button,a):focus{outline:2px solid var(--blue);outline-offset:3px}
 @media(prefers-reduced-motion:no-preference){.now-card{transition:background .25s}.about-story img{transition:transform .6s}.explore-dialog[open]{animation:page-arrive .2s ease-out both}}
-@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.now-card:hover{background:var(--soft)}.about-story:hover img{transform:scale(1.025)}.about-story:hover h3{color:var(--blue)}}
-@media(max-width:800px){.now-card{padding:20px}.now-card h3{font-size:16px}.about-stories{gap:13px}.travel-map-shell{grid-template-columns:minmax(0,1fr) 170px;gap:13px;padding:18px}.travel-places{padding-left:13px}}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.now-card:hover{background:var(--soft)}.about-story:hover img{transform:scale(1.025)}.about-story:hover h4{color:var(--blue)}}
+@media(max-width:800px){.about-intro{grid-template-columns:minmax(0,1fr) 210px;gap:24px;padding:25px}.about-identity{gap:17px}.about-portrait{width:66px;height:66px}.about-profile-note{padding:20px}.about-interest-grid{gap:23px;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.about-note-detail{display:none}.now-card{padding:20px}.now-card h3{font-size:16px}.about-stories{gap:16px 13px}.travel-map-shell{grid-template-columns:minmax(0,1fr) 170px;gap:13px;padding:18px}.travel-places{padding-left:13px}}
 @media(max-width:610px){
-  .about-intro{padding:23px;margin-bottom:29px}.about-identity{gap:16px;align-items:flex-start}.about-portrait{width:66px;height:66px;border-width:3px}.about-identity .eyebrow{font-size:10px}.about-identity h1{font-size:24px;letter-spacing:-.4px;margin:7px 0 9px}.about-motto{font-size:12px}.about-introduction{margin-top:20px;font-size:13px}.about-intro .about-facts{gap:10px 17px;font-size:11px}.about-intro .about-facts>div{gap:7px}.about-intro-bottom{margin-top:20px;padding-top:15px;gap:12px}.about-intro-bottom>p{font-size:10px}.about-intro-bottom .social-links{gap:18px}
+  .about-intro{grid-template-columns:1fr;padding:22px;gap:23px}.about-identity{gap:14px;align-items:center}.about-portrait{width:58px;height:58px;border-width:3px}.about-identity .eyebrow{font-size:9px;letter-spacing:1px}.about-identity h1{font-size:22px;letter-spacing:-.4px;margin:7px 0}.about-motto{font-size:11px}.about-introduction{margin-top:19px;font-size:13px}.about-profile-note{padding:17px 19px}.about-intro .about-facts{gap:10px;font-size:12px}.about-profile-quote{font-size:11px}.about-profile-quote br{display:none}.about-chapters{justify-content:space-between;gap:10px;margin:12px 0 29px;font-size:10px}.about-chapters a{gap:6px}.about-intro .social-links{gap:8px}.about-intro .social-links a{font-size:11px;padding:7px 10px;gap:12px}
   .about-now,.about-favourites,.about-footprints{margin-bottom:29px}.about-now .section-heading>time{font-size:10px}
   :is(.about-now,.about-favourites,.about-footprints) .section-heading{gap:10px;margin-bottom:16px}:is(.about-now,.about-favourites,.about-footprints) .section-heading h2{font-size:21px}
   .now-grid{grid-template-columns:1fr}.now-card{padding:19px 21px}.now-card+.now-card{border-left:0;border-top:1px solid var(--line)}.now-card h3{margin:9px 0 7px;font-size:17px}.now-card p{font-size:13px}
-  .about-stories{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 13px}.about-story>div{aspect-ratio:1.1}.about-story h3{font-size:12px;padding-top:9px}.about-interests{font-size:11px}
+  .about-section-note{display:none}.about-interest-grid{grid-template-columns:1fr;gap:27px}.about-interest-heading{margin-bottom:12px}.about-interest-heading h3{font-size:13px}.about-stories{gap:17px 13px}.about-story>div{aspect-ratio:1.35}.about-story h4{font-size:12px;padding-top:8px}.about-game-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr);min-height:220px}.about-game-cover{min-height:220px}.about-game-badge{font-size:10px;left:12px;right:12px;bottom:12px}.about-game-copy{padding:21px 17px;align-self:center}.about-game-copy h4{font-size:22px}.about-game-copy .section-link{margin-top:16px;font-size:11px}.about-interest-notes{grid-template-columns:1fr;margin-top:25px}.about-interest-note{padding:17px 0}.about-interest-note+.about-interest-note{padding:17px 0;margin:0;border-left:0;border-top:1px solid var(--line)}.about-note-detail{display:block;font-size:10px}.about-note-action{font-size:11px}
   .about-footprints{padding-top:24px}.footprints-count{font-size:10px}.footprints-intro{font-size:12px}.wander-button{font-size:12px}
   .travel-map-shell{grid-template-columns:1fr;padding:16px;gap:22px;border-radius:17px}.travel-map-caption{font-size:9px;padding-inline:0}.travel-places{grid-template-columns:1fr;max-height:none;overflow:visible;gap:15px;padding:16px 0 0;border-left:0;border-top:1px solid var(--line)}.travel-place-group{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.travel-places-title{grid-column:1/-1;margin:0 10px 3px}.travel-places-empty{grid-column:1/-1}.travel-stop{padding:12px 10px}.travel-stop h3{font-size:18px}.travel-stop p{font-size:10px}.travel-places .about-link{font-size:12px}.travel-pin text{font-size:calc(24px / var(--map-zoom,1))}.travel-map-tools{top:0;left:0;padding:4px}.travel-map-tools button{width:30px;height:30px}
   .footer-actions{flex-wrap:wrap;gap:10px 17px}.explore-dialog{padding:20px;border-radius:17px;max-height:90dvh}.explore-header h2{font-size:23px}.explore-modes button{padding:7px 11px}.explore-copy{padding:20px}.explore-copy h3{font-size:20px}.explore-photo{height:220px}.explore-actions{gap:10px}.explore-actions .button{padding:9px 13px;font-size:12px}
