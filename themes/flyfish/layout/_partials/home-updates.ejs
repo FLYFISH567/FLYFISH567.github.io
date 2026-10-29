@@ -1,4 +1,4 @@
 <section class="home-updates" aria-labelledby="home-updates-title">
   <div class="updates-label"><span class="eyebrow">LITTLE UPDATES</span><h2 id="home-updates-title">小站近况</h2></div>
-  <div class="updates-list"><% for(const item of ff_updates()) { %><a href="<%= item.url %>"><time datetime="<%= item.date %>"><%= item.date.replaceAll('-','.') %></time><span class="update-kind"><%= item.kind %></span><span class="update-title"><%= item.title %></span><span aria-hidden="true">↗</span></a><% } %></div>
+  <div class="updates-list"><% for(const item of ff_updates()) { %><a href="<%= item.url %>"><time datetime="<%= item.date %>"><%= item.date.replaceAll('-','.') %></time><span class="update-kind"><%= item.kind %></span><span class="update-title"><%= item.title %></span></a><% } %></div>
 </section>

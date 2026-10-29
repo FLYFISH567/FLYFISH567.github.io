@@ -105,7 +105,7 @@ hexo.extend.helper.register('ff_updates', function () {
   }
   for(const item of data().essay?.[0]?.essay_list||[]){const time=moment(String(item.date),['YYYY-MM-DD','YYYY/MM/DD'],true);if(time.isValid())entries.push({kind:'说说',title:item.content,date:time.format('YYYY-MM-DD'),url:this.url_for('/essay/')});}
   if(data().now?.updated)entries.push({kind:'近况',title:'最近在学、在做和喜欢的事',date:String(data().now.updated),url:this.url_for('/about/#now-title')});
-  return entries.sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
+  return entries.sort((a,b)=>b.date.localeCompare(a.date)).slice(0,2);
 });
 const briefing=require('../source/js/briefing-sources.js');
 const markets=require('../source/js/market-data.js');

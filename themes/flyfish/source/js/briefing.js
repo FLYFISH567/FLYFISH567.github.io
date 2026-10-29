@@ -12,9 +12,8 @@
   const catalog=SOURCES.map(s=>s.id),known=Array.isArray(raw.catalog)?raw.catalog:['daily','ai','radar','dev','security'];
   const subscriptions=Array.isArray(raw.sources)?raw.sources.filter(id=>catalog.includes(id)).concat(raw.sources.length?catalog.filter(id=>!known.includes(id)):[]):catalog;
   const pref={sources:[...new Set(subscriptions)],catalog,read:raw.read&&typeof raw.read==='object'&&!Array.isArray(raw.read)?raw.read:{},saved:{},notify:raw.notify===true,notifySince:Number(raw.notifySince)||0};
-  if(raw.saved&&typeof raw.saved==='object')for(const [id,item] of Object.entries(raw.saved).slice(-100)){
-    if(SOURCES.some(s=>s.id===item?.sourceId)&&api.safeURL(item.url)&&typeof item.title==='string'&&Number.isFinite(Date.parse(item.publishedAt)))pref.saved[id]={...item,id,url:api.safeURL(item.url)};
-  }
+  function savedItems(value){return Object.fromEntries(Object.entries(value&&typeof value==='object'&&!Array.isArray(value)?value:{}).slice(-100).filter(([,item])=>SOURCES.some(s=>s.id===item?.sourceId)&&api.safeURL(item.url)&&typeof item.title==='string'&&Number.isFinite(Date.parse(item.publishedAt))).map(([id,item])=>[id,{...item,id,url:api.safeURL(item.url)}]));}
+  pref.saved=savedItems(raw.saved);
   let category='all',mode='all',query='',limit=12;
   const $=(selector,root=page)=>root?.querySelector(selector);
   const dateTime=value=>{try{return new Intl.DateTimeFormat('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date(value));}catch{return '时间未知';}};
@@ -59,8 +58,7 @@
     $('[data-briefing-empty]').textContent=!pref.sources.length?'还没有选择资讯来源。勾选右侧订阅，就能开始阅读。':mode==='saved'?'还没有匹配的收藏，点击消息下方的“收藏”即可保存。':'暂时没有匹配的消息，换个分类或关键词试试。';
     $('[data-briefing-more]').hidden=items.length<=limit;
     $('[data-briefing-clear]').hidden=!query;
-    const unread=items.filter(item=>!pref.read[item.id]).length;
-    $('[data-briefing-results]').textContent=(CATEGORIES.find(c=>c[0]===category)?.[1]||'全部')+' · '+items.length+' 条'+(mode==='all'?' · '+unread+' 条未读':'');
+    $('[data-briefing-results]').textContent=[category==='all'?'全部资讯':CATEGORIES.find(c=>c[0]===category)?.[1],mode==='unread'?'未读':mode==='saved'?'收藏':'',query.trim()?'搜索结果':''].filter(Boolean).join(' · ');
     const delayed=cache.checkedAt&&Date.now()-Date.parse(cache.checkedAt)>10800000;
     $('[data-briefing-status]').textContent=status||(cache.checkedAt?'后台采集于 '+dateTime(cache.checkedAt)+(delayed?' · 更新延迟，显示上次内容':''):'正在检查站内更新…');
     $('[data-briefing-refresh]').disabled=busy;$('[data-briefing-refresh]').textContent=busy?'正在检查…':'检查更新';
@@ -68,7 +66,7 @@
     page.querySelectorAll('[data-briefing-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingMode===mode)));
     page.querySelectorAll('[data-briefing-source]').forEach(input=>input.checked=pref.sources.includes(input.dataset.briefingSource));
     $('[data-briefing-subscription-count]').textContent='已订阅 '+pref.sources.length+' / '+SOURCES.length+' 个来源';
-    $('[data-briefing-storage]').textContent=persistent?'未读、收藏、自选与订阅偏好保存在当前浏览器。':'浏览器存储不可用，本次设置仅在当前页面会话中保留。';
+    $('[data-briefing-storage]').textContent=persistent?'阅读状态、收藏、自选与订阅保存在本机此浏览器，关闭后仍会保留；不跨设备同步，清除网站数据或结束无痕浏览后会丢失。':'浏览器存储不可用，本次设置仅在当前页面会话中保留。';
     renderSources();syncNotification();
   }
   function announce(items){if(!items.length||!pref.notify||!('Notification' in window)||Notification.permission!=='granted')return;
@@ -133,7 +131,7 @@
   function dispose(){pageController?.abort();page=null;if(!pref.notify)refreshController?.abort();}
   document.addEventListener('flyfish:before-page',dispose);document.addEventListener('flyfish:page',init);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
-  window.addEventListener('storage',event=>{if(event.key===CACHE){mergeSnapshot(api.cleanSnapshot(read(CACHE)));render();}if(event.key===PREFS){const other=read(PREFS);if(other){pref.read=other.read||{};pref.notify=other.notify===true;pref.notifySince=Number(other.notifySince)||0;render();}}});
+  window.addEventListener('storage',event=>{if(event.key===CACHE){mergeSnapshot(api.cleanSnapshot(read(CACHE)));render();}if(event.key===PREFS){const other=read(PREFS);if(other){pref.read=other.read||{};pref.saved=savedItems(other.saved);pref.notify=other.notify===true;pref.notifySince=Number(other.notifySince)||0;render();}}});
   timer=setInterval(()=>refresh(),60000);window.addEventListener('pagehide',()=>{dispose();clearInterval(timer);});window.addEventListener('pageshow',event=>{if(event.persisted){clearInterval(timer);timer=setInterval(()=>refresh(),60000);init();}});
   init();
 })();
