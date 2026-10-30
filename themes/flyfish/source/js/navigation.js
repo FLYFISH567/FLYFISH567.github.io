@@ -3,12 +3,23 @@
   if(window.FlyfishNavigator)return;
   const slot=()=>document.querySelector('[data-page-content]');
   if(!slot()||!window.fetch||!window.DOMParser)return;
+  // Explicit, local-only instrumentation. Never reads URL switches or persists a session.
+  const diagnostics=(()=>{
+    let enabled=false;const records=[],limit=5000,allowed=['navId','requestId','path','asset','origin','source','state','phase','status','frame'];
+    const path=value=>{try{return new URL(value,location.href).pathname;}catch{return '';}};
+    return {enable(){enabled=['localhost','127.0.0.1','[::1]'].includes(location.hostname);return enabled;},disable(){enabled=false;},clear(){records.length=0;},get enabled(){return enabled;},records(){return records.map(row=>({...row}));},mark(event,fields={}){
+      if(!enabled)return;const row={event,time:performance.now()};for(const key of allowed){const value=fields[key];if(value!==undefined)row[key]=['path','asset'].includes(key)?path(value):value;}
+      records.push(row);if(records.length>limit)records.shift();
+    }};
+  })();
+  window.FlyfishNavigationDiagnostics=diagnostics;
+  const mark=(event,fields)=>diagnostics.mark(event,fields);
   let enabled=false,controller=null,ticket=0,current=location.href;
   const positions=new Map();
   // Limited, short-lived caches avoid downloading the whole site.
   const pageCache=new Map(),requests=new Map();
   const cacheLife=120000,cacheLimit=6,maxPageSize=512000,maxSpeculative=12;
-  let speculativeCount=0,hoverTimer;
+  let speculativeCount=0,hoverTimer,requestSerial=0;
   const keyFor=url=>{const key=new URL(url,location.href);key.hash='';return key.href;};
   function cacheable(url){return url.origin===location.origin&&['http:','https:'].includes(url.protocol)&&/\/$|\.html$/.test(url.pathname)&&!url.searchParams.has('giscus');}
   function cacheGet(url){const key=keyFor(url),entry=pageCache.get(key);if(!entry)return null;if(Date.now()-entry.time>=cacheLife){pageCache.delete(key);return null;}pageCache.delete(key);pageCache.set(key,entry);return entry.text;}
@@ -23,12 +34,16 @@
   function abortError(){return new DOMException('Navigation cancelled','AbortError');}
   function startRequest(url,speculative){
     const key=keyFor(url),requestController=new AbortController();
-    const entry={controller:requestController,speculative,users:0,timer:0,promise:null};
+    const entry={controller:requestController,speculative,users:0,timer:0,promise:null,id:++requestSerial};
+    const fields={requestId:entry.id,path:key,origin:speculative?'prefetch':'click',frame:'main-fetch'};
     const expired=new Promise((_,reject)=>requestController.signal.addEventListener('abort',()=>reject(abortError()),{once:true}));
     const fetchPage=async()=>{
+      mark('html.request.start',fields);
       const response=await fetch(key,{signal:requestController.signal,headers:{Accept:'text/html'},...(speculative?{priority:'low'}:{})});
+      mark('html.headers',{...fields,status:response.status});
       if(!response.ok||!response.headers.get('content-type')?.includes('text/html'))throw Error('page');
       const text=await response.text();
+      mark('html.body.end',fields);
       if(!text.includes('data-page-content')||!/<body\b[^>]*\bdata-view\s*=/i.test(text))throw Error('layout');
       return text;
     };
@@ -36,7 +51,7 @@
     entry.promise=Promise.race([fetchPage(),expired]).then(text=>{
       if(requestController.signal.aborted)throw abortError();
       cachePut(url,text);return text;
-    }).finally(()=>{clearTimeout(entry.timer);if(requests.get(key)===entry)requests.delete(key);});
+    }).catch(error=>{mark('html.request.error',{...fields,state:requestController.signal.aborted?'aborted':'failed'});throw error;}).finally(()=>{clearTimeout(entry.timer);if(requests.get(key)===entry)requests.delete(key);});
     requests.set(key,entry);return entry;
   }
   async function prefetch(url){
@@ -59,10 +74,11 @@
       entry.promise.then(value=>finish(resolve,value),error=>finish(reject,error));
     });
   }
-  async function readPage(url,signal){
-    const cached=cacheGet(url);if(cached!==null)return cached;
+  async function readPage(url,signal,navId){
+    const cached=cacheGet(url);if(cached!==null){mark('html.source',{navId,path:url,source:'memory'});return cached;}
     let entry=requests.get(keyFor(url));
     if(entry?.controller.signal.aborted){requests.delete(keyFor(url));entry=null;}
+    mark('html.source',{navId,path:url,source:entry?'in-flight':'new',origin:entry?.speculative?'prefetch':'click',requestId:entry?.id||requestSerial+1});
     if(entry?.speculative){
       // Promote the same fetch instead of issuing a duplicate after a fixed 250ms wait.
       entry.speculative=false;clearTimeout(entry.timer);entry.timer=setTimeout(()=>entry.controller.abort(),12000);
@@ -79,6 +95,8 @@
   document.addEventListener('pointerdown',event=>{const url=eligibleLink(event.target.closest?.('a[href]'));if(url)prefetch(url);},{passive:true});
   document.addEventListener('focusin',event=>{const url=eligibleLink(event.target.closest?.('a[href]'));if(url)prefetch(url);});
   const notify=(name,detail)=>document.dispatchEvent(new CustomEvent(name,{detail}));
+  let pendingTimer,pendingNotice;
+  function pending(id){clearTimeout(pendingTimer);if(pendingNotice)pendingNotice.hidden=true;slot()?.setAttribute('aria-busy','true');pendingTimer=setTimeout(()=>{if(id!==ticket)return;if(!pendingNotice){pendingNotice=document.createElement('div');pendingNotice.className='navigation-pending';pendingNotice.setAttribute('role','status');pendingNotice.textContent='正在打开页面，请稍等…';document.body.append(pendingNotice);}pendingNotice.hidden=false;},250);}
   function scrollToPage(url,position){
     if(position){window.scrollTo({left:position.x,top:position.y,behavior:'instant'});return;}
     let target=null;try{if(url.hash)target=document.getElementById(decodeURIComponent(url.hash.slice(1)));}catch{}
@@ -86,23 +104,30 @@
   }
   async function navigate(destination,{historyMode='push',position=null}={}){
     const url=new URL(destination,location.href),id=++ticket;
+    const fields={navId:id,path:url};mark('navigation.start',fields);
     if(historyMode==='push')current=location.href;
     controller?.abort();const requestController=new AbortController();controller=requestController;
     const timeout=setTimeout(()=>requestController.abort(),12000);
+    let outcome='superseded';
     document.documentElement.classList.add('is-navigating');
+    pending(id);
     try{
-      const html=await readPage(url,requestController.signal);
+      const html=await readPage(url,requestController.signal,id);
+      mark('dom.parse.start',fields);
       const next=new DOMParser().parseFromString(html,'text/html'),content=next.querySelector('[data-page-content]');
+      mark('dom.parse.end',fields);
       if(!content||!next.body.dataset.view){pageCache.delete(keyFor(url));throw Error('layout');}
-      if(id!==ticket)return false;
-      await window.FlyfishPageAssets?.prepare(next);
-      if(id!==ticket)return false;
+      if(id!==ticket||requestController.signal.aborted)throw abortError();
+      mark('assets.start',fields);
+      await window.FlyfishPageAssets?.prepare(next,{navId:id,signal:requestController.signal});
+      mark('assets.end',fields);
+      if(id!==ticket||requestController.signal.aborted)throw abortError();
       positions.set(current,{x:scrollX,y:scrollY});
-      notify('flyfish:before-page',{url:url.href});
+      notify('flyfish:before-page',{url:url.href,navId:id});
       document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());
       document.querySelectorAll('details[open]').forEach(details=>{details.open=false;});
       document.body.classList.remove('dialog-open');
-      slot().replaceWith(document.importNode(content,true));
+      mark('dom.replace.start',fields);slot().replaceWith(document.importNode(content,true));mark('dom.replace.end',fields);
       document.body.dataset.view=next.body.dataset.view;
       document.title=next.title;
       for(const selector of ['meta[name="description"]','link[rel="canonical"]']){
@@ -116,18 +141,19 @@
       const progress=document.querySelector('.reading-progress');if(progress)progress.hidden=next.body.dataset.view!=='post';
       if(historyMode==='push')history.pushState({flyfish:true},'',url.href);
       current=url.href;
-      notify('flyfish:page',{url:url.href,view:next.body.dataset.view});
+      mark('page.init.sync.start',fields);notify('flyfish:page',{url:url.href,view:next.body.dataset.view,navId:id});mark('page.init.sync.end',fields);
       scrollToPage(url,position);
-      requestAnimationFrame(()=>{scrollToPage(url,position);window.dispatchEvent(new Event('scroll'));});
+      requestAnimationFrame(()=>{if(id!==ticket)return;scrollToPage(url,position);window.dispatchEvent(new Event('scroll'));mark('paint.opportunity',{...fields,phase:1});if(diagnostics.enabled)requestAnimationFrame(()=>mark('paint.opportunity',{...fields,phase:2}));});
       const main=document.querySelector('#main');main?.setAttribute('tabindex','-1');main?.focus({preventScroll:true});
-      return true;
+      outcome='committed';return true;
     }catch(error){
+      outcome=id!==ticket?'superseded':requestController.signal.aborted?'aborted':'failed';mark('navigation.error',{...fields,state:outcome});
       if(id!==ticket)return false;
       // 失败时保留当前内容和音乐，给出可重试的原始链接，不在后台反复刷新。
       notify('flyfish:navigation-error',{url:url.href});
       if(historyMode==='pop'){history.replaceState({flyfish:true},'',current);}
       return false;
-    }finally{clearTimeout(timeout);if(id===ticket)document.documentElement.classList.remove('is-navigating');}
+    }finally{mark('navigation.end',{...fields,state:outcome});clearTimeout(timeout);if(id===ticket){clearTimeout(pendingTimer);if(pendingNotice)pendingNotice.hidden=true;slot()?.removeAttribute('aria-busy');document.documentElement.classList.remove('is-navigating');}}
   }
   window.FlyfishNavigator={
     enable(){if(enabled)return;enabled=true;history.replaceState({...history.state,flyfish:true},'',location.href);current=location.href;if('scrollRestoration' in history)history.scrollRestoration='manual';},

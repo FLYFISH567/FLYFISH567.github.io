@@ -9,7 +9,7 @@ async (page) => {
   const token=await tab.evaluate(()=>window.__documentToken),start=requests.length,clock=Date.now();
   await tab.locator('#main-nav a').evaluateAll((links,href)=>links.find(a=>a.getAttribute('href')===href).click(),href);
   await tab.waitForURL('**'+href);await tab.waitForFunction(view=>document.body.dataset.view===view,view);
-  rows.push({href,visibleMs:Date.now()-clock,documentReload:await tab.evaluate(old=>window.__documentToken!==old,token),documentRequests:requests.slice(start).filter(r=>r.type==='document').length,htmlRequests:requests.slice(start).filter(r=>r.url===href&&(r.type==='document'||r.type==='fetch')).length});
+  rows.push({href,automationWallMs:Date.now()-clock,documentReload:await tab.evaluate(old=>window.__documentToken!==old,token),documentRequests:requests.slice(start).filter(r=>r.type==='document').length,htmlRequests:requests.slice(start).filter(r=>r.url===href&&(r.type==='document'||r.type==='fetch')).length});
  }
- const result={assets:{requests:assets.length,jsBytes:assets.filter(x=>x.name.endsWith('.js')).reduce((n,x)=>n+x.bytes,0),cssBytes:assets.filter(x=>x.name.endsWith('.css')).reduce((n,x)=>n+x.bytes,0)},rows};await context.close();return result;
+ const result={method:'Legacy automation wall-clock includes RPC and polling overhead; never treat as in-page navigation latency. Use measure-navigation-diagnostics.js for in-page timing.',assets:{requests:assets.length,jsBytes:assets.filter(x=>x.name.endsWith('.js')).reduce((n,x)=>n+x.bytes,0),cssBytes:assets.filter(x=>x.name.endsWith('.css')).reduce((n,x)=>n+x.bytes,0)},rows};await context.close();return result;
 }

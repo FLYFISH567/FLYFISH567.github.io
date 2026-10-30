@@ -20,7 +20,11 @@
     if(signature===next)return;signature=next;layer.replaceChildren();layer.dataset.season=season;
     for(let i=0;i<count;i++){
       const particle=document.createElement('span'),shape=document.createElement('i');particle.append(shape);
-      particle.style.cssText=`--x:${i%2?88+Math.random()*11:1+Math.random()*11}vw;--s:${season==='summer'?3+Math.random()*3:5+Math.random()*7}px;--duration:${16+Math.random()*16}s;--delay:${-Math.random()*32}s;--drift:${Math.round((Math.random()-.5)*100)}px;--turn:${Math.round(Math.random()*300)}deg`;
+      if(season==='winter'){
+        const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.3');svg.setAttribute('stroke-linecap','round');
+        const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d','M12 2v20M3.34 7l17.32 10M3.34 17 20.66 7M9 4l3 3 3-3M9 20l3-3 3 3M3.6 10.6l4.1-1.1-1.1-4.1M20.4 13.4l-4.1 1.1 1.1 4.1M6.6 18.6l1.1-4.1-4.1-1.1M17.4 5.4l-1.1 4.1 4.1 1.1');svg.append(path);shape.append(svg);
+      }
+      particle.style.cssText=`--x:${i%2?88+Math.random()*11:1+Math.random()*11}vw;--s:${season==='summer'?3+Math.random()*3:season==='winter'?12+Math.random()*10:5+Math.random()*7}px;--duration:${16+Math.random()*16}s;--delay:${-Math.random()*32}s;--drift:${Math.round((Math.random()-.5)*100)}px;--turn:${Math.round(Math.random()*300)}deg`;
       layer.append(particle);
     }
   }
