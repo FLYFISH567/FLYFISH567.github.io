@@ -6,7 +6,7 @@
   let enabled=false,controller=null,ticket=0,current=location.href;
   const positions=new Map();
   // Limited, short-lived caches avoid downloading the whole site.
-  const pageCache=new Map(),pendingPrefetch=new Map();
+  const pageCache=new Map(),requests=new Map();
   const cacheLife=120000,cacheLimit=6,maxPageSize=512000,maxSpeculative=12;
   let speculativeCount=0,hoverTimer;
   const keyFor=url=>{const key=new URL(url,location.href);key.hash='';return key.href;};
@@ -20,20 +20,55 @@
     if(!cacheable(url)||url.pathname===location.pathname&&url.search===location.search)return null;
     return url;
   }
+  function abortError(){return new DOMException('Navigation cancelled','AbortError');}
+  function startRequest(url,speculative){
+    const key=keyFor(url),requestController=new AbortController();
+    const entry={controller:requestController,speculative,users:0,timer:0,promise:null};
+    const expired=new Promise((_,reject)=>requestController.signal.addEventListener('abort',()=>reject(abortError()),{once:true}));
+    const fetchPage=async()=>{
+      const response=await fetch(key,{signal:requestController.signal,headers:{Accept:'text/html'},...(speculative?{priority:'low'}:{})});
+      if(!response.ok||!response.headers.get('content-type')?.includes('text/html'))throw Error('page');
+      const text=await response.text();
+      if(!text.includes('data-page-content')||!/<body\b[^>]*\bdata-view\s*=/i.test(text))throw Error('layout');
+      return text;
+    };
+    entry.timer=setTimeout(()=>requestController.abort(),speculative?4000:12000);
+    entry.promise=Promise.race([fetchPage(),expired]).then(text=>{
+      if(requestController.signal.aborted)throw abortError();
+      cachePut(url,text);return text;
+    }).finally(()=>{clearTimeout(entry.timer);if(requests.get(key)===entry)requests.delete(key);});
+    requests.set(key,entry);return entry;
+  }
   async function prefetch(url){
-    if(!canPrefetch()||!cacheable(url)||speculativeCount>=maxSpeculative||cacheGet(url)||pendingPrefetch.has(keyFor(url))||pendingPrefetch.size>=2)return;
-    const key=keyFor(url),prefetchController=new AbortController();speculativeCount++;
-    const timer=setTimeout(()=>prefetchController.abort(),4000);
-    const request=Promise.resolve().then(async()=>{try{const response=await fetch(key,{signal:prefetchController.signal,headers:{Accept:'text/html'},priority:'low'});if(!response.ok||!response.headers.get('content-type')?.includes('text/html'))return null;const text=await response.text();if(!text.includes('data-page-content')||!/<body\b[^>]*\bdata-view\s*=/i.test(text))return null;cachePut(url,text);return text.length<=maxPageSize?text:null;}catch{return null;}finally{clearTimeout(timer);pendingPrefetch.delete(key);}});
-    pendingPrefetch.set(key,request);await request;
+    if(!canPrefetch()||!cacheable(url)||speculativeCount>=maxSpeculative||cacheGet(url)||requests.has(keyFor(url))||[...requests.values()].filter(entry=>entry.speculative).length>=2)return;
+    speculativeCount++;
+    try{await startRequest(url,true).promise;}catch{}
+  }
+  function consume(entry,signal){
+    if(signal.aborted)return Promise.reject(abortError());
+    entry.users++;
+    return new Promise((resolve,reject)=>{
+      let done=false;
+      const finish=(callback,value)=>{
+        if(done)return;done=true;signal.removeEventListener('abort',cancel);entry.users--;callback(value);
+        // A rapid second click on the same URL can join before abandoning the old request.
+        queueMicrotask(()=>{if(!entry.users&&!entry.speculative&&[...requests.values()].includes(entry))entry.controller.abort();});
+      };
+      const cancel=()=>finish(reject,abortError());
+      signal.addEventListener('abort',cancel,{once:true});
+      entry.promise.then(value=>finish(resolve,value),error=>finish(reject,error));
+    });
   }
   async function readPage(url,signal){
     const cached=cacheGet(url);if(cached!==null)return cached;
-    const pending=pendingPrefetch.get(keyFor(url));
-    if(pending){let timer;const prefetched=await Promise.race([pending,new Promise(resolve=>{timer=setTimeout(()=>resolve(null),250);})]);clearTimeout(timer);if(prefetched!==null)return prefetched;}
-    const response=await fetch(url.href,{signal,headers:{Accept:'text/html'}});
-    if(!response.ok||!response.headers.get('content-type')?.includes('text/html'))throw Error('page');
-    const text=await response.text();cachePut(url,text);return text;
+    let entry=requests.get(keyFor(url));
+    if(entry?.controller.signal.aborted){requests.delete(keyFor(url));entry=null;}
+    if(entry?.speculative){
+      // Promote the same fetch instead of issuing a duplicate after a fixed 250ms wait.
+      entry.speculative=false;clearTimeout(entry.timer);entry.timer=setTimeout(()=>entry.controller.abort(),12000);
+    }
+    entry ||= startRequest(url,false);
+    return consume(entry,signal);
   }
   // Warm at most two navigation pages during the opening or idle time.
   function warmNavigation(){if(!canPrefetch())return;const urls=[...document.querySelectorAll('#main-nav a[href]')].map(eligibleLink).filter(Boolean).slice(0,2);(async()=>{for(const url of urls){if(!canPrefetch())break;await prefetch(url);}})();}
@@ -59,6 +94,8 @@
       const html=await readPage(url,requestController.signal);
       const next=new DOMParser().parseFromString(html,'text/html'),content=next.querySelector('[data-page-content]');
       if(!content||!next.body.dataset.view){pageCache.delete(keyFor(url));throw Error('layout');}
+      if(id!==ticket)return false;
+      await window.FlyfishPageAssets?.prepare(next);
       if(id!==ticket)return false;
       positions.set(current,{x:scrollX,y:scrollY});
       notify('flyfish:before-page',{url:url.href});
@@ -93,7 +130,7 @@
     }finally{clearTimeout(timeout);if(id===ticket)document.documentElement.classList.remove('is-navigating');}
   }
   window.FlyfishNavigator={
-    enable(){enabled=true;history.replaceState({...history.state,flyfish:true},'',location.href);current=location.href;if('scrollRestoration' in history)history.scrollRestoration='manual';},
+    enable(){if(enabled)return;enabled=true;history.replaceState({...history.state,flyfish:true},'',location.href);current=location.href;if('scrollRestoration' in history)history.scrollRestoration='manual';},
     navigate,
     get enabled(){return enabled;}
   };
@@ -106,7 +143,22 @@
     if(url.pathname===location.pathname&&url.search===location.search&&url.hash)return;
     event.preventDefault();navigate(url.href);
   });
-  window.addEventListener('popstate',()=>{if(enabled)navigate(location.href,{historyMode:'pop',position:positions.get(location.href)||{x:0,y:0}});});
+  window.addEventListener('popstate',()=>{
+    if(!enabled)return;
+    const previous=new URL(current),next=new URL(location.href);
+    if(previous.pathname===next.pathname&&previous.search===next.search){current=location.href;scrollToPage(next,positions.get(current));return;}
+    navigate(location.href,{historyMode:'pop',position:positions.get(location.href)||{x:0,y:0}});
+  });
+  window.addEventListener('hashchange',()=>{current=location.href;});
+  window.addEventListener('pagehide',()=>{
+    const position={x:scrollX,y:scrollY};positions.set(location.href,position);
+    history.replaceState({...history.state,flyfishScroll:position},'',location.href);
+  });
+  window.addEventListener('pageshow',event=>{
+    const type=performance.getEntriesByType?.('navigation')[0]?.type;
+    const position=history.state?.flyfishScroll;
+    if(position&&(event.persisted||type==='back_forward'||type==='reload'))requestAnimationFrame(()=>scrollToPage(new URL(location.href),position));
+  });
   document.addEventListener('flyfish:navigation-error',event=>{
     let notice=document.querySelector('.navigation-notice');
     if(!notice){notice=document.createElement('div');notice.className='navigation-notice';notice.setAttribute('role','status');document.body.append(notice);}
@@ -116,4 +168,5 @@
     notice.append(retry,native);notice.hidden=false;
   });
   document.addEventListener('flyfish:page',()=>{const notice=document.querySelector('.navigation-notice');if(notice)notice.hidden=true;});
+  window.FlyfishNavigator.enable();
 })();

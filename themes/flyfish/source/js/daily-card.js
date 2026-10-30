@@ -385,16 +385,13 @@
     clearTimeout(timer);
     const quote = document.querySelector('[data-daily-quote]');
     const attribution = document.querySelector('[data-daily-attribution]');
-    const date = document.querySelector('[data-daily-date]');
-    if (!quote || !date) return;
+    if (!quote) return;
     const now = new Date();
     const day = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
     if (selectedDay !== day) { selectedDay = day; offset = 0; }
     const entry = quotes[(((day + offset) % quotes.length) + quotes.length) % quotes.length];
     quote.textContent = entry[0];
     if (attribution) attribution.textContent = entry[1];
-    date.dateTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    date.textContent = `${now.getMonth() + 1} / ${now.getDate()}`;
     const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     timer = setTimeout(render, next - now + 100);
   }

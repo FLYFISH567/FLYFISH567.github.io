@@ -34,7 +34,7 @@
     observer?.disconnect(); const panel = currentPanel(); if (!panel) return;
     panel.querySelector('[data-comments-retry]').addEventListener('click', begin, {once: false});
     if (host) { host.hidden = false; panel.querySelector('[data-comments-mount]').appendChild(host); if (frame()) { status('正在载入评论…'); retarget(); return; } }
-    if (new URL(location.href).searchParams.has('giscus')) { begin(); return; }
+    if (panel.hasAttribute('data-comments-eager') || new URL(location.href).searchParams.has('giscus')) { begin(); return; }
     if ('IntersectionObserver' in window) { observer = new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); begin(); } }, {rootMargin:'300px'}); observer.observe(panel); }
     else begin();
   }

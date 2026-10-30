@@ -147,7 +147,6 @@
     if(switching||tracks.length)++playIntent;audio.pause();active=target;saved=null;tracks=list;
     const restored=restore?.url?tracks.findIndex(track=>trackIdentity(track.url)===trackIdentity(restore.url)):-1;
     select(restored>=0?restored:0,restored>=0?restore.time||0:0);
-    window.FlyfishNavigator?.enable();
     if(continuePlaying)play();
   }
   function load(refresh=false,target=requested||active){

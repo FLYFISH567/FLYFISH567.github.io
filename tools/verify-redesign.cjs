@@ -35,12 +35,12 @@ if(fs.existsSync(path.join(output,'search.xml'))){
 assert.equal(hub('[data-topic="XSS"]').length,1,'XSS aliases must have one filter');
 assert.equal(hub('[data-topic="xss"]').length,0,'Lowercase XSS alias should be merged');
 for(const route of ['index.html','articles/index.html','life/index.html','music/index.html','briefing/index.html','about/index.html','album/index.html','essay/index.html','bangumis/index.html','comments/index.html','archives/index.html','categories/index.html','tags/index.html']){
-  const $=load(route);assert.deepEqual($('#main-nav a').map((_,el)=>$(el).attr('href')).get(),['/','/articles/','/album/','/briefing/','/toolbox/','/music/','/about/'],`Unexpected navigation: ${route}`);
+  const $=load(route);assert.deepEqual($('#main-nav a').map((_,el)=>$(el).attr('href')).get(),['/','/articles/','/album/','/briefing/','/toolbox/','/music/','/about/','/comments/'],`Unexpected navigation: ${route}`);
   assert.equal($('#main-nav button[data-open-search][aria-controls="site-search"]').length,1,`Search must open a dialog: ${route}`);
   assert.equal($('#site-search').length,1,`Missing standalone search dialog: ${route}`);
   assert.equal($('#main-nav a[href^="javascript:"]').length,0,`Nonfunctional parent navigation: ${route}`);
   assert.equal($('#loading-box,#loading-screen,.loading-bg').length,0,`Blocking preloader: ${route}`);
-  assert.ok(!$('#main-nav').text().match(/警示|友链|留言板/),`Obsolete navigation: ${route}`);
+  assert.ok(!$('#main-nav').text().match(/警示|友链/),`Obsolete navigation: ${route}`);
   $('a[href^="/"],link[rel=stylesheet],script[src^="/"]').each((_,node)=>{
     const href=$(node).attr('href')||$(node).attr('src');if(!href||href.startsWith('//')||$(node).closest('.article-body').length)return;
     const url=new URL(href,'http://localhost');let local=decodeURIComponent(url.pathname);if(local.endsWith('/'))local+='index.html';

@@ -1,8 +1,8 @@
 <% const shelf=ff_shelf(); const films=Array.isArray(shelf.films)?shelf.films.filter(item=>item && item.title):[]; const books=Array.isArray(shelf.books)?shelf.books.filter(item=>item && item.title):[]; %>
 <section class="shelf-page" data-shelf>
-  <header class="page-heading shelf-heading">
+  <header class="page-heading illustrated-heading pointer-surface" data-pointer-light>
     <div><span class="eyebrow">STORIES TO KEEP</span><h1>书影音</h1><p>把喜欢的故事，留在这里。</p></div>
-    <div class="shelf-heading-art" aria-hidden="true"><span>✦</span><span>▤</span><span>◌</span></div>
+    <%- partial('_partials/heading-art',{kind:'shelf'}) %>
   </header>
   <%- partial('life-nav') %>
   <nav class="shelf-jump" aria-label="收藏分类"><a href="#films" data-shelf-filter="films">电影 <span><%= films.length %></span></a><a href="#books" data-shelf-filter="books">书籍 <span><%= books.length %></span></a></nav>

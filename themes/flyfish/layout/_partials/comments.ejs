@@ -1,7 +1,8 @@
-<section class="comments-panel" data-comments data-comments-term="<%= ff_comment_term(page) %>" aria-labelledby="comments-title">
-  <div class="comments-heading"><div><span class="eyebrow">CONVERSATION</span><h2 id="comments-title">一起聊聊</h2></div><a href="https://github.com/FLYFISH567/FLYFISH567.github.io/discussions" target="_blank" rel="noopener noreferrer">前往 GitHub Discussions</a></div>
-  <p class="comments-intro">欢迎留下想法。评论由 GitHub Discussions 提供，需要登录 GitHub。</p>
-  <p class="comments-status" data-comments-status role="status" aria-live="polite">滚动到这里时加载评论…</p>
+<% const isGuestbook=typeof guestbook!=='undefined' && guestbook; %>
+<section class="comments-panel" data-comments <%- isGuestbook?'data-comments-eager':'' %> data-comments-term="<%= ff_comment_term(page) %>" aria-labelledby="comments-title">
+  <div class="comments-heading"><div><span class="eyebrow"><%= isGuestbook?'LEAVE A LITTLE TRACE':'CONVERSATION' %></span><h2 id="comments-title"><%= isGuestbook?'大家的留言':'一起聊聊' %></h2></div><a href="https://github.com/FLYFISH567/FLYFISH567.github.io/discussions" target="_blank" rel="noopener noreferrer">在 GitHub 中查看</a></div>
+  <p class="comments-intro"><%= isGuestbook?'所有人都可以浏览这里的留言，登录 GitHub 后即可留言和回复。':'欢迎留下想法。评论由 GitHub Discussions 提供，需要登录 GitHub。' %></p>
+  <p class="comments-status" data-comments-status role="status" aria-live="polite"><%= isGuestbook?'正在载入留言…':'滚动到这里时加载评论…' %></p>
   <div data-comments-mount></div>
   <button type="button" class="comments-retry" data-comments-retry hidden>重新加载评论</button>
   <noscript><p>启用 JavaScript 后可以在这里查看评论，也可以直接前往 GitHub Discussions。</p></noscript>

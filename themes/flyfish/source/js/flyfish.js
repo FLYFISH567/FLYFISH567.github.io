@@ -12,6 +12,9 @@
   const storage={get:key=>{try{return localStorage.getItem(key);}catch{return null;}},set:(key,value)=>{try{localStorage.setItem(key,value);}catch{}}};
   if(storage.get('flyfish-theme')==='dark')root.dataset.theme='dark';
   $('.theme-toggle')?.setAttribute('aria-label',root.dataset.theme==='dark'?'切换浅色模式':'切换深色模式');
+  const themeMotion=matchMedia('(prefers-reduced-motion:reduce)');
+  let themeSwitching=false,themeTransition=null;
+  themeMotion.addEventListener('change',()=>{if(themeMotion.matches)themeTransition?.skipTransition();});
   function initLights(){
     // 复用同一光晕，通过事件委托支持筛选和刷新后生成的新卡片。
     const pointerMotion=matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)'),signal=pageController.signal;
@@ -35,7 +38,35 @@
     pointerMotion.addEventListener('change',reset,{signal});
     document.addEventListener('flyfish:effectschange',reset,{signal});pageDisposers.push(reset);
   }
-  $('.theme-toggle')?.addEventListener('click',()=>{const dark=root.dataset.theme!=='dark';root.dataset.theme=dark?'dark':'light';storage.set('flyfish-theme',root.dataset.theme);$('.theme-toggle').setAttribute('aria-label',dark?'切换浅色模式':'切换深色模式');});
+  $('.theme-toggle')?.addEventListener('click',async event=>{
+    if(themeSwitching)return;
+    const button=event.currentTarget,dark=root.dataset.theme!=='dark';
+    const applyTheme=()=>{
+      root.dataset.theme=dark?'dark':'light';
+      storage.set('flyfish-theme',root.dataset.theme);
+      button.setAttribute('aria-label',dark?'切换浅色模式':'切换深色模式');
+    };
+    if(!document.startViewTransition||!root.animate||themeMotion.matches||root.dataset.effects==='light'){
+      applyTheme();return;
+    }
+    // 以按钮中心为圆心，半径覆盖视口最远角；键盘和触屏使用相同起点。
+    const rect=button.getBoundingClientRect(),x=rect.left+rect.width/2,y=rect.top+rect.height/2;
+    const radius=Math.ceil(Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y)));
+    themeSwitching=true;root.classList.add('theme-transition');
+    try{
+      themeTransition=document.startViewTransition(applyTheme);
+      // finished 可能因页面隐藏等原因提前结束，始终清理临时状态。
+      const finished=themeTransition.finished.catch(()=>{});
+      await themeTransition.ready;
+      root.animate({clipPath:[`circle(0px at ${x}px ${y}px)`,`circle(${radius}px at ${x}px ${y}px)`]},
+        {duration:600,easing:'cubic-bezier(.4,0,.2,1)',pseudoElement:'::view-transition-new(root)'});
+      await finished;
+    }catch{
+      themeTransition?.skipTransition();applyTheme();
+    }finally{
+      themeTransition=null;themeSwitching=false;root.classList.remove('theme-transition');
+    }
+  });
   $('.menu-toggle')?.addEventListener('click',event=>{const open=$('#main-nav').classList.toggle('is-open');event.currentTarget.setAttribute('aria-expanded',String(open));});
   function toast(text){const node=$('.toast');node.textContent=text;node.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>node.classList.remove('visible'),2400);}
   const backTop=$('.back-top'),siteHeader=$('.site-header'),readingProgress=$('.reading-progress');

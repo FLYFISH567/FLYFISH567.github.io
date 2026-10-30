@@ -11,8 +11,12 @@
   <link rel="icon" type="image/svg+xml" href="<%= url_for('/favicon.svg') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/flyfish.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/briefing.css') %>">
-  <link rel="stylesheet" href="<%= ff_asset('css/markets.css') %>">
-  <link rel="stylesheet" href="<%= ff_asset('css/toolbox.css') %>">
+  <% if(view==='briefing') { %>
+  <link data-page-asset rel="stylesheet" href="<%= ff_asset('css/markets.css') %>">
+  <% } %>
+  <% if(view==='toolbox') { %>
+  <link data-page-asset rel="stylesheet" href="<%= ff_asset('css/toolbox.css') %>">
+  <% } %>
   <link rel="stylesheet" href="<%= ff_asset('css/shelf.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/personal-cards.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/comments.css') %>">
@@ -26,22 +30,42 @@
   <script defer src="<%= ff_asset('js/explore.js') %>"></script>
   <script defer src="<%= ff_asset('js/motion.js') %>"></script>
   <script defer src="<%= ff_asset('js/details.js') %>"></script>
-  <script defer src="<%= ff_asset('js/daily-card.js') %>"></script>
-  <script defer src="<%= ff_asset('js/toolbox.js') %>"></script>
-  <script defer src="<%= ff_asset('js/shelf.js') %>"></script>
-  <script defer src="<%= ff_asset('js/fish-home.js') %>"></script>
+  <% if(view==='home') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/daily-card.js') %>"></script>
+  <% } %>
+  <% if(view==='toolbox') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/toolbox.js') %>"></script>
+  <% } %>
+  <% if(view==='shelf') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/shelf.js') %>"></script>
+  <% } %>
+  <% if(view==='404') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/fish-home.js') %>"></script>
+  <% } %>
   <script defer src="<%= ff_asset('js/seasonal-atmosphere.js') %>"></script>
   <script defer src="<%= ff_asset('js/comments.js') %>"></script>
   <% if(theme.pointer_play!==false) { %><script defer src="<%= ff_asset('js/pointer-play.js') %>"></script><% } %>
   <script defer src="<%= ff_asset('js/background-fish.js') %>"></script>
-  <script defer src="<%= ff_asset('js/travel-map.js') %>"></script>
+  <% if(view==='about') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/travel-map.js') %>"></script>
+  <% } %>
   <script defer src="<%= ff_asset('js/life-nav.js') %>"></script>
-  <script defer src="<%= ff_asset('js/navigation.js') %>"></script>
+
   <script defer src="<%= ff_asset('js/global-music.js') %>"></script>
-  <script defer src="<%= ff_asset('js/briefing-sources.js') %>"></script>
-  <script defer src="<%= ff_asset('js/briefing.js') %>"></script>
-  <script defer src="<%= ff_asset('js/market-data.js') %>"></script>
-  <script defer src="<%= ff_asset('js/markets.js') %>"></script>
+  <% if(view==='briefing') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/briefing-sources.js') %>"></script>
+  <% } %>
+  <% if(view==='briefing') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/briefing.js') %>"></script>
+  <% } %>
+  <% if(view==='briefing') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/market-data.js') %>"></script>
+  <% } %>
+  <% if(view==='briefing') { %>
+  <script data-page-asset defer src="<%= ff_asset('js/markets.js') %>"></script>
+  <% } %>
+  <script defer src="<%= ff_asset('js/page-assets.js') %>"></script>
+  <script defer src="<%= ff_asset('js/navigation.js') %>"></script>
 </head>
 <body data-view="<%= view %>">
 <%- partial('_partials/opening') %>
@@ -51,7 +75,7 @@
   <a class="brand" href="<%= url_for('/') %>"><span class="brand-mark" aria-hidden="true"></span><span><%= config.title %></span></a>
   <button class="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav">菜单</button>
   <nav id="main-nav" aria-label="主导航">
-    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'工具箱',url:'/toolbox/',active:view==='toolbox'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'}]) { %>
+    <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'工具箱',url:'/toolbox/',active:view==='toolbox'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'},{label:'留言板',url:'/comments/',active:view==='contact'}]) { %>
       <a href="<%= url_for(item.url) %>" <%- item.active ? 'aria-current="page"' : '' %>><%= item.label %></a>
     <% } %>
     <button type="button" class="nav-search" data-open-search aria-label="搜索文章" aria-haspopup="dialog" aria-controls="site-search">搜索 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></button>
@@ -62,7 +86,7 @@
   <div class="page-content" data-page-content>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/hero') %><% } %>
   <% if(view==='home' && (!page.current || page.current===1)) { %><%- partial('_partials/home-updates') %><% } %>
-  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><a class="briefing-entry" href="<%= url_for('/briefing/') %>"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h3M8 16h3m4-4h1m-1 4h1"/></svg><span>每日看板</span></a></div><% } %>
+  <% if(view==='home') { %><div class="section-heading"><h2 id="latest-title">最新文章</h2><div class="home-section-actions"><button type="button" class="home-idea-entry" data-open-explore data-explore-mode="idea" hidden>抽个灵感 <span aria-hidden="true">✦</span></button><a class="briefing-entry" href="<%= url_for('/briefing/') %>"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h3M8 16h3m4-4h1m-1 4h1"/></svg><span>每日看板</span></a></div></div><% } %>
   <div class="site-layout <%= hasAside ? '' : 'full-width' %>">
     <main id="main"><%- body %></main>
     <% if(hasAside) { %><%- partial('_partials/sidebar',{view}) %><% } %>

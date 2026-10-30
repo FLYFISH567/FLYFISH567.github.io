@@ -126,6 +126,6 @@ hexo.extend.helper.register('ff_related', function (post) {
 hexo.extend.generator.register('flyfish-hubs', () => [
   {path:'articles/index.html',layout:['hub'],data:{title:'文章库',ff_kind:'articles'}},
   {path:'life/index.html',layout:['hub'],data:{title:'小记',ff_kind:'life'}},
-  {path:'comments/index.html',layout:['hub'],data:{title:'交流与联系',ff_kind:'contact'}},
+  {path:'comments/index.html',layout:['hub'],data:{title:'留言板',ff_kind:'contact'}},
   {path:'404.html',layout:['hub'],data:{title:'这一页暂时找不到了',ff_kind:'404'}}
 ]);

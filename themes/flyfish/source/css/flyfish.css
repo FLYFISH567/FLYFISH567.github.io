@@ -425,6 +425,13 @@ body:is([data-view=essay],[data-view=life])>.site-shell{max-width:1100px}
 .topics-panel[data-pointer-light]:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:-1;background:radial-gradient(circle 190px at var(--pointer-x) var(--pointer-y),color-mix(in srgb,var(--blue) 11%,transparent),transparent 78%)}
 .theme-symbol{display:inline-block;line-height:1;transform:rotate(0deg)}
 :root[data-theme=dark] .theme-symbol{transform:rotate(180deg)}
+/* 新主题在旧主题快照上圆形展开，取消浏览器默认的整页交叉淡入。 */
+:root.theme-transition::view-transition-group(root){animation:none}
+:root.theme-transition::view-transition-old(root),:root.theme-transition::view-transition-new(root){animation:none;mix-blend-mode:normal}
+:root.theme-transition::view-transition-old(root){z-index:0}
+:root.theme-transition::view-transition-new(root){z-index:1}
+:root.theme-transition::view-transition{pointer-events:none}
+:root.theme-transition *,:root.theme-transition *::before,:root.theme-transition *::after{transition:none!important}
 @media(prefers-reduced-motion:no-preference){
   .topics-panel[data-pointer-light]{transition:border-color .25s,box-shadow .25s}
   .topics-panel[data-pointer-light]:before{transition:opacity .25s}
@@ -615,9 +622,9 @@ body[data-view=about] #main{max-width:1000px;margin-inline:auto;width:100%;min-w
 .section-link{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--sub);padding-block:5px;white-space:nowrap}
 .section-link:hover{color:var(--blue)}
 .section-link>span{color:var(--muted)}
-.section-heading>a.briefing-entry{display:inline-flex;align-items:center;gap:8px;color:var(--blue);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 11px;text-decoration:none;line-height:1.5}
+.section-heading .briefing-entry{display:inline-flex;align-items:center;gap:8px;color:var(--blue);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 11px;text-decoration:none;line-height:1.5}
 .briefing-entry svg{flex-shrink:0}
-.section-heading>a.briefing-entry:hover{border-color:var(--blue);background:var(--surface)}
+.section-heading .briefing-entry:hover{border-color:color-mix(in srgb,var(--blue) 30%,var(--line));background:color-mix(in srgb,var(--blue) 4%,var(--soft))}
 .about-section-note{font-size:12px;color:var(--muted)}
 .about-interest-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:30px}
 .about-interest-grid.single-interest{grid-template-columns:1fr}
@@ -938,3 +945,8 @@ body.dialog-open .music-dock{visibility:hidden}
 /* 关于页直接进入内容，给首个章节留出呼吸空间。 */
 .about-intro + .about-now{margin-top:42px}
 @media(max-width:600px){.about-intro + .about-now{margin-top:30px}}
+
+/* 品牌链接只在键盘导航时提示焦点，避免鼠标/浏览器恢复焦点留下蓝框。 */
+.brand:focus{outline:none}
+.keyboard-navigation .brand:focus-visible{outline:2px solid var(--sub);outline-offset:5px;border-radius:6px}
+.home-section-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.home-idea-entry{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid var(--line);border-radius:9px;background:var(--soft);color:var(--sub);font-size:12px;line-height:1.5}.home-idea-entry:hover{color:var(--blue);border-color:color-mix(in srgb,var(--blue) 30%,var(--line))}.home-idea-entry:focus{outline:none}.keyboard-navigation .home-idea-entry:focus-visible{outline:2px solid var(--sub);outline-offset:3px}
