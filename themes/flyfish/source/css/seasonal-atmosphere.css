@@ -14,6 +14,47 @@
 :root[data-atmosphere-season][data-theme=dark] body:not([data-view=post]),
 :root[data-atmosphere-season][data-theme=dark] body[data-view=home]{background-image:radial-gradient(ellipse 500px 360px at 50% 0,var(--festival-glow,transparent),transparent 75%),radial-gradient(ellipse 800px 580px at 2% 220px,var(--season-glow),transparent 75%),radial-gradient(ellipse 720px 650px at 98% 700px,var(--time-glow),transparent 76%)}
 
+/* A quiet, static window scene sits behind content and existing moving particles. */
+.seasonal-scenery{position:absolute;inset:0 0 auto;height:1050px;overflow:hidden;pointer-events:none;user-select:none}
+.seasonal-scene{display:none;position:absolute;inset:0}
+:root[data-atmosphere-season=spring] body:not([data-view=post]) .seasonal-scene-spring,
+:root[data-atmosphere-season=autumn] body:not([data-view=post]) .seasonal-scene-autumn{display:block}
+.seasonal-scene svg{position:absolute;display:block;overflow:visible;opacity:.68}
+.seasonal-scene-branch{width:clamp(280px,32vw,510px);left:-12px;top:74px;mask-image:linear-gradient(to right,#000 34%,transparent 82%)}
+.seasonal-scene-landscape{width:clamp(240px,30vw,460px);right:-8px;top:510px}
+:root[data-theme=dark] .seasonal-scene svg{opacity:.26}
+/* The chosen tree scenes remain behind the existing page and particle layers. */
+:root[data-atmosphere-season=spring]{--season-tree-image:url('../images/seasonal-tree-spring.webp')}
+:root[data-atmosphere-season=summer]{--season-tree-image:url('../images/seasonal-tree-summer.webp')}
+:root[data-atmosphere-season=autumn]{--season-tree-image:url('../images/seasonal-tree-autumn.webp')}
+:root[data-atmosphere-season=winter]{--season-tree-image:url('../images/seasonal-tree-winter.webp')}
+:root[data-atmosphere-season=spring]{--season-page-tint:rgba(233,157,178,.07)}
+:root[data-atmosphere-season=summer]{--season-page-tint:rgba(93,194,169,.07)}
+:root[data-atmosphere-season=autumn]{--season-page-tint:rgba(230,168,100,.07)}
+:root[data-atmosphere-season=winter]{--season-page-tint:rgba(135,180,235,.07)}
+:root:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post]),
+:root[data-theme=dark]:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post]){
+  background-image:radial-gradient(ellipse 500px 360px at 50% 0,var(--festival-glow,transparent),transparent 75%),radial-gradient(ellipse 620px 500px at 100% 350px,color-mix(in srgb,var(--time-glow,transparent) 25%,transparent),transparent 75%),linear-gradient(to bottom,var(--season-page-tint),transparent 1350px);
+  background-repeat:no-repeat;background-size:100% 100%
+}
+:root:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body[data-view=home]>.home-atmosphere::after{display:none}
+:root:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post]) .seasonal-scenery::before{
+  content:'';position:absolute;inset:0;background-image:var(--season-tree-image);background-repeat:no-repeat;background-position:center top;background-size:cover;opacity:.20;mask-image:linear-gradient(to bottom,#000 0%,#000 52%,transparent 100%)
+}
+:root:is([data-atmosphere-season=spring],[data-atmosphere-season=autumn]) .seasonal-scenery .seasonal-scene svg{display:none}
+:root:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post])>.home-atmosphere{opacity:.4}
+:root[data-theme=dark]:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post]) .seasonal-scenery::before{opacity:.15}
+:root[data-theme=dark]:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post])>.home-atmosphere{opacity:.04}
+@media(max-width:610px){
+  .seasonal-scenery{height:850px}
+  .seasonal-scene svg{opacity:.42}
+  .seasonal-scene-branch{width:230px;left:-35px;top:86px}
+  .seasonal-scene-landscape{width:220px;right:-55px;top:440px}
+  :root[data-theme=dark] .seasonal-scene svg{opacity:.2}
+  :root:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post]) .seasonal-scenery::before{background-size:auto 680px;background-position:8% top;opacity:.16}
+  :root[data-theme=dark]:is([data-atmosphere-season=spring],[data-atmosphere-season=summer],[data-atmosphere-season=autumn],[data-atmosphere-season=winter]) body:not([data-view=post]) .seasonal-scenery::before{opacity:.12}
+}
+
 /* Keep the complete navigation comfortable on narrow tablets. */
 @media (min-width:611px) and (max-width:1000px){.header-inner{flex-wrap:wrap;gap:15px;min-height:67px;padding:14px 20px}.brand{font-size:18px}.menu-toggle{display:block;min-height:40px;min-width:48px}#main-nav{display:none;width:100%;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;padding:0 0 5px}#main-nav.is-open{display:flex;padding:9px 0 4px;border-top:1px solid var(--line)}#main-nav.is-open>a{min-height:40px;display:inline-flex;align-items:center}#main-nav button.nav-search{padding-left:0}}
 
