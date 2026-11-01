@@ -37,6 +37,7 @@
   function advanceAction(fish,delta){
     if(engaged(fish)||fish.relocating||root.dataset.effects==='light')return;
     if(fish.action){
+      if(fish.restUntil>clock)return;
       fish.actionLeft-=delta;
       if(fish.actionLeft<=0){fish.action='';fish.el.removeAttribute('data-action');fish.actionDelay=nextActionDelay();}
       return;

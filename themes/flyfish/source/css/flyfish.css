@@ -548,15 +548,12 @@ body:is([data-view=essay],[data-view=life])>.site-shell{max-width:1100px}
   .background-fish.is-resting .fish-tail{animation-play-state:paused}
   .fish-ocean[data-growth=curious] .background-fish:not(.is-resting) .fish-art svg{animation:fish-curious 3.6s ease-in-out infinite}
   .fish-ocean[data-growth=relaxed] .background-fish:not(.is-resting) .fish-art svg{animation:fish-relaxed 4.8s ease-in-out infinite}
-  .fish-ocean[data-growth=playful] .background-fish:nth-of-type(3n+1):not(.is-resting) .fish-art::after{content:"";position:absolute;left:38px;top:7px;width:4px;height:4px;border:1px solid currentColor;border-radius:50%;box-shadow:5px -5px 0 -1px currentColor;animation:fish-bubbles 2.8s ease-out infinite;pointer-events:none}
   :root[data-effects=light] .fish-ocean .fish-art svg{animation:none!important}
-  :root[data-effects=light] .fish-ocean .fish-art::after{display:none}
   .fish-caption{transition:opacity .15s,visibility .15s}
   @keyframes background-tail{from{transform:scaleX(.7)}to{transform:scaleX(1)}}
   @keyframes fish-wake{from{opacity:0}to{opacity:1}}
   @keyframes fish-curious{0%,65%,100%{transform:rotate(0)}75%{transform:rotate(-9deg)}85%{transform:rotate(4deg)}}
   @keyframes fish-relaxed{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-5deg)}}
-  @keyframes fish-bubbles{0%,25%{opacity:0;transform:translateY(0) scale(.6)}40%{opacity:.7}100%{opacity:0;transform:translateY(-13px) scale(1)}}
 }
 .fish-settings{font:11px/1.6 var(--font-ui);color:var(--muted)}
 .fish-settings summary{display:flex;align-items:center;gap:6px;min-height:28px;list-style:none;user-select:none}
@@ -915,9 +912,14 @@ body.dialog-open .music-dock{visibility:hidden}
 
 /* Each fish has its own short, occasional action. */
 @media(prefers-reduced-motion:no-preference){
-  .background-fish[data-action=curious]:not(.is-resting) .fish-art svg{animation:fish-curious 3s ease-in-out}
-  .background-fish[data-action=relaxed]:not(.is-resting) .fish-art svg{animation:fish-relaxed 3s ease-in-out}
-  .background-fish[data-action=playful]:not(.is-resting) .fish-art::after{content:"";position:absolute;left:38px;top:7px;width:4px;height:4px;border:1px solid currentColor;border-radius:50%;box-shadow:5px -5px 0 -1px currentColor;animation:fish-bubbles 1.5s ease-out 2;pointer-events:none}
+  .background-fish[data-action=curious] .fish-art svg{animation:fish-curious 3s ease-in-out}
+  .background-fish[data-action=relaxed] .fish-art svg{animation:fish-relaxed 3s ease-in-out}
+  .background-fish[data-action=playful] .fish-bubble-trail i{animation:fish-bubble-rise 2s ease-out both}
+  .background-fish[data-action=playful] .fish-bubble-trail i:nth-child(2){animation-delay:.35s}
+  .background-fish[data-action=playful] .fish-bubble-trail i:nth-child(3){animation-delay:.72s}
+  .background-fish.is-resting .fish-bubble-trail i,.background-fish.is-resting[data-action] .fish-art svg{animation-play-state:paused}
+  :root[data-effects=light] .fish-bubble-trail{display:none}
+  @keyframes fish-bubble-rise{0%{opacity:0;transform:translate(0,0) scale(.35)}15%{opacity:.9}70%{opacity:.65}100%{opacity:0;transform:translate(var(--bubble-drift),-24px) scale(1)}}
   :root[data-effects=light] .background-fish[data-action] .fish-art svg{animation:none}
 }
 
@@ -953,3 +955,9 @@ body.dialog-open .music-dock{visibility:hidden}
 
 .home-section-actions .home-action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--blue);font:inherit;font-size:12px;font-weight:500;line-height:1.5;text-decoration:none;white-space:nowrap}.home-section-actions .home-action svg{flex:none;width:15px;height:15px}.home-section-actions .home-action:hover{border-color:color-mix(in srgb,var(--blue) 30%,var(--line));background:color-mix(in srgb,var(--blue) 4%,var(--soft))}.home-action:focus{outline:none}.keyboard-navigation .home-action:focus-visible{outline:2px solid var(--sub);outline-offset:3px}.home-section-actions .home-action[hidden]{display:none}
 .navigation-pending{position:fixed;top:88px;right:24px;z-index:60;max-width:calc(100vw - 32px);padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--sub);box-shadow:var(--shadow);font-size:12px;pointer-events:none}.navigation-pending[hidden]{display:none}@media(max-width:600px){.navigation-pending{top:76px;right:12px}}
+
+/* A few translucent bubbles leave the fish's mouth in a staggered trail. */
+.fish-bubble-trail{position:absolute;left:38px;top:15px;pointer-events:none}
+.fish-bubble-trail i{position:absolute;left:0;top:0;width:6px;height:6px;border:1px solid currentColor;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff9 0 12%,transparent 25%);opacity:0;--bubble-drift:8px}
+.fish-bubble-trail i:nth-child(2){width:4px;height:4px;--bubble-drift:14px}
+.fish-bubble-trail i:nth-child(3){width:7px;height:7px;--bubble-drift:5px}
