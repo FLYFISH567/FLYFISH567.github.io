@@ -35,7 +35,7 @@
   "devDependencies": {
     "cheerio": "1.0.0",
     "ejs": "3.1.10",
-    "js-yaml": "4.1.0",
+    "js-yaml": "5.5.0",
     "jsdom": "25.0.1"
   }
 }
