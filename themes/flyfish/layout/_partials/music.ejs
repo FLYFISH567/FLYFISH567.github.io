@@ -11,13 +11,21 @@
         <h2 data-track-title>我的歌单</h2><p data-track-artist>选择一首，慢慢听</p>
       </div>
       <div class="music-inline-controls" data-music-page-controls></div>
-      <p class="player-status" role="status" data-player-status>选一首歌，慢慢听。</p>
+      <p class="player-status" role="status" data-player-status hidden></p>
     </section>
     <section class="player-shell pointer-surface" data-pointer-light aria-label="播放列表">
-      <header class="music-library-heading"><div><h2>播放列表</h2><span data-music-count>正在载入</span></div><a class="music-source-link" data-music-playlist-source href="https://music.163.com/#/playlist?id=<%= theme.music.id %>" target="_blank" rel="noopener"><span>原歌单</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7m0-7L10 14M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></svg></a></header>
+      <header class="music-library-heading"><div><h2>播放列表</h2><span data-music-count role="status"></span></div><a class="music-source-link" data-music-playlist-source href="https://music.163.com/#/playlist?id=<%= theme.music.id %>" target="_blank" rel="noopener noreferrer" aria-label="原歌单（新标签页打开）"><span>原歌单</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7m0-7L10 14M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></svg></a></header>
+      <label class="search-field music-library-search" hidden>
+        <input type="search" data-music-search aria-label="搜索当前歌单的歌名或歌手" placeholder="搜索歌名或歌手">
+      </label>
       <div class="music-list-region">
       <div class="music-playlist-loading" data-music-playlist-loading role="status" aria-live="polite" aria-atomic="true" hidden><span class="music-loading-spinner" aria-hidden="true"></span><span data-music-playlist-loading-text></span></div>
-      <div data-player-host><div class="music-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg><p>旋律正在路上</p><span>歌单会自动载入，选一首就能听</span><button type="button" data-retry-music hidden>重新加载</button></div></div>
+      <div data-player-host><div class="music-empty">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg>
+        <p data-music-placeholder>启用 JavaScript 后可在站内播放，也可以打开原歌单。</p>
+        <button type="button" data-retry-music hidden>重新加载</button>
+      </div></div>
+      <p class="music-empty music-search-empty" data-music-search-empty hidden>没找到匹配的歌曲，试试其他歌名或歌手。</p>
       </div>
     </section>
   </div>

@@ -27,7 +27,7 @@ if(isset($cmd)){
 
 直接执行`ls`查看文件，再用`cat flag.php`获取`flag`
 
-（关于为什么这里执行不用带""引号可以查看我的另一篇文章[奇奇怪怪的问题 | FLYFISH](https://flyfish567.github.io/posts/36c39f99.html)）
+（关于为什么这里执行不用带""引号可以查看我的另一篇文章[奇奇怪怪的问题 | FLYFISH](/article/学习/安全/命令执行/奇奇怪怪的问题/)）
 
 #### `exec()`函数
 

@@ -17,9 +17,21 @@ const seen=new Set(),attributions=new Set(),dailyResults=[],categoryCounts={orig
 for(let i=0;i<360;i++) {current=new Date(2026,0,1+i,12).getTime();events['flyfish:page']();const item=result();dailyResults.push(item);assert.ok(item.text&&item.attribution);assert.ok(!seen.has(item.text),'Sentences should be unique');seen.add(item.text);attributions.add(item.attribution);categoryCounts[item.category]++;if(item.category==='original')assert.equal(nodes['[data-daily-attribution]'].href,undefined,'Original notes do not retain another source link');else{assert.match(nodes['[data-daily-attribution]'].href,/^https:\/\//);assert.equal(nodes['[data-daily-attribution]'].rel,'noopener noreferrer');}}
 assert.equal(seen.size,360);assert.deepEqual(categoryCounts,{original:36,poetry:108,domestic:108,foreign:108});for(let i=0;i<360;i+=10){const counts={original:0,poetry:0,domestic:0,foreign:0};dailyResults.slice(i,i+10).forEach(row=>counts[row.category]++);assert.deepEqual(counts,{original:1,poetry:3,domestic:3,foreign:3},'Every ten daily entries keep the requested balance');}current=new Date(2026,0,361,12).getTime();events['flyfish:page']();assert.equal(result().text,first.text,'Daily selection repeats after 360 days');assert.ok([...attributions].some(value=>value.includes('译意')));assert.ok([...attributions].some(value=>value.includes('原创')));assert.ok([...attributions].some(value=>value.includes('王维')));
 const dataSource=source.slice(source.indexOf('  const sources'),source.indexOf('  /* QUOTE_CATALOG_END'));const library=vm.runInNewContext('(()=>{'+dataSource+';return {sources,catalog};})()');assert.equal(library.catalog.foreign.length,108);for(const category of Object.keys(library.catalog))for(const[text,id,original]of library.catalog[category]){assert.ok(text.length>0&&text.length<150);assert.ok(library.sources[id]);if(category==='foreign'){assert.ok(original&&original.length>8,'Foreign quotes retain the original wording for audit');assert.ok(library.sources[id].translation);}}
+assert.equal(library.catalog.foreign.filter(([,id])=>id==='gibran').length,2,'The Prophet contributes only two excerpts');
+for(const category of ['domestic','foreign']){
+  const authors=dailyResults.filter(item=>item.category===category).map(item=>item.attribution.split(' ·')[0]);
+  const counts=new Map();
+  authors.forEach(author=>counts.set(author,(counts.get(author)||0)+1));
+  authors.forEach((author,index)=>{
+    for(let gap=1;gap<=3;gap++)assert.notEqual(author,authors[(index+gap)%authors.length],'Authors are spaced apart, including across the cycle boundary');
+  });
+  for(let index=0;index<authors.length;index+=27){
+    assert.ok(authors.slice(index,index+27).some(author=>counts.get(author)===1),'Authors with one excerpt are spread across the cycle');
+  }
+}
 const saved=nodes['[data-daily-quote]'];nodes['[data-daily-quote]']=null;events['flyfish:page']();nodes['[data-daily-quote]']=saved;current=new Date(2026,1,8,10).getTime();events['flyfish:page']();assert.deepEqual(result(),dailyResults[38],'Returning to the page must refresh');
 current=new Date(2026,1,9,10).getTime();events.visibilitychange();assert.deepEqual(result(),dailyResults[39],'Returning to a visible tab refreshes the daily selection');
-console.log('PASS: 360 distinct sourced sentences, exact 36:108:108:108 balance, original wording, ten-entry balance, source-link cleanup, stable daily selection, midnight and navigation recovery.');
+console.log('PASS: 360 distinct sourced sentences, exact 36:108:108:108 balance, spaced authors and limited Prophet excerpts, original wording, ten-entry balance, source-link cleanup, stable daily selection, midnight and navigation recovery.');
 // 首页侧栏用真实生成的标记验证手动切换和站内返回。
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('public/index.html','utf8');

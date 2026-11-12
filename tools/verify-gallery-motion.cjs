@@ -6,7 +6,7 @@ const end=source.indexOf("  document.addEventListener('click',event=>",start);
 const requests=[],timers=new Map(),stage={},status={},caption={},img={classList:{remove(){}},removeAttribute(name){delete this[name];},animate(){return {cancel(){}};}};
 let serial=0;
 const context=vm.createContext({
-  $:selector=>selector==='#photo-viewer'?{}:selector==='img'?img:selector==='.viewer-stage'?{setAttribute:(key,value)=>stage[key]=value}:selector==='.viewer-status'?status:caption,
+  $:selector=>selector==='#photo-viewer'?{}:selector==='[data-photo-share]'?null:selector==='img'?img:selector==='.viewer-stage'?{setAttribute:(key,value)=>stage[key]=value}:selector==='.viewer-status'?status:caption,
   $$:()=>[],Image:class{constructor(){requests.push(this);}},matchMedia:()=>({matches:false}),
   setTimeout:(fn)=>{timers.set(++serial,fn);return serial;},clearTimeout:id=>timers.delete(id)
 });

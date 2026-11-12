@@ -52,7 +52,17 @@ hexo.extend.helper.register('ff_topics', function () {
   for (const post of allPosts()) for (const name of tags(post)) if (name !== 'test') counts.set(name, (counts.get(name) || 0) + 1);
   return [...counts].sort((a, b) => b[1] - a[1]).map(([name, count]) => ({name, count}));
 });
-hexo.extend.helper.register('ff_essays', () => (data().essay?.[0]?.essay_list || []).slice().sort((a,b) => String(b.date).localeCompare(String(a.date))));
+const essays = () => {
+  const perDay = new Map();
+  // 从底部给同日记录编号，顶部新增记录时保留已分享的链接。
+  return (data().essay?.[0]?.essay_list || []).slice().reverse().map(entry => {
+    const day = String(entry.date).replaceAll('/','-');
+    const number = (perDay.get(day) || 0) + 1;
+    perDay.set(day,number);
+    return {...entry,anchor:'essay-'+(entry.id || day+'-'+number)};
+  }).reverse().sort((a,b) => String(b.date).localeCompare(String(a.date)));
+};
+hexo.extend.helper.register('ff_essays', essays);
 hexo.extend.helper.register('ff_albums', () => data().album || []);
 // 相册维护入口：source/_data/album.yml。只排序展示副本，不改写原数据。
 // 新记录可以追加在 album_list 末尾，保留旧 #photo-group-N 链接，页面仍把最新日期放在上面。
@@ -120,7 +130,7 @@ hexo.extend.helper.register('ff_updates', function () {
     const time=moment(String(group.date),['YYYY-M-D','YYYY-MM-DD','YYYY/M/D','YYYY/MM/DD'],true);
     if(time.isValid())entries.push({kind:'相册',title:group.content||album.class_name,date:time.format('YYYY-MM-DD'),url:this.url_for(album.path_name.replace(/\/$/,'')+'/')+'#photo-group-'+index});
   }
-  for(const item of data().essay?.[0]?.essay_list||[]){const time=moment(String(item.date),['YYYY-MM-DD','YYYY/MM/DD'],true);if(time.isValid())entries.push({kind:'说说',title:item.content,date:time.format('YYYY-MM-DD'),url:this.url_for('/essay/')});}
+  for(const item of essays()){const time=moment(String(item.date),['YYYY-MM-DD','YYYY/MM/DD'],true);if(time.isValid())entries.push({kind:'说说',title:item.content,date:time.format('YYYY-MM-DD'),url:this.url_for('/essay/')+'#'+encodeURIComponent(item.anchor)});}
   if(data().now?.updated)entries.push({kind:'近况',title:'最近在学、在做和喜欢的事',date:String(data().now.updated),url:this.url_for('/about/#now-title')});
   return entries.sort((a,b)=>b.date.localeCompare(a.date)).slice(0,2);
 });

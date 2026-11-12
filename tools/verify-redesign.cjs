@@ -25,6 +25,18 @@ for(const post of expectedPosts){
   assert.ok($('.article-body').length,`Missing body: ${post.title}`);
 }
 const hub=load('articles/index.html');assert.equal(hub('[data-post-card]').length,expectedPosts.length,'Article hub must include all retained posts');
+const cardURLs=file=>{const $=load(file);return $('.post-card').map((_,el)=>$(el).attr('data-url')).get();};
+const march=cardURLs('archives/2026/03/index.html'),marchNext=cardURLs('archives/2026/03/page/2/index.html');
+const april=cardURLs('archives/2026/04/index.html');
+assert.equal(april.length,1,'April shows its one published article');
+assert.ok(march.length&&marchNext.length&&march.every(url=>!marchNext.includes(url)&&!april.includes(url)),'Archive months and pages do not repeat articles');
+const sql=cardURLs('tags/SQL注入/index.html'),sqlNext=cardURLs('tags/SQL注入/page/2/index.html');
+assert.ok(sql.length&&sqlNext.length&&sql.every(url=>!sqlNext.includes(url)),'Tag pages contain distinct articles');
+for(const directory of ['categories','tags']){
+  const $=load(directory+'/index.html');
+  assert.ok($('.article-terms a').length);
+  assert.equal($('.post-card').length,0);
+}
 assert.equal(load('index.html')('[data-open-reading-routes]').attr('href'),'/articles/#reading-routes');
 const routes=hub('#reading-routes [data-reading-route]').toArray();
 assert.deepEqual(routes.map(route=>hub(route).attr('data-reading-route')),['web-basics','life-notes']);

@@ -1,14 +1,14 @@
 # 关于页的近期状态（纯展示，不跳转）；更新内容时手动调整日期。
 # label 是小标题；title 是主标题；text 是介绍；icon 可用 book / spark / music。
-updated: '2026-10-23'
+updated: '2026-11-12'
 items:
   - label: 在学
     title: Web 安全
     text: 梳理漏洞原理和练习笔记，留下一份方便回看的学习记录。
     icon: book
   - label: 在做
-    title: 慢慢打磨这个小站
-    text: 整理页面、相册和小互动，让记录生活这件事更顺手。
+    title: 把小站的阅读和收藏整理好
+    text: 这几天在补文章归档，给旅行照片加上地图入口，也让看板收藏和歌单更容易查找。
     icon: spark
   - label: 喜欢
     title: 日语流行与番剧

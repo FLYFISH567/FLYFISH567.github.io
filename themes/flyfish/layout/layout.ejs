@@ -108,7 +108,7 @@
 <%- partial('_partials/explore') %>
 <%- partial('_partials/background-fish') %>
 <%- partial('_partials/global-music') %>
-<dialog id="photo-viewer" aria-label="照片大图"><button class="viewer-close" aria-label="关闭大图">×</button><div class="viewer-stage" aria-busy="false"><img alt=""><p class="viewer-status" role="status" hidden></p></div><div class="viewer-controls"><button data-photo-step="-1" aria-label="上一张">←</button><p></p><button data-photo-step="1" aria-label="下一张">→</button></div></dialog>
+<dialog id="photo-viewer" aria-label="照片大图"><button class="viewer-close" aria-label="关闭大图">×</button><div class="viewer-stage" aria-busy="false"><img alt=""><p class="viewer-status" role="status" hidden></p></div><div class="viewer-controls"><button data-photo-step="-1" aria-label="上一张">←</button><p></p><button data-photo-step="1" aria-label="下一张">→</button></div><div class="viewer-share" data-photo-share hidden><button type="button" data-copy-photo-link>复制照片链接</button><span data-photo-share-status role="status"></span><label data-photo-share-fallback hidden>照片链接 <input type="url" readonly></label></div></dialog>
 <div class="toast" role="status" aria-live="polite"></div>
 <button class="back-top" aria-label="回到顶部" data-tooltip="回到顶部" hidden><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path class="back-top-cap" d="M6 5h12"/><path class="back-top-arrow" d="m7.5 13 4.5-4.5 4.5 4.5M12 9v10"/></svg></button>
 </body></html>

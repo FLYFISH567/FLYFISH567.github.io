@@ -12,28 +12,37 @@
   const raw=read(PREFS)||{};
   const catalog=SOURCES.map(s=>s.id),known=Array.isArray(raw.catalog)?raw.catalog:['daily','ai','radar','dev','security'];
   const subscriptions=Array.isArray(raw.sources)?raw.sources.filter(id=>catalog.includes(id)).concat(raw.sources.length?catalog.filter(id=>!known.includes(id)):[]):catalog;
-  const pref={sources:[...new Set(subscriptions)],catalog,read:raw.read&&typeof raw.read==='object'&&!Array.isArray(raw.read)?raw.read:{},saved:{},notify:raw.notify===true,notifySince:Number(raw.notifySince)||0};
+  const pref={sources:[...new Set(subscriptions)],catalog,saved:{},notify:raw.notify===true,notifySince:Number(raw.notifySince)||0};
   function savedItems(value){return Object.fromEntries(Object.entries(value&&typeof value==='object'&&!Array.isArray(value)?value:{}).slice(-100).filter(([,item])=>SOURCES.some(s=>s.id===item?.sourceId)&&api.safeURL(item.url)&&typeof item.title==='string'&&Number.isFinite(Date.parse(item.publishedAt))).map(([id,item])=>[id,{...item,id,url:api.safeURL(item.url)}]));}
   pref.saved=savedItems(raw.saved);
   let category='all',mode='all',query='',limit=12,feedSignature;
   const $=(selector,root=page)=>root?.querySelector(selector);
   const dateTime=value=>{try{return new Intl.DateTimeFormat('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date(value));}catch{return '时间未知';}};
   const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value;if(cls)e.className=cls;return e;};
-  function save(){const entries=Object.entries(pref.read).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,1000);pref.read=Object.fromEntries(entries);write(PREFS,pref);}
+  function save(){write(PREFS,pref);}
   function mergeSnapshot(incoming){const newest=group=>(group?.items||[]).reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');for(const spec of SOURCES){const next=incoming.sources[spec.id],old=cache.sources[spec.id];if(next&&(!old||Date.parse(next.fetchedAt)>Date.parse(old.fetchedAt))&&(!old||!newest(old)||!newest(next)||newest(next)>=newest(old)))cache.sources[spec.id]=next;}if(incoming.checkedAt&&(!cache.checkedAt||incoming.checkedAt>=cache.checkedAt)){cache.checkedAt=incoming.checkedAt;cache.health=incoming.health;}}
   const sourceGroup=id=>cache.sources[id]||preview?.sources[id];
   const latestSnapshot=()=>preview?.checkedAt>cache.checkedAt?preview:cache;
   const needsFullFeed=()=>preview&&(!cache.checkedAt||preview.checkedAt>cache.checkedAt);
-  function entries(){const seen=new Set(),items=[];for(const spec of SOURCES){if(!pref.sources.includes(spec.id))continue;for(const item of sourceGroup(spec.id)?.items||[]){if(seen.has(item.id))continue;seen.add(item.id);items.push({...item,sourceId:spec.id});}}
-    if(mode==='saved')for(const item of Object.values(pref.saved))if(pref.sources.includes(item.sourceId)&&!seen.has(item.id))items.push(item);
-    return items.sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt));
+  function entries(){
+    if(mode==='saved')return Object.values(pref.saved);
+    const seen=new Set(),items=[];
+    for(const spec of SOURCES){
+      if(!pref.sources.includes(spec.id))continue;
+      for(const item of sourceGroup(spec.id)?.items||[]){
+        if(seen.has(item.id))continue;
+        seen.add(item.id);
+        items.push({...item,sourceId:spec.id});
+      }
+    }
+    return items;
   }
   function selected(){const words=query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);return entries().filter(item=>{
     const source=SOURCES.find(s=>s.id===item.sourceId),haystack=[item.title,item.summary,item.byline,source.name,item.topic].join(' ').toLocaleLowerCase();
-    return (category==='all'||source.category===category)&&(mode!=='unread'||!pref.read[item.id])&&(mode!=='saved'||!!pref.saved[item.id])&&words.every(word=>haystack.includes(word));
-  });}
+    return (mode==='saved'||category==='all'||source.category===category)&&words.every(word=>haystack.includes(word));
+  }).sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt));}
   function syncNotification(){if(!page)return;const button=$('[data-briefing-notify]'),copy=$('[data-briefing-notify-status]');
-    if(!('Notification' in window)||!window.isSecureContext){button.disabled=true;button.textContent='此浏览器暂不支持桌面提醒';copy.textContent='你仍可在看板内查看未读消息。';return;}
+    if(!('Notification' in window)||!window.isSecureContext){button.disabled=true;button.textContent='此浏览器暂不支持桌面提醒';copy.textContent='你仍可在看板内浏览最新消息。';return;}
     button.textContent=pref.notify&&Notification.permission==='granted'?'关闭桌面提醒':'开启桌面提醒';button.setAttribute('aria-pressed',String(pref.notify&&Notification.permission==='granted'));
     copy.textContent=Notification.permission==='denied'?'浏览器已阻止提醒；可在网站权限中修改。':pref.notify?'网页保持打开时，提醒已订阅来源的新消息；关闭网页后不会推送。':'网页保持打开时提醒新消息；关闭网页后不会推送。';
   }
@@ -46,27 +55,29 @@
     page.querySelectorAll('[data-briefing-group-count]').forEach(label=>{const group=SOURCES.filter(s=>s.category===label.dataset.briefingGroupCount);label.textContent=group.filter(s=>pref.sources.includes(s.id)).length+' / '+group.length;});
   }
   function renderFeed(items){
-    const visible=items.slice(0,limit),signature=JSON.stringify(visible.map(item=>[item,!!pref.read[item.id],!!pref.saved[item.id]]));
+    const visible=items.slice(0,limit),signature=JSON.stringify(visible.map(item=>[item,Object.hasOwn(pref.saved,item.id)]));
     if(signature===feedSignature)return;
     feedSignature=signature;
     const feed=$('[data-briefing-feed]'),fragment=document.createDocumentFragment();
-    const active=document.activeElement,focused=feed.contains(active)?active.dataset:null;
+    const active=document.activeElement,focused=feed.contains(active)?active:null;
     for(const [i,item] of visible.entries()){
-      const source=SOURCES.find(s=>s.id===item.sourceId),card=text('article','','briefing-item pointer-surface'+(pref.read[item.id]?' is-read':''));card.dataset.itemId=item.id;card.dataset.pointerLight='';
+      const source=SOURCES.find(s=>s.id===item.sourceId),card=text('article','','briefing-item pointer-surface');card.dataset.pointerLight='';
       card.append(text('div',String(i+1).padStart(2,'0'),'briefing-item-index'));
       const body=text('div','','briefing-item-body'),meta=text('div','','briefing-item-meta');
       meta.append(text('span',source.label,'briefing-category-tag'),text('span',source.format==='indexed'?source.name:item.byline||source.name));const dateOnly=['daily','ai'].includes(source.id),time=text('time',dateOnly?api.day(item.publishedAt)+' 简报':dateTime(item.publishedAt));time.dateTime=dateOnly?api.day(item.publishedAt):item.publishedAt;meta.append(time);
-      const heading=text('h2',''),a=text('a',item.title);const latin=(item.title.match(/[A-Za-z]/g)||[]).length,han=(item.title.match(/[\u3400-\u9fff]/g)||[]).length;if(latin>=8&&latin>han*2)a.lang='en';a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.readLink=item.id;heading.append(a);body.append(meta,heading);
+      const heading=text('h2',''),a=text('a',item.title);const latin=(item.title.match(/[A-Za-z]/g)||[]).length,han=(item.title.match(/[\u3400-\u9fff]/g)||[]).length;if(latin>=8&&latin>han*2)a.lang='en';a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.briefingLink='';a.dataset.itemId=item.id;a.setAttribute('aria-describedby','briefing-news-new-tab');heading.append(a);body.append(meta,heading);
       if(item.summary)body.append(text('p',item.summary));
       const actions=text('div','','briefing-item-actions');const topic=text('span',item.topic||source.label);actions.append(topic);
-      for(const [action,label,pressed] of [['read',pref.read[item.id]?'已读':'标为已读',!!pref.read[item.id]],['save',pref.saved[item.id]?'已收藏':'收藏',!!pref.saved[item.id]]]){const b=text('button',label);b.type='button';b.dataset.briefingAction=action;b.dataset.itemId=item.id;b.setAttribute('aria-pressed',String(pressed));b.setAttribute('aria-label',label+'：'+item.title);actions.append(b);}
+      const saved=Object.hasOwn(pref.saved,item.id),label=saved?'取消收藏':'收藏',saveButton=text('button',label);
+      saveButton.type='button';saveButton.dataset.briefingSave='';saveButton.dataset.itemId=item.id;
+      saveButton.setAttribute('aria-pressed',String(saved));saveButton.setAttribute('aria-label',label+'：'+item.title);actions.append(saveButton);
       body.append(actions);card.append(body);fragment.append(card);
     }
     feed.replaceChildren(fragment);
     if(focused){
-      const selector=focused.readLink?'[data-read-link]':'[data-briefing-action="'+focused.briefingAction+'"]';
+      const selector=focused.matches('[data-briefing-link]')?'[data-briefing-link]':'[data-briefing-save]';
       const controls=Array.from(feed.querySelectorAll(selector));
-      const sameItem=controls.find(control=>(control.dataset.readLink||control.dataset.itemId)===(focused.readLink||focused.itemId));
+      const sameItem=controls.find(control=>control.dataset.itemId===focused.dataset.itemId);
       (sameItem||controls[0]||$('[data-briefing-search]')).focus({preventScroll:true});
     }
   }
@@ -75,22 +86,25 @@
     const items=selected();
     renderFeed(items);
     $('[data-briefing-empty]').hidden=items.length>0;
-    $('[data-briefing-empty]').textContent=!pref.sources.length?'还没有选择资讯来源。勾选右侧订阅，就能开始阅读。':mode==='saved'?'还没有匹配的收藏，点击消息下方的“收藏”即可保存。':'暂时没有匹配的消息，换个分类或关键词试试。';
+    $('[data-briefing-empty]').textContent=mode==='saved'
+      ?(query.trim()?'没有匹配的收藏，试试其他关键词。':'还没有收藏。在订阅资讯里选一条喜欢的消息，点击「收藏」即可保存。')
+      :!pref.sources.length?'还没有选择资讯来源。勾选订阅来源，就能开始阅读。':'暂时没有匹配的消息，换个分类或关键词试试。';
     if(pref.sources.length&&mode!=='saved'&&needsFullFeed()){
       if(busy)$('[data-briefing-empty]').textContent='正在加载完整资讯…';
       else if(siteFailed)$('[data-briefing-empty]').textContent='完整资讯暂时无法加载，可以稍后点击「检查更新」。';
     }
     $('[data-briefing-more]').hidden=items.length<=limit;
     $('[data-briefing-clear]').hidden=!query;
-    $('[data-briefing-results]').textContent=[category==='all'?'全部资讯':CATEGORIES.find(c=>c[0]===category)?.[1],mode==='unread'?'未读':mode==='saved'?'收藏':'',query.trim()?'搜索结果':''].filter(Boolean).join(' · ');
+    $('[data-briefing-results]').textContent=[mode==='saved'?'我的收藏':category==='all'?'全部订阅资讯':CATEGORIES.find(c=>c[0]===category)?.[1],query.trim()?'搜索结果':''].filter(Boolean).join(' · ');
     const {checkedAt}=latestSnapshot(),delayed=checkedAt&&Date.now()-Date.parse(checkedAt)>10800000;
     $('[data-briefing-status]').textContent=status||(checkedAt?'后台采集于 '+dateTime(checkedAt)+(delayed?' · 更新延迟，显示上次内容':''):'正在检查站内更新…');
     $('[data-briefing-refresh]').disabled=busy;$('[data-briefing-refresh]').textContent=busy?'正在检查…':'检查更新';
+    $('.briefing-categories').hidden=mode==='saved';
     page.querySelectorAll('[data-briefing-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingCategory===category)));
     page.querySelectorAll('[data-briefing-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingMode===mode)));
     page.querySelectorAll('[data-briefing-source]').forEach(input=>input.checked=pref.sources.includes(input.dataset.briefingSource));
     $('[data-briefing-subscription-count]').textContent='已订阅 '+pref.sources.length+' / '+SOURCES.length+' 个来源';
-    $('[data-briefing-storage]').textContent=persistent?'阅读状态、收藏、自选与订阅保存在本机此浏览器，关闭后仍会保留；不跨设备同步，清除网站数据或结束无痕浏览后会丢失。':'浏览器存储不可用，本次设置仅在当前页面会话中保留。';
+    $('[data-briefing-storage]').textContent=persistent?'收藏、自选与订阅保存在当前浏览器。关闭网页后仍会保留，清除网站数据或结束无痕浏览后会丢失。':'浏览器存储不可用，本次设置仅在当前页面会话中保留。';
     renderSources();syncNotification();
   }
   function announce(items){if(!items.length||!pref.notify||!('Notification' in window)||Notification.permission!=='granted')return;
@@ -134,35 +148,50 @@
   function init(){page=document.querySelector('[data-briefing]');if(!page)return;
     feedSignature=undefined;
     pageController=new AbortController();const signal=pageController.signal;category=new URLSearchParams(location.search).get('category')||'all';if(!CATEGORIES.some(c=>c[0]===category))category='all';mode='all';query='';limit=12;
+    const search=$('[data-briefing-search]');search.value=query;
+    $('.briefing-filterbar').hidden=false;$('[data-briefing-refresh]').hidden=false;
     page.querySelectorAll('.briefing-subscription-group').forEach(group=>group.addEventListener('toggle',()=>{if(group.open)page?.querySelectorAll('.briefing-subscription-group').forEach(other=>{if(other!==group)other.open=false;});},{signal}));
     const seed=JSON.parse($('[data-briefing-seed]').textContent),snapshot=api.cleanSnapshot(seed);
     if(seed.preview)preview=snapshot;
     else{preview=null;mergeSnapshot(snapshot);write(CACHE,cache);}
     const today=new Date();$('[data-briefing-date]').textContent=new Intl.DateTimeFormat('zh-CN',{month:'long',day:'numeric',weekday:'long',timeZone:'Asia/Shanghai'}).format(today);
     page.addEventListener('click',event=>{
-      const cat=event.target.closest('[data-briefing-category]'),filter=event.target.closest('[data-briefing-mode]'),action=event.target.closest('[data-briefing-action]'),readLink=event.target.closest('[data-read-link]');
+      const cat=event.target.closest('[data-briefing-category]'),filter=event.target.closest('[data-briefing-mode]'),saveButton=event.target.closest('[data-briefing-save]');
       if(cat){category=cat.dataset.briefingCategory;limit=12;const url=new URL(location.href);if(category==='all')url.searchParams.delete('category');else url.searchParams.set('category',category);history.replaceState(history.state,'',url);render();}
-      if(filter){mode=filter.dataset.briefingMode;limit=12;render();}
-      if(action){const id=action.dataset.itemId,item=entries().find(i=>i.id===id)||pref.saved[id];if(!item)return;const next=action.dataset.briefingAction==='read'?action.dataset.briefingAction:'save';
-        if(next==='read'){if(pref.read[id])delete pref.read[id];else pref.read[id]=Date.now();}else{if(pref.saved[id])delete pref.saved[id];else{pref.saved[id]=item;const keys=Object.keys(pref.saved);if(keys.length>100)delete pref.saved[keys[0]];}}save();render();}
-      if(readLink){pref.read[readLink.dataset.readLink]=Date.now();save();readLink.closest('.briefing-item')?.classList.add('is-read');requestAnimationFrame(()=>render());}
+      if(filter&&mode!==filter.dataset.briefingMode){
+        mode=filter.dataset.briefingMode;
+        query='';search.value='';limit=12;
+        const label=mode==='saved'?'搜索收藏':'搜索资讯';
+        search.setAttribute('aria-label',label);search.placeholder=mode==='saved'?'搜索收藏的标题、媒体或关键词':'搜索新闻、媒体或关键词';
+        render();
+      }
+      if(saveButton){
+        const id=saveButton.dataset.itemId;
+        if(Object.hasOwn(pref.saved,id))delete pref.saved[id];
+        else{
+          const item=entries().find(entry=>entry.id===id);
+          if(!item)return;
+          pref.saved={...pref.saved,[id]:item};
+          const keys=Object.keys(pref.saved);
+          if(keys.length>100)delete pref.saved[keys[0]];
+        }
+        save();render();
+      }
     },{signal});
-    const search=$('[data-briefing-search]');search.value=query;
     search.addEventListener('input',event=>{query=event.target.value;limit=12;render();},{signal});
     const clearSearch=()=>{query='';search.value='';limit=12;render();search.focus({preventScroll:true});};
     $('[data-briefing-clear]').addEventListener('click',clearSearch,{signal});
     search.addEventListener('keydown',event=>{if(event.key==='Escape'&&query){event.preventDefault();event.stopPropagation();clearSearch();}},{signal});
-    page.querySelectorAll('[data-briefing-source]').forEach(input=>input.addEventListener('change',()=>{pref.sources=Array.from(page.querySelectorAll('[data-briefing-source]:checked')).map(e=>e.dataset.briefingSource);save();limit=12;render();refresh();},{signal}));
+    page.querySelectorAll('[data-briefing-source]').forEach(input=>input.addEventListener('change',()=>{pref.sources=Array.from(page.querySelectorAll('[data-briefing-source]:checked')).map(e=>e.dataset.briefingSource);save();if(mode==='all')limit=12;render();refresh();},{signal}));
     $('[data-briefing-refresh]').addEventListener('click',()=>refresh(true),{signal});
-    $('[data-briefing-read-all]').addEventListener('click',()=>{selected().forEach(i=>pref.read[i.id]=Date.now());save();render();},{signal});
     $('[data-briefing-more]').addEventListener('click',()=>{limit+=12;render();},{signal});
-    $('[data-briefing-notify]').addEventListener('click',async()=>{if(pref.notify){pref.notify=false;save();syncNotification();return;}if(!('Notification' in window))return;try{const permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;if(permission==='granted'){pref.notify=true;pref.notifySince=Date.now();save();}syncNotification();}catch{$('[data-briefing-notify-status]').textContent='暂时无法开启，仍可通过未读列表查看新消息。';}},{signal});
+    $('[data-briefing-notify]').addEventListener('click',async()=>{if(pref.notify){pref.notify=false;save();syncNotification();return;}if(!('Notification' in window))return;try{const permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;if(permission==='granted'){pref.notify=true;pref.notifySince=Date.now();save();}syncNotification();}catch{$('[data-briefing-notify-status]').textContent='暂时无法开启，仍可在看板内浏览最新消息。';}},{signal});
     render();refresh();
   }
   function dispose(){pageController?.abort();page=null;if(!pref.notify)refreshController?.abort();}
   document.addEventListener('flyfish:before-page',dispose);document.addEventListener('flyfish:page',init);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
-  window.addEventListener('storage',event=>{if(event.key===CACHE){mergeSnapshot(api.cleanSnapshot(read(CACHE)));render();}if(event.key===PREFS){const other=read(PREFS);if(other){pref.read=other.read||{};pref.saved=savedItems(other.saved);pref.notify=other.notify===true;pref.notifySince=Number(other.notifySince)||0;render();}}});
+  window.addEventListener('storage',event=>{if(event.key===CACHE){mergeSnapshot(api.cleanSnapshot(read(CACHE)));render();}if(event.key===PREFS){const other=read(PREFS);if(other){pref.saved=savedItems(other.saved);pref.notify=other.notify===true;pref.notifySince=Number(other.notifySince)||0;render();}}});
   timer=setInterval(()=>refresh(),60000);window.addEventListener('pagehide',()=>{dispose();clearInterval(timer);});window.addEventListener('pageshow',event=>{if(event.persisted){clearInterval(timer);timer=setInterval(()=>refresh(),60000);init();}});
   init();
 })();

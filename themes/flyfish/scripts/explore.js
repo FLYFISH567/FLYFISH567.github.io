@@ -29,7 +29,7 @@ function footprints(){
 hexo.extend.helper.register('ff_now',()=>data().now||{});
 hexo.extend.helper.register('ff_footprints',footprints);
 // 独立足迹编辑入口：source/_data/footprints.yml；不要求有相册或照片。
-hexo.extend.helper.register('ff_travel_map',()=>{
+function getTravelMap(){
   const entries=(records,status)=>(records||[]).filter(place=>place.name).map(place=>{
     const time=dateOf(place.date);
     const url=typeof place.url==='string'&&/^(https?:\/\/|\/(?!\/))/i.test(place.url)?place.url:undefined;
@@ -38,6 +38,16 @@ hexo.extend.helper.register('ff_travel_map',()=>{
       date:time.isValid()?time.format('YYYY.MM.DD'):'',timestamp:time.isValid()?time.valueOf():0};
   });
   return travelMap([...footprints(),...entries(data().footprints?.places,'visited'),...entries(data().footprints?.wishlist,'planned')]);
+}
+hexo.extend.helper.register('ff_travel_map',getTravelMap);
+hexo.extend.helper.register('ff_album_map_links',album=>{
+  const links=new Map();
+  if(!album||!/旅游|旅行/.test(album.class_name||''))return links;
+  const prefix=localUrl(album.path_name.replace(/\/$/,'')+'/')+'#photo-group-';
+  for(const place of getTravelMap().places){
+    if(place.point&&place.url?.startsWith(prefix))links.set(Number(place.url.slice(prefix.length)),localUrl('/about/')+'?place='+encodeURIComponent(place.anchor)+'#footprints-title');
+  }
+  return links;
 });
 hexo.extend.generator.register('flyfish-explore-index',()=>{
   const items=[],seen=new Set(),excluded=new Set(hexo.theme.config.explore?.exclude_images||[]);

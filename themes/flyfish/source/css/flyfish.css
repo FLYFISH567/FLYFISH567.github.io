@@ -533,6 +533,18 @@ body:is([data-view=essay],[data-view=life])>.site-shell{max-width:1100px}
 .viewer-stage>img:not([src]){visibility:hidden}
 .viewer-stage[aria-busy=true]>img{opacity:.4}
 .viewer-status{position:absolute;inset:auto 12px;justify-self:center;max-width:calc(100% - 24px);padding:8px 14px;border-radius:8px;background:var(--surface);color:var(--sub);font-size:12px;line-height:1.8;text-align:center}
+.viewer-share{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:10px;font-size:12px;color:var(--sub)}
+.viewer-share button{padding:7px 10px;border-radius:8px;background:var(--soft);color:var(--blue)}
+.viewer-share label{display:flex;align-items:center;gap:8px;width:100%}
+.viewer-share input{min-width:0;flex:1;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+.photo-grid>a:target{outline:2px solid var(--blue);outline-offset:3px}
+.photo-section-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px 12px}
+.photo-section-meta a,.essay-permalink,.life-essay-link{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+.photo-section-meta a{font-size:12px;white-space:nowrap}
+.essay-permalink{margin-inline-start:auto}
+.essay-card:target{outline:2px solid var(--blue);outline-offset:3px}
+.watch-search{max-width:24rem;margin-top:14px}
+.show-link{display:block;border-radius:10px}
 @media(prefers-reduced-motion:no-preference){
   .cloud-drift-left{animation:cloud-left 24s ease-in-out infinite alternate}
   .cloud-drift-right{animation:cloud-right 30s ease-in-out infinite alternate}
@@ -936,6 +948,10 @@ body.dialog-open .music-dock{visibility:hidden}
 .music-library-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 12px 17px;border-bottom:1px solid var(--line)}
 .music-library-heading>div{display:flex;align-items:baseline;gap:11px;min-width:0}.music-library-heading h2{font-size:16px;line-height:1.6;font-weight:600}.music-library-heading [data-music-count]{font-size:11px;color:var(--muted);white-space:nowrap}
 .music-library-heading>a{font-size:11px;color:var(--muted);white-space:nowrap}.music-library-heading>a:hover{color:var(--blue)}
+.music-library-search{margin:12px 7px 0;background:var(--bg)}
+.music-library-search:focus-within{box-shadow:none}
+.keyboard-navigation .music-library-search:has(input:focus-visible){outline:1px solid var(--blue);outline-offset:2px}
+.music-studio .music-search-empty{min-height:110px;font-size:13px}
 .music-studio .music-playlist{max-height:460px;padding:7px 0 0;scrollbar-gutter:stable}
 .music-studio .music-playlist li+li{border-top:0}.music-studio .music-playlist button{position:relative;gap:13px;padding:11px 12px;border-radius:9px;min-height:59px}
 .music-studio .music-track-copy{gap:2px}.music-studio .music-track-copy strong{font-size:12px}.music-studio .music-track-copy small{font-size:10px}
@@ -1034,3 +1050,9 @@ body.dialog-open .music-dock{visibility:hidden}
 .fish-bubble-trail i{position:absolute;left:0;top:0;width:6px;height:6px;border:1px solid currentColor;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff9 0 12%,transparent 25%);opacity:0;--bubble-drift:8px}
 .fish-bubble-trail i:nth-child(2){width:4px;height:4px;--bubble-drift:14px}
 .fish-bubble-trail i:nth-child(3){width:7px;height:7px;--bubble-drift:5px}
+.article-browse{display:flex;flex-wrap:wrap;gap:10px 18px;margin:0 0 18px;color:var(--blue);font-size:13px}
+.article-browse a,.article-terms a{text-decoration:underline;text-underline-offset:3px}
+.article-terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:8px 20px;padding-inline-start:20px}
+.article-terms small{color:var(--sub)}
+.article-image-zoom{display:inline-block;max-width:100%;padding:0;background:transparent;vertical-align:middle;cursor:zoom-in}
+.article-image-zoom:focus-visible{outline:2px solid var(--blue);outline-offset:3px}

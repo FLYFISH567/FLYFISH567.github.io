@@ -11,9 +11,10 @@
   const resetButton=map.querySelector('[data-map-reset]'),scaleLabel=map.querySelector('[data-map-scale]');
   const filters=map.querySelector('[data-map-filters]'),filterButtons=Array.from(map.querySelectorAll('[data-map-filter]'));
   const placeList=map.querySelector('.travel-places'),groups=Array.from(map.querySelectorAll('[data-travel-group]'));
-  let hovered=null,focused=null;
+  const destination=new URLSearchParams(location.search).get('place');
+  let hovered=null,focused=null,linked=links.find(link=>link.dataset.placeAnchor===destination)?.dataset.place;
   function update(){
-    const selected=focused??hovered;
+    const selected=focused??hovered??linked;
     for(const link of links)link.classList.toggle('is-highlighted',link.dataset.place===selected);
   }
   for(const link of links){
@@ -68,7 +69,7 @@
     let cx=view.x+view.width/2,cy=view.y+view.height/2;
     const shown=visiblePins();
     if(!anchor&&zoom===1&&next>1&&shown.length){
-      const selected=shown.find(pin=>pin.link.dataset.place===(focused??hovered));
+      const selected=shown.find(pin=>pin.link.dataset.place===(focused??hovered??linked));
       cx=selected?selected.x:shown.reduce((sum,pin)=>sum+pin.x,0)/shown.length;cy=selected?selected.y:shown.reduce((sum,pin)=>sum+pin.y,0)/shown.length;
     }
     zoom=next;view.width=full.width/zoom;view.height=full.height/zoom;
@@ -90,7 +91,7 @@
       }
       groups.forEach(group=>{group.hidden=status!=='all'&&group.dataset.travelGroup!==status;});
       if(placeList){placeList.scrollTop=0;placeList.setAttribute('aria-label',status==='planned'?'心愿目的地':status==='visited'?'已到访的地点':'已到访与心愿目的地，各按日期排列');}
-      hovered=null;focused=null;update();reset(); // 换一类地点时恢复全国视图，避免新标点落在放大视野之外。
+      hovered=null;focused=null;linked=null;update();reset(); // 换一类地点时恢复全国视图，避免新标点落在放大视野之外。
     });
   }
   zoomIn.addEventListener('click',()=>magnify(nextLevel(1)));zoomOut.addEventListener('click',()=>magnify(nextLevel(-1)));
@@ -131,6 +132,7 @@
   for(const name of ['pointerup','pointercancel','lostpointercapture'])svg.addEventListener(name,event=>{if(drag?.id===event.pointerId)finishDrag();});
   window.addEventListener('blur',finishDrag,{signal:lifecycle.signal});window.addEventListener('pagehide',finishDrag,{signal:lifecycle.signal});window.addEventListener('resize',()=>{finishDrag();draw();},{signal:lifecycle.signal});
   cleanup=()=>{finishDrag();lifecycle.abort();};
+  update();
   draw();
   }
   document.addEventListener('flyfish:before-page',()=>cleanup());

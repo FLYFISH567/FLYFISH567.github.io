@@ -5,10 +5,17 @@ function setup(markup=html){const dom=new JSDOM(markup,{url:'https://example.com
 const state=setup(),{w,doc}=state,root=doc.querySelector('[data-toolbox]'),workspace=doc.querySelector('[data-tool-workspace]'),input=doc.querySelector('[data-tool-input]'),output=doc.querySelector('[data-tool-output]');
 const click=s=>doc.querySelector(s).click();const links=[...doc.querySelectorAll('.toolbox-site')];assert.ok(links.length>=12);assert.ok(links.some(a=>a.href==='https://chat.deepseek.com/'));assert.ok(links.some(a=>a.href==='https://www.bilibili.com/'));assert.ok(links.every(a=>a.target==='_blank' && a.rel.includes('noopener') && a.href.startsWith('https://')));
 assert.equal(workspace.hidden,true);click('[data-tool="json"]');assert.equal(workspace.hidden,false);assert.equal(doc.querySelector('[data-tool="json"]').getAttribute('aria-expanded'),'true');input.value='{"hello":"世界"}';click('[data-tool-action="primary"]');assert.deepEqual(JSON.parse(output.value),{hello:'世界'});assert.match(output.value,/\n/);
+const formatted=output.value;click('[data-tool="base64"]');assert.equal(input.value,'');assert.equal(output.value,'');click('[data-tool="json"]');assert.equal(input.value,'{"hello":"世界"}');assert.equal(output.value,formatted);
 input.value='{bad';click('[data-tool-action="primary"]');assert.match(doc.querySelector('[data-tool-status]').textContent,/转换失败/);assert.equal(output.value,'');
 click('[data-tool="base64"]');input.value='小鱼';click('[data-tool-action="primary"]');const encoded=output.value;input.value=encoded;click('[data-tool-action="secondary"]');assert.equal(output.value,'小鱼');
 click('[data-tool="url"]');input.value='鱼 & 海';click('[data-tool-action="primary"]');input.value=output.value;click('[data-tool-action="secondary"]');assert.equal(output.value,'鱼 & 海');
 click('[data-tool="time"]');input.value='1700000000';click('[data-tool-action="primary"]');assert.match(output.value,/2023-11-14T22:13:20\.000Z/);click('[data-tool-close]');assert.equal(workspace.hidden,true);assert.equal(doc.activeElement.dataset.tool,'time');
+click('[data-tool="time"]');assert.equal(input.value,'1700000000');assert.match(output.value,/2023-11-14T22:13:20\.000Z/);
+for(const value of ['2026-02-30 10:00:00','2025-02-29T10:00:00Z','2026-11-12 24:01','2026-11-12 09:00+08:60']){
+  input.value=value;click('[data-tool-action="secondary"]');assert.equal(output.value,'');assert.match(doc.querySelector('[data-tool-status]').textContent,/转换失败/);
+}
+input.value='2024-02-29 10:00:00+08:00';click('[data-tool-action="secondary"]');assert.match(output.value,new RegExp(String(Date.UTC(2024,1,29,2))));
+click('[data-tool-clear]');click('[data-tool="url"]');click('[data-tool="time"]');assert.equal(input.value,'');assert.equal(output.value,'');
 // Simulate the navigation module replacing page content, then dispatching its page lifecycle event.
 const replacement=root.cloneNode(true);delete replacement.dataset.toolboxReady;root.replaceWith(replacement);w.document.dispatchEvent(new w.Event('flyfish:page'));const newTool=replacement.querySelector('[data-tool="json"]');newTool.click();assert.equal(replacement.querySelector('[data-tool-workspace]').hidden,false);state.dom.window.close();
 console.log('PASS: directory links, local tool open/close and focus, JSON, UTF-8 Base64, URL, timestamps, invalid input and navigation reinitialization.');

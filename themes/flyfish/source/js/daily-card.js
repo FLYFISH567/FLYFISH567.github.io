@@ -626,6 +626,31 @@
     "work": "前赤壁赋",
     "url": "https://zh.wikisource.org/zh-hans/%E5%89%8D%E8%B5%A4%E5%A3%81%E8%B3%A6"
   },
+  "zhuangzi": {
+    "author": "庄子",
+    "work": "逍遥游",
+    "url": "https://zh.wikisource.org/zh-hans/逍遙遊"
+  },
+  "liuyuxi": {
+    "author": "刘禹锡",
+    "work": "陋室铭",
+    "url": "https://zh.wikisource.org/zh-hans/陋室銘"
+  },
+  "guiyouguang": {
+    "author": "归有光",
+    "work": "项脊轩志",
+    "url": "https://zh.wikisource.org/zh-hans/項脊軒志"
+  },
+  "zhangdai": {
+    "author": "张岱",
+    "work": "湖心亭看雪",
+    "url": "https://zh.wikisource.org/zh-hans/湖心亭看雪"
+  },
+  "yuanhongdao": {
+    "author": "袁宏道",
+    "work": "满井游记",
+    "url": "https://zh.wikisource.org/zh-hans/滿井遊記"
+  },
   "bacon": {
     "author": "培根",
     "work": "论说文集",
@@ -691,6 +716,48 @@
     "work": "先知",
     "url": "https://www.gutenberg.org/ebooks/58585",
     "translation": "根据所链公版英文文本译意；小说与戏剧为作品摘句，不表示作者在现实中的个人断言。"
+  },
+  "montgomery": {
+    "author": "露西·莫德·蒙哥马利",
+    "work": "绿山墙的安妮",
+    "url": "https://www.gutenberg.org/cache/epub/45/pg45-images.html",
+    "translation": "根据第二十九章英文正文译意。"
+  },
+  "dickinson": {
+    "author": "艾米莉·狄金森",
+    "work": "希望是有羽毛的东西",
+    "url": "https://www.gutenberg.org/cache/epub/2679/pg2679.html",
+    "translation": "根据诗歌 Hope 首节译意。"
+  },
+  "shelley": {
+    "author": "玛丽·雪莱",
+    "work": "弗兰肯斯坦",
+    "url": "https://www.gutenberg.org/files/84/84-h/84-h.htm",
+    "translation": "根据第一封信的英文正文译意。"
+  },
+  "eliot": {
+    "author": "乔治·艾略特",
+    "work": "米德尔马契",
+    "url": "https://www.gutenberg.org/cache/epub/145/pg145-images.html",
+    "translation": "根据小说尾声英文正文译意。"
+  },
+  "carroll": {
+    "author": "刘易斯·卡罗尔",
+    "work": "爱丽丝漫游奇境",
+    "url": "https://www.gutenberg.org/files/11/11-h/11-h.htm",
+    "translation": "根据第一章爱丽丝的心声译意。"
+  },
+  "burnett": {
+    "author": "弗朗西丝·霍奇森·伯内特",
+    "work": "秘密花园",
+    "url": "https://www.gutenberg.org/cache/epub/113/pg113-images.html",
+    "translation": "根据第十九章玛丽谈春天的对白译意。"
+  },
+  "tagore": {
+    "author": "泰戈尔",
+    "work": "新月集·海滨",
+    "url": "https://www.gutenberg.org/cache/epub/6520/pg6520-images.html",
+    "translation": "根据作者自译的英文文本译意。"
   },
   "wilde": {
     "author": "王尔德",
@@ -1302,8 +1369,8 @@
       "confucius"
     ],
     [
-      "人不知而不愠，不亦君子乎？",
-      "confucius"
+      "怒而飞，其翼若垂天之云。",
+      "zhuangzi"
     ],
     [
       "学而不思则罔，思而不学则殆。",
@@ -1338,8 +1405,8 @@
       "confucius"
     ],
     [
-      "君子欲讷于言而敏于行。",
-      "confucius"
+      "苔痕上阶绿，草色入帘青。",
+      "liuyuxi"
     ],
     [
       "岁寒，然后知松柏之后凋也。",
@@ -1350,16 +1417,16 @@
       "confucius"
     ],
     [
-      "不患人之不己知，患不知人也。",
-      "confucius"
+      "庭有枇杷树，吾妻死之年所手植也。今已亭亭如盖矣。",
+      "guiyouguang"
     ],
     [
-      "君子求诸己，小人求诸人。",
-      "confucius"
+      "雾凇沆砀，天与云、与山、与水，上下一白。",
+      "zhangdai"
     ],
     [
-      "过而不改，是谓过矣。",
-      "confucius"
+      "始知郊田之外，未始无春，而城居者未之知也。",
+      "yuanhongdao"
     ],
     [
       "不义而富且贵，于我如浮云。",
@@ -2088,29 +2155,29 @@
       "Love all God’s creation, the whole and every grain of sand in it."
     ],
     [
-      "工作，是看得见的爱。",
-      "gibran",
-      "Work is love made visible."
+      "沿着弯弯的小路，每个小海湾的水波都在跳舞。",
+      "montgomery",
+      "Every little cove along the curving road was a marvel of dancing ripples."
     ],
     [
-      "在亲密之中，也要给彼此留些空间。",
+      "再亲密，也给彼此留一点空间。",
       "gibran",
-      "Let there be spaces in your togetherness"
+      "But let there be spaces in your togetherness,"
     ],
     [
-      "爱彼此，但不要把爱变成束缚。",
-      "gibran",
-      "Love one another, but make not a bond of love"
+      "希望长着羽毛，栖在灵魂里，唱着无词的歌，从不停歇。",
+      "dickinson",
+      "Hope is the thing with feathers\nThat perches in the soul,\nAnd sings the tune without the words,\nAnd never stops at all,"
     ],
     [
-      "你给出的若只是财物，那还只是很少的一部分。",
-      "gibran",
-      "You give but little when you give of your possessions."
+      "这阵风从我要去的地方吹来，让我提前领略了那片冰寒天地。",
+      "shelley",
+      "This breeze, which has travelled from the regions towards which I am advancing, gives me a foretaste of those icy climes."
     ],
     [
-      "真正的给予，是把自己也献出来。",
-      "gibran",
-      "It is when you give of yourself that you truly give."
+      "世界一点点变好，也靠那些从未写进历史的小事。",
+      "eliot",
+      "the growing good of the world is partly dependent on unhistoric acts"
     ],
     [
       "你的快乐，是揭下面具的悲伤。",
@@ -2118,19 +2185,19 @@
       "Your joy is your sorrow unmasked."
     ],
     [
-      "在友谊的甜美中，让欢笑与快乐彼此分享。",
-      "gibran",
-      "And in the sweetness of friendship let there be laughter, and sharing of pleasures."
+      "爱丽丝想，一本书既没有图画，也没有对话，能有什么意思？",
+      "carroll",
+      "and what is the use of a book,” thought Alice “without pictures or conversations?"
     ],
     [
-      "把你最好的部分留给朋友。",
-      "gibran",
-      "And let your best be for your friend."
+      "那天早上，我以为春天已经到了，其实它还在路上。现在它真的来了！",
+      "burnett",
+      "I thought it had come that other morning, but it was only coming. It is here now!"
     ],
     [
-      "愿友谊不为别的目的，只为心灵更加深厚。",
-      "gibran",
-      "And let there be no purpose in friendship save the deepening of the spirit."
+      "在无边世界的海岸上，孩子们相聚。",
+      "tagore",
+      "On the seashore of endless worlds children meet."
     ],
     [
       "艺术家是美好事物的创造者。",
@@ -2271,7 +2338,33 @@
 };
   /* QUOTE_CATALOG_END */
   const categoryNames={original:'小站原创',poetry:'古诗词',domestic:'国内名言',foreign:'国外名言'};
-  const groups=Object.fromEntries(Object.entries(catalog).map(([category,rows])=>[category,rows.map(([text,sourceId])=>{const source=sources[sourceId];return {text,category,url:source.url,attribution:category==='original'?'小站手记 · 原创':source.author+' ·《'+source.work+'》'+(category==='foreign'?'（译意）':'')};})]));
+  function spreadAuthors(rows) {
+    const byAuthor = new Map();
+    for (const row of rows) {
+      const author = sources[row[1]].author;
+      if (!byAuthor.has(author)) byAuthor.set(author, []);
+      byAuthor.get(author).push(row);
+    }
+    // 按作者均匀铺开摘句，用黄金比例错开首句，让只有一条摘句的作者也分散在整轮。
+    const step = (Math.sqrt(5) - 1) / 2;
+    return [...byAuthor.values()]
+      .flatMap((group, authorIndex) => {
+        const offset = ((authorIndex + 1) * step) % 1;
+        return group.map((row, index) => ({row, position: (index + offset) / group.length}));
+      })
+      .sort((a, b) => a.position - b.position)
+      .map(item => item.row);
+  }
+  const groups = Object.fromEntries(Object.entries(catalog).map(([category, rows]) => {
+    const ordered = category === 'domestic' || category === 'foreign' ? spreadAuthors(rows) : rows;
+    return [category, ordered.map(([text, sourceId]) => {
+      const source = sources[sourceId];
+      const attribution = category === 'original'
+        ? '小站手记 · 原创'
+        : source.author + ' ·《' + source.work + '》' + (category === 'foreign' ? '（译意）' : '');
+      return {text, category, url: source.url, attribution};
+    })];
+  }));
   // 每十句恰好 1 条原创、3 条诗词、3 条国内名言、3 条国外名言。
   const sequence=['original','poetry','domestic','foreign','poetry','foreign','domestic','poetry','domestic','foreign'];
   const used={original:0,poetry:0,domestic:0,foreign:0},quotes=[];
@@ -2291,7 +2384,7 @@
     if (attribution) {
       attribution.textContent = entry.attribution;
       attribution.title=categoryNames[entry.category];
-      if(entry.url){attribution.href=entry.url;attribution.target='_blank';attribution.rel='noopener noreferrer';attribution.setAttribute('aria-label',entry.attribution+'，查看原文来源');}
+      if(entry.url){attribution.href=entry.url;attribution.target='_blank';attribution.rel='noopener noreferrer';attribution.setAttribute('aria-label',entry.attribution+'，在新标签页查看原文');}
       else {attribution.removeAttribute('href');attribution.removeAttribute('target');attribution.removeAttribute('rel');attribution.removeAttribute('aria-label');}
     }
     const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);

@@ -1,5 +1,5 @@
 <article class="reading-panel<%= ff_life(page) ? ' personal-post' : '' %>">
-  <header class="article-heading"><a class="back-link" href="<%= url_for('/articles/') %>">← 文章库</a><div class="eyebrow"><%= ff_topic(page) %></div><h1><%= page.title %></h1><div class="post-meta"><span><%= config.author %></span><time datetime="<%= date_xml(page.date) %>">发布于 <%= date(page.date,'YYYY.MM.DD') %></time><% if(date(page.updated,'YYYY-MM-DD')!==date(page.date,'YYYY-MM-DD')) { %><time datetime="<%= date_xml(page.updated) %>">更新于 <%= date(page.updated,'YYYY.MM.DD') %></time><% } %></div></header>
+  <header class="article-heading"><a class="back-link" data-article-return href="<%= url_for('/articles/') %>">← 文章库</a><div class="eyebrow"><%= ff_topic(page) %></div><h1><%= page.title %></h1><div class="post-meta"><span><%= config.author %></span><time datetime="<%= date_xml(page.date) %>">发布于 <%= date(page.date,'YYYY.MM.DD') %></time><% if(date(page.updated,'YYYY-MM-DD')!==date(page.date,'YYYY-MM-DD')) { %><time datetime="<%= date_xml(page.updated) %>">更新于 <%= date(page.updated,'YYYY.MM.DD') %></time><% } %></div></header>
   <details class="mobile-toc"><summary>这篇文章的目录</summary><%- toc(page.content,{list_number:false,max_depth:4}) %></details>
   <div class="article-body"><%- page.content %></div>
   <%- partial('_partials/reading-route-next') %>

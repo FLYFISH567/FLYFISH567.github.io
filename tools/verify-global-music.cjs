@@ -27,6 +27,47 @@ function setup(options={}){
  return {dom,w,doc,audio,requests,timers,click,event,input,choose,actions,options,get plays(){return plays;},get paused(){return paused;},get enabled(){return enabled;},position(value){position=value;event('timeupdate');}};
 }
 (async()=>{
+ const staticPage=new JSDOM(ejs.render(pagePartial,{theme:{music:{id:'123'}},partial:()=>''}));
+ const staticDocument=staticPage.window.document;
+ assert.match(staticDocument.querySelector('[data-music-placeholder]').textContent,/启用 JavaScript 后可在站内播放/);
+ assert.equal(staticDocument.querySelector('[data-music-count]').textContent,'');
+ assert.equal(staticDocument.querySelector('[data-music-search]').closest('label').hidden,true);
+ assert.match(staticDocument.querySelector('[data-music-playlist-source]').getAttribute('href'),/playlist\?id=123$/);
+ staticPage.window.close();
+ const filtered=setup();await flush();
+ const search='[data-music-search]';
+ const visible=()=>Array.from(filtered.doc.querySelectorAll('.music-playlist li:not([hidden]) [data-music-track]'),node=>node.dataset.musicTrack);
+ const scenes=()=>Array.from(filtered.doc.querySelectorAll('.music-scene-heading:not([hidden])'),node=>node.textContent);
+ assert.equal(filtered.doc.querySelector(search).closest('label').hidden,false);
+ filtered.input(search,'ＦＩＲＳＴ Composer');
+ assert.deepEqual(visible(),['0']);
+ assert.deepEqual(scenes(),['Soft']);
+ assert.equal(filtered.doc.querySelector('[data-music-count]').textContent,'匹配 1 / 2 首');
+ filtered.click('[data-music-track="0"]');await flush();filtered.position(35);
+ filtered.input(search,'Second');
+ assert.deepEqual(visible(),['1']);
+ assert.deepEqual(scenes(),['Rhythm']);
+ assert.equal(filtered.audio.currentTime,35);
+ assert.equal(filtered.paused,false);
+ assert.equal(filtered.doc.querySelector('[data-music-track="0"]').getAttribute('aria-pressed'),'true');
+ filtered.choose('123');await flush();
+ assert.equal(filtered.doc.querySelector(search).value,'Second','Refreshing the same collection keeps the current search');
+ assert.deepEqual(visible(),['1']);
+ filtered.input(search,'no match');
+ assert.equal(filtered.doc.querySelector('[data-music-search-empty]').hidden,false);
+ assert.equal(filtered.doc.querySelector('.music-playlist').hidden,true);
+ filtered.click('[data-music-action=next]');await flush();
+ assert.match(filtered.audio.src,/id=1232$/,'Player next follows the original playlist queue');
+ filtered.input(search,'');
+ assert.deepEqual(visible(),['0','1']);
+ assert.equal(filtered.doc.querySelector('[data-music-search-empty]').hidden,true);
+ filtered.input(search,'Second');
+ filtered.choose('456');await flush();
+ assert.equal(filtered.doc.querySelector(search).value,'','Selecting a different collection clears the current search');
+ assert.deepEqual(visible(),['0','1']);
+ assert.equal(filtered.paused,false);
+ filtered.dom.window.close();
+
  const s=setup();await flush();assert.equal(s.plays,0,'Opening the library loads metadata without playing audio');assert.equal(s.doc.querySelector('[data-music-count]').textContent,'2 首');assert.equal(s.doc.querySelectorAll('[data-refresh-music],[data-load-music],[data-music-action=stop]').length,0);assert.equal(s.doc.querySelectorAll('.music-scene-heading').length,2);
  assert.equal(s.doc.querySelector('[data-music-track] strong').textContent,'<b>First 123</b>');assert.equal(s.doc.querySelector('[data-music-track] b'),null);
  s.click('[data-music-track="1"]');await flush();s.position(35);assert.equal(s.paused,false);s.choose('456');await flush();assert.equal(s.paused,false,'Switching while playing continues with the new collection');assert.match(s.audio.src,/id=4561$/);assert.equal(s.doc.querySelector('[data-music-count]').textContent,'2 首');for(const p of s.doc.querySelectorAll('[data-music-playlist-select]')){assert.equal(p.value,'netease:456');assert.equal(p.disabled,false);}
@@ -67,5 +108,5 @@ function setup(options={}){
    assert.deepEqual(Array.from(ordered.doc.querySelectorAll('[data-music-track] strong'),node=>node.textContent),nativeOrder.map(track=>track.name));
    ordered.dom.window.close();
  }
- console.log('PASS: verified native order for all five snapshots and background updates, first song remains at 01; automatic metadata loading, latest-choice-wins switching, play/pause continuity, loading feedback, rate limits, progress, recovery, controls, navigation and resume.');
+ console.log('PASS: song and artist search, original queue continuity, no-script fallback, native order for all five snapshots and background updates, playback and playlist switching, loading feedback, rate limits, progress, recovery, controls, navigation and resume.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

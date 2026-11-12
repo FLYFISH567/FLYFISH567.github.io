@@ -50,7 +50,7 @@ function travelMap(stops){
     }
     else grouped.set(key,{...stop,visits:1,coordinates:locate(stop)});
   }
-  const places=Array.from(grouped.values()).sort((a,b)=>Number(a.status==='planned')-Number(b.status==='planned')||(b.timestamp||0)-(a.timestamp||0)).map((place,index)=>{
+  const places=Array.from(grouped,([key,place])=>({...place,anchor:'travel-'+key.replace(':','-')})).sort((a,b)=>Number(a.status==='planned')-Number(b.status==='planned')||(b.timestamp||0)-(a.timestamp||0)).map((place,index)=>{
     if(!place.coordinates)return {...place,id:index,point:null};
     const [x,y]=project(place.coordinates);
     // The South China Sea inset uses the same projection, scaled and translated.

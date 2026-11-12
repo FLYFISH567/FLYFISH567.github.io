@@ -1,5 +1,25 @@
 <% const groups=ff_shows(); %>
 <section data-bangumi><header class="page-heading illustrated-heading pointer-surface" data-pointer-light><span class="eyebrow">WATCHLIST</span><h1>追番列表</h1><%- partial('_partials/heading-art',{kind:'bangumi'}) %></header>
 <%- partial('life-nav') %>
-<div class="watch-tabs" role="group" aria-label="追番状态"><% for(const [key,label] of [['watching','在看'],['wantWatch','想看'],['watched','看过']]) { %><button type="button" data-watch-status="<%= key %>" aria-pressed="<%= key==='watching' %>"><%= label %> <small><%= (groups[key]||[]).length %></small></button><% } %></div>
-<p class="watch-count" aria-live="polite"></p><div class="show-grid"><% for(const [key,label] of [['watching','在看'],['wantWatch','想看'],['watched','看过']]) { for(const show of groups[key]||[]) { %><article class="show-card" data-show-status="<%= key %>"><a class="show-cover" href="https://www.bilibili.com/bangumi/media/md<%= show.id %>" target="_blank" rel="noopener"><img src="<%= ff_safe_url(show.cover) %>" alt="<%= show.title %>海报" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span><%= label %></span></a><h2><a href="https://www.bilibili.com/bangumi/media/md<%= show.id %>" target="_blank" rel="noopener"><%= show.title %></a></h2><div class="post-meta"><span><%= show.totalCount %></span><span><%= show.type %></span></div><% if(show.progress) { %><p class="show-progress"><%= show.progress %></p><% } %><details class="show-details"><summary>简介</summary><p><%= show.des %></p></details></article><% } } %></div></section>
+<% const statuses=[['watching','在看'],['wantWatch','想看'],['watched','看过']]; const total=statuses.reduce((count,[key])=>count+(groups[key]||[]).length,0); %>
+<div data-watch-controls hidden>
+  <div class="watch-tabs" role="group" aria-label="追番状态">
+    <% for(const [key,label] of [['all','全部'],...statuses]) { %><button type="button" data-watch-status="<%= key %>" aria-pressed="<%= key==='watching' %>"><%= label %> <small><%= key==='all'?total:(groups[key]||[]).length %></small></button><% } %>
+  </div>
+  <label class="search-field watch-search"><input type="search" data-watch-search aria-label="搜索作品名称" placeholder="搜索作品名称" autocomplete="off"></label>
+</div>
+<p class="watch-count" aria-live="polite">共 <%= total %> 部</p>
+<p class="empty-state" data-watch-empty hidden>没有找到匹配的作品，可以换个关键词或切换追番状态。</p>
+<div class="show-grid">
+  <% for(const [key,label] of statuses) { for(const show of groups[key]||[]) { %>
+    <article class="show-card" data-show-status="<%= key %>">
+      <a class="show-link" href="https://www.bilibili.com/bangumi/media/md<%= show.id %>" target="_blank" rel="noopener noreferrer" aria-label="<%= show.title %>（在新标签页打开）">
+        <div class="show-cover"><img src="<%= ff_safe_url(show.cover) %>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span><%= label %></span></div>
+        <h2><%= show.title %></h2>
+      </a>
+      <div class="post-meta"><span><%= show.totalCount %></span><span><%= show.type %></span></div>
+      <% if(show.progress) { %><p class="show-progress"><%= show.progress %></p><% } %>
+      <details class="show-details"><summary>简介</summary><p><%= show.des %></p></details>
+    </article>
+  <% } } %>
+</div></section>

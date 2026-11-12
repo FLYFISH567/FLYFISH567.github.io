@@ -8,5 +8,5 @@
     <p class="fish-home-status" data-fish-status role="status" aria-live="polite"></p>
     <div class="fish-home-controls" role="group" aria-label="小鱼移动方向"><button type="button" data-fish-move="up" aria-label="向上">↑</button><div><button type="button" data-fish-move="left" aria-label="向左">←</button><button type="button" data-fish-move="down" aria-label="向下">↓</button><button type="button" data-fish-move="right" aria-label="向右">→</button></div></div>
   </div>
-  <div class="intro-actions"><a class="button primary" href="<%= url_for('/') %>">回到首页</a><a class="button" href="<%= url_for('/articles/') %>">看看文章</a></div>
+  <div class="intro-actions"><a class="button primary" href="<%= url_for('/') %>">回到首页</a><a class="button" data-no-navigation href="<%= url_for('/articles/?search=1') %>">搜索文章</a></div>
 </section>

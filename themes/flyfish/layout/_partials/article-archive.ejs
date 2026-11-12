@@ -1,0 +1,13 @@
+<% const period = page.year ? page.year + ' 年' + (page.month ? ' ' + page.month + ' 月' : '') + (page.day ? ' ' + page.day + ' 日' : '') : '';
+   const heading = page.tag ? '标签 · ' + page.tag : page.category ? '分类 · ' + page.category : period ? period + '归档' : '文章归档'; %>
+<header class="page-heading"><h1><%= heading %><%= page.current > 1 ? ' · 第 ' + page.current + ' 页' : '' %></h1></header>
+<%- partial('article-browse') %>
+<% if(page.archive && !page.year && page.current===1) { %>
+  <nav class="article-browse" aria-label="按年月查看归档">
+    <% for(const month of [...new Set(site.posts.map(post=>date(post.date,'YYYY/MM')))].sort().reverse()) { %>
+      <a href="<%= url_for('/archives/'+month+'/') %>"><%= month.replace('/', ' 年 ') %> 月</a>
+    <% } %>
+  </nav>
+<% } %>
+<%- partial('cards',{records:page.posts.toArray()}) %>
+<% if(page.total>1) { %><nav class="pagination" aria-label="文章分页"><%- paginator({prev_text:'← 上一页',next_text:'下一页 →',mid_size:1,end_size:1}) %></nav><% } %>

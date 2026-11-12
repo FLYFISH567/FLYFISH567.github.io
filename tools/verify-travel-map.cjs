@@ -84,4 +84,21 @@ const retainedView=svg.getAttribute('viewBox');filter('planned');assert.equal(sv
 filter('visited');assert.ok(visible().every(pin=>pin.dataset.status==='visited'));assert.equal(doc.querySelector('[data-travel-group=planned]').hidden,true);
 filter('all');assert.equal(visible().length,pins.length);assert.ok(Array.from(doc.querySelectorAll('[data-travel-group]')).every(group=>!group.hidden));assert.equal(doc.querySelectorAll('[data-map-filter][aria-pressed=true]').length,1,'Exactly one category is active and no source records are removed');
 dom.window.close();
+const albumDOM=new JSDOM(fs.readFileSync('public/wordScenery/index.html','utf8'),{url:'https://blog.example/wordScenery/'});
+const mapLinks=Array.from(albumDOM.window.document.querySelectorAll('[data-photo-map]'));
+assert.equal(mapLinks.length,2,'Each mapped group in the travel album links back to its city');
+for(const link of mapLinks){
+  const destination=new URL(link.href);
+  assert.equal(destination.hash,'#footprints-title');
+  const selectedDOM=new JSDOM(fs.readFileSync('public/about/index.html','utf8'),{url:destination.href,runScripts:'outside-only'});
+  const selectedDoc=selectedDOM.window.document;
+  selectedDOM.window.eval(fs.readFileSync('themes/flyfish/source/js/travel-map.js','utf8'));
+  const selectedPin=selectedDoc.querySelector('.travel-pin.is-highlighted');
+  const selectedStop=selectedDoc.querySelector('.travel-stop.is-highlighted');
+  assert.equal(selectedPin.dataset.placeAnchor,destination.searchParams.get('place'));
+  assert.equal(selectedStop.dataset.place,selectedPin.dataset.place);
+  assert.equal(selectedPin.getAttribute('href'),'/wordScenery/#'+link.closest('.photo-section').id);
+  selectedDOM.window.close();
+}
+albumDOM.window.close();
 console.log('PASS: visited/wish points, offline matching/geometry, fixed zoom steps/bounds, cursor anchoring, keyboard/click focus, city links, touch scrolling and drag/reset cleanup.');
