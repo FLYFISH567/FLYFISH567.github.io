@@ -91,7 +91,7 @@
   function initReading(){readingObserver?.disconnect();readingBody=$('.article-body');if(readingBody){readingObserver=new ResizeObserver(scheduleScroll);readingObserver.observe(readingBody);}updateScroll();}
   window.addEventListener('pageshow',scheduleScroll);updateScroll();
   backTop?.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'}));
-  function imageFailed(img){if(!img.getAttribute('src'))return;if(img.matches('[data-music-cover]')){img.hidden=true;return;}if(img.closest('.opening-avatar')){img.hidden=true;return;}img.classList.add('image-broken');if(!img.closest('#photo-viewer')&&!img.classList.contains('avatar'))img.parentElement?.classList.add('image-error');}
+  function imageFailed(img){if(!img.getAttribute('src'))return;if(img.matches('[data-music-cover]')){img.hidden=true;return;}img.classList.add('image-broken');if(!img.closest('#photo-viewer')&&!img.classList.contains('avatar'))img.parentElement?.classList.add('image-error');}
   document.addEventListener('error',event=>{if(event.target instanceof HTMLImageElement)imageFailed(event.target);},true);
   function scanImages(){$$('img').filter(img=>img.complete&&img.getAttribute('src')&&!img.naturalWidth).forEach(imageFailed);}
   function initLibraries(){

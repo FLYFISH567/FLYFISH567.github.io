@@ -1,0 +1,18 @@
+<% const routes=ff_reading_routes(); if(routes.length) { %>
+<section id="reading-routes" aria-labelledby="reading-routes-title">
+  <h2 id="reading-routes-title">专题阅读路线</h2>
+  <div class="reading-route-grid">
+    <% for(const route of routes) { %>
+    <article class="reading-route-card" id="reading-route-<%= route.id %>" data-reading-route="<%= route.id %>">
+      <h3><%= route.title %></h3>
+      <p><%= route.description %></p>
+      <ol>
+        <% for(const step of route.steps) { %>
+        <li><a href="<%= step.href %>"><%= step.title %></a></li>
+        <% } %>
+      </ol>
+    </article>
+    <% } %>
+  </div>
+</section>
+<% } %>

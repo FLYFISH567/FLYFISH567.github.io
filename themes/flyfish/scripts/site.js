@@ -29,6 +29,19 @@ hexo.extend.helper.register('ff_post_url', function (value) {
 });
 hexo.extend.helper.register('ff_topic', topic);
 hexo.extend.helper.register('ff_plain', plain);
+hexo.extend.helper.register('ff_reading_routes', function () {
+  const records = new Map([...hexo.locals.get('posts').toArray(), ...hexo.locals.get('pages').toArray()]
+    .map(record => [record.source, record]));
+  return (data().reading_routes || []).map(route => ({
+    ...route,
+    steps: route.steps.map(step => {
+      const record = records.get(step.source);
+      if (!record) throw new Error(`阅读路线「${route.title}」找不到来源：${step.source}`);
+      const href = this.ff_post_url(record.path.replace(/\/index\.html$/, '/'));
+      return {...step, title:step.title || record.title, href:href + (step.anchor ? '#' + encodeURIComponent(step.anchor) : '')};
+    })
+  }));
+});
 hexo.extend.helper.register('ff_summary', function (post) {
   const explicit = hexo.theme.config.summaries?.[post.title] || post.description;
   const text = plain(explicit || post.content) || `${post.title}，保存学习过程中的代码与笔记。`;

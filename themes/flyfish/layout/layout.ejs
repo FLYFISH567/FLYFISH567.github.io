@@ -82,7 +82,7 @@
 <%- partial('_partials/atmosphere') %>
 <a class="skip-link" href="#main">跳到内容</a>
 <header class="site-header"><div class="header-inner">
-  <a class="brand" href="<%= url_for('/') %>"><span class="brand-mark" aria-hidden="true"></span><span><%= config.title %></span></a>
+  <a class="brand" href="<%= url_for('/') %>"><%- partial('_partials/brand-mark') %><span><%= config.title %></span></a>
   <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="main-nav" hidden>菜单</button>
   <nav id="main-nav" aria-label="主导航">
     <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'工具箱',url:'/toolbox/',active:view==='toolbox'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'},{label:'留言板',url:'/comments/',active:view==='contact'}]) { %>

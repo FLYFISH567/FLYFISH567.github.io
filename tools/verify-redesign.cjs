@@ -25,6 +25,21 @@ for(const post of expectedPosts){
   assert.ok($('.article-body').length,`Missing body: ${post.title}`);
 }
 const hub=load('articles/index.html');assert.equal(hub('[data-post-card]').length,expectedPosts.length,'Article hub must include all retained posts');
+assert.equal(load('index.html')('[data-open-reading-routes]').attr('href'),'/articles/#reading-routes');
+const routes=hub('#reading-routes [data-reading-route]').toArray();
+assert.deepEqual(routes.map(route=>hub(route).attr('data-reading-route')),['web-basics','life-notes']);
+for(const route of routes){
+  const overview='/articles/#'+hub(route).attr('id');
+  const steps=hub(route).find('ol li a').map((_,link)=>hub(link).attr('href')).get();
+  assert.equal(new Set(steps).size,3,'Each route includes three distinct steps');
+  for(const [index,href] of steps.entries()){
+    const url=new URL(href,'http://localhost');
+    const target=load(decodeURIComponent(url.pathname.slice(1))+(url.pathname.endsWith('/')?'index.html':''));
+    if(url.hash)assert.equal(target(url.hash).length,1,'Anchored route links reach an existing section');
+    assert.equal(target('.reading-route-overview').attr('href'),overview,'Every step can return to its overview');
+    assert.equal(target('[data-reading-route-next]').attr('href'),steps[index+1],'Only intermediate steps link forward, in order');
+  }
+}
 assert.equal(hub('[data-post-card][data-topics*=test]').length,0,'Test article must not appear in search');
 assert.ok(!fs.existsSync(path.join(output,removedTest.route)),'Stale test article HTML must be removed');
 assert.ok(!fs.existsSync(path.join(output,'tags/test/index.html')),'Stale test tag must be removed');
