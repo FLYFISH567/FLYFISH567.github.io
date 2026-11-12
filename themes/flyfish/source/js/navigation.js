@@ -130,7 +130,7 @@
       mark('dom.replace.start',fields);slot().replaceWith(document.importNode(content,true));mark('dom.replace.end',fields);
       document.body.dataset.view=next.body.dataset.view;
       document.title=next.title;
-      for(const selector of ['meta[name="description"]','link[rel="canonical"]']){
+      for(const selector of ['meta[name="description"]','link[rel="canonical"]',...['type','title','description','url','image','image:alt'].map(key=>`meta[property="og:${key}"]`)]){
         const existing=document.querySelector(selector),replacement=next.querySelector(selector);
         if(existing&&replacement)existing.replaceWith(document.importNode(replacement,true));
       }

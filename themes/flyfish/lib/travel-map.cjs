@@ -18,9 +18,16 @@ function locate(stop){
 }
 function geometryPath(geometry){
   const polygons=geometry.type==='Polygon'?[geometry.coordinates]:geometry.coordinates;
-  return polygons.map(polygon=>polygon.map(ring=>ring.map((point,index)=>{
-    const [x,y]=project(point);return `${index?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join('')+'Z').join('')).join('');
+  return polygons.map(polygon=>polygon.map(ring=>{
+    // Keep the same 0.1-unit grid and encode the small steps between points.
+    const points=ring.map(point=>project(point).map(value=>Math.round(value*10)));
+    const [x,y]=points[0];
+    const steps=points.slice(1).map(([nextX,nextY],index)=>{
+      const [previousX,previousY]=points[index];
+      return `${(nextX-previousX)/10} ${(nextY-previousY)/10}`;
+    });
+    return `M${x/10} ${y/10}l${steps.join(' ')}Z`;
+  }).join('')).join('');
 }
 const regions=geography.features.map(feature=>({name:feature.properties.name,code:feature.properties.adcode,path:geometryPath(feature.geometry)}));
 function travelMap(stops){

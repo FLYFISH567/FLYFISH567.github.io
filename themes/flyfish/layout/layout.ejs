@@ -1,13 +1,24 @@
-<% const view = is_post() ? 'post' : is_home() ? 'home' : ff_page_kind(page); const inLife=['life','essay','album','album_detail','bangumi','shelf'].includes(view); const hasAside=['home','post'].includes(view); %>
+<% const view = is_post() ? 'post' : is_home() ? 'home' : ff_page_kind(page); const inLife=['life','essay','album','album_detail','bangumi','shelf'].includes(view); const hasAside=['home','post'].includes(view);
+   const title = view==='home' ? config.title + ' · ' + config.subtitle : (view==='warning'?'前方高能 · 小彩蛋':page.title || page.category || page.tag || '文章库') + ' · ' + config.title;
+   const descriptions = {articles:'浏览飞飞鱼的学习笔记和生活文章，可按主题、年份或关键词查找。',about:'认识飞飞鱼，看看最近在做什么、旅行足迹和生活收藏。',briefing:'汇集国内外新闻、AI 动态和市场行情，支持按来源订阅和收藏。',album:'翻看飞飞鱼的旅行和日常相册。',toolbox:'常用在线工具与网站收藏，包括 JSON 格式化、编码转换和时间戳转换。',music:'飞飞鱼的音乐馆，收听按风格整理的歌单。',contact:'在飞飞鱼的留言板打个招呼，聊聊你感兴趣的话题。'};
+   const description = is_post() ? ff_summary(page) : descriptions[view] || config.description + ' · 学习笔记与生活记录';
+   const canonical = full_url_for(page.path || '').replaceAll('#','%23').replaceAll('?','%3F'); %>
 <!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <script>try{if(localStorage.getItem('flyfish-theme')==='dark')document.documentElement.dataset.theme='dark';const tier=localStorage.getItem('flyfish-effects-tier');document.documentElement.dataset.effects=['light','standard','lively'].includes(tier)?tier:'standard';}catch{document.documentElement.dataset.effects='standard';}</script>
-  <title><%= view==='home' ? config.title + ' · ' + config.subtitle : (view==='warning'?'前方高能 · 小彩蛋':page.title || page.category || page.tag || '文章库') + ' · ' + config.title %></title>
-  <meta name="description" content="<%= is_post() ? ff_summary(page) : config.description + ' · 学习笔记与生活记录' %>">
-  <link rel="canonical" href="<%= full_url_for(page.path || '').replaceAll('#','%23').replaceAll('?','%3F') %>">
+  <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
+  <title><%= title %></title>
+  <meta name="description" content="<%= description %>">
+  <link rel="canonical" href="<%= canonical %>">
+  <meta property="og:type" content="<%= is_post() ? 'article' : 'website' %>">
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= description %>">
+  <meta property="og:url" content="<%= canonical %>">
+  <meta property="og:image" content="<%= full_url_for(theme.hero_image) %>">
+  <meta property="og:image:alt" content="蓝天、白云与天台">
   <link rel="icon" type="image/svg+xml" href="<%= url_for('/favicon.svg') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/flyfish.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/briefing.css') %>">
@@ -22,7 +33,6 @@
   <link rel="stylesheet" href="<%= ff_asset('css/comments.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/fish-home.css') %>">
   <link rel="stylesheet" href="<%= ff_asset('css/seasonal-atmosphere.css') %>">
-  <% if(view==='home' && (!page.current || page.current===1)) { %><script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&document.documentElement.dataset.effects!=='light'&&!sessionStorage.getItem('flyfish-opening-seen')&&!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward'){document.documentElement.dataset.opening='pending';setTimeout(()=>delete document.documentElement.dataset.opening,2800);}}catch{}</script><% } %>
   <script defer src="<%= ff_asset('js/effects.js') %>"></script>
   <script defer src="<%= ff_asset('js/search-core.js') %>"></script>
   <script defer src="<%= ff_asset('js/flyfish.js') %>"></script>
@@ -73,7 +83,7 @@
 <a class="skip-link" href="#main">跳到内容</a>
 <header class="site-header"><div class="header-inner">
   <a class="brand" href="<%= url_for('/') %>"><span class="brand-mark" aria-hidden="true"></span><span><%= config.title %></span></a>
-  <button class="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav">菜单</button>
+  <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="main-nav" hidden>菜单</button>
   <nav id="main-nav" aria-label="主导航">
     <% for (const item of [{label:'首页',url:'/',active:view==='home'},{label:'文章',url:'/articles/',active:['articles','post'].includes(view)},{label:'日常',url:'/album/',active:inLife},{label:'每日',url:'/briefing/',active:view==='briefing'},{label:'工具箱',url:'/toolbox/',active:view==='toolbox'},{label:'音乐',url:'/music/',active:view==='music'},{label:'关于',url:'/about/',active:view==='about'},{label:'留言板',url:'/comments/',active:view==='contact'}]) { %>
       <a href="<%= url_for(item.url) %>" <%- item.active ? 'aria-current="page"' : '' %>><%= item.label %></a>

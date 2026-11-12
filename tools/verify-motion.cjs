@@ -3,6 +3,10 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
 const layout=fs.readFileSync('themes/flyfish/layout/layout.ejs','utf8');
 const boot=layout.match(/<script>(try\{if\(!matchMedia[\s\S]+?)<\/script>/)[1];
+const home=fs.readFileSync('public/index.html','utf8');
+assert.ok(home.indexOf(boot)<home.indexOf('rel="stylesheet"'),'Opening state is set before the first stylesheet');
+assert.match(home,/<section class="opening-screen"[^>]*>/);
+assert.doesNotMatch(home,/<section class="opening-screen"[^>]*\bhidden\b/,'Initial CSS can show the opening before deferred scripts run');
 function bootstrap(options={}){
   const root={dataset:{}},timers=[];
   vm.runInNewContext(boot,{

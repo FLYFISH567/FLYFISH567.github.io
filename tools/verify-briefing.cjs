@@ -4,6 +4,9 @@ const api=require('../themes/flyfish/source/js/briefing-sources.js');
 const source=fs.readFileSync('themes/flyfish/source/js/briefing.js','utf8');
 const html=fs.readFileSync('public/briefing/index.html','utf8');
 const snapshot=api.cleanSnapshot(JSON.parse(fs.readFileSync('public/briefing/feed.json','utf8')));
+const preview=JSON.parse(cheerio.load(html)('[data-briefing-seed]').text());
+assert.equal(preview.preview,true);
+assert.equal(Object.values(preview.sources).reduce((total,group)=>total+group.items.length,0),12);
 const Parser=new JSDOM('').window.DOMParser;
 assert.ok(Object.keys(snapshot.sources).length>=Math.ceil(api.SOURCES.length*.35),'Sources have dated fallbacks even during partial outages');
 assert.ok(snapshot.checkedAt,'Background collection has its own timestamp');
@@ -16,7 +19,7 @@ const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve();};
 function setup(options={}){
   const dom=new JSDOM(html,{url:'https://blog.example/briefing/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,doc=w.document;
   if(options.hidden)Object.defineProperty(doc,'hidden',{value:true});
-  const seed=structuredClone(snapshot);for(const group of Object.values(seed.sources))group.fetchedAt=new Date(Date.now()-(options.stale?86400000:0)).toISOString();
+  const seed=structuredClone(options.preview?preview:snapshot);for(const group of Object.values(seed.sources))group.fetchedAt=new Date(Date.now()-(options.stale?86400000:0)).toISOString();
   seed.checkedAt=new Date(Date.now()-(options.stale?86400000:0)).toISOString();
   doc.querySelector('[data-briefing-seed]').textContent=JSON.stringify(seed);
   if(options.prefs)w.localStorage.setItem('flyfish-briefing-prefs-v1',JSON.stringify(options.prefs));
@@ -30,6 +33,30 @@ function setup(options={}){
   return {dom,w,doc,seed,get calls(){return calls;},get permissionCalls(){return permissionCalls;},get notices(){return notices;},click(selector){const e=doc.querySelector(selector);assert.ok(e,selector);e.click();},input(value){const i=doc.querySelector('[data-briefing-search]');i.value=value;i.dispatchEvent(new w.Event('input',{bubbles:true}));}};
 }
 (async()=>{
+  let deliver;
+  const partial=setup({preview:true,fetch:()=>new Promise(resolve=>{deliver=resolve;})});
+  assert.equal(partial.calls,1,'An incomplete seed fetches the full same-origin feed even if fresh');
+  const first=partial.doc.querySelector('[data-read-link]');first.focus();
+  const full=structuredClone(snapshot);full.checkedAt=partial.seed.checkedAt;
+  for(const group of Object.values(full.sources))group.fetchedAt=full.checkedAt;
+  deliver({ok:true,text:async()=>JSON.stringify(full)});await flush();
+  assert.equal(partial.doc.activeElement,first,'Unchanged visible results keep the original focused node');
+  assert.equal(partial.doc.querySelector('[data-briefing-more]').hidden,false,'The full feed enables more results');
+  const itemId=first.dataset.readLink;
+  const changed=structuredClone(full);changed.checkedAt=new Date(Date.parse(full.checkedAt)+1000).toISOString();
+  for(const group of Object.values(changed.sources)){
+    group.fetchedAt=changed.checkedAt;
+    const item=group.items.find(entry=>entry.id===itemId);if(item)item.summary='已更新 '+item.summary;
+  }
+  partial.w.localStorage.setItem('flyfish-briefing-cache-v1',JSON.stringify(changed));
+  partial.w.dispatchEvent(new partial.w.StorageEvent('storage',{key:'flyfish-briefing-cache-v1'}));
+  assert.equal(first.isConnected,false,'A changed visible item is re-rendered');
+  assert.equal(partial.doc.activeElement.dataset.readLink,itemId,'Re-rendering restores focus to the same news item');
+  partial.dom.window.close();
+  const partialOffline=setup({preview:true});await flush();
+  assert.equal(partialOffline.doc.querySelectorAll('[data-read-link]').length,12,'The preview remains readable when the full feed fails');
+  assert.equal(Object.keys(JSON.parse(partialOffline.w.localStorage.getItem('flyfish-briefing-cache-v1')).sources).length,0,'A partial seed never replaces the full cache');
+  partialOffline.dom.window.close();
   const state=setup();await flush();assert.equal(state.calls,0,'Fresh snapshot does not hit public services');assert.equal(state.permissionCalls,0,'No automatic notification permission prompt');
   assert.equal(state.doc.querySelector('.briefing-heading h1').textContent,'每日看板');
   assert.equal(state.doc.querySelectorAll('.briefing-aside>.briefing-panel').length,1,'Subscription and source information share one panel');

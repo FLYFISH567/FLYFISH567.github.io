@@ -8,19 +8,23 @@
   function read(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch{persistent=false;return null;}}
   function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{persistent=false;}}
   let cache=api.cleanSnapshot(read(CACHE));
+  let preview=null;
   const raw=read(PREFS)||{};
   const catalog=SOURCES.map(s=>s.id),known=Array.isArray(raw.catalog)?raw.catalog:['daily','ai','radar','dev','security'];
   const subscriptions=Array.isArray(raw.sources)?raw.sources.filter(id=>catalog.includes(id)).concat(raw.sources.length?catalog.filter(id=>!known.includes(id)):[]):catalog;
   const pref={sources:[...new Set(subscriptions)],catalog,read:raw.read&&typeof raw.read==='object'&&!Array.isArray(raw.read)?raw.read:{},saved:{},notify:raw.notify===true,notifySince:Number(raw.notifySince)||0};
   function savedItems(value){return Object.fromEntries(Object.entries(value&&typeof value==='object'&&!Array.isArray(value)?value:{}).slice(-100).filter(([,item])=>SOURCES.some(s=>s.id===item?.sourceId)&&api.safeURL(item.url)&&typeof item.title==='string'&&Number.isFinite(Date.parse(item.publishedAt))).map(([id,item])=>[id,{...item,id,url:api.safeURL(item.url)}]));}
   pref.saved=savedItems(raw.saved);
-  let category='all',mode='all',query='',limit=12;
+  let category='all',mode='all',query='',limit=12,feedSignature;
   const $=(selector,root=page)=>root?.querySelector(selector);
   const dateTime=value=>{try{return new Intl.DateTimeFormat('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date(value));}catch{return '时间未知';}};
   const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value;if(cls)e.className=cls;return e;};
   function save(){const entries=Object.entries(pref.read).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,1000);pref.read=Object.fromEntries(entries);write(PREFS,pref);}
   function mergeSnapshot(incoming){const newest=group=>(group?.items||[]).reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');for(const spec of SOURCES){const next=incoming.sources[spec.id],old=cache.sources[spec.id];if(next&&(!old||Date.parse(next.fetchedAt)>Date.parse(old.fetchedAt))&&(!old||!newest(old)||!newest(next)||newest(next)>=newest(old)))cache.sources[spec.id]=next;}if(incoming.checkedAt&&(!cache.checkedAt||incoming.checkedAt>=cache.checkedAt)){cache.checkedAt=incoming.checkedAt;cache.health=incoming.health;}}
-  function entries(){const seen=new Set(),items=[];for(const spec of SOURCES){if(!pref.sources.includes(spec.id))continue;for(const item of cache.sources[spec.id]?.items||[]){if(seen.has(item.id))continue;seen.add(item.id);items.push({...item,sourceId:spec.id});}}
+  const sourceGroup=id=>cache.sources[id]||preview?.sources[id];
+  const latestSnapshot=()=>preview?.checkedAt>cache.checkedAt?preview:cache;
+  const needsFullFeed=()=>preview&&(!cache.checkedAt||preview.checkedAt>cache.checkedAt);
+  function entries(){const seen=new Set(),items=[];for(const spec of SOURCES){if(!pref.sources.includes(spec.id))continue;for(const item of sourceGroup(spec.id)?.items||[]){if(seen.has(item.id))continue;seen.add(item.id);items.push({...item,sourceId:spec.id});}}
     if(mode==='saved')for(const item of Object.values(pref.saved))if(pref.sources.includes(item.sourceId)&&!seen.has(item.id))items.push(item);
     return items.sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt));
   }
@@ -34,15 +38,20 @@
     copy.textContent=Notification.permission==='denied'?'浏览器已阻止提醒；可在网站权限中修改。':pref.notify?'网页保持打开时，提醒已订阅来源的新消息；关闭网页后不会推送。':'网页保持打开时提醒新消息；关闭网页后不会推送。';
   }
   function renderSources(){if(!page)return;
-    for(const spec of SOURCES){const group=cache.sources[spec.id],node=$('[data-briefing-source-info="'+spec.id+'"]');if(!node)continue;
-      const health=cache.health?.[spec.id],failed=errors.has(spec.id)||(health&&health.status!=='ok'),latest=group?.items.reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');
+    for(const spec of SOURCES){const group=sourceGroup(spec.id),node=$('[data-briefing-source-info="'+spec.id+'"]');if(!node)continue;
+      const health=latestSnapshot().health[spec.id],failed=errors.has(spec.id)||(health&&health.status!=='ok'),latest=group?.items.reduce((v,i)=>i.publishedAt>v?i.publishedAt:v,'');
       const stamp=group?'获取于 '+dateTime(group.fetchedAt)+(group.edition?' · 简报日期 '+group.edition:latest?' · 最新报道 '+dateTime(latest):''):'暂无可用快照';
       const freshness=$('[data-briefing-source-freshness]',node);freshness.textContent=(failed?'暂时无法更新 · ':'')+stamp;freshness.classList.toggle('source-is-stale',!!failed);
     }
     page.querySelectorAll('[data-briefing-group-count]').forEach(label=>{const group=SOURCES.filter(s=>s.category===label.dataset.briefingGroupCount);label.textContent=group.filter(s=>pref.sources.includes(s.id)).length+' / '+group.length;});
   }
-  function render(){if(!page?.isConnected)return;const items=selected(),feed=$('[data-briefing-feed]'),fragment=document.createDocumentFragment();
-    for(const [i,item] of items.slice(0,limit).entries()){
+  function renderFeed(items){
+    const visible=items.slice(0,limit),signature=JSON.stringify(visible.map(item=>[item,!!pref.read[item.id],!!pref.saved[item.id]]));
+    if(signature===feedSignature)return;
+    feedSignature=signature;
+    const feed=$('[data-briefing-feed]'),fragment=document.createDocumentFragment();
+    const active=document.activeElement,focused=feed.contains(active)?active.dataset:null;
+    for(const [i,item] of visible.entries()){
       const source=SOURCES.find(s=>s.id===item.sourceId),card=text('article','','briefing-item pointer-surface'+(pref.read[item.id]?' is-read':''));card.dataset.itemId=item.id;card.dataset.pointerLight='';
       card.append(text('div',String(i+1).padStart(2,'0'),'briefing-item-index'));
       const body=text('div','','briefing-item-body'),meta=text('div','','briefing-item-meta');
@@ -53,13 +62,29 @@
       for(const [action,label,pressed] of [['read',pref.read[item.id]?'已读':'标为已读',!!pref.read[item.id]],['save',pref.saved[item.id]?'已收藏':'收藏',!!pref.saved[item.id]]]){const b=text('button',label);b.type='button';b.dataset.briefingAction=action;b.dataset.itemId=item.id;b.setAttribute('aria-pressed',String(pressed));b.setAttribute('aria-label',label+'：'+item.title);actions.append(b);}
       body.append(actions);card.append(body);fragment.append(card);
     }
-    feed.replaceChildren(fragment);$('[data-briefing-empty]').hidden=items.length>0;
+    feed.replaceChildren(fragment);
+    if(focused){
+      const selector=focused.readLink?'[data-read-link]':'[data-briefing-action="'+focused.briefingAction+'"]';
+      const controls=Array.from(feed.querySelectorAll(selector));
+      const sameItem=controls.find(control=>(control.dataset.readLink||control.dataset.itemId)===(focused.readLink||focused.itemId));
+      (sameItem||controls[0]||$('[data-briefing-search]')).focus({preventScroll:true});
+    }
+  }
+  function render(){
+    if(!page?.isConnected)return;
+    const items=selected();
+    renderFeed(items);
+    $('[data-briefing-empty]').hidden=items.length>0;
     $('[data-briefing-empty]').textContent=!pref.sources.length?'还没有选择资讯来源。勾选右侧订阅，就能开始阅读。':mode==='saved'?'还没有匹配的收藏，点击消息下方的“收藏”即可保存。':'暂时没有匹配的消息，换个分类或关键词试试。';
+    if(pref.sources.length&&mode!=='saved'&&needsFullFeed()){
+      if(busy)$('[data-briefing-empty]').textContent='正在加载完整资讯…';
+      else if(siteFailed)$('[data-briefing-empty]').textContent='完整资讯暂时无法加载，可以稍后点击「检查更新」。';
+    }
     $('[data-briefing-more]').hidden=items.length<=limit;
     $('[data-briefing-clear]').hidden=!query;
     $('[data-briefing-results]').textContent=[category==='all'?'全部资讯':CATEGORIES.find(c=>c[0]===category)?.[1],mode==='unread'?'未读':mode==='saved'?'收藏':'',query.trim()?'搜索结果':''].filter(Boolean).join(' · ');
-    const delayed=cache.checkedAt&&Date.now()-Date.parse(cache.checkedAt)>10800000;
-    $('[data-briefing-status]').textContent=status||(cache.checkedAt?'后台采集于 '+dateTime(cache.checkedAt)+(delayed?' · 更新延迟，显示上次内容':''):'正在检查站内更新…');
+    const {checkedAt}=latestSnapshot(),delayed=checkedAt&&Date.now()-Date.parse(checkedAt)>10800000;
+    $('[data-briefing-status]').textContent=status||(checkedAt?'后台采集于 '+dateTime(checkedAt)+(delayed?' · 更新延迟，显示上次内容':''):'正在检查站内更新…');
     $('[data-briefing-refresh]').disabled=busy;$('[data-briefing-refresh]').textContent=busy?'正在检查…':'检查更新';
     page.querySelectorAll('[data-briefing-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingCategory===category)));
     page.querySelectorAll('[data-briefing-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.briefingMode===mode)));
@@ -75,8 +100,11 @@
   }
   async function responseText(url,signal){const controller=new AbortController(),abort=()=>controller.abort();signal?.addEventListener('abort',abort,{once:true});const timeout=setTimeout(abort,10000);try{const r=await fetch(url,{signal:controller.signal,credentials:'omit',cache:'no-cache'});if(!r.ok){const e=Error('HTTP '+r.status);e.status=r.status;if(r.status===429)e.retryAfter=r.headers.get('Retry-After');throw e;}const value=await r.text();if(value.length>4000000)throw Error('来源响应过大');return value;}finally{clearTimeout(timeout);signal?.removeEventListener('abort',abort);}}
   async function refresh(force=false){const watching=pref.notify&&('Notification' in window)&&Notification.permission==='granted';if(busy||(document.hidden&&!watching)||(!page&&!watching))return;
-    const now=Date.now(),siteDue=now-siteAttempt>(force?60000:300000)&&(force||!cache.checkedAt||now-Date.parse(cache.checkedAt)>=300000);
-    const directDue=()=>SOURCES.filter(s=>!s.serverOnly&&pref.sources.includes(s.id)&&now-(attempts.get(s.id)||0)>60000&&(force||!cache.sources[s.id]||now-Date.parse(cache.sources[s.id].fetchedAt)>=s.ttl));
+    const now=Date.now(),siteDue=now-siteAttempt>(force?60000:300000)&&(force||!cache.checkedAt||needsFullFeed()||now-Date.parse(cache.checkedAt)>=300000);
+    const directDue=()=>SOURCES.filter(s=>{
+      const group=sourceGroup(s.id);
+      return !s.serverOnly&&pref.sources.includes(s.id)&&now-(attempts.get(s.id)||0)>60000&&(force||!group||now-Date.parse(group.fetchedAt)>=s.ttl);
+    });
     if(!directDue().length&&!siteDue){if(force){status='刚刚已检查过，稍后再试。';render();}return;}
     busy=true;status='正在检查更新…';refreshController=new AbortController();render();const fresh=[];
     if(siteDue){siteAttempt=now;try{
@@ -97,22 +125,26 @@
       }catch(error){if(!refreshController.signal.aborted){errors.set(spec.id,error.message);const seconds=Number(error.retryAfter),delay=Number.isFinite(seconds)?seconds*1000:Date.parse(error.retryAfter)-Date.now();if(Number.isFinite(delay)&&delay>0)attempts.set(spec.id,Date.now()+Math.min(delay,3600000));}}
     }));
     const aborted=refreshController.signal.aborted;busy=false;if(aborted){render();if(page)refresh();return;}
-    write(CACHE,cache);status=cache.checkedAt?'后台采集于 '+dateTime(cache.checkedAt):'已检查可直连来源';
-    if(siteFailed)status+=' · 站内更新暂不可用，显示上次内容';else if(cache.checkedAt&&Date.now()-Date.parse(cache.checkedAt)>10800000)status+=' · 更新延迟，显示上次内容';
-    if(errors.size||Object.values(cache.health||{}).some(h=>h.status!=='ok'))status+=' · 部分来源保留旧内容';announce(fresh);render();
+    const {checkedAt,health}=latestSnapshot();
+    write(CACHE,cache);status=checkedAt?'后台采集于 '+dateTime(checkedAt):'已检查可直连来源';
+    if(siteFailed)status+=' · 站内更新暂不可用，显示上次内容';else if(checkedAt&&Date.now()-Date.parse(checkedAt)>10800000)status+=' · 更新延迟，显示上次内容';
+    if(errors.size||Object.values(health).some(h=>h.status!=='ok'))status+=' · 部分来源保留旧内容';announce(fresh);render();
   }
   let pageController=null;
   function init(){page=document.querySelector('[data-briefing]');if(!page)return;
+    feedSignature=undefined;
     pageController=new AbortController();const signal=pageController.signal;category=new URLSearchParams(location.search).get('category')||'all';if(!CATEGORIES.some(c=>c[0]===category))category='all';mode='all';query='';limit=12;
     page.querySelectorAll('.briefing-subscription-group').forEach(group=>group.addEventListener('toggle',()=>{if(group.open)page?.querySelectorAll('.briefing-subscription-group').forEach(other=>{if(other!==group)other.open=false;});},{signal}));
-    try{mergeSnapshot(api.cleanSnapshot(JSON.parse($('[data-briefing-seed]').textContent)));write(CACHE,cache);}catch{}
+    const seed=JSON.parse($('[data-briefing-seed]').textContent),snapshot=api.cleanSnapshot(seed);
+    if(seed.preview)preview=snapshot;
+    else{preview=null;mergeSnapshot(snapshot);write(CACHE,cache);}
     const today=new Date();$('[data-briefing-date]').textContent=new Intl.DateTimeFormat('zh-CN',{month:'long',day:'numeric',weekday:'long',timeZone:'Asia/Shanghai'}).format(today);
     page.addEventListener('click',event=>{
       const cat=event.target.closest('[data-briefing-category]'),filter=event.target.closest('[data-briefing-mode]'),action=event.target.closest('[data-briefing-action]'),readLink=event.target.closest('[data-read-link]');
       if(cat){category=cat.dataset.briefingCategory;limit=12;const url=new URL(location.href);if(category==='all')url.searchParams.delete('category');else url.searchParams.set('category',category);history.replaceState(history.state,'',url);render();}
       if(filter){mode=filter.dataset.briefingMode;limit=12;render();}
       if(action){const id=action.dataset.itemId,item=entries().find(i=>i.id===id)||pref.saved[id];if(!item)return;const next=action.dataset.briefingAction==='read'?action.dataset.briefingAction:'save';
-        if(next==='read'){if(pref.read[id])delete pref.read[id];else pref.read[id]=Date.now();}else{if(pref.saved[id])delete pref.saved[id];else{pref.saved[id]=item;const keys=Object.keys(pref.saved);if(keys.length>100)delete pref.saved[keys[0]];}}save();render();const replacement=Array.from(page.querySelectorAll('[data-briefing-action]')).find(b=>b.dataset.itemId===id&&b.dataset.briefingAction===action.dataset.briefingAction)||$('[data-briefing-action]');replacement?.focus({preventScroll:true});}
+        if(next==='read'){if(pref.read[id])delete pref.read[id];else pref.read[id]=Date.now();}else{if(pref.saved[id])delete pref.saved[id];else{pref.saved[id]=item;const keys=Object.keys(pref.saved);if(keys.length>100)delete pref.saved[keys[0]];}}save();render();}
       if(readLink){pref.read[readLink.dataset.readLink]=Date.now();save();readLink.closest('.briefing-item')?.classList.add('is-read');requestAnimationFrame(()=>render());}
     },{signal});
     const search=$('[data-briefing-search]');search.value=query;
