@@ -6,6 +6,7 @@
   const key='flyfish-music-session',ownerKey='flyfish-music-owner',owner=String(Date.now())+Math.random();
   const icons={play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/></svg>',pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="4"/></svg>'};
   let tracks=[],index=0,pending=null,loading=false,playing=false,phase='idle',message='',loop='list',saved=null,seekAfterMetadata=0,selection=0,lastSaved=0,loadVersion=0,loadController=null;
+  let trackQuery='',filteredRanks=null;
   const rendered=new WeakMap();
   const sourceCooldowns=new Map(),playlistCache=new Map();
   let mediaTrack=null,playIntent=0,bufferTimer=0;
@@ -45,27 +46,41 @@
     if(previewNote()&&!['error','loading','buffering','stopped'].includes(phase))return previewNote();
     return {idle:'选一首歌，慢慢听。',resume:'点击播放，继续上次收听。',loading:'正在载入歌单…',ready:'选一首歌，慢慢听。',playing:'',buffering:'正在缓冲…',paused:'已暂停',stopped:'已停止，进度回到开头。',error:'这首歌暂时无法播放，可换一首或在网易云收听。'}[phase]||'';
   }
+  function setTrackFilter(query){
+    trackQuery=query;
+    const words=query.normalize('NFKC').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    filteredRanks=words.length?new Map():null;
+    if(!filteredRanks)return;
+    tracks.forEach((track,position)=>{
+      const text=(track.name+' '+track.artist).normalize('NFKC').toLocaleLowerCase();
+      if(words.every(word=>text.includes(word)))filteredRanks.set(position,filteredRanks.size);
+    });
+  }
+  function canStep(){
+    return filteredRanks?filteredRanks.size>1||(filteredRanks.size===1&&!filteredRanks.has(index)):tracks.length>1;
+  }
   function filterPageTracks(page,list){
     const search=page.querySelector('[data-music-search]');
-    const words=search.value.normalize('NFKC').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    let matches=0,scene=null;
+    if(search.value!==trackQuery)search.value=trackQuery;
+    const matches=filteredRanks?.size??tracks.length;
+    let scene=null;
     for(const row of list.children){
       if(row.classList.contains('music-scene-heading')){
         scene=row;
-        scene.hidden=words.length>0;
+        scene.hidden=!!filteredRanks;
         continue;
       }
-      const track=tracks[Number(row.firstElementChild.dataset.musicTrack)];
-      const text=(track.name+' '+track.artist).normalize('NFKC').toLocaleLowerCase();
-      row.hidden=!words.every(word=>text.includes(word));
+      const position=Number(row.firstElementChild.dataset.musicTrack);
+      const rank=filteredRanks?filteredRanks.get(position):position;
+      row.hidden=rank===undefined;
       if(!row.hidden){
-        matches++;
-        if(scene&&scene.textContent===track.scene)scene.hidden=false;
+        row.querySelector('.music-track-number').textContent=String(rank+1).padStart(2,'0');
+        if(scene&&scene.textContent===tracks[position].scene)scene.hidden=false;
       }
     }
     search.closest('label').hidden=false;
     const count=page.querySelector('[data-music-count]');
-    const result=words.length?'匹配 '+matches+' / '+tracks.length+' 首':tracks.length+' 首';
+    const result=filteredRanks?'匹配 '+matches+' / '+tracks.length+' 首':tracks.length+' 首';
     if(count.textContent!==result)count.textContent=result;
     list.hidden=matches===0;
     page.querySelector('[data-music-search-empty]').hidden=matches>0;
@@ -135,7 +150,7 @@
     for(const slider of $$('[data-music-volume]')){if(document.activeElement!==slider)slider.value=String(audio.volume);slider.style.setProperty('--range-fill',String(audio.volume*100)+'%');}
     for(const node of $$('[data-music-play-icon]'))node.innerHTML=audio.paused?icons.play:icons.pause;
     for(const button of $$('[data-music-action="play"]')){button.disabled=loading&&!tracks.length;button.setAttribute('aria-label',audio.paused?'播放歌曲':'暂停播放');}
-    for(const button of $$('[data-music-action="prev"],[data-music-action="next"]'))button.disabled=tracks.length<2;
+    for(const button of $$('[data-music-action="prev"],[data-music-action="next"]'))button.disabled=!canStep();
     for(const node of $$('[data-music-loop]'))node.textContent=loop==='single'?'单曲循环':'列表循环';
     for(const button of $$('[data-music-action=loop]')){button.classList.toggle('is-single',loop==='single');button.title=loop==='single'?'单曲循环':'列表循环';button.setAttribute('aria-label',button.title+'，点击切换为'+(loop==='single'?'列表循环':'单曲循环'));}
     for(const mark of $$('[data-music-single-mark]'))mark.toggleAttribute('hidden',loop!=='single');
@@ -170,14 +185,13 @@
     const switching=target!==active,continuePlaying=switching&&!audio.paused,current=tracks[index];
     if(!switching&&current){
       const position=list.findIndex(track=>trackIdentity(track.url)===trackIdentity(current.url));
-      if(position>=0){tracks=list;index=position;tracks[index].shortAudio=current.shortAudio;render();save();return;}
+      if(position>=0){tracks=list;index=position;tracks[index].shortAudio=current.shortAudio;setTrackFilter(trackQuery);render();save();return;}
     }
     const restore=!switching&&!tracks.length?saved:null;
     if(switching)save();
     if(switching||tracks.length)++playIntent;audio.pause();
-    const search=$('[data-music-search]');
-    if(switching&&search)search.value='';
     active=target;saved=null;tracks=list;
+    setTrackFilter(switching?'':trackQuery);
     const restored=restore?.url?tracks.findIndex(track=>trackIdentity(track.url)===trackIdentity(restore.url)):-1;
     select(restored>=0?restored:0,restored>=0?restore.time||0:0);
     if(continuePlaying)play();
@@ -238,7 +252,15 @@
     try{await audio.play();}catch(error){if(version!==selection||error.name==='AbortError')return;clearTimeout(bufferTimer);playing=false;phase=error.name==='NotAllowedError'?'paused':'error';message=error.name==='NotAllowedError'?'再点击一次播放即可开始收听。':'';render();}
   }
   function stop(){++playIntent;clearTimeout(bufferTimer);audio.pause();try{audio.currentTime=0;}catch{}seekAfterMetadata=0;playing=false;phase='stopped';message='';render();save();}
-  function step(direction){if(!tracks.length)return;select(index+direction);play();}
+  function step(direction){
+    if(!tracks.length||filteredRanks?.size===0)return false;
+    let next=index+direction;
+    if(filteredRanks){
+      const queue=[...filteredRanks.keys()],rank=filteredRanks.get(index);
+      next=queue[rank===undefined?(direction>0?0:queue.length-1):(rank+direction+queue.length)%queue.length];
+    }
+    select(next);play();return true;
+  }
   function openPanel(open){if(open&&!tracks.length&&!pending)load();panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));render();document.dispatchEvent(new CustomEvent('flyfish:music-layout'));}
   document.addEventListener('click',event=>{
     const retryButton=event.target.closest('[data-retry-music]');if(retryButton){load(true);return;}
@@ -257,7 +279,7 @@
   document.addEventListener('input',event=>{
     if(event.target.matches('[data-music-search]')){
       const page=event.target.closest('[data-music-page]'),list=page.querySelector('.music-playlist');
-      if(list){filterPageTracks(page,list);list.scrollTop=0;}
+      if(list){setTrackFilter(event.target.value);filterPageTracks(page,list);list.scrollTop=0;render();}
     }
     if(event.target.matches('[data-music-seek]')&&Number.isFinite(audio.duration)&&audio.duration>0){audio.currentTime=audio.duration*Number(event.target.value)/100;render();save();}
     if(event.target.matches('[data-music-volume]')){audio.volume=Math.max(0,Math.min(1,Number(event.target.value)));audio.muted=false;render();save();}
@@ -271,13 +293,13 @@
   audio.addEventListener('waiting',()=>{playing=false;phase='buffering';watchBuffer();render();});
   audio.addEventListener('pause',()=>{++playIntent;clearTimeout(bufferTimer);playing=false;if(!['error','stopped'].includes(phase))phase='paused';render();save();});
   audio.addEventListener('error',()=>{clearTimeout(bufferTimer);playing=false;phase='error';message='';render();});
-  audio.addEventListener('ended',()=>{clearTimeout(bufferTimer);if(tracks[index]?.shortAudio&&loop==='single'){playing=false;phase='paused';message=previewNote();render();save();return;}if(loop==='single'){audio.currentTime=0;play();}else step(1);});
+  audio.addEventListener('ended',()=>{clearTimeout(bufferTimer);if(tracks[index]?.shortAudio&&loop==='single'){playing=false;phase='paused';message=previewNote();render();save();return;}if(loop==='single'){audio.currentTime=0;play();}else if(!step(1)){playing=false;phase='paused';render();save();}});
   audio.addEventListener('timeupdate',()=>{render();if(Date.now()-lastSaved>2000){lastSaved=Date.now();save();}});
   audio.addEventListener('volumechange',()=>{render();save();});
   dock.querySelector('[data-music-cover]')?.addEventListener('error',event=>{event.target.hidden=true;});
   document.addEventListener('flyfish:before-page',()=>openPanel(false));
   document.addEventListener('flyfish:page',()=>{render();if(document.querySelector('[data-music-page]')&&!tracks.length&&!pending)load();});window.addEventListener('pagehide',save);
   window.addEventListener('storage',event=>{if(event.key===ownerKey&&event.newValue!==owner&&!audio.paused){audio.pause();message='已在另一个标签页播放。';render();}});
-  if(navigator.mediaSession){for(const [action,handler] of Object.entries({play,pause:()=>audio.pause(),stop,previoustrack:()=>step(-1),nexttrack:()=>step(1),seekbackward:()=>{audio.currentTime=Math.max(0,audio.currentTime-10);},seekforward:()=>{if(Number.isFinite(audio.duration))audio.currentTime=Math.min(audio.duration,audio.currentTime+10);}}))try{navigator.mediaSession.setActionHandler(action,handler);}catch{}}
+  if(navigator.mediaSession){for(const [action,handler] of Object.entries({play,pause:()=>audio.pause(),stop,previoustrack:()=>{if(canStep())step(-1);},nexttrack:()=>{if(canStep())step(1);},seekbackward:()=>{audio.currentTime=Math.max(0,audio.currentTime-10);},seekforward:()=>{if(Number.isFinite(audio.duration))audio.currentTime=Math.min(audio.duration,audio.currentTime+10);}}))try{navigator.mediaSession.setActionHandler(action,handler);}catch{}}
   if(saved)phase='resume';render();if(document.querySelector('[data-music-page]'))load();
 })();

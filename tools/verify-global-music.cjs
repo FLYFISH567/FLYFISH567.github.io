@@ -47,6 +47,7 @@ function setup(options={}){
  filtered.input(search,'Second');
  assert.deepEqual(visible(),['1']);
  assert.deepEqual(scenes(),['Rhythm']);
+ assert.equal(filtered.doc.querySelector('[data-music-track="1"] .music-track-number').textContent,'01');
  assert.equal(filtered.audio.currentTime,35);
  assert.equal(filtered.paused,false);
  assert.equal(filtered.doc.querySelector('[data-music-track="0"]').getAttribute('aria-pressed'),'true');
@@ -57,7 +58,7 @@ function setup(options={}){
  assert.equal(filtered.doc.querySelector('[data-music-search-empty]').hidden,false);
  assert.equal(filtered.doc.querySelector('.music-playlist').hidden,true);
  filtered.click('[data-music-action=next]');await flush();
- assert.match(filtered.audio.src,/id=1232$/,'Player next follows the original playlist queue');
+ assert.match(filtered.audio.src,/id=1231$/,'An empty filter does not play an unrelated track');
  filtered.input(search,'');
  assert.deepEqual(visible(),['0','1']);
  assert.equal(filtered.doc.querySelector('[data-music-search-empty]').hidden,true);
@@ -67,6 +68,39 @@ function setup(options={}){
  assert.deepEqual(visible(),['0','1']);
  assert.equal(filtered.paused,false);
  filtered.dom.window.close();
+
+ const queue=setup({tracks:[
+   {name:'First',artist:'豆芽鱼',url:'https://music.test/?id=11'},
+   {name:'Unrelated',artist:'Other',url:'https://music.test/?id=12'},
+   {name:'Second',artist:'豆芽鱼',url:'https://music.test/?id=13'},
+   {name:'Last',artist:'豆芽鱼',url:'https://music.test/?id=14'}
+ ]});await flush();
+ const displayedNumbers=()=>[...queue.doc.querySelectorAll('.music-playlist li:not([hidden]) .music-track-number')].map(el=>el.textContent);
+ queue.input(search,'豆芽');
+ assert.deepEqual(displayedNumbers(),['01','02','03']);
+ queue.click('[data-music-track="0"]');await flush();
+ queue.event('ended');await flush();assert.match(queue.audio.src,/id=13$/,'Automatic advance skips nonmatching tracks');
+ queue.actions.nexttrack();await flush();assert.match(queue.audio.src,/id=14$/,'Media controls share the filtered queue');
+ queue.event('ended');await flush();assert.match(queue.audio.src,/id=11$/,'List repeat wraps within the results');
+ queue.click('[data-music-action=prev]');await flush();assert.match(queue.audio.src,/id=14$/);
+ const library=queue.doc.querySelector('[data-page-content]').innerHTML;
+ queue.doc.dispatchEvent(new queue.w.Event('flyfish:before-page'));
+ queue.doc.querySelector('[data-page-content]').innerHTML='<h1>Elsewhere</h1>';
+ queue.doc.dispatchEvent(new queue.w.Event('flyfish:page'));
+ queue.event('ended');await flush();assert.match(queue.audio.src,/id=11$/,'Same-document navigation preserves the queue');
+ queue.doc.querySelector('[data-page-content]').innerHTML=library;
+ queue.doc.dispatchEvent(new queue.w.Event('flyfish:page'));
+ assert.equal(queue.doc.querySelector(search).value,'豆芽');
+ queue.input(search,'');assert.deepEqual(displayedNumbers(),['01','02','03','04']);
+ queue.event('ended');await flush();assert.match(queue.audio.src,/id=12$/,'Clearing the filter restores original playback order');
+ queue.input(search,'Second');
+ queue.event('ended');await flush();assert.match(queue.audio.src,/id=13$/,'An unmatched current track advances to the first result');
+ queue.position(35);queue.actions.nexttrack();queue.actions.previoustrack();
+ assert.equal(queue.audio.currentTime,35,'System skip controls match the disabled page controls for one current result');
+ queue.event('ended');await flush();assert.match(queue.audio.src,/id=13$/,'One matching song loops without selecting an unrelated track');
+ queue.input(search,'No match');const plays=queue.plays;
+ queue.event('ended');await flush();assert.equal(queue.plays,plays,'Empty results do not auto-advance');
+ queue.dom.window.close();
 
  const s=setup();await flush();assert.equal(s.plays,0,'Opening the library loads metadata without playing audio');assert.equal(s.doc.querySelector('[data-music-count]').textContent,'2 首');assert.equal(s.doc.querySelectorAll('[data-refresh-music],[data-load-music],[data-music-action=stop]').length,0);assert.equal(s.doc.querySelectorAll('.music-scene-heading').length,2);
  assert.equal(s.doc.querySelector('[data-music-track] strong').textContent,'<b>First 123</b>');assert.equal(s.doc.querySelector('[data-music-track] b'),null);
