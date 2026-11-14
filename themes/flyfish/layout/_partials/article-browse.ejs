@@ -1,6 +1,6 @@
 <nav class="article-browse" aria-label="浏览文章">
-  <a href="<%= url_for('/articles/') %>">文章库</a>
-  <a href="<%= url_for('/archives/') %>">归档</a>
-  <a href="<%= url_for('/categories/') %>">分类</a>
-  <a href="<%= url_for('/tags/') %>">标签</a>
+  <% const path=page.path.replace(/index\.html$/, '').replace(/^\//, '');
+     for(const [section,label] of [['articles/','文章库'],['archives/','归档'],['categories/','分类'],['tags/','标签']]) { %>
+  <a href="<%= url_for('/'+section) %>"<% if(path.startsWith(section)) { %> aria-current="<%= path===section?'page':'location' %>"<% } %>><%= label %></a>
+  <% } %>
 </nav>

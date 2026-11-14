@@ -3,7 +3,7 @@
 <header class="page-heading"><h1><%= heading %><%= page.current > 1 ? ' · 第 ' + page.current + ' 页' : '' %></h1></header>
 <%- partial('article-browse') %>
 <% if(page.archive && !page.year && page.current===1) { %>
-  <nav class="article-browse" aria-label="按年月查看归档">
+  <nav class="archive-months" aria-label="按年月查看归档">
     <% for(const month of [...new Set(site.posts.map(post=>date(post.date,'YYYY/MM')))].sort().reverse()) { %>
       <a href="<%= url_for('/archives/'+month+'/') %>"><%= month.replace('/', ' 年 ') %> 月</a>
     <% } %>
