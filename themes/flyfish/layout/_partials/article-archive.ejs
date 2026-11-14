@@ -3,22 +3,10 @@
 <header class="page-heading"><h1><%= heading %><%= page.current > 1 ? ' · 第 ' + page.current + ' 页' : '' %></h1></header>
 <%- partial('article-browse') %>
 <% if(page.archive && !page.year && page.current===1 && site.posts.length) {
-     const monthsByYear=new Map();
-     for(const period of [...new Set(site.posts.map(post=>date(post.date,'YYYY/MM')))].sort().reverse()) {
-       const [year,month]=period.split('/');
-       if(!monthsByYear.has(year)) monthsByYear.set(year,[]);
-       monthsByYear.get(year).push(month);
-     } %>
+     const months=[...new Set(site.posts.map(post=>date(post.date,'YYYY/MM')))].sort().reverse(); %>
   <nav class="archive-months" aria-label="按年月查看归档">
-    <% for(const [year,months] of monthsByYear) { %>
-      <div class="archive-year">
-        <span><%= year %> 年</span>
-        <ul role="list">
-          <% for(const month of months) { %>
-          <li><a href="<%= url_for('/archives/'+year+'/'+month+'/') %>" aria-label="<%= year %> 年 <%= Number(month) %> 月"><%= Number(month) %> 月</a></li>
-          <% } %>
-        </ul>
-      </div>
+    <% for(const period of months) { const [year,month]=period.split('/'); %>
+      <a href="<%= url_for('/archives/'+period+'/') %>"><time datetime="<%= year %>-<%= month %>"><%= year %>年<%= Number(month) %>月</time></a>
     <% } %>
   </nav>
 <% } %>
