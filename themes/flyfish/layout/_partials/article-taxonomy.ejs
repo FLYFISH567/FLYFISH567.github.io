@@ -1,7 +1,7 @@
 <% const isTag=page.type==='tags'; const terms=isTag?site.tags:site.categories; %>
 <header class="page-heading"><h1><%= isTag?'标签':'分类' %></h1></header>
 <%- partial('article-browse') %>
-<ul class="article-terms" role="list">
+<ul class="article-terms<%= isTag?'':' category-terms' %>" role="list">
   <% for(const term of terms.sort('name').toArray()) { if(!term.length) continue; %>
   <li><a href="<%= url_for(term.path) %>"><span><%= term.name %></span> <small><%= term.length %> 篇</small></a></li>
   <% } %>
